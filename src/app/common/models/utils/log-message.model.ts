@@ -1,5 +1,6 @@
 import { Timestamp } from "firebase/firestore";
-import { BaseModel } from "../base.model";
+import { BaseModel } from "../BaseModel";
+
 
 export class LogMessage extends BaseModel {
     constructor(type: string, created_by: string, message: string,  error_code: string, data?: any){
@@ -7,14 +8,14 @@ export class LogMessage extends BaseModel {
 
       this.date = Timestamp.fromDate(new Date()) ;
       this.type = type;
-      this.error_code = error_code;    
+      this.error_code = error_code;
       this.archived = false;
-      this.message = message;    
+      this.message = message;
       if(data){
         this.data = data;
-      }  
+      }
     }
-  
+
     date: Timestamp | Date;
     type: string;
     message: string;

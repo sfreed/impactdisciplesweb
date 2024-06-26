@@ -1,4 +1,5 @@
-import { BaseModel } from "../base.model";
+
+import { BaseModel } from "../BaseModel";
 import { Address } from "./address.model";
 import { Company } from "./company.model";
 import { Phone } from "./phone.model";
@@ -8,7 +9,7 @@ export class Person extends BaseModel{
     lastName: string;
 
     address: Address;
-    phone: Phone;    
+    phone: Phone;
 
     constructor(firstName: string, lastName: string, address: Address, phone: Phone){
         super();

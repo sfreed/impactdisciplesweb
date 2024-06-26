@@ -1,6 +1,5 @@
 import { Injectable, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
-import { CookieService } from 'ngx-cookie-service';
 import { ToastrService } from 'ngx-toastr';
 import {
   Auth,
@@ -19,13 +18,15 @@ import {
   UserCredential
 } from 'firebase/auth';
 import { BehaviorSubject, Observable, fromEventPattern } from 'rxjs';
-import { UserPermission } from '../models/util/user-permission.model';
+
 import { UserPermissionService } from '../services/user-permissions.service';
 import { Firestore } from '@angular/fire/firestore';
 import { map, mergeMap, shareReplay } from 'rxjs/operators';
-import { QueryParam, WhereFilterOperandKeys } from './tracer.dao';
-import { AppUserService } from '../services/admin/user.service';
+import { UserPermission } from '../models/utils/user-permission.model';
 import { AppUser } from '../models/admin/user.model';
+import { AppUserService } from '../services/user.service';
+import { CookieService } from 'ngx-cookie-service';
+import { QueryParam, WhereFilterOperandKeys } from './tracer.dao';
 
 
 const AUTH_COOKIE_NAME = 'crm_auth';
@@ -83,7 +84,7 @@ export class FireAuthDao {
           throw new Error('No Record Found');
         } else {
           this.currentAgent$.next(users[0]);
-        }        
+        }
 
         return users[0];
       }),

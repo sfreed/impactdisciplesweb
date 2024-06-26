@@ -1,11 +1,10 @@
 import { Injectable, inject } from '@angular/core';
 import { QueryConstraint, addDoc, collectionData, deleteDoc, doc, getDoc, getDocs, query, setDoc, where } from '@angular/fire/firestore';
 import { Firestore, collection } from '@angular/fire/firestore';
-import { BaseModel } from '../models/base.model';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { TestData } from '../models/util/test-data.model';
 import { DocumentData, onSnapshot, updateDoc } from 'firebase/firestore';
+import { BaseModel } from '../models/BaseModel';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +13,7 @@ export class TracerDAO<T extends BaseModel> {
 
   constructor(public fs: Firestore ) {}
 
-  getAll(table: string): Promise<T[]>{    
+  getAll(table: string): Promise<T[]>{
     return getDocs(collection(this.fs, '/' + table)).then(docs => {
       let retval: T[] = [];
 
@@ -28,7 +27,7 @@ export class TracerDAO<T extends BaseModel> {
     });
   }
 
-  getAllByValue(table: string, field: string, value: any): Promise<T[]>{    
+  getAllByValue(table: string, field: string, value: any): Promise<T[]>{
     const q = query(collection(this.fs, '/' + table), where(field, "==", value));
 
     return getDocs(q).then(docs => {
@@ -51,29 +50,9 @@ export class TracerDAO<T extends BaseModel> {
     });
   }
 
-  async getByValue(table: string, queries: QueryParam[], sortField?: string): Promise<TestData[]>{
-      const queryConstraints: QueryConstraint[] = queries.map((query) =>
-        where(query.field, query.operation, query.value)
-      );
-  
-      const docRef = collection(this.fs, table);
-
-      const documentQuery = query(docRef, ...queryConstraints);
-  
-      const snap = await getDocs(documentQuery);
-  
-      const docsData = snap.docs.map((item) => item.data() as TestData);
-
-      if (sortField) {
-        docsData.sort((a: TestData, b: TestData) => a.order - b.order);
-      }
-  
-      return docsData;
-  }
-
   localeCompareOptions = {
     numeric: true,
-    sensitivity: Intl.NumberFormat, 
+    sensitivity: Intl.NumberFormat,
     ignorePunctuation: true,
   };
 
@@ -85,10 +64,10 @@ export class TracerDAO<T extends BaseModel> {
 
   async update(id: string, value: T, table: string): Promise<T>{
     let docRef = doc(this.fs, '/' + table + '/' + id);
-    
+
     await setDoc(docRef, value);
 
-    return this.getById(id, table);    
+    return this.getById(id, table);
   }
 
   async updateField(id: string, table: string, field: string, value: string): Promise<T>{
@@ -99,7 +78,7 @@ export class TracerDAO<T extends BaseModel> {
 
     await updateDoc(docRef, data);
 
-    return this.getById(id, table);  
+    return this.getById(id, table);
   }
 
   delete(id: string, table: string){
@@ -107,16 +86,16 @@ export class TracerDAO<T extends BaseModel> {
     return deleteDoc(docRef);
   }
 
-  streamAll(table: string): Observable<DocumentData>{    
+  streamAll(table: string): Observable<DocumentData>{
     return collectionData(collection(this.fs, '/' + table), {idField: 'id'})
   }
 
-  streamById(table: string, id: any, field?: string): Observable<T[]>{    
+  streamById(table: string, id: any, field?: string): Observable<T[]>{
     const q = query(collection(this.fs, '/' + table), where(field? field : "id", "==", id));
     return collectionData(q, {idField: 'id'}).pipe(
       map(dd => {
         let retval: T[] = [];
-        dd.forEach(d => {          
+        dd.forEach(d => {
           retval.push(d as T);
         })
         return retval;
