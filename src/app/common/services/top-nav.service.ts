@@ -12,10 +12,6 @@ export class TopNavService {
 
   constructor(private router: Router) {
     this.stack = new Stack<RouteItem>();
-
-    if(this.stack.size() == 0){
-      this.navigate({ id: 0, name:'Home', route:'home', icon: 'home', level: 0});
-    }
   }
 
   navigate(routeItem: RouteItem){

@@ -1,17 +1,18 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DxButtonTypes } from 'devextreme-angular/ui/button';
 import { TopNavService } from './common/services/top-nav.service';
 import { RouteItem } from './common/models/utils/route-item';
 
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit{
   title = 'impactdisciples';
 
   backButtonOptions: DxButtonTypes.Properties = {
@@ -23,13 +24,18 @@ export class AppComponent {
 
   tabsWithIcon: RouteItem[];
 
-  constructor(public topNavService: TopNavService) {
+  constructor(public topNavService: TopNavService, private route: ActivatedRoute) {
     this.tabsWithIcon = [
       { id: 0, name:'Home', route:'home', icon: 'home', level: 0},
       { id: 1, name:'Schedule', route:'schedule', icon: 'toolbox', level: 0},
       { id: 2, name:'Announcements', route:'announcements', icon: 'user', level: 0},
       { id: 3, name:'Menu', route:'menu', icon: 'menu', level: 0}
     ];
+  }
+
+  ngOnInit() {
+    const filter = this.route.snapshot.queryParamMap.get('filter');
+    console.log(filter); // Pepperoni
   }
 
   tabClicked(e :any){
