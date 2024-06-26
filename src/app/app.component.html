@@ -4,7 +4,7 @@
     </dxi-item>
     <dxi-item location="center" widget="dxButton" locateInMenu="never">
       <div *dxTemplate>
-        <div class="toolbar-label"><b>{{topNavService.current()?.name}}</b></div>
+        <div class="toolbar-label"><b>{{topNavService.current() ? topNavService.current()?.name : 'Home'}}</b></div>
       </div>
     </dxi-item>
   </dx-toolbar>
