@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Router, ActivatedRouteSnapshot, CanActivate } from '@angular/router';
-import { FireAuthDao } from '../dao/FireAuthDao.dao';
 import { UserCredential } from 'firebase/auth';
-import { LogMessage } from '../models/util/log-message.model';
-import { LoggerService } from './util/logger.service';
+
 import { ToastrService } from 'ngx-toastr';
+import { AppUserService } from './user.service';
 import { AppUser } from '../models/admin/user.model';
-import { AppUserService } from './admin/user.service';
-import { SessionService } from './singleton/session.service';
+import { FireAuthDao } from '../dao/FireAuthDao.dao';
+import { LogMessage } from '../models/utils/log-message.model';
+import { LoggerService } from './logger.service';
+import { SessionService } from './session.service';
+
 
 const defaultPath = '/';
 
@@ -59,7 +61,7 @@ export class AuthService {
             if(user && user.length == 1) {
               this.user = user[0];
               this.router.navigate([this._lastAuthenticatedPath]);
-    
+
               return {
                 isOk: true,
                 data: this.user,
@@ -160,7 +162,7 @@ export class AuthService {
               u.firebaseUID = result.user.uid;
 
               this.userService.update(u.id, u);
-              
+
               return {
                 isOk: true,
                 message: "Account Successfully Created"
