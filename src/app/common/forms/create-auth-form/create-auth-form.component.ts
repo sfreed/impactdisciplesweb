@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
-import { SessionService } from 'src/app/shared/services/singleton/session.service';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
-import { AuthService } from 'src/app/shared/services/auth.service';
-
+import { AuthService } from '../../services/auth.service';
+import { SessionService } from '../../services/session.service';
 
 @Component({
   selector: 'app-create-auth-form',
@@ -34,7 +33,7 @@ export class CreateAuthFormComponent {
 
           this.router.navigate(['capture-username-form'])
         }
-  
+
         this.loading = false;
     }
   }

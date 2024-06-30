@@ -13,6 +13,7 @@
   "private": true,
   "dependencies": {
     "@angular/animations": "^16.2.0",
+    "@angular/cdk": "^16.2.0",
     "@angular/common": "^16.2.0",
     "@angular/compiler": "^16.2.0",
     "@angular/core": "^16.2.0",
@@ -22,6 +23,7 @@
     "@angular/platform-browser-dynamic": "^16.2.0",
     "@angular/router": "^16.2.0",
     "@angular/service-worker": "^16.2.0",
+    "@google-cloud/firestore": "^7.9.0",
     "devextreme": "23.2.6",
     "devextreme-angular": "23.2.6",
     "devextreme-schematics": "^1.6.9",

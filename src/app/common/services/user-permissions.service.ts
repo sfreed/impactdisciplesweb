@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { UserPermission } from '../models/util/user-permission.model';
 import { JBH_APPLICATIONS } from '../lists/jbh_applications.enum';
-import { TracerDAO } from '../dao/tracer.dao';
+import { UserPermission } from '../models/utils/user-permission.model';
+import { TracerDAO } from './TracerDAO.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +12,7 @@ export class UserPermissionService {
 
   constructor(public dao: TracerDAO<UserPermission>) {
 
-  }  
+  }
 
   public getAll(agentId: string): Promise<UserPermission[]> {
     return this.dao.getAll('user_permissions');

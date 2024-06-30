@@ -1,4 +1,5 @@
-import { BaseModel } from "../base.model";
+
+import { BaseModel } from "../BaseModel";
 import { Address } from "./address.model";
 import { Phone } from "./phone.model";
 

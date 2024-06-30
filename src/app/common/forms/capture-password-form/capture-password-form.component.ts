@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { AuthService } from 'src/app/shared/services/auth.service';
-import { SessionService } from 'src/app/shared/services/singleton/session.service';
 import { ToastrService } from 'ngx-toastr';
+import { AuthService } from '../../services/auth.service';
+import { SessionService } from '../../services/session.service';
 
 @Component({
   selector: 'app-capture-password-form',
@@ -25,6 +25,6 @@ export class CapturePasswordFormComponent {
       this.tostrService.error('There was an error trying to log in: ' + result.message);
     }
 
-    this.loading = false;    
+    this.loading = false;
   }
 }

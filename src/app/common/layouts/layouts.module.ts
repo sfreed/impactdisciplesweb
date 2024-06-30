@@ -1,25 +1,22 @@
 import { NgModule } from '@angular/core';
-import { SideNavInnerToolbarComponent } from './side-nav-inner-toolbar/side-nav-inner-toolbar.component';
-import { SideNavOuterToolbarComponent } from './side-nav-outer-toolbar/side-nav-outer-toolbar.component';
-import { DxDrawerModule, DxScrollViewModule, DxToolbarModule } from 'devextreme-angular';
-import { UtilsModule } from '../shared/components/utils/utils.module';
+import { DxDrawerModule, DxScrollViewModule, DxTabsModule, DxToolbarModule } from 'devextreme-angular';
+import { RootComponent } from './root/root.component';
+import { AppRoutingModule } from 'src/app/app-routing.module';
 
 @NgModule({
   declarations: [
-    SideNavInnerToolbarComponent,
-    SideNavOuterToolbarComponent,
+    RootComponent
   ],
   imports: [
-    UtilsModule,
+    AppRoutingModule,
     DxDrawerModule,
+    DxTabsModule,
     DxToolbarModule,
     DxScrollViewModule
   ],
   providers: [
   ],
   exports: [
-    SideNavInnerToolbarComponent,
-    SideNavOuterToolbarComponent,    
   ]
 })
 export class LayoutsModule { }

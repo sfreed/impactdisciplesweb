@@ -1,16 +1,16 @@
 import { Injectable, inject } from '@angular/core';
-import { TracerDAO } from '../../dao/tracer.dao';
-import { AppUser } from '../../models/admin/user.model';
+import { AppUser } from '../models/admin/user.model';
+import { TracerDAO } from './TracerDAO.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AppUserService { 
+export class AppUserService {
   table: string = 'users';
 
   constructor(public dao: TracerDAO<AppUser>) {}
 
-  getAll(): Promise<AppUser[]>{    
+  getAll(): Promise<AppUser[]>{
     return this.dao.getAll(this.table);
   }
 
@@ -27,7 +27,7 @@ export class AppUserService {
   }
 
   update(id: string, value: AppUser): Promise<AppUser>{
-    return this.dao.update(id, value, this.table);  
+    return this.dao.update(id, value, this.table);
   }
 
   delete(id: string){
