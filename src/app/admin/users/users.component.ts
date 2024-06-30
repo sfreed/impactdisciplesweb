@@ -1,11 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { DxDataGridComponent } from 'devextreme-angular';
 import CustomStore from 'devextreme/data/custom_store';
-import { Role } from 'src/app/shared/lists/roles.enum';
-import { Company } from 'src/app/shared/models/person/company.model';
-import { AppUser } from 'src/app/shared/models/admin/user.model';
-import { AppUserService } from 'src/app/shared/services/admin/user.service';
-import { CompanyService } from 'src/app/shared/services/data/company.service';
+import { Role } from 'src/app/common/lists/roles.enum';
+import { AppUser } from 'src/app/common/models/admin/user.model';
+import { AppUserService } from 'src/app/common/services/user.service';
 
 @Component({
   selector: 'app-users',
@@ -15,15 +13,14 @@ import { CompanyService } from 'src/app/shared/services/data/company.service';
 export class UsersComponent implements OnInit {
 
   @ViewChild('grid', { static: false }) grid: DxDataGridComponent;
-  
+
   dataSource: any;
 
   selectedRow: any;
 
-  companies: Promise<Company[]>
   roles: Role[] = [];
 
-  constructor(public userService: AppUserService, public companyService: CompanyService) {
+  constructor(public userService: AppUserService) {
     this.dataSource = new CustomStore({
       key: 'id',
       loadMode: 'raw',
@@ -41,7 +38,6 @@ export class UsersComponent implements OnInit {
       },
     });
 
-    this.companies = this.companyService.getAll();
     this.roles = [Role.CUSTOMER, Role.EMPLOYEE, Role.ADMIN];
   }
 

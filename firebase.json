@@ -4,8 +4,8 @@
     "indexes": "firestore.indexes.json"
   },
   "hosting": {
-    "site": "impactdisciples-event-app",
-    "public": "dist/impactdisciples",
+    "site": "impactdisciples-web-app",
+    "public": "dist/impactdisciplesweb",
     "ignore": [
       "firebase.json",
       "**/.*",

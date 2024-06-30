@@ -1,5 +1,5 @@
 {
-  "name": "impactdisciples",
+  "name": "impactdisciplesweb",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
@@ -22,7 +22,6 @@
     "@angular/platform-browser": "^16.2.0",
     "@angular/platform-browser-dynamic": "^16.2.0",
     "@angular/router": "^16.2.0",
-    "@angular/service-worker": "^16.2.0",
     "@google-cloud/firestore": "^7.9.0",
     "devextreme": "23.2.6",
     "devextreme-angular": "23.2.6",

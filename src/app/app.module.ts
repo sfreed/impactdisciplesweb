@@ -9,6 +9,7 @@ import { FeaturesModule } from './features/features.module';
 import { environment } from 'src/environments/environment';
 import { ToastrModule } from 'ngx-toastr';
 import { FormsModule } from './common/forms/forms.module';
+import { AdminModule } from './admin/admin.module';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { FormsModule } from './common/forms/forms.module';
     provideFirestore(() => getFirestore()),
     ToastrModule.forRoot(),
     FeaturesModule,
+    AdminModule,
     FormsModule,
   ],
   providers: [],

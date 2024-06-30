@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "impactdisciples": {
+    "impactdisciplesweb": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/impactdisciples",
+            "outputPath": "dist/impactdisciplesweb",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [
@@ -64,10 +64,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "impactdisciples:build:production"
+              "browserTarget": "impactdisciplesweb:build:production"
             },
             "development": {
-              "browserTarget": "impactdisciples:build:development"
+              "browserTarget": "impactdisciplesweb:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -75,7 +75,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "impactdisciples:build"
+            "browserTarget": "impactdisciplesweb:build"
           }
         },
         "test": {

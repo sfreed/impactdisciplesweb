@@ -1,3 +1,4 @@
+import { UsersComponent } from './admin/users/users.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './features/home/home.component';
@@ -10,6 +11,7 @@ import { CaptureUsernameFormComponent } from './common/forms/capture-username-fo
 import { ChangePasswordFormComponent } from './common/forms/change-password-form/change-password-form.component';
 import { CreateAuthFormComponent } from './common/forms/create-auth-form/create-auth-form.component';
 import { ResetPasswordFormComponent } from './common/forms/reset-password-form/reset-password-form.component';
+import { LogMessagesComponent } from './admin/log-messages/log-messages.component';
 
 const routes: Routes = [
   {
@@ -35,6 +37,16 @@ const routes: Routes = [
   {
     path: 'schedule',
     component: ScheduleComponent,
+    canActivate: [ AuthGuardService ]
+  },
+  {
+    path: 'users',
+    component: UsersComponent,
+    canActivate: [ AuthGuardService ]
+  },
+  {
+    path: 'log-messages',
+    component: LogMessagesComponent,
     canActivate: [ AuthGuardService ]
   },
   {

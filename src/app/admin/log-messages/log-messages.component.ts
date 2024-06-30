@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import CustomStore from 'devextreme/data/custom_store';
-import { LogMessage } from 'src/app/shared/models/util/log-message.model';
-import { LoggerService } from 'src/app/shared/services/util/logger.service';
+import { LogMessage } from 'src/app/common/models/utils/log-message.model';
+import { LoggerService } from 'src/app/common/services/logger.service';
+
 
 @Component({
   selector: 'app-log-messages',
@@ -11,7 +12,7 @@ import { LoggerService } from 'src/app/shared/services/util/logger.service';
 export class LogMessagesComponent implements OnInit {
 
   dataSource: any;
-  
+
   constructor(logService: LoggerService) {
     this.dataSource = new CustomStore({
       key: 'id',
