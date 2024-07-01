@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { AuthService } from '../../services/auth.service';
-import { SessionService } from '../../services/session.service';
+import { AuthService } from 'impactdisciplescommon/src/app/shared/services/auth.service';
+import { SessionService } from 'impactdisciplescommon/src/app/shared/services/session.service';
 
 
 @Component({

@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import notify from 'devextreme/ui/notify';
-import { AuthService } from '../../services/auth.service';
-
+import { AuthService } from 'impactdisciplescommon/src/app/shared/services/auth.service';
 
 const notificationText = 'We\'ve sent a link to reset your password. Check your inbox.';
 

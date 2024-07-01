@@ -1,6 +1,6 @@
 import { Component, HostBinding } from '@angular/core';
-import { AuthService } from './common/services/auth.service';
-import { ScreenService } from './common/services/screen.service';
+import { AuthService } from 'impactdisciplescommon/src/app/shared/services/auth.service';
+import { ScreenService } from 'impactdisciplescommon/src/app/shared/services/screen.service';
 
 
 @Component({

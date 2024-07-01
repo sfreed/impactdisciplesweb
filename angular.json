@@ -30,8 +30,7 @@
               "src/styles.css"
             ],
             "scripts": [],
-            "serviceWorker": true,
-            "ngswConfigPath": "ngsw-config.json"
+            "serviceWorker": false
           },
           "configurations": {
             "production": {
@@ -95,6 +94,20 @@
               "src/styles.css"
             ],
             "scripts": []
+          }
+        }
+      }
+    },
+    "impactdisciplescommon": {
+      "projectType": "library",
+      "root": "impactdisciplescommon",
+      "sourceRoot": "impactdisciplescommoncommon/src",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "impactdisciplescommon/tsconfig.lib.json",
+            "project": "impactdisciplescommon/ng-package.json"
           }
         }
       }
