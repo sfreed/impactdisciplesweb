@@ -6,8 +6,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { environment } from 'src/environments/environment';
 import { ToastrModule } from 'ngx-toastr';
-import { FormsModule } from './common/forms/forms.module';
 import { AdminModule } from './admin/admin.module';
+import { FormsModule } from 'impactdisciplescommon/src/app/shared/forms/forms.module';
 
 @NgModule({
   declarations: [
