@@ -5,6 +5,7 @@ import { TrainingManagerComponent } from './training-manager/training-manager.co
 import { CoachManagerComponent } from './coach-manager/coach-manager.component';
 import { LocationManagerComponent } from './location-manager/location-manager.component';
 import { SessionManagerComponent } from './session-manager/session-manager.component';
+import { DxDataGridModule } from 'devextreme-angular';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { SessionManagerComponent } from './session-manager/session-manager.compo
     SessionManagerComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    DxDataGridModule
   ]
 })
 export class EventsModule { }

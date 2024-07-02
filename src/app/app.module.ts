@@ -9,6 +9,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { AdminModule } from './admin/admin.module';
 import { ImpactDisciplesModule } from 'impactdisciplescommon/src/impactdisciples.common.module';
 import { EventsModule } from './events/events.module';
+import { CoreModule } from './core/core.module';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { EventsModule } from './events/events.module';
     provideFirestore(() => getFirestore()),
     ToastrModule.forRoot(),
     AdminModule,
+    CoreModule,
     EventsModule,
     ImpactDisciplesModule
 

@@ -8,22 +8,43 @@ import { ChangePasswordFormComponent } from 'impactdisciplescommon/src/forms/cha
 import { CreateAuthFormComponent } from 'impactdisciplescommon/src/forms/create-auth-form/create-auth-form.component';
 import { ResetPasswordFormComponent } from 'impactdisciplescommon/src/forms/reset-password-form/reset-password-form.component';
 import { AuthGuardService } from 'impactdisciplescommon/src/services/auth.service';
+import { MainScreenComponent } from './core/main-screen/main-screen.component';
+import { EventManagerComponent } from './events/event-manager/event-manager.component';
+import { CoachManagerComponent } from './events/coach-manager/coach-manager.component';
+import { TrainingManagerComponent } from './events/training-manager/training-manager.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: UsersComponent,
-    canActivate: [ AuthGuardService ]
-  },
-  {
-    path: 'users',
-    component: UsersComponent,
-    canActivate: [ AuthGuardService ]
-  },
-  {
-    path: 'log-messages',
-    component: LogMessagesComponent,
-    canActivate: [ AuthGuardService ]
+    component: MainScreenComponent,
+    canActivate: [ AuthGuardService ],
+    children: [
+      {
+        path: 'events',
+        component: EventManagerComponent,
+        canActivate: [ AuthGuardService ]
+      },
+      {
+        path: 'coaches',
+        component: CoachManagerComponent,
+        canActivate: [ AuthGuardService ]
+      },
+      {
+        path: 'training',
+        component: TrainingManagerComponent,
+        canActivate: [ AuthGuardService ]
+      },
+      {
+        path: 'users',
+        component: UsersComponent,
+        canActivate: [ AuthGuardService ]
+      },
+      {
+        path: 'log-messages',
+        component: LogMessagesComponent,
+        canActivate: [ AuthGuardService ]
+      },
+    ]
   },
   {
     path: 'capture-username-form',
