@@ -2,12 +2,12 @@ import { UsersComponent } from './admin/users/users.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LogMessagesComponent } from './admin/log-messages/log-messages.component';
-import { AuthGuardService } from 'impactdisciplescommon/src/app/shared/services/auth.service';
-import { CapturePasswordFormComponent } from 'impactdisciplescommon/src/app/shared/forms/capture-password-form/capture-password-form.component';
-import { CaptureUsernameFormComponent } from 'impactdisciplescommon/src/app/shared/forms/capture-username-form/capture-username-form.component';
-import { ChangePasswordFormComponent } from 'impactdisciplescommon/src/app/shared/forms/change-password-form/change-password-form.component';
-import { CreateAuthFormComponent } from 'impactdisciplescommon/src/app/shared/forms/create-auth-form/create-auth-form.component';
-import { ResetPasswordFormComponent } from 'impactdisciplescommon/src/app/shared/forms/reset-password-form/reset-password-form.component';
+import { CapturePasswordFormComponent } from 'impactdisciplescommon/src/forms/capture-password-form/capture-password-form.component';
+import { CaptureUsernameFormComponent } from 'impactdisciplescommon/src/forms/capture-username-form/capture-username-form.component';
+import { ChangePasswordFormComponent } from 'impactdisciplescommon/src/forms/change-password-form/change-password-form.component';
+import { CreateAuthFormComponent } from 'impactdisciplescommon/src/forms/create-auth-form/create-auth-form.component';
+import { ResetPasswordFormComponent } from 'impactdisciplescommon/src/forms/reset-password-form/reset-password-form.component';
+import { AuthGuardService } from 'impactdisciplescommon/src/services/auth.service';
 
 const routes: Routes = [
   {

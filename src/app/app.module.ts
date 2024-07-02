@@ -7,7 +7,8 @@ import { AppComponent } from './app.component';
 import { environment } from 'src/environments/environment';
 import { ToastrModule } from 'ngx-toastr';
 import { AdminModule } from './admin/admin.module';
-import { FormsModule } from 'impactdisciplescommon/src/app/shared/forms/forms.module';
+import { ImpactDisciplesModule } from 'impactdisciplescommon/src/impactdisciples.common.module';
+import { EventsModule } from './events/events.module';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,9 @@ import { FormsModule } from 'impactdisciplescommon/src/app/shared/forms/forms.mo
     provideFirestore(() => getFirestore()),
     ToastrModule.forRoot(),
     AdminModule,
-    FormsModule,
+    EventsModule,
+    ImpactDisciplesModule
+
   ],
   providers: [],
   bootstrap: [AppComponent]
