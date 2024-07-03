@@ -1,6 +1,6 @@
 import { Component, HostBinding } from '@angular/core';
-import { AuthService } from 'impactdisciplescommon/src/services/auth.service';
-import { ScreenService } from 'impactdisciplescommon/src/services/screen.service';
+import { AuthService } from 'impactdisciplescommon/src/services/utils/auth.service';
+import { ScreenService } from 'impactdisciplescommon/src/services/utils/screen.service';
 
 @Component({
   selector: 'app-root',

@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { DxDataGridComponent } from 'devextreme-angular';
 import CustomStore from 'devextreme/data/custom_store';
 import { EventModel } from 'impactdisciplescommon/src/models/domain/event.model';
-import { EventsService } from 'impactdisciplescommon/src/services/events.service';
+import { EventService } from 'impactdisciplescommon/src/services/event.service';
 
 @Component({
   selector: 'app-event-manager',
@@ -14,7 +14,7 @@ export class EventManagerComponent {
 
   dataSource: any;
 
-  constructor(public eventService: EventsService){
+  constructor(public eventService: EventService){
     this.dataSource = new CustomStore({
       key: 'id',
       loadMode: 'raw',

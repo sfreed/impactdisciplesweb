@@ -3,8 +3,8 @@ import { Route, Router } from '@angular/router';
 import { DxButtonTypes } from 'devextreme-angular/ui/button';
 import { FireAuthDao } from 'impactdisciplescommon/src/dao/fireauth.dao';
 import { RouteItem } from 'impactdisciplescommon/src/models/utils/route-item';
-import { AuthService } from 'impactdisciplescommon/src/services/auth.service';
-import { TopNavService } from 'impactdisciplescommon/src/services/top-nav.service';
+import { AuthService } from 'impactdisciplescommon/src/services/utils/auth.service';
+import { TopNavService } from 'impactdisciplescommon/src/services/utils/top-nav.service';
 
 @Component({
   selector: 'app-main-screen',
