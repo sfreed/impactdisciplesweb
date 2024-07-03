@@ -28,7 +28,7 @@
     "devextreme-angular": "23.2.6",
     "devextreme-schematics": "^1.6.9",
     "firebase": "^10.12.2",
-    "ngx-cookie-service": "^16.0.1",
+    "ngx-cookie-service": "^16.1.0",
     "ngx-toastr": "^19.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",

@@ -10,6 +10,7 @@ import { AdminModule } from './admin/admin.module';
 import { ImpactDisciplesModule } from 'impactdisciplescommon/src/impactdisciples.common.module';
 import { EventsModule } from './events/events.module';
 import { CoreModule } from './core/core.module';
+import { CookieService } from 'ngx-cookie-service';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,9 @@ import { CoreModule } from './core/core.module';
     ImpactDisciplesModule
 
   ],
-  providers: [],
+  providers: [
+    CookieService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
