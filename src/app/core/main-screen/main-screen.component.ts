@@ -22,6 +22,34 @@ export class MainScreenComponent {
     },
   };
 
+  coachesButtonOptions: DxButtonTypes.Properties = {
+    text: 'Coaches',
+    onClick: () => {
+      this.topNavService.navigate({ id: 0, name:'Events', route:'coaches', icon: 'home', level: 0})
+    },
+  };
+
+  coursesButtonOptions: DxButtonTypes.Properties = {
+    text: 'Courses',
+    onClick: () => {
+      this.topNavService.navigate({ id: 0, name:'Events', route:'courses', icon: 'home', level: 0})
+    },
+  };
+
+  organizationsButtonOptions: DxButtonTypes.Properties = {
+    text: 'Organizations',
+    onClick: () => {
+      this.topNavService.navigate({ id: 0, name:'Events', route:'organizations', icon: 'home', level: 0})
+    },
+  };
+
+  locationsButtonOptions: DxButtonTypes.Properties = {
+    text: 'Locations',
+    onClick: () => {
+      this.topNavService.navigate({ id: 0, name:'Events', route:'locations', icon: 'home', level: 0})
+    },
+  };
+
   usersButtonOptions: DxButtonTypes.Properties = {
     text: 'Users',
     onClick: () => {

@@ -23,7 +23,7 @@
       <dxi-item location="before">
         <div *dxTemplate>
           <div class="toolbar-label">
-            <b>Coaches</b>
+            <b>Organizations</b>
           </div>
         </div>
       </dxi-item>
@@ -37,20 +37,17 @@
       [allowUpdating]="true"
       [allowDeleting]="true">
       <dxo-popup
-        title="Add/Edit Coach"
+        title="Add/Edit Organization"
         [showTitle]="true"
         [width]="800"
         [height]="800">
       </dxo-popup>
       <dxo-form [colCount]="1">
-        <dxi-item itemType="group" caption="Coach" [colCount]="2" [colSpan]="1">
-          <dxi-item dataField="firstName" [colSpan]="1"></dxi-item>
-          <dxi-item dataField="lastName" [colSpan]="1"></dxi-item>
-
-          <dxi-item dataField="title" [colSpan]="1"></dxi-item>
-          <dxi-item dataField="organization" [colSpan]="1"></dxi-item>
-          <dxi-item dataField="photoUrl" [colSpan]="2"></dxi-item>
+        <dxi-item itemType="group" caption="Organization" [colCount]="1" [colSpan]="1">
+          <dxi-item dataField="name" [colSpan]="1"></dxi-item>
+          <dxi-item dataField="contactName" [colSpan]="1"></dxi-item>
         </dxi-item>
+
         <dxi-item itemType="group" caption="Address" [colCount]="4" [colSpan]="1">
           <dxi-item dataField="address.address1" [colSpan]="4"></dxi-item>
           <dxi-item dataField="address.address2" [colSpan]="4"></dxi-item>
@@ -67,14 +64,8 @@
       </dxo-form>
     </dxo-editing>
 
-    <dxi-column dataField="firstName" [caption]="'First'"></dxi-column>
-    <dxi-column dataField="lastName" [caption]="'Last'"></dxi-column>
-    <dxi-column dataField="title" [caption]="'Title'"></dxi-column>
-    <dxi-column dataField="organization" [caption]="'Organization'">
-      <dxo-lookup [dataSource]="organizations" displayExpr="name" valueExpr="id"></dxo-lookup>
-    </dxi-column>
-    <dxi-column dataField="bio" [caption]="'Biography'"></dxi-column>
-    <dxi-column dataField="photoUrl" [caption]="'Photo URL'"></dxi-column>
+    <dxi-column dataField="name"></dxi-column>
+    <dxi-column dataField="contactName"></dxi-column>
 
     <dxi-column dataField="address.address1" [caption]="'Address 1'" [visible]="false"></dxi-column>
     <dxi-column dataField="address.address2" [caption]="'Address 2'" [visible]="false"></dxi-column>
@@ -83,8 +74,9 @@
     <dxi-column dataField="address.zip" [caption]="'Zip Code'" [visible]="false"></dxi-column>
     <dxi-column dataField="address.country" [caption]="'Country'" [visible]="false"></dxi-column>
 
-    <dxi-column dataField="phone.countryCode" [caption]="'Country Code'" [visible]="false"></dxi-column>
+    <dxi-column dataField="phone.countryCode" [caption]="'Country Code'"></dxi-column>
     <dxi-column dataField="phone.number" [caption]="'Number'" [editorOptions]="{ mask: '(000) 000-0000' }" cellTemplate="phoneNumberCellTemplate"></dxi-column>
+    <dxi-column dataField="phone.extension" [caption]="'Ext'"></dxi-column>
     <dxi-column dataField="phone.type" [caption]="'Type'">
       <dxo-lookup [dataSource]="phone_types"></dxo-lookup>
     </dxi-column>

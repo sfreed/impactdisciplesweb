@@ -1,4 +1,3 @@
-<h2 class="content-block">Events</h2>
 <div class="content-block">
   <dx-data-grid class="dx-card wide-card"
     #grid
@@ -8,19 +7,37 @@
     [focusedRowEnabled]="true"
     [columnAutoWidth]="true"
     [columnHidingEnabled]="true"
+    [rowAlternationEnabled]="true"
     (onRowUpdating)="onRowUpdating($event)">
 
     <dxo-paging [pageSize]="10"></dxo-paging>
     <dxo-pager [showPageSizeSelector]="true" [showInfo]="true"></dxo-pager>
-    <dxo-filter-row [visible]="true"></dxo-filter-row>
+    <dxo-filter-row [visible]="false"></dxo-filter-row>
+    <dxo-header-filter [visible]="false"></dxo-header-filter>
+    <dxo-search-panel
+      [visible]="true"
+      [width]="240"
+      placeholder="Search...">
+    </dxo-search-panel>
+    <dxo-toolbar>
+      <dxi-item location="before">
+        <div *dxTemplate>
+          <div class="toolbar-label">
+            <b>Events</b>
+          </div>
+        </div>
+      </dxi-item>
 
+      <dxi-item name="addRowButton"></dxi-item>
+      <dxi-item name="searchPanel"></dxi-item>
+    </dxo-toolbar>
     <dxo-editing
       mode="popup"
       [allowAdding]="true"
       [allowUpdating]="true"
       [allowDeleting]="true">
       <dxo-popup
-        title="App Users Info"
+        title="Add/Edit Event"
         [showTitle]="true"
         [width]="1000"
         [height]="850">
@@ -33,14 +50,18 @@
 
           <dxi-item dataField="eventName" [colSpan]="2"></dxi-item>
 
-          <dxi-item dataField="organization.name" [colSpan]="1"></dxi-item>
-          <dxi-item dataField="location.name" [colSpan]="1"></dxi-item>
+          <dxi-item dataField="organization" [colSpan]="1"></dxi-item>
+          <dxi-item dataField="location" [colSpan]="1"></dxi-item>
         </dxi-item>
-        <dxi-item itemType="group" caption="Sessions" [colCount]="6" [colSpan]="2">
-
-        </dxi-item>
-        <dxi-item itemType="group" caption="Attendees" [colCount]="5" [colSpan]="2">
-
+        <dxi-item itemType="tabbed" [colSpan]="1">
+          <dxo-tab-panel-options [deferRendering]="false"></dxo-tab-panel-options>
+          <dxi-tab title="Sessions">
+            <dxi-item dataField="traininSessions" [colSpan]="1">
+              <dxo-label [visible]="false" ></dxo-label>
+            </dxi-item>
+          </dxi-tab>
+          <dxi-tab title="Attendees">
+          </dxi-tab>
         </dxi-item>
       </dxo-form>
     </dxo-editing>
@@ -48,8 +69,28 @@
     <dxi-column dataField="startDate" [caption]="'From'" [dataType]="'datetime'"></dxi-column>
     <dxi-column dataField="endDate" [caption]="'To'" [dataType]="'datetime'"></dxi-column>
     <dxi-column dataField="eventName" [caption]="'Event Name'"></dxi-column>
-    <dxi-column dataField="organization.name" [caption]="'Organization'"></dxi-column>
-    <dxi-column dataField="location.name" [caption]="'Location'"></dxi-column>
+    <dxi-column dataField="organization" [caption]="'Organization'">
+      <dxo-lookup [dataSource]="organizations" displayExpr="name" valueExpr="id"></dxo-lookup>
+    </dxi-column>
+    <dxi-column dataField="location" [caption]="'Location'">
+      <dxo-lookup [dataSource]="locations" displayExpr="name" valueExpr="id"></dxo-lookup>
+    </dxi-column>
+    <dxi-column type="buttons" [width]="125" [fixed]="true" caption="Actions">
+      <dxi-button icon="edit" [onClick]="editEvent.bind(this)"></dxi-button>
+      <dxi-button icon="trash" name="delete"></dxi-button>
+    </dxi-column>
   </dx-data-grid>
 </div>
+
+<ng-container *ngIf="isEditVisible">
+  <dx-popup
+    [(visible)]="isEditVisible"
+    [deferRendering]="true"
+    [showCloseButton]="true"
+    [resizeEnabled]="false"
+    [toolbarItems]="[{ location: 'left', text: 'Add/Edit Event' }]">
+    <app-event-editor [event]="selectedEvent"></app-event-editor>
+  </dx-popup>
+</ng-container>
+
 

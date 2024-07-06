@@ -12,6 +12,8 @@ import { MainScreenComponent } from './core/main-screen/main-screen.component';
 import { EventManagerComponent } from './events/event-manager/event-manager.component';
 import { CoachManagerComponent } from './events/coach-manager/coach-manager.component';
 import { CourseManagerComponent } from './events/course-manager/course-manager.component';
+import { OrganizationManagerComponent } from './events/organization-manager/organization-manager.component';
+import { LocationManagerComponent } from './events/location-manager/location-manager.component';
 
 const routes: Routes = [
   {
@@ -32,6 +34,16 @@ const routes: Routes = [
       {
         path: 'courses',
         component: CourseManagerComponent,
+        canActivate: [ AuthGuardService ]
+      },
+      {
+        path: 'organizations',
+        component: OrganizationManagerComponent,
+        canActivate: [ AuthGuardService ]
+      },
+      {
+        path: 'locations',
+        component: LocationManagerComponent,
         canActivate: [ AuthGuardService ]
       },
       {

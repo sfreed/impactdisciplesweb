@@ -1,1 +1,11 @@
 @import 'ngx-toastr/toastr';
+
+.toolbar-label,
+.toolbar-label > b {
+  padding-left: 10px;
+  font-size: 16px;
+}
+
+.toolbar {
+  padding-top: 10px;
+}

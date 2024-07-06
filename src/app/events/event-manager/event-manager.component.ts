@@ -1,20 +1,30 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { DxDataGridComponent } from 'devextreme-angular';
 import CustomStore from 'devextreme/data/custom_store';
 import { EventModel } from 'impactdisciplescommon/src/models/domain/event.model';
 import { EventService } from 'impactdisciplescommon/src/services/event.service';
+import { OrganizationService } from 'impactdisciplescommon/src/services/organization.service';
+import { LocationService } from 'impactdisciplescommon/src/services/location.service';
+import { OrganizationModel } from 'impactdisciplescommon/src/models/domain/organization.model';
+import { LocationModel } from 'impactdisciplescommon/src/models/domain/location.model';
 
 @Component({
   selector: 'app-event-manager',
   templateUrl: './event-manager.component.html',
   styleUrls: ['./event-manager.component.css']
 })
-export class EventManagerComponent {
+export class EventManagerComponent implements OnInit {
   @ViewChild('grid', { static: false }) grid: DxDataGridComponent;
 
   dataSource: any;
 
-  constructor(public eventService: EventService){
+  organizations: OrganizationModel[];
+
+  locations: LocationModel[];
+
+  selectedEvent: EventModel;
+
+  constructor(public eventService: EventService, private organizationService: OrganizationService, private locationService: LocationService){
     this.dataSource = new CustomStore({
       key: 'id',
       loadMode: 'raw',
@@ -33,7 +43,20 @@ export class EventManagerComponent {
     });
   }
 
+  async ngOnInit(): Promise<void> {
+    this.organizations = await this.organizationService.getAll();
+
+    this.locations = await this.locationService.getAll();
+  }
+
   onRowUpdating(options) {
     options.newData = Object.assign(options.oldData, options.newData);
+  }
+
+  isEditVisible: boolean = false;
+
+  editEvent(e){
+    this.selectedEvent = e.row.data;
+    this.isEditVisible = true;
   }
 }
