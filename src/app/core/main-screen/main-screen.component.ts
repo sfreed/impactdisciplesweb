@@ -1,8 +1,5 @@
 import { Component } from '@angular/core';
-import { Route, Router } from '@angular/router';
 import { DxButtonTypes } from 'devextreme-angular/ui/button';
-import { FireAuthDao } from 'impactdisciplescommon/src/dao/fireauth.dao';
-import { RouteItem } from 'impactdisciplescommon/src/models/utils/route-item';
 import { AuthService } from 'impactdisciplescommon/src/services/utils/auth.service';
 import { TopNavService } from 'impactdisciplescommon/src/services/utils/top-nav.service';
 
@@ -12,8 +9,12 @@ import { TopNavService } from 'impactdisciplescommon/src/services/utils/top-nav.
   styleUrls: ['./main-screen.component.css']
 })
 export class MainScreenComponent {
-
-  tabsWithIcon: RouteItem[];
+  registrationButtonOptions: DxButtonTypes.Properties = {
+    text: 'Registration',
+    onClick: () => {
+      this.topNavService.navigate({ id: 0, name:'Registrations', route:'registration', icon: 'home', level: 0})
+    },
+  };
 
   eventButtonOptions: DxButtonTypes.Properties = {
     text: 'Events',
@@ -71,12 +72,7 @@ export class MainScreenComponent {
     },
   };
 
-  constructor(public topNavService: TopNavService, private authService: AuthService){
-    this.tabsWithIcon = [
-      { id: 0, name:'Events', route:'home', icon: 'home', level: 0},
-      { id: 1, name:'Administration', route:'schedule', icon: 'toolbox', level: 0}
-    ];
-  }
+  constructor(public topNavService: TopNavService, private authService: AuthService){}
 
   tabClicked(e :any){
     this.topNavService.navigate(e.itemData)
