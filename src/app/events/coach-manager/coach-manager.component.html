@@ -1,17 +1,22 @@
+<dx-load-panel [position]="dsService.loadPanelPosition" [visible]="dsService.isLoading">
+</dx-load-panel>
 <div class="content-block">
   <dx-data-grid class="dx-card wide-card"
     #grid
-    [dataSource]="dataSource"
+    [dataSource]="dataSource | async"
     [width]="'100%'"
     [showBorders]="false"
     [focusedRowEnabled]="true"
     [columnAutoWidth]="true"
     [columnHidingEnabled]="true"
     [rowAlternationEnabled]="true"
-    (onRowUpdating)="onRowUpdating($event)">
+    (onRowUpdating)="onRowUpdating($event)"
+    (onSaved)="dsService.onRowSaved($event, coachService)"
+    (onRowInserted)="dsService.onRowAdded($event, coachService)"
+    (onRowRemoved)="dsService.onRowRemoved($event, coachService)">
 
-    <dxo-paging [pageSize]="10"></dxo-paging>
-    <dxo-pager [showPageSizeSelector]="true" [showInfo]="true"></dxo-pager>
+    <dxo-paging [pageSize]="5"></dxo-paging>
+    <dxo-pager [showPageSizeSelector]="false" [showInfo]="true" [allowedPageSizes]="[5]"></dxo-pager>
     <dxo-filter-row [visible]="false"></dxo-filter-row>
     <dxo-header-filter [visible]="false"></dxo-header-filter>
     <dxo-search-panel
@@ -35,7 +40,8 @@
       mode="popup"
       [allowAdding]="true"
       [allowUpdating]="true"
-      [allowDeleting]="true">
+      [allowDeleting]="true"
+      [useIcons]="true">
       <dxo-popup
         title="Add/Edit Coach"
         [showTitle]="true"
@@ -75,26 +81,25 @@
 
       </dxo-form>
     </dxo-editing>
-
+    <dxi-column dataField="photoUrl" [width]="100" [caption]="'Picture'"[allowFiltering]="false" [allowSorting]="false" cellTemplate="cellTemplate"></dxi-column>
     <dxi-column dataField="firstName" [caption]="'First'"></dxi-column>
     <dxi-column dataField="lastName" [caption]="'Last'"></dxi-column>
     <dxi-column dataField="title" [caption]="'Title'"></dxi-column>
     <dxi-column dataField="organization" [caption]="'Organization'">
       <dxo-lookup [dataSource]="organizations" displayExpr="name" valueExpr="id" [allowClearing]="true"></dxo-lookup>
     </dxi-column>
-    <dxi-column dataField="bio" [caption]="'Biography'"></dxi-column>
-    <dxi-column dataField="photoUrl" [caption]="'Photo URL'"></dxi-column>
+    <dxi-column dataField="bio" [caption]="'Biography'" [visible]="false"></dxi-column>
 
     <dxi-column dataField="address.address1" [caption]="'Address 1'" [visible]="false"></dxi-column>
     <dxi-column dataField="address.address2" [caption]="'Address 2'" [visible]="false"></dxi-column>
-    <dxi-column dataField="address.city" [caption]="'City'"></dxi-column>
-    <dxi-column dataField="address.state" [caption]="'State'"></dxi-column>
+    <dxi-column dataField="address.city" [caption]="'City'" [visible]="false"></dxi-column>
+    <dxi-column dataField="address.state" [caption]="'State'" [visible]="false"></dxi-column>
     <dxi-column dataField="address.zip" [caption]="'Zip Code'" [visible]="false"></dxi-column>
     <dxi-column dataField="address.country" [caption]="'Country'" [visible]="false"></dxi-column>
 
     <dxi-column dataField="phone.countryCode" [caption]="'Country Code'" [visible]="false"></dxi-column>
-    <dxi-column dataField="phone.number" [caption]="'Number'" [editorOptions]="{ mask: '(000) 000-0000' }" cellTemplate="phoneNumberCellTemplate"></dxi-column>
-    <dxi-column dataField="phone.type" [caption]="'Type'">
+    <dxi-column dataField="phone.number" [caption]="'Number'" [editorOptions]="{ mask: '(000) 000-0000' }" cellTemplate="phoneNumberCellTemplate" [visible]="false"></dxi-column>
+    <dxi-column dataField="phone.type" [caption]="'Type'" [visible]="false">
       <dxo-lookup [dataSource]="phone_types" [allowClearing]="true"></dxo-lookup>
     </dxi-column>
 
@@ -102,6 +107,13 @@
       <div class="">
         {{ cell.data.phone | phoneNumberMask : false }}
       </div>
+    </div>
+    <div *dxTemplate="let data of 'cellTemplate'">
+      <img
+        width="100"
+        [src]="data.value"
+        alt="Picture of {{ data.data.firstName }} {{ data.data.lastName }}"
+      />
     </div>
   </dx-data-grid>
 </div>

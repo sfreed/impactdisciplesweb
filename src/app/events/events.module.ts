@@ -4,7 +4,7 @@ import { EventManagerComponent } from './event-manager/event-manager.component';
 import { CourseManagerComponent } from './course-manager/course-manager.component';
 import { CoachManagerComponent } from './coach-manager/coach-manager.component';
 import { LocationManagerComponent } from './location-manager/location-manager.component';
-import { DxButtonModule, DxDataGridModule, DxDraggableModule, DxFormModule, DxListModule, DxPopupModule, DxSchedulerModule, DxScrollViewModule, DxTabsModule, DxTextAreaModule } from 'devextreme-angular';
+import { DxButtonModule, DxDataGridModule, DxDraggableModule, DxFormModule, DxListModule, DxLoadPanelModule, DxPopupModule, DxSchedulerModule, DxScrollViewModule, DxTabsModule, DxTextAreaModule } from 'devextreme-angular';
 import { OrganizationManagerComponent } from './organization-manager/organization-manager.component';
 import { ImpactDisciplesModule } from "../../../impactdisciplescommon/src/impactdisciples.common.module";
 import { EventSessionComponent } from './event-manager/event-sessions/event-sessions.component';
@@ -28,6 +28,7 @@ import { EventRegistrationComponent } from './event-registration/event-registrat
         DxDataGridModule,
         DxDraggableModule,
         DxFormModule,
+        DxLoadPanelModule,
         DxListModule,
         DxPopupModule,
         DxSchedulerModule,
