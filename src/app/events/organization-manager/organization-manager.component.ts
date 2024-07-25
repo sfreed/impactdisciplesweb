@@ -20,21 +20,21 @@ export class OrganizationManagerComponent implements OnInit {
 
   phone_types: PHONE_TYPES[];
 
-  constructor(public coachService: OrganizationService){
+  constructor(public organizationService: OrganizationService){
     this.dataSource = new CustomStore({
       key: 'id',
       loadMode: 'raw',
       load: function (loadOptions: any) {
-        return coachService.getAll();
+        return organizationService.getAll();
       },
       insert: function (value: OrganizationModel) {
-        return coachService.add(value);
+        return organizationService.add(value);
       },
       update: function (key: any, value: OrganizationModel) {
-        return coachService.update(key, value)
+        return organizationService.update(key, value)
       },
       remove: function (id: any) {
-        return coachService.delete(id);
+        return organizationService.delete(id);
       },
     });
   }

@@ -48,7 +48,7 @@ export class CoachManagerComponent implements OnInit{
   }
 
   onRowUpdating(options) {
-    options.newData = Object.assign(options.oldData, options.newData);
+    options.newData = Object.assign({}, options.oldData, options.newData);
     options.newData.address = Object.assign({}, options.oldData.address, options.newData.address);
     options.newData.phone = Object.assign({}, options.oldData.phone, options.newData.phone);
 

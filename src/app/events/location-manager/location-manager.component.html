@@ -47,6 +47,7 @@
         <dxi-item itemType="group" caption="Location" [colCount]="2" [colSpan]="1">
           <dxi-item dataField="name" [colSpan]="1"></dxi-item>
           <dxi-item dataField="contactName" [colSpan]="1"></dxi-item>
+          <dxi-item dataField="organization" [colSpan]="1"></dxi-item>
         </dxi-item>
         <dxi-item itemType="group" caption="Address" [colCount]="4" [colSpan]="1">
           <dxi-item dataField="address.address1" [colSpan]="4"></dxi-item>
@@ -66,6 +67,9 @@
 
     <dxi-column dataField="name"></dxi-column>
     <dxi-column dataField="contactName"></dxi-column>
+    <dxi-column dataField="organization">
+      <dxo-lookup [dataSource]="organizations" displayExpr="name" valueExpr="id"></dxo-lookup>
+    </dxi-column>
 
     <dxi-column dataField="address.address1" [caption]="'Address 1'" [visible]="false"></dxi-column>
     <dxi-column dataField="address.address2" [caption]="'Address 2'" [visible]="false"></dxi-column>

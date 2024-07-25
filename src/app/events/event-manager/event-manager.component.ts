@@ -50,7 +50,7 @@ export class EventManagerComponent implements OnInit {
   }
 
   onRowUpdating(options) {
-    options.newData = Object.assign(options.oldData, options.newData);
+    options.newData = Object.assign({}, options.oldData, options.newData);
   }
 
   isEditVisible: boolean = false;

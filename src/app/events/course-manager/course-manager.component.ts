@@ -34,6 +34,6 @@ export class CourseManagerComponent {
   }
 
   onRowUpdating(options) {
-    options.newData = Object.assign(options.oldData, options.newData);
+    options.newData = Object.assign({}, options.oldData, options.newData);
   }
 }
