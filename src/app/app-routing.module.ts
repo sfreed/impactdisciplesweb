@@ -15,6 +15,7 @@ import { CourseManagerComponent } from './events/course-manager/course-manager.c
 import { OrganizationManagerComponent } from './events/organization-manager/organization-manager.component';
 import { LocationManagerComponent } from './events/location-manager/location-manager.component';
 import { EventRegistrationComponent } from './events/event-registration/event-registration.component';
+import { NotificationsComponent } from './admin/notifications/notifications.component';
 
 const routes: Routes = [
   {
@@ -55,6 +56,11 @@ const routes: Routes = [
       {
         path: 'users',
         component: UsersComponent,
+        canActivate: [ AuthGuardService ]
+      },
+      {
+        path: 'notifications',
+        component: NotificationsComponent,
         canActivate: [ AuthGuardService ]
       },
       {

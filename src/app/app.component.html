@@ -1,7 +1,2 @@
-<ng-container *ngIf="isAuthenticated(); else unauthenticated">
-    <router-outlet></router-outlet>
-</ng-container>
+<router-outlet></router-outlet>
 
-<ng-template #unauthenticated>
-  <app-unauthenticated-content></app-unauthenticated-content>
-</ng-template>

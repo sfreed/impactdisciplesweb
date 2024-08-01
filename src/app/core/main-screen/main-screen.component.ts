@@ -58,6 +58,13 @@ export class MainScreenComponent {
     },
   };
 
+  notificationsButtonOptions: DxButtonTypes.Properties = {
+    text: 'Notifications',
+    onClick: () => {
+      this.topNavService.navigate({ id: 0, name:'Notifications', route:'notifications', icon: 'toolbox', level: 0})
+    },
+  };
+
   logsButtonOptions: DxButtonTypes.Properties = {
     text: 'Logs',
     onClick: () => {

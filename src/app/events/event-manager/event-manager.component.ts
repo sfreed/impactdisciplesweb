@@ -31,15 +31,15 @@ export class EventManagerComponent implements OnInit {
       load: function (loadOptions: any) {
         return eventService.getAll();
       },
-      insert: function (value: EventModel) {
-        return eventService.add(value);
-      },
-      update: function (key: any, value: EventModel) {
-        return eventService.update(key, value)
-      },
-      remove: function (id: any) {
-        return eventService.delete(id);
-      },
+      // insert: function (value: EventModel) {
+      //   return eventService.add(value);
+      // },
+      // update: function (key: any, value: EventModel) {
+      //   return eventService.update(key, value)
+      // },
+      // remove: function (id: any) {
+      //   return eventService.delete(id);
+      // },
     });
   }
 

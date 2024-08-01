@@ -2,17 +2,22 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LogMessagesComponent } from './log-messages/log-messages.component';
 import { UsersComponent } from './users/users.component';
-import { DxDataGridModule } from 'devextreme-angular';
+import { DxButtonModule, DxDataGridModule, DxFormModule, DxPopupModule } from 'devextreme-angular';
+import { NotificationsComponent } from './notifications/notifications.component';
 
 
 @NgModule({
   imports: [
     CommonModule,
-    DxDataGridModule
+    DxDataGridModule,
+    DxButtonModule,
+    DxFormModule,
+    DxPopupModule
   ],
   declarations: [
     LogMessagesComponent,
-    UsersComponent
+    UsersComponent,
+    NotificationsComponent
   ]
 })
 export class AdminModule { }

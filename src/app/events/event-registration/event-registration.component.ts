@@ -26,9 +26,16 @@ export class EventRegistrationComponent implements OnInit{
 
   }
 
-  async ngOnInit(): Promise<void> {
-    this.eventsList = await this.eventService.getAll();
-    this.eventRegistration.registrant = await this.authService.getUser()
-    console.log(this.eventRegistration.registrant);
+  ngOnInit() {
+    this.eventService.getAll().subscribe(events => {
+      this.eventsList = events;
+    });
+
+    this.authService.getUser().subscribe(user => {
+      this.eventRegistration.registrant = user;
+      console.log(this.eventRegistration.registrant);
+    });
+
+
   }
 }
