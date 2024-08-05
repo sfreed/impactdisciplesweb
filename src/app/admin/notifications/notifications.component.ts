@@ -20,13 +20,22 @@ export class NotificationsComponent {
 
   isSendScreenVisible: boolean = false;
 
-  message: string = '';
+  title: string = '';
+  body: string = '';
 
   addSessionButtonOptions: DxButtonTypes.Properties = {
     text: 'Send',
     onClick: () => {
       setTimeout(() => this.sendMessage(), 5000);
 
+    },
+  };
+
+  cancelSessionButtonOptions: DxButtonTypes.Properties = {
+    text: 'Cancel',
+    onClick: () => {
+      this.isSendScreenVisible = false;
+      this.clearForm()
     },
   };
 
@@ -60,17 +69,16 @@ export class NotificationsComponent {
   }
 
   sendMessage(){
-    console.log('sending ' + this.message);
-    console.log()
-
-    this.addMessageFunction({ text: this.message, token: this.selectedRegistration.fcmId }).then((result: any) => {
-      const data = result;
-
-      console.log(data);
-
+    this.addMessageFunction({ title: this.title, body: this.body, token: this.selectedRegistration.fcmId }).then((result: any) => {
       this.isSendScreenVisible = false;
-      this.message = '';
+      this.body = '';
+      this.title = '';
     });
+  }
+
+  clearForm(){
+    this.body = '';
+    this.title = '';
   }
 
   selectedRegistration: NotificationRegistrationModel;

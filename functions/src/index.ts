@@ -8,13 +8,12 @@ admin.initializeApp({
 });
 
 export const sendNotification = onCall((request) => {
-  logger.info("sendNotification!", {structuredData: true});
-
   const message = {
     token: request.data.token,
     notification: {
-      title: "Test From Server",
-      body: request.data.text,
+      title: request.data.title,
+      body: request.data.body,
+      imageUrl: "https://firebasestorage.googleapis.com/v0/b/impactdisciples-a82a8.appspot.com/o/Icons%2Ficon-72x72.png",
     },
   };
 
@@ -25,7 +24,7 @@ export const sendNotification = onCall((request) => {
       logger.info("Successfully response", response);
     })
     .catch((error) => {
-      logger.info("Error sending message:", error);
+      logger.error("Error sending message:", error);
     });
 });
 

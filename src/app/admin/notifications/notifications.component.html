@@ -32,16 +32,26 @@
     [deferRendering]="true"
     [showCloseButton]="true"
     [resizeEnabled]="false"
-    [toolbarItems]="[{ location: 'left', text: 'Send Notification' }]">
-    <dx-form id="form" [formData]="this" [colCount]="1">
-      <dxi-item dataField="message" [colSpan]="1" [editorType]="'dxTextArea'" [editorOptions]="{ height: 200 }">
+    [toolbarItems]="[{ location: 'left', text: 'Send Notification' }]"
+    (onHiding)="clearForm()">
+    <dx-form id="form" [formData]="this" [colCount]="2">
+      <dxi-item dataField="title" [colSpan]="2" [editorType]="'dxTextBox'">
+        <dxo-label [visible]="false" ></dxo-label>
+      </dxi-item>
+      <dxi-item dataField="body" [colSpan]="2" [editorType]="'dxTextArea'" [editorOptions]="{ height: 200 }">
         <dxo-label [visible]="false" ></dxo-label>
       </dxi-item>
       <dxi-item
         itemType="button"
-        [colSpan]="10"
+        [colSpan]="1"
         alignItemLabels="right"
         [buttonOptions]="addSessionButtonOptions">
+      </dxi-item>
+      <dxi-item
+        itemType="button"
+        [colSpan]="1"
+        alignItemLabels="right"
+        [buttonOptions]="cancelSessionButtonOptions">
       </dxi-item>
     </dx-form>
   </dx-popup>
