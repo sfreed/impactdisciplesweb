@@ -1,14 +1,17 @@
 <div class="content-block">
   <dx-data-grid class="dx-card wide-card"
     #grid
-    [dataSource]="dataSource"
+    [dataSource]="dataSource | async"
     [width]="'100%'"
     [showBorders]="false"
     [focusedRowEnabled]="true"
     [columnAutoWidth]="true"
     [columnHidingEnabled]="true"
     [rowAlternationEnabled]="true"
-    (onRowUpdating)="onRowUpdating($event)">
+    (onRowUpdating)="onRowUpdating($event)"
+    (onSaved)="dsService.onRowSaved($event, eventService)"
+    (onRowInserted)="dsService.onRowAdded($event, eventService)"
+    (onRowRemoved)="dsService.onRowRemoved($event, eventService)">
 
     <dxo-paging [pageSize]="10"></dxo-paging>
     <dxo-pager [showPageSizeSelector]="true" [showInfo]="true"></dxo-pager>
@@ -38,25 +41,29 @@
       [allowDeleting]="true">
       <dxo-popup
         title="Add/Edit Event"
-        [showTitle]="true"
-        [width]="600"
-        [height]="400">
+        [showTitle]="false"
+        [width]="650"
+        [height]="450">
       </dxo-popup>
       <dxo-form [colCount]="1">
-        <dxi-item itemType="group" caption="Event" [colCount]="2" [colSpan]="1">
-          <dxi-item dataField="startDate" [colSpan]="1"></dxi-item>
-          <dxi-item dataField="endDate" [colSpan]="1"></dxi-item>
+        <dxi-item itemType="group" caption="Event" [colCount]="6" [colSpan]="1">
+          <dxi-item dataField="startDate" [colSpan]="2"></dxi-item>
+          <dxi-item dataField="endDate" [colSpan]="2"></dxi-item>
+          <dxi-item dataField="costInDollars" [colSpan]="2" dataType="number" format="currency"></dxi-item>
 
-          <dxi-item dataField="eventName" [colSpan]="2"></dxi-item>
+          <dxi-item dataField="eventName" [colSpan]="6"></dxi-item>
 
-          <dxi-item dataField="organization" [colSpan]="1"></dxi-item>
-          <dxi-item dataField="location" [colSpan]="1"></dxi-item>
+          <dxi-item dataField="organization" [colSpan]="3"></dxi-item>
+          <dxi-item dataField="location" [colSpan]="3"></dxi-item>
+
+          <dxi-item dataField="description" [colSpan]="6" [editorType]="'dxTextArea'" [editorOptions]="{ height: 100 }"></dxi-item>
         </dxi-item>
       </dxo-form>
     </dxo-editing>
 
     <dxi-column dataField="startDate" [caption]="'From'" [dataType]="'datetime'"></dxi-column>
     <dxi-column dataField="endDate" [caption]="'To'" [dataType]="'datetime'"></dxi-column>
+    <dxi-column dataField="costInDollars" [caption]="'Cost'"></dxi-column>
     <dxi-column dataField="eventName" [caption]="'Event Name'"></dxi-column>
     <dxi-column dataField="organization" [caption]="'Organization'">
       <dxo-lookup [dataSource]="organizations" displayExpr="name" valueExpr="id"></dxo-lookup>
@@ -64,9 +71,9 @@
     <dxi-column dataField="location" [caption]="'Location'">
       <dxo-lookup [dataSource]="locations" displayExpr="name" valueExpr="id"></dxo-lookup>
     </dxi-column>
+    <dxi-column dataField="description" [visible]="false"></dxi-column>
     <dxi-column type="buttons" [width]="150" [fixed]="true" caption="Actions">
       <dxi-button icon="edit" hint="Edit Event Details" name="edit"></dxi-button>
-      <dxi-button icon="orderedlist" hint="Edit Training Sessions" [onClick]="editSessions.bind(this)"></dxi-button>
       <dxi-button icon="event" hint="Edit Event Agenda" [onClick]="editAgenda.bind(this)"></dxi-button>
       <dxi-button icon="group" hint="View Event Atendees List" [onClick]="viewAttendees.bind(this)"></dxi-button>
       <dxi-button icon="trash" name="delete"></dxi-button>
@@ -81,7 +88,6 @@
     [showCloseButton]="true"
     [resizeEnabled]="false"
     [toolbarItems]="[{ location: 'left', text: 'Add/Edit Event' }]">
-    <app-event-sessions [event]="selectedEvent"></app-event-sessions>
   </dx-popup>
 </ng-container>
 
@@ -96,17 +102,6 @@
   </dx-popup>
 </ng-container>
 
-<ng-container *ngIf="isSessionsVisible">
-  <dx-popup
-    [(visible)]="isSessionsVisible"
-    [deferRendering]="true"
-    [showCloseButton]="true"
-    [resizeEnabled]="false"
-    [toolbarItems]="[{ location: 'left', text: 'Add/Edit Agenda' }]">
-    <app-event-sessions [event]="selectedEvent"></app-event-sessions>
-  </dx-popup>
-</ng-container>
-
 <ng-container *ngIf="isAttendeesListVisible">
   <dx-popup
     [(visible)]="isAttendeesListVisible"
@@ -114,7 +109,6 @@
     [showCloseButton]="true"
     [resizeEnabled]="false"
     [toolbarItems]="[{ location: 'left', text: 'Add/Edit Attendee List' }]">
-    <app-event-sessions [event]="selectedEvent"></app-event-sessions>
   </dx-popup>
 </ng-container>
 

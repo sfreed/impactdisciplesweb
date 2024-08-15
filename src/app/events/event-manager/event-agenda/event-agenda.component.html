@@ -1,26 +1,5 @@
 <div class="container">
   <div class="row">
-    <div class="col-2">
-      <div style="font-size: larger; font-weight: 400;">Training Sessions</div>
-      <dx-scroll-view id="scroll">
-        <dx-draggable
-          id="list"
-          data="dropArea"
-          [group]="draggingGroupName"
-          (onDragStart)="onListDragStart($event)">
-          <dx-draggable
-            class="item dx-card"
-            [clone]="true"
-            [group]="draggingGroupName"
-            [data]="session"
-            (onDragStart)="onItemDragStart($event)"
-            (onDragEnd)="onItemDragEnd($event)"
-            *ngFor="let session of availableTrainingSessions">
-            {{ session.name }}
-          </dx-draggable>
-        </dx-draggable>
-      </dx-scroll-view>
-    </div>
     <div class="col-10">
       <dx-scheduler
         timeZone="America/Los_Angeles"
@@ -30,15 +9,40 @@
         [startDayHour]="9"
         [height]="600"
         [editing]="true"
-        (onAppointmentDeleted)="removeAgendaItem($event)"
+        appointmentTemplate="appointment-template"
+        (onAppointmentFormOpening)="onAppointmentFormOpening($event)"
         [textExpr]="'name'">
+        <dxi-resource
+          fieldExpr="course"
+          [useColorAsDefault]="true"
+          [dataSource]="courses">
+        </dxi-resource>
+        <dxi-resource
+          fieldExpr="coach"
+          [useColorAsDefault]="true"
+          [dataSource]="coaches">
+        </dxi-resource>
         <dxi-view type="day" [intervalCount]="3"> </dxi-view>
-
-        <dxo-appointment-dragging
-          [group]="draggingGroupName"
-          [onRemove]="onAppointmentRemove"
-          [onAdd]="onAppointmentAdd">
-        </dxo-appointment-dragging>
+        <div *dxTemplate="let model of 'appointment-template'">
+          <div class="showtime-preview" *ngIf="model.targetedAppointmentData.isCourse">
+            <div>Course: <strong>{{getCourseById(model.appointmentData.course)?.title}}</strong></div>
+            <div>Coach:  <strong>{{getCoachById(model.targetedAppointmentData.coach)?.fullname }}</strong></div>
+            <div>{{getCourseById(model.appointmentData.course)?.shortDescription}}</div>
+          </div>
+          <div class="showtime-preview" *ngIf="!model.targetedAppointmentData.isCourse">
+            <div><strong>{{model.appointmentData.text}}</strong></div>
+            <div><strong>{{model.targetedAppointmentData.description }}</strong></div>
+          </div>
+          <div>
+            <div class="dropdown-appointment-dates">
+              {{
+                (model.targetedAppointmentData?.displayStartDate | date : "shortTime") +
+                  " - " +
+                  (model.targetedAppointmentData?.displayEndDate | date : "shortTime")
+              }}
+            </div>
+          </div>
+        </div>
       </dx-scheduler>
     </div>
   </div>

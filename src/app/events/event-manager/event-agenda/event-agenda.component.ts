@@ -1,12 +1,14 @@
 import { EventService } from 'impactdisciplescommon/src/services/event.service';
 import { dateFromTimestamp } from './../../../../../impactdisciplescommon/src/utils/date-from-timestamp';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { DxDraggableTypes } from 'devextreme-angular/ui/draggable';
+import Query from 'devextreme/data/query';
 import { DxSchedulerTypes } from 'devextreme-angular/ui/scheduler';
 import { EventModel } from 'impactdisciplescommon/src/models/domain/event.model';
-import { TrainingSessionModel } from 'impactdisciplescommon/src/models/domain/training-session.model';
-import { TrainingSessionService } from 'impactdisciplescommon/src/services/training-session.service';
 import { ToastrService } from 'ngx-toastr';
+import { CourseModel } from 'impactdisciplescommon/src/models/domain/course.model';
+import { CourseService } from 'impactdisciplescommon/src/services/course.service';
+import { CoachService } from 'impactdisciplescommon/src/services/coach.service';
+import { CoachModel } from 'impactdisciplescommon/src/models/domain/coach.model';
 
 @Component({
   selector: 'app-event-agenda',
@@ -21,9 +23,12 @@ export class EventAgendaComponent implements OnInit{
 
   currentDate: Date;
 
-  availableTrainingSessions: TrainingSessionModel[] = [];
+  courses: CourseModel[] = [];
+  coursesList: CourseModel[] = [];
+  coaches: CoachModel[] = [];
 
-  constructor(private eventService: EventService, private traininSessionService: TrainingSessionService, private toastrService: ToastrService){}
+  constructor(private eventService: EventService, private courseService: CourseService, private coachService: CoachService,
+    private toastrService: ToastrService){}
 
   async ngOnInit(): Promise<void> {
     if(!this.event.agendaItems){
@@ -31,25 +36,19 @@ export class EventAgendaComponent implements OnInit{
     }
     this.currentDate = dateFromTimestamp(this.event.startDate);
 
-    this.availableTrainingSessions = await this.traininSessionService.getAllByValue('eventId', this.event.id).then(sessions =>{
-      let retval:TrainingSessionModel[] = [];
+    this.courses = await this.courseService.getAll();
 
-      sessions.forEach(session => {
-        if(!this.event.agendaItems.find(agenda => agenda.id == session.id)){
-          retval.push(session);
-        }
-      })
-
-
-      return retval;
-    });
+    this.coaches = await this.coachService.getAll();
   }
 
+  getCoachById = (id: string) => Query(this.coaches).filter(['id', '=', id]).toArray()[0];
+  getCourseById = (id: string) => Query(this.courses).filter(['id', '=', id]).toArray()[0];
+
   onAppointmentAdd = (e: DxSchedulerTypes.AppointmentDraggingAddEvent) => {
-    const index = this.availableTrainingSessions.indexOf(e.fromData);
+    const index = this.courses.indexOf(e.fromData);
 
     if (index >= 0) {
-      this.availableTrainingSessions.splice(index, 1);
+      this.courses.splice(index, 1);
       this.event.agendaItems.push(e.itemData);
     }
   };
@@ -59,28 +58,131 @@ export class EventAgendaComponent implements OnInit{
 
     if (index >= 0) {
       this.event.agendaItems.splice(index, 1);
-      this.availableTrainingSessions.push(e.itemData);
+      this.courses.push(e.itemData);
     }
   };
 
-  onListDragStart(e: DxDraggableTypes.DragStartEvent) {
-    e.cancel = true;
-  }
-
-  onItemDragStart(e: DxDraggableTypes.DragStartEvent) {
-    e.itemData = e.fromData;
-  }
-
-  onItemDragEnd(e: DxDraggableTypes.DragEndEvent) {
-    if (e.toData) {
-      e.cancel = true;
+  onAppointmentFormOpening = (data: DxSchedulerTypes.AppointmentFormOpeningEvent) => {
+    if(data.appointmentData['isCourse']){
+      this.setCourseForm(data);
+    } else {
+      this.setAgendaForm(data);
     }
   }
 
-  removeAgendaItem(e){
-    if(e.appointmentData.id){
-      this.availableTrainingSessions.push(e.appointmentData);
-    }
+  setCourseForm(data: DxSchedulerTypes.AppointmentFormOpeningEvent){
+    const that = this;
+    const form = data.form;
+    form.option().items = [{
+      label: {
+        text: 'Create Course?',
+      },
+      colSpan: 2,
+      editorType: 'dxSwitch',
+      dataField: 'isCourse',
+      editorOptions: {
+        onValueChanged({ value }) {
+          if(value){
+            that.setCourseForm(data)
+          } else {
+            that.setAgendaForm(data);
+          }
+        }
+      }
+    },{
+      label: {
+        text: 'Course',
+      },
+      editorType: 'dxSelectBox',
+      dataField: 'course',
+      editorOptions: {
+        items: that.courses,
+        displayExpr: 'title',
+        valueExpr: 'id',
+        value: data.appointmentData['course']? data.appointmentData['course']['id'] : '',
+      },
+    }, {
+      label: {
+        text: 'Coach',
+      },
+      editorType: 'dxSelectBox',
+      dataField: 'coach',
+      editorOptions: {
+        items: that.coaches,
+        displayExpr: 'fullname',
+        valueExpr: 'id',
+        value: data.appointmentData['coach']?data.appointmentData['coach']['id'] : '',
+      },
+    }, {
+      dataField: 'startDate',
+      editorType: 'dxDateBox',
+      editorOptions: {
+        width: '100%',
+        type: 'datetime'
+      },
+    }, {
+      name: 'endDate',
+      dataField: 'endDate',
+      editorType: 'dxDateBox',
+      editorOptions: {
+        width: '100%',
+        type: 'datetime',
+      },
+    }];
+    form.repaint();
+  }
+
+  setAgendaForm(data: DxSchedulerTypes.AppointmentFormOpeningEvent){
+    const that = this;
+    const form = data.form;
+
+    form.option().items = [{
+      label: {
+        text: 'Create Course?',
+      },
+      colSpan: 2,
+      editorType: 'dxSwitch',
+      dataField: 'isCourse',
+      editorOptions: {
+        onValueChanged({ value }) {
+          if(value){
+            that.setCourseForm(data)
+          } else {
+            that.setAgendaForm(data);
+          }
+        }
+      }
+    },{
+      label: {
+        text: 'Title',
+      },
+      colSpan:2,
+      editorType: 'dxTextBox',
+      dataField: 'text',
+    }, {
+      label: {
+        text: 'Description',
+      },
+      colSpan:2,
+      editorType: 'dxTextArea',
+      dataField: 'description',
+    }, {
+      dataField: 'startDate',
+      editorType: 'dxDateBox',
+      editorOptions: {
+        width: '100%',
+        type: 'datetime'
+      },
+    }, {
+      name: 'endDate',
+      dataField: 'endDate',
+      editorType: 'dxDateBox',
+      editorOptions: {
+        width: '100%',
+        type: 'datetime',
+      },
+    }];
+    form.repaint();
   }
 
   saveAgenda(){

@@ -79,6 +79,13 @@ export class MainScreenComponent {
     },
   };
 
+  checkouteButtonOptions: DxButtonTypes.Properties = {
+    text: 'Checkout',
+    onClick: () => {
+      this.topNavService.navigate({ id: 0, name:'Checkout', route:'checkout', icon: 'toolbox', level: 0})
+    },
+  };
+
   constructor(public topNavService: TopNavService, private authService: AuthService){}
 
   tabClicked(e :any){
