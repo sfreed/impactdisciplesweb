@@ -186,7 +186,7 @@ export class EventAgendaComponent implements OnInit{
   }
 
   saveAgenda(){
-    this.eventService.update(this.event.id, this.event).subscribe(event => {
+    this.eventService.update(this.event.id, this.event).then(event => {
       this.toastrService.success('Event Saved!');
       this.onCloseWindow.emit(false);
     })

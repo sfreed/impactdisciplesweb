@@ -1,5 +1,4 @@
-<dx-load-panel [position]="dsService.loadPanelPosition" [visible]="dsService.isLoading">
-</dx-load-panel>
+
 <div class="content-block">
   <dx-data-grid class="dx-card wide-card"
     #grid
@@ -9,10 +8,7 @@
     [focusedRowEnabled]="true"
     [columnAutoWidth]="true"
     [columnHidingEnabled]="true"
-    (onRowUpdating)="onRowUpdating($event)"
-    (onSaved)="dsService.onRowSaved($event, coachService)"
-    (onRowInserted)="dsService.onRowAdded($event, coachService)"
-    (onRowRemoved)="dsService.onRowRemoved($event, coachService)">
+    (onRowUpdating)="onRowUpdating($event)">
 
     <dxo-paging [pageSize]="5"></dxo-paging>
     <dxo-pager [showPageSizeSelector]="false" [showInfo]="true" [allowedPageSizes]="[5]"></dxo-pager>

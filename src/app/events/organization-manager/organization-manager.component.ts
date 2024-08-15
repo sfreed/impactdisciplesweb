@@ -1,11 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { DxDataGridComponent } from 'devextreme-angular';
 import CustomStore from 'devextreme/data/custom_store';
+import DataSource from 'devextreme/data/data_source';
 import { PHONE_TYPES } from 'impactdisciplescommon/src/lists/phone_types.enum';
 import { OrganizationModel } from 'impactdisciplescommon/src/models/domain/organization.model';
 import { PhoneNumberMaskPipe } from 'impactdisciplescommon/src/pipes/phone-number.pipe';
 import { OrganizationService } from 'impactdisciplescommon/src/services/organization.service';
 import { EnumHelper } from 'impactdisciplescommon/src/utils/enum_helper';
+import { map, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-organization-manager',
@@ -16,27 +18,36 @@ import { EnumHelper } from 'impactdisciplescommon/src/utils/enum_helper';
 export class OrganizationManagerComponent implements OnInit {
   @ViewChild('grid', { static: false }) grid: DxDataGridComponent;
 
-  dataSource: any;
+  dataSource: Observable<DataSource>;
 
   phone_types: PHONE_TYPES[];
 
   constructor(public organizationService: OrganizationService){
-    this.dataSource = new CustomStore({
-      key: 'id',
-      loadMode: 'raw',
-      load: function (loadOptions: any) {
-        return organizationService.getAll();
-      },
-      insert: function (value: OrganizationModel) {
-        return organizationService.add(value);
-      },
-      update: function (key: any, value: OrganizationModel) {
-        return organizationService.update(key, value)
-      },
-      remove: function (id: any) {
-        return organizationService.delete(id);
-      },
-    });
+    this.dataSource = this.organizationService.streamAll().pipe(
+      map(
+        (items) =>
+          new DataSource({
+            reshapeOnPush: true,
+            pushAggregationTimeout: 100,
+            store: new CustomStore({
+              key: 'id',
+              loadMode: 'raw',
+              load: function (loadOptions: any) {
+                return organizationService.getAll();
+              },
+              insert: function (value: OrganizationModel) {
+                return organizationService.add(value);
+              },
+              update: function (key: any, value: OrganizationModel) {
+                return organizationService.update(key, value)
+              },
+              remove: function (id: any) {
+                return organizationService.delete(id);
+              },
+            })
+          })
+      )
+    )
   }
 
   ngOnInit(): void {

@@ -1,12 +1,12 @@
 import { OrganizationService } from './../../../../impactdisciplescommon/src/services/organization.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { DxDataGridComponent } from 'devextreme-angular';
-import ArrayStore from 'devextreme/data/array_store';
+import CustomStore from 'devextreme/data/custom_store';
 import DataSource from 'devextreme/data/data_source';
 import { PHONE_TYPES } from 'impactdisciplescommon/src/lists/phone_types.enum';
+import { CoachModel } from 'impactdisciplescommon/src/models/domain/coach.model';
 import { OrganizationModel } from 'impactdisciplescommon/src/models/domain/organization.model';
 import { CoachService } from 'impactdisciplescommon/src/services/coach.service';
-import { DataSourceHelperService } from 'impactdisciplescommon/src/services/utils/data-source-helper.service';
 import { EnumHelper } from 'impactdisciplescommon/src/utils/enum_helper';
 import { map, Observable } from 'rxjs';
 
@@ -24,14 +24,29 @@ export class CoachManagerComponent implements OnInit{
 
   phone_types: PHONE_TYPES[];
 
-  constructor(public coachService: CoachService, private organizationService: OrganizationService, public dsService: DataSourceHelperService){
+  constructor(public coachService: CoachService, private organizationService: OrganizationService){
     this.dataSource = this.coachService.streamAll().pipe(
       map(
         (items) =>
           new DataSource({
             reshapeOnPush: true,
             pushAggregationTimeout: 100,
-            store: new ArrayStore({ key: 'id', data: items })
+            store: new CustomStore({
+              key: 'id',
+              loadMode: 'raw',
+              load: function (loadOptions: any) {
+                return items;
+              },
+              insert: function (value: CoachModel) {
+                return coachService.add(value);
+              },
+              update: function (key: any, value: CoachModel) {
+                return coachService.update(key, value)
+              },
+              remove: function (id: any) {
+                return coachService.delete(id);
+              },
+            })
           })
       )
     );

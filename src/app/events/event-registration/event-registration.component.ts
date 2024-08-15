@@ -22,20 +22,14 @@ export class EventRegistrationComponent implements OnInit{
     valueChangeEvent: 'keyup',
   };
 
-  constructor(private eventService: EventService, private authService: AuthService){
+  constructor(private eventService: EventService, private authService: AuthService){}
 
-  }
-
-  ngOnInit() {
-    this.eventService.getAll().subscribe(events => {
-      this.eventsList = events;
-    });
+  async ngOnInit() {
+    this.eventsList = await this.eventService.getAll()
 
     this.authService.getUser().subscribe(user => {
       this.eventRegistration.registrant = user;
       console.log(this.eventRegistration.registrant);
     });
-
-
   }
 }

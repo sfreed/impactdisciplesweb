@@ -8,10 +8,7 @@
     [columnAutoWidth]="true"
     [columnHidingEnabled]="true"
     [rowAlternationEnabled]="true"
-    (onRowUpdating)="onRowUpdating($event)"
-    (onSaved)="dsService.onRowSaved($event, eventService)"
-    (onRowInserted)="dsService.onRowAdded($event, eventService)"
-    (onRowRemoved)="dsService.onRowRemoved($event, eventService)">
+    (onRowUpdating)="onRowUpdating($event)">
 
     <dxo-paging [pageSize]="10"></dxo-paging>
     <dxo-pager [showPageSizeSelector]="true" [showInfo]="true"></dxo-pager>

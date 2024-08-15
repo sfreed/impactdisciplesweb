@@ -7,9 +7,8 @@ import { LocationService } from 'impactdisciplescommon/src/services/location.ser
 import { OrganizationModel } from 'impactdisciplescommon/src/models/domain/organization.model';
 import { LocationModel } from 'impactdisciplescommon/src/models/domain/location.model';
 import { map, Observable } from 'rxjs';
-import ArrayStore from 'devextreme/data/array_store';
 import DataSource from 'devextreme/data/data_source';
-import { DataSourceHelperService } from 'impactdisciplescommon/src/services/utils/data-source-helper.service';
+import CustomStore from 'devextreme/data/custom_store';
 
 @Component({
   selector: 'app-event-manager',
@@ -27,16 +26,29 @@ export class EventManagerComponent implements OnInit {
 
   selectedEvent: EventModel;
 
-  constructor(public eventService: EventService, private organizationService: OrganizationService, private locationService: LocationService,
-    public dsService: DataSourceHelperService
-  ){
+  constructor(public eventService: EventService, private organizationService: OrganizationService, private locationService: LocationService){
     this.dataSource = this.eventService.streamAll().pipe(
       map(
         (items) =>
           new DataSource({
             reshapeOnPush: true,
             pushAggregationTimeout: 100,
-            store: new ArrayStore({ key: 'id', data: items })
+            store: new CustomStore({
+              key: 'id',
+              loadMode: 'raw',
+              load: function (loadOptions: any) {
+                return items;
+              },
+              insert: function (value: EventModel) {
+                return eventService.add(value);
+              },
+              update: function (key: any, value: EventModel) {
+                return eventService.update(key, value)
+              },
+              remove: function (id: any) {
+                return eventService.delete(id);
+              },
+            })
           })
       )
     );
