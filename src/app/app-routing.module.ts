@@ -16,8 +16,6 @@ import { OrganizationManagerComponent } from './events/organization-manager/orga
 import { LocationManagerComponent } from './events/location-manager/location-manager.component';
 import { EventRegistrationComponent } from './events/event-registration/event-registration.component';
 import { NotificationsComponent } from './admin/notifications/notifications.component';
-import { CheckoutComponent } from './core/checkout/checkout.component';
-import { CheckoutSuccessComponent } from './core/checkout-success/checkout-success.component';
 
 const routes: Routes = [
   {
@@ -69,17 +67,7 @@ const routes: Routes = [
         path: 'log-messages',
         component: LogMessagesComponent,
         canActivate: [ AuthGuardService ]
-      },
-      {
-        path: 'checkout',
-        component: CheckoutComponent,
-        canActivate: [ AuthGuardService ]
-      },
-      {
-        path: 'checkoutsuccess',
-        component: CheckoutSuccessComponent,
-        canActivate: [ AuthGuardService ]
-      },
+      }
     ]
   },
   {
