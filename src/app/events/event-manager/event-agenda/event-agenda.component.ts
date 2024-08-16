@@ -64,28 +64,44 @@ export class EventAgendaComponent implements OnInit{
 
   onAppointmentFormOpening = (data: DxSchedulerTypes.AppointmentFormOpeningEvent) => {
     if(data.appointmentData['isCourse']){
-      this.setCourseForm(data);
+      if(data.appointmentData['isSingleSessionCourse']){
+        this.setMultiSessionCourseForm(data);
+      } else {
+        this.setSingleSessionCourseForm(data);
+      }
     } else {
       this.setAgendaForm(data);
     }
   }
 
-  setCourseForm(data: DxSchedulerTypes.AppointmentFormOpeningEvent){
+  setSingleSessionCourseForm(data: DxSchedulerTypes.AppointmentFormOpeningEvent){
     const that = this;
     const form = data.form;
     form.option().items = [{
       label: {
         text: 'Create Course?',
       },
-      colSpan: 2,
+      colSpan: 1,
       editorType: 'dxSwitch',
       dataField: 'isCourse',
       editorOptions: {
         onValueChanged({ value }) {
-          if(value){
-            that.setCourseForm(data)
-          } else {
+          if(!value){
             that.setAgendaForm(data);
+          }
+        }
+      }
+    },{
+      label: {
+        text: 'Single Session Course?',
+      },
+      colSpan: 1,
+      editorType: 'dxSwitch',
+      dataField: 'isSingleSessionCourse',
+      editorOptions: {
+        onValueChanged({ value }) {
+          if(value){
+            that.setMultiSessionCourseForm(data)
           }
         }
       }
@@ -93,6 +109,7 @@ export class EventAgendaComponent implements OnInit{
       label: {
         text: 'Course',
       },
+      colSpan: 1,
       editorType: 'dxSelectBox',
       dataField: 'course',
       editorOptions: {
@@ -105,6 +122,7 @@ export class EventAgendaComponent implements OnInit{
       label: {
         text: 'Coach',
       },
+      colSpan: 1,
       editorType: 'dxSelectBox',
       dataField: 'coach',
       editorOptions: {
@@ -112,6 +130,70 @@ export class EventAgendaComponent implements OnInit{
         displayExpr: 'fullname',
         valueExpr: 'id',
         value: data.appointmentData['coach']?data.appointmentData['coach']['id'] : '',
+      },
+    }, {
+      dataField: 'startDate',
+      colSpan: 1,
+      editorType: 'dxDateBox',
+      editorOptions: {
+        width: '100%',
+        type: 'datetime'
+      },
+    }, {
+      name: 'endDate',
+      colSpan: 1,
+      dataField: 'endDate',
+      editorType: 'dxDateBox',
+      editorOptions: {
+        width: '100%',
+        type: 'datetime',
+      },
+    }];
+    form.repaint();
+  }
+
+  setMultiSessionCourseForm(data: DxSchedulerTypes.AppointmentFormOpeningEvent){
+    const that = this;
+    const form = data.form;
+
+    form.option().items = [{
+      label: {
+        text: 'Create Course?',
+      },
+      editorType: 'dxSwitch',
+      dataField: 'isCourse',
+      editorOptions: {
+        onValueChanged({ value }) {
+          if(!value){
+            that.setAgendaForm(data);
+          }
+        }
+      }
+    },{
+      label: {
+        text: 'Single Session Course?',
+      },
+      editorType: 'dxSwitch',
+      dataField: 'isSingleSessionCourse',
+      editorOptions: {
+        onValueChanged({ value }) {
+          if(!value){
+            that.setSingleSessionCourseForm(data);
+          }
+        }
+      }
+    }, {
+      label: {
+        text: 'Available Courses',
+      },
+      dataField: 'courses',
+      colSpan: 2,
+      editorType: 'dxTagBox',
+      editorOptions: {
+        width: '100%',
+        items: that.courses,
+        displayExpr: 'title',
+        valueExpr: 'id',
       },
     }, {
       dataField: 'startDate',
@@ -135,6 +217,7 @@ export class EventAgendaComponent implements OnInit{
   setAgendaForm(data: DxSchedulerTypes.AppointmentFormOpeningEvent){
     const that = this;
     const form = data.form;
+    form.option().colCount = 2;
 
     form.option().items = [{
       label: {
@@ -146,13 +229,11 @@ export class EventAgendaComponent implements OnInit{
       editorOptions: {
         onValueChanged({ value }) {
           if(value){
-            that.setCourseForm(data)
-          } else {
-            that.setAgendaForm(data);
+            that.setSingleSessionCourseForm(data)
           }
         }
       }
-    },{
+    }, {
       label: {
         text: 'Title',
       },
