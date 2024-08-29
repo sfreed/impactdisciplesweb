@@ -1,5 +1,5 @@
 import { OrganizationService } from './../../../../impactdisciplescommon/src/services/organization.service';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { DxDataGridComponent } from 'devextreme-angular';
 import CustomStore from 'devextreme/data/custom_store';
 import DataSource from 'devextreme/data/data_source';
@@ -17,6 +17,9 @@ import { map, Observable } from 'rxjs';
 })
 export class CoachManagerComponent implements OnInit{
   @ViewChild('grid', { static: false }) grid: DxDataGridComponent;
+
+  @Input() imageSelectVisible: boolean = false;
+  @Output() imageSelectClosed = new EventEmitter<boolean>();
 
   dataSource: Observable<DataSource>;
 
@@ -62,5 +65,17 @@ export class CoachManagerComponent implements OnInit{
     options.newData = Object.assign({}, options.oldData, options.newData);
     options.newData.address = Object.assign({}, options.oldData.address, options.newData.address);
     options.newData.phone = Object.assign({}, options.oldData.phone, options.newData.phone);
+  }
+
+  closeItemWindow(e){
+    this.imageSelectVisible = false;
+    this.imageSelectClosed.emit(false);
+  }
+
+  selectedCoach: CoachModel;
+
+  buttonOnClick(item){
+    this.selectedCoach = item.data;
+    this.imageSelectVisible = true;
   }
 }
