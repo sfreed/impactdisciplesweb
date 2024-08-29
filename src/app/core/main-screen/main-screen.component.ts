@@ -65,6 +65,27 @@ export class MainScreenComponent {
     },
   };
 
+  subscriptionsButtonOptions: DxButtonTypes.Properties = {
+    text: 'Subscriptions',
+    onClick: () => {
+      this.topNavService.navigate({ id: 0, name:'Subscriptions', route:'subscriptions', icon: 'toolbox', level: 0})
+    },
+  };
+
+  mediaButtonOptions: DxButtonTypes.Properties = {
+    text: 'Media',
+    onClick: () => {
+      this.topNavService.navigate({ id: 0, name:'Media', route:'media', icon: 'toolbox', level: 0})
+    },
+  };
+
+  couponButtonOptions: DxButtonTypes.Properties = {
+    text: 'Coupons',
+    onClick: () => {
+      this.topNavService.navigate({ id: 0, name:'Coupon', route:'coupons', icon: 'toolbox', level: 0})
+    },
+  };
+
   logsButtonOptions: DxButtonTypes.Properties = {
     text: 'Logs',
     onClick: () => {

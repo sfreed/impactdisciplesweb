@@ -1,0 +1,29 @@
+<dx-data-grid class="dx-card wide-card"
+  #grid
+  [dataSource]="dataSource"
+  [width]="'100%'"
+  [showBorders]="false"
+  [focusedRowEnabled]="true"
+  [columnAutoWidth]="true"
+  [columnHidingEnabled]="true"
+  (onRowUpdating)="onRowUpdating($event)">
+
+  <dxo-paging [pageSize]="10"></dxo-paging>
+  <dxo-pager [showPageSizeSelector]="true" [showInfo]="true"></dxo-pager>
+  <dxo-search-panel [visible]="true" placeholder="Search..."></dxo-search-panel>
+  <dxo-toolbar>
+    <dxi-item location="before">
+      <div *dxTemplate>
+        <div class="toolbar-label">
+          <b>Seminars</b>
+        </div>
+      </div>
+    </dxi-item>
+
+    <dxi-item name="addRowButton"></dxi-item>
+    <dxi-item name="searchPanel"></dxi-item>
+  </dxo-toolbar>
+  <dxi-column dataField="firstName"></dxi-column>
+  <dxi-column dataField="lastName"></dxi-column>
+  <dxi-column dataField="email"></dxi-column>
+</dx-data-grid>

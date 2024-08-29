@@ -16,6 +16,9 @@ import { OrganizationManagerComponent } from './events/organization-manager/orga
 import { LocationManagerComponent } from './events/location-manager/location-manager.component';
 import { EventRegistrationComponent } from './events/event-registration/event-registration.component';
 import { NotificationsComponent } from './admin/notifications/notifications.component';
+import { SubscriptionsComponent } from './admin/subscriptions/subscriptions.component';
+import { MediaComponent } from './admin/media/media.component';
+import { CouponManagerComponent } from './admin/coupon-manager/coupon-manager.component';
 
 const routes: Routes = [
   {
@@ -51,6 +54,21 @@ const routes: Routes = [
       {
         path: 'locations',
         component: LocationManagerComponent,
+        canActivate: [ AuthGuardService ]
+      },
+      {
+        path: 'subscriptions',
+        component: SubscriptionsComponent,
+        canActivate: [ AuthGuardService ]
+      },
+      {
+        path: 'media',
+        component: MediaComponent,
+        canActivate: [ AuthGuardService ]
+      },
+      {
+        path: 'coupons',
+        component: CouponManagerComponent,
         canActivate: [ AuthGuardService ]
       },
       {

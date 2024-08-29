@@ -11,6 +11,8 @@ import { ImpactDisciplesModule } from "../../../impactdisciplescommon/src/impact
 import { EventAgendaComponent } from './event-manager/event-agenda/event-agenda.component';
 import { EventRegistrationComponent } from './event-registration/event-registration.component';
 import { ImpactFormsModule } from 'impactdisciplescommon/src/forms/forms.module';
+import { LunchAndLearnManagerComponent } from './lunch-and-learn-manager/lunch-and-learn-manager.component';
+import { SeminarManagerComponent } from './seminar-manager/seminar-manager.component';
 
 @NgModule({
     declarations: [
@@ -20,7 +22,9 @@ import { ImpactFormsModule } from 'impactdisciplescommon/src/forms/forms.module'
         LocationManagerComponent,
         OrganizationManagerComponent,
         EventAgendaComponent,
-        EventRegistrationComponent
+        EventRegistrationComponent,
+        LunchAndLearnManagerComponent,
+        SeminarManagerComponent
     ],
     imports: [
         CommonModule,
