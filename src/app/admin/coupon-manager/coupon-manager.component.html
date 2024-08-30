@@ -24,11 +24,23 @@
     <dxi-item name="searchPanel"></dxi-item>
   </dxo-toolbar>
   <dxo-editing
-    mode="row"
+    mode="popup"
     [useIcons]="true"
     [allowAdding]="true"
     [allowUpdating]="true"
     [allowDeleting]="true">
+    <dxo-popup
+      title="App Users Info"
+      [showTitle]="true"
+      [width]="500"
+      [height]="250">
+    </dxo-popup>
+    <dxo-form [colCount]="2">
+      <dxi-item dataField="code" [colSpan]="1"></dxi-item>
+      <dxi-item dataField="isActive" [colSpan]="1" [editorType]="'dxSwitch'"></dxi-item>
+      <dxi-item dataField="percentOff" [colSpan]="1"></dxi-item>
+      <dxi-item dataField="percentOff" [colSpan]="1"></dxi-item>
+    </dxo-form>
   </dxo-editing>
   <dxi-column dataField="code"></dxi-column>
   <dxi-column dataField="isActive" dataType="boolean"></dxi-column>

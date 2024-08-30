@@ -19,6 +19,7 @@ import { NotificationsComponent } from './admin/notifications/notifications.comp
 import { SubscriptionsComponent } from './admin/subscriptions/subscriptions.component';
 import { MediaComponent } from './admin/media/media.component';
 import { CouponManagerComponent } from './admin/coupon-manager/coupon-manager.component';
+import { WebConfigManagerComponent } from './admin/web-config-manager/web-config-manager.component';
 
 const routes: Routes = [
   {
@@ -69,6 +70,11 @@ const routes: Routes = [
       {
         path: 'coupons',
         component: CouponManagerComponent,
+        canActivate: [ AuthGuardService ]
+      },
+      {
+        path: 'web-config',
+        component: WebConfigManagerComponent,
         canActivate: [ AuthGuardService ]
       },
       {

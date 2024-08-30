@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LogMessagesComponent } from './log-messages/log-messages.component';
 import { UsersComponent } from './users/users.component';
-import { DxButtonModule, DxDataGridModule, DxFormModule, DxPopupModule } from 'devextreme-angular';
+import { DxButtonModule, DxDataGridModule, DxFormModule, DxHtmlEditorModule, DxLoadIndicatorModule, DxPopupModule, DxSwitchModule } from 'devextreme-angular';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { NewsletterSupscriptionComponent } from './subscriptions/newsletter-supscription/newsletter-supscription.component';
 import { PrayerTeamSubscriptionComponent } from './subscriptions/prayer-team-subscription/prayer-team-subscription.component';
@@ -20,7 +20,10 @@ import { WebConfigManagerComponent } from './web-config-manager/web-config-manag
     DxDataGridModule,
     DxButtonModule,
     DxFormModule,
-    DxPopupModule
+    DxHtmlEditorModule,
+    DxLoadIndicatorModule,
+    DxPopupModule,
+    DxSwitchModule
   ],
   declarations: [
     LogMessagesComponent,

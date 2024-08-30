@@ -79,6 +79,13 @@ export class MainScreenComponent {
     },
   };
 
+  webConfigButtonOptions: DxButtonTypes.Properties = {
+    text: 'Web Config',
+    onClick: () => {
+      this.topNavService.navigate({ id: 0, name:'Web Config', route:'web-config', icon: 'toolbox', level: 0})
+    },
+  };
+
   couponButtonOptions: DxButtonTypes.Properties = {
     text: 'Coupons',
     onClick: () => {
