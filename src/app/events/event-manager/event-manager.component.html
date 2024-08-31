@@ -40,27 +40,26 @@
         title="Add/Edit Event"
         [showTitle]="false"
         [width]="650"
-        [height]="450">
+        [height]="550">
       </dxo-popup>
       <dxo-form [colCount]="1">
-        <dxi-item itemType="group" caption="Event" [colCount]="6" [colSpan]="1">
+        <dxi-item itemType="group" caption="Event" [colCount]="4" [colSpan]="1">
           <dxi-item dataField="startDate" [colSpan]="2"></dxi-item>
           <dxi-item dataField="endDate" [colSpan]="2"></dxi-item>
-          <dxi-item dataField="costInDollars" [colSpan]="2" dataType="number" format="currency"></dxi-item>
-
-          <dxi-item dataField="eventName" [colSpan]="6"></dxi-item>
-
-          <dxi-item dataField="organization" [colSpan]="3"></dxi-item>
-          <dxi-item dataField="location" [colSpan]="3"></dxi-item>
-
-          <dxi-item dataField="description" [colSpan]="6" [editorType]="'dxTextArea'" [editorOptions]="{ height: 100 }"></dxi-item>
+          <dxi-item dataField="isSummit" [colSpan]="2" [editorType]="'dxSwitch'" [editorOptions]="{ switchedOnText: 'Yes', switchedOffText: 'No' }"></dxi-item>
+          <dxi-item dataField="costInDollars" [colSpan]="2"></dxi-item>
+          <dxi-item dataField="eventName" [colSpan]="4"></dxi-item>
+          <dxi-item dataField="organization" [colSpan]="2"></dxi-item>
+          <dxi-item dataField="location" [colSpan]="2"></dxi-item>
+          <dxi-item dataField="description" [colSpan]="4" [editorType]="'dxTextArea'" [editorOptions]="{ height: 150 }"></dxi-item>
         </dxi-item>
       </dxo-form>
     </dxo-editing>
 
     <dxi-column dataField="startDate" [caption]="'From'" [dataType]="'datetime'"></dxi-column>
     <dxi-column dataField="endDate" [caption]="'To'" [dataType]="'datetime'"></dxi-column>
-    <dxi-column dataField="costInDollars" [caption]="'Cost'"></dxi-column>
+    <dxi-column dataField="costInDollars" [caption]="'Cost'" format="currency"></dxi-column>
+    <dxi-column dataField="isSummit" [caption]="'Summit?'"></dxi-column>
     <dxi-column dataField="eventName" [caption]="'Event Name'"></dxi-column>
     <dxi-column dataField="organization" [caption]="'Organization'">
       <dxo-lookup [dataSource]="organizations" displayExpr="name" valueExpr="id"></dxo-lookup>

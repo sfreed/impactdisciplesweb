@@ -9,17 +9,17 @@ import { TopNavService } from 'impactdisciplescommon/src/services/utils/top-nav.
   styleUrls: ['./main-screen.component.css']
 })
 export class MainScreenComponent {
-  registrationButtonOptions: DxButtonTypes.Properties = {
-    text: 'Registration',
-    onClick: () => {
-      this.topNavService.navigate({ id: 0, name:'Registrations', route:'registration', icon: 'home', level: 0})
-    },
-  };
-
   eventButtonOptions: DxButtonTypes.Properties = {
     text: 'Events',
     onClick: () => {
       this.topNavService.navigate({ id: 0, name:'Events', route:'events', icon: 'home', level: 0})
+    },
+  };
+
+  lunchAndLearnButtonOptions: DxButtonTypes.Properties = {
+    text: 'Lunch and Learns',
+    onClick: () => {
+      this.topNavService.navigate({ id: 0, name:'Lunch and Learns', route:'lunch-and-learns', icon: 'home', level: 0})
     },
   };
 

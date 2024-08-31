@@ -25,12 +25,12 @@
         <dxi-view type="day" [intervalCount]="3"> </dxi-view>
         <div *dxTemplate="let model of 'appointment-template'">
           <div class="showtime-preview" *ngIf="model.targetedAppointmentData.isCourse">
-            <div class="showtime-preview" *ngIf="!model.targetedAppointmentData.isSingleSessionCourse">
+            <div class="showtime-preview" *ngIf="!model.targetedAppointmentData.isMultiSessionCourse">
               <div>Course: <strong>{{getCourseById(model.appointmentData.course)?.title}}</strong></div>
               <div>Coach:  <strong>{{getCoachById(model.targetedAppointmentData.coach)?.fullname }}</strong></div>
               <div>{{getCourseById(model.appointmentData.course)?.shortDescription}}</div>
             </div>
-            <div class="showtime-preview" *ngIf="model.targetedAppointmentData.isSingleSessionCourse">
+            <div class="showtime-preview" *ngIf="model.targetedAppointmentData.isMultiSessionCourse">
               <div *ngFor="let course of model.targetedAppointmentData.courses">Course: <strong>{{getCourseById(course)?.title}}</strong></div>
             </div>
           </div>

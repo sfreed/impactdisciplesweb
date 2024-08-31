@@ -64,7 +64,7 @@ export class EventAgendaComponent implements OnInit{
 
   onAppointmentFormOpening = (data: DxSchedulerTypes.AppointmentFormOpeningEvent) => {
     if(data.appointmentData['isCourse']){
-      if(data.appointmentData['isSingleSessionCourse']){
+      if(data.appointmentData['isMultiSessionCourse']){
         this.setMultiSessionCourseForm(data);
       } else {
         this.setSingleSessionCourseForm(data);
@@ -85,6 +85,8 @@ export class EventAgendaComponent implements OnInit{
       editorType: 'dxSwitch',
       dataField: 'isCourse',
       editorOptions: {
+        switchedOnText: 'Yes',
+        switchedOffText: 'No',
         onValueChanged({ value }) {
           if(!value){
             that.setAgendaForm(data);
@@ -93,12 +95,14 @@ export class EventAgendaComponent implements OnInit{
       }
     },{
       label: {
-        text: 'Single Session Course?',
+        text: 'Multi Session Course?',
       },
       colSpan: 1,
       editorType: 'dxSwitch',
-      dataField: 'isSingleSessionCourse',
+      dataField: 'isMultiSessionCourse',
       editorOptions: {
+        switchedOnText: 'Yes',
+        switchedOffText: 'No',
         onValueChanged({ value }) {
           if(value){
             that.setMultiSessionCourseForm(data)
@@ -163,6 +167,8 @@ export class EventAgendaComponent implements OnInit{
       editorType: 'dxSwitch',
       dataField: 'isCourse',
       editorOptions: {
+        switchedOnText: 'Yes',
+        switchedOffText: 'No',
         onValueChanged({ value }) {
           if(!value){
             that.setAgendaForm(data);
@@ -171,11 +177,13 @@ export class EventAgendaComponent implements OnInit{
       }
     },{
       label: {
-        text: 'Single Session Course?',
+        text: 'Multi Session Course?',
       },
       editorType: 'dxSwitch',
-      dataField: 'isSingleSessionCourse',
+      dataField: 'isMultiSessionCourse',
       editorOptions: {
+        switchedOnText: 'Yes',
+        switchedOffText: 'No',
         onValueChanged({ value }) {
           if(!value){
             that.setSingleSessionCourseForm(data);
@@ -227,6 +235,8 @@ export class EventAgendaComponent implements OnInit{
       editorType: 'dxSwitch',
       dataField: 'isCourse',
       editorOptions: {
+        switchedOnText: 'Yes',
+        switchedOffText: 'No',
         onValueChanged({ value }) {
           if(value){
             that.setSingleSessionCourseForm(data)

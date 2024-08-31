@@ -14,12 +14,12 @@ import { CoachManagerComponent } from './events/coach-manager/coach-manager.comp
 import { CourseManagerComponent } from './events/course-manager/course-manager.component';
 import { OrganizationManagerComponent } from './events/organization-manager/organization-manager.component';
 import { LocationManagerComponent } from './events/location-manager/location-manager.component';
-import { EventRegistrationComponent } from './events/event-registration/event-registration.component';
 import { NotificationsComponent } from './admin/notifications/notifications.component';
 import { SubscriptionsComponent } from './admin/subscriptions/subscriptions.component';
 import { MediaComponent } from './admin/media/media.component';
 import { CouponManagerComponent } from './admin/coupon-manager/coupon-manager.component';
 import { WebConfigManagerComponent } from './admin/web-config-manager/web-config-manager.component';
+import { LunchAndLearnManagerComponent } from './events/lunch-and-learn-manager/lunch-and-learn-manager.component';
 
 const routes: Routes = [
   {
@@ -28,13 +28,13 @@ const routes: Routes = [
     canActivate: [ AuthGuardService ],
     children: [
       {
-        path: 'registration',
-        component: EventRegistrationComponent,
+        path: 'events',
+        component: EventManagerComponent,
         canActivate: [ AuthGuardService ]
       },
       {
-        path: 'events',
-        component: EventManagerComponent,
+        path: 'lunch-and-learns',
+        component: LunchAndLearnManagerComponent,
         canActivate: [ AuthGuardService ]
       },
       {
