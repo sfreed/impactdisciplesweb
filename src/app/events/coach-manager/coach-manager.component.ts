@@ -67,15 +67,22 @@ export class CoachManagerComponent implements OnInit{
     options.newData.phone = Object.assign({}, options.oldData.phone, options.newData.phone);
   }
 
-  closeItemWindow(e){
-    this.imageSelectVisible = false;
-    this.imageSelectClosed.emit(false);
-  }
-
   selectedCoach: CoachModel;
 
-  buttonOnClick(item){
-    this.selectedCoach = item.data;
+  editImages(e){
+    this.selectedCoach = e.row.data;
     this.imageSelectVisible = true;
+  }
+
+  async closeItemWindow(e){
+    if(this.selectedCoach.id){
+      this.selectedCoach = await this.coachService.update(this.selectedCoach.id, this.selectedCoach);
+    } else {
+      this.selectedCoach = await this.coachService.add(this.selectedCoach);
+    }
+
+    this.imageSelectVisible = false;
+    this.imageSelectClosed.emit(false);
+
   }
 }

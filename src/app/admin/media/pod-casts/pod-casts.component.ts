@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import CustomStore from 'devextreme/data/custom_store';
 import { PodCastModel } from 'impactdisciplescommon/src/models/domain/pod-cast-model';
 import { PodCastService } from 'impactdisciplescommon/src/services/pod-cast.service';
@@ -9,9 +9,12 @@ import { PodCastService } from 'impactdisciplescommon/src/services/pod-cast.serv
   styleUrls: ['./pod-casts.component.css']
 })
 export class PodCastsComponent {
+  @Input() imageSelectVisible: boolean = false;
+  @Output() imageSelectClosed = new EventEmitter<boolean>();
+
   dataSource: any;
 
-  constructor(service: PodCastService) {
+  constructor(private service: PodCastService) {
     this.dataSource = new CustomStore({
       key: 'id',
       loadMode: 'raw',
@@ -30,10 +33,25 @@ export class PodCastsComponent {
     });
    }
 
-  ngOnInit() {
-  }
-
   onRowUpdating(options) {
     options.newData = Object.assign(options.oldData, options.newData);
+  }
+
+  selectedPodCast: PodCastModel;
+
+  editImages(e){
+    this.selectedPodCast = e.row.data;
+    this.imageSelectVisible = true;
+  }
+
+  async closeItemWindow(e){
+    if(this.selectedPodCast.id){
+      this.selectedPodCast = await this.service.update(this.selectedPodCast.id, this.selectedPodCast);
+    } else {
+      this.selectedPodCast = await this.service.add(this.selectedPodCast);
+    }
+
+    this.imageSelectVisible = false;
+    this.imageSelectClosed.emit(false);
   }
 }

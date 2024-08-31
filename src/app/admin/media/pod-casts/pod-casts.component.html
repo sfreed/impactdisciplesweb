@@ -23,7 +23,42 @@
     <dxi-item name="addRowButton"></dxi-item>
     <dxi-item name="searchPanel"></dxi-item>
   </dxo-toolbar>
-  <dxi-column dataField="firstName"></dxi-column>
-  <dxi-column dataField="lastName"></dxi-column>
-  <dxi-column dataField="email"></dxi-column>
+  <dxo-editing
+    mode="cell"
+    [useIcons]="true"
+    [allowAdding]="true"
+    [allowUpdating]="true"
+    [allowDeleting]="true">
+    <dxo-form [colCount]="2">
+      <dxi-item dataField="title" [colSpan]="1"></dxi-item>
+      <dxi-item dataField="date" [colSpan]="1"></dxi-item>
+      <dxi-item dataField="subject" [colSpan]="2"></dxi-item>
+      <dxi-item dataField="url" [colSpan]="2"></dxi-item>
+      <dxi-item dataField="thumbnail" [colSpan]="2"></dxi-item>
+    </dxo-form>
+  </dxo-editing>
+  <dxi-column dataField="thumbnail" [width]="120" cellTemplate="cellTemplate"></dxi-column>
+  <dxi-column dataField="title"></dxi-column>
+  <dxi-column dataField="date" [dataType]="'datetime'"></dxi-column>
+  <dxi-column dataField="subject"></dxi-column>
+  <dxi-column dataField="url" [visible]="false"></dxi-column>
+  <dxi-column type="buttons" [width]="150" [fixed]="true" caption="Actions">
+    <dxi-button icon="image" hint="Upload Blog Images" [onClick]="editImages.bind(this)"></dxi-button>
+    <dxi-button icon="trash" name="delete"></dxi-button>
+  </dxi-column>
+  <div *dxTemplate="let data of 'cellTemplate'">
+    <img
+      width="100"
+      [src]="data.value"
+    />
+  </div>
 </dx-data-grid>
+
+<ng-container *ngIf="imageSelectVisible">
+  <app-image-uploader
+    [card]="selectedPodCast"
+    [field]="'thumbnail'"
+    [imageSelectVisible]="imageSelectVisible"
+    (imageSelectClosed)="closeItemWindow($event)">
+  </app-image-uploader>
+</ng-container>

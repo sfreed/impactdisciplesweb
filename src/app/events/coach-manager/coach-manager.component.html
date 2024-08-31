@@ -51,7 +51,7 @@
               <dxi-item dataField="lastName" [colSpan]="2"></dxi-item>
               <dxi-item dataField="title" [colSpan]="2"></dxi-item>
               <dxi-item dataField="organization" [colSpan]="2"></dxi-item>
-              <dxi-item dataField="photoUrl" [colSpan]="4"></dxi-item></dxi-item>
+            </dxi-item>
             <dxi-item itemType="group" caption="Address" [colCount]="4" [colSpan]="1">
               <dxi-item dataField="address.address1" [colSpan]="4"></dxi-item>
               <dxi-item dataField="address.address2" [colSpan]="4"></dxi-item>
@@ -75,7 +75,7 @@
 
       </dxo-form>
     </dxo-editing>
-    <dxi-column dataField="photoUrl" [width]="100" [caption]="'Picture'" [allowFiltering]="false" [allowSorting]="false" cellTemplate="cellTemplate" [editCellTemplate]="'editCellTemplate'"></dxi-column>
+    <dxi-column dataField="photoUrl" [width]="100" [caption]="'Picture'" [allowFiltering]="false" [allowSorting]="false" cellTemplate="cellTemplate"></dxi-column>
     <dxi-column dataField="firstName" [caption]="'First'"></dxi-column>
     <dxi-column dataField="lastName" [caption]="'Last'"></dxi-column>
     <dxi-column dataField="title" [caption]="'Title'"></dxi-column>
@@ -96,6 +96,11 @@
     <dxi-column dataField="phone.type" [caption]="'Type'" [visible]="false">
       <dxo-lookup [dataSource]="phone_types" [allowClearing]="true"></dxo-lookup>
     </dxi-column>
+    <dxi-column type="buttons" [width]="150" caption="Actions">
+      <dxi-button icon="edit" hint="Edit Coach Details" name="edit"></dxi-button>
+      <dxi-button icon="image" hint="Upload Blog Images" [onClick]="editImages.bind(this)"></dxi-button>
+      <dxi-button icon="trash" name="delete"></dxi-button>
+    </dxi-column>
 
     <div *dxTemplate="let cell of 'phoneNumberCellTemplate'">
       <div class="">
@@ -109,31 +114,9 @@
         alt="Picture of {{ data.data.firstName }} {{ data.data.lastName }}"
       />
     </div>
-
-    <div *dxTemplate="let data of 'editCellTemplate'">
-      <div class="row">
-        <div class="col-10">
-          <dx-text-box
-            [value]="data.value"
-            stylingMode="filled">
-          </dx-text-box>
-        </div>
-        <div class="col-2">
-          <dx-button
-            name="today"
-            location="after"
-            [icon]="'plus'"
-            (onClick)="buttonOnClick(data)">
-          </dx-button>
-        </div>
-      </div>
-
-
-    </div>
   </dx-data-grid>
 </div>
 
-<!--Image Uploader Popup-->
 <ng-container *ngIf="imageSelectVisible">
   <app-image-uploader
     [card]="selectedCoach"

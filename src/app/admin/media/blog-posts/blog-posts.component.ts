@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import CustomStore from 'devextreme/data/custom_store';
 import { BlogPostModel } from 'impactdisciplescommon/src/models/domain/blog-post.model';
 import { BlogPostService } from 'impactdisciplescommon/src/services/blog-post.service';
@@ -9,9 +9,12 @@ import { BlogPostService } from 'impactdisciplescommon/src/services/blog-post.se
   styleUrls: ['./blog-posts.component.css']
 })
 export class BlogPostsComponent {
+  @Input() imageSelectVisible: boolean = false;
+  @Output() imageSelectClosed = new EventEmitter<boolean>();
+
   dataSource: any;
 
-  constructor(service: BlogPostService) {
+  constructor(private service: BlogPostService) {
     this.dataSource = new CustomStore({
       key: 'id',
       loadMode: 'raw',
@@ -30,10 +33,25 @@ export class BlogPostsComponent {
     });
    }
 
-  ngOnInit() {
-  }
-
   onRowUpdating(options) {
     options.newData = Object.assign(options.oldData, options.newData);
+  }
+
+  selectedBlog: BlogPostModel;
+
+  editImages(e){
+    this.selectedBlog = e.row.data;
+    this.imageSelectVisible = true;
+  }
+
+  async closeItemWindow(e){
+    if(this.selectedBlog.id){
+      this.selectedBlog = await this.service.update(this.selectedBlog.id, this.selectedBlog);
+    } else {
+      this.selectedBlog = await this.service.add(this.selectedBlog);
+    }
+
+    this.imageSelectVisible = false;
+    this.imageSelectClosed.emit(false);
   }
 }

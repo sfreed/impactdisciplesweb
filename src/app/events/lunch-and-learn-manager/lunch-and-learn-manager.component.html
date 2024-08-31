@@ -19,11 +19,68 @@
         </div>
       </div>
     </dxi-item>
-
+    <dxo-editing
+      mode="popup"
+      [allowAdding]="true"
+      [allowUpdating]="true"
+      [allowDeleting]="true"
+      [useIcons]="true">
+      <dxo-popup
+        title="Add/Edit Coach"
+        [showTitle]="true"
+        [width]="800"
+        [height]="800">
+      </dxo-popup>
+      <dxo-form [colCount]="1">
+        <dxi-item itemType="tabbed">
+          <dxi-tab title="About">
+            <dxi-item itemType="group" caption="Requester" [colCount]="1" [colSpan]="1">
+              <dxi-item dataField="firstName" [colSpan]="1"></dxi-item>
+              <dxi-item dataField="lastName" [colSpan]="1"></dxi-item>
+              <dxi-item dataField="email" [colSpan]="1"></dxi-item>
+              <dxi-item dataField="organization" [colSpan]="1"></dxi-item>
+            </dxi-item>
+            <dxi-item itemType="group" caption="Information" [colCount]="1" [colSpan]="1">
+              <dxi-item dataField="requestedDate" [colSpan]="1"></dxi-item>
+              <dxi-item dataField="requestedStartDateTime" [colSpan]="1"></dxi-item>
+              <dxi-item dataField="requestedEndDateTime" [colSpan]="1"></dxi-item>
+              <dxi-item dataField="organization" [colSpan]="1"></dxi-item>
+            </dxi-item>
+            <dxi-item itemType="group" caption="Address" [colCount]="4" [colSpan]="1">
+              <dxi-item dataField="locationName" [colSpan]="4"></dxi-item>
+              <dxi-item dataField="address.address1" [colSpan]="4"></dxi-item>
+              <dxi-item dataField="address.address2" [colSpan]="4"></dxi-item>
+              <dxi-item dataField="address.city" [colSpan]="2"></dxi-item>
+              <dxi-item dataField="address.state" [colSpan]="2"></dxi-item>
+              <dxi-item dataField="address.zip" [colSpan]="2"></dxi-item>
+              <dxi-item dataField="address.country" [colSpan]="2"></dxi-item>
+            </dxi-item>
+            <dxi-item itemType="group" caption="Coordinator" [colCount]="4" [colSpan]="1">
+              <dxi-item dataField="coordinator" [colSpan]="4"></dxi-item>
+              <dxi-item dataField="coordinatorPhone.countryCode" [colSpan]="1"></dxi-item>
+              <dxi-item dataField="coordinatorPhone.number" [colSpan]="2" ></dxi-item>
+              <dxi-item dataField="coordinatorPhone.type" [colSpan]="1"></dxi-item>
+            </dxi-item>
+          </dxi-tab>
+          <dxi-tab title="Biography">
+            <dxi-item dataField="bio" [colSpan]="2" [editorType]="'dxTextArea'" [editorOptions]="{ height: 500 }">
+              <dxo-label [visible]="false" ></dxo-label>
+            </dxi-item>
+          </dxi-tab>
+        </dxi-item>
+      </dxo-form>
+    </dxo-editing>
     <dxi-item name="addRowButton"></dxi-item>
     <dxi-item name="searchPanel"></dxi-item>
   </dxo-toolbar>
+  <dxi-column dataField="email"></dxi-column>
   <dxi-column dataField="firstName"></dxi-column>
   <dxi-column dataField="lastName"></dxi-column>
-  <dxi-column dataField="email"></dxi-column>
+  <dxi-column dataField="requestedDate"  [dataType]="'datetime'"></dxi-column>
+  <dxi-column dataField="requestedStartDateTime"  [dataType]="'datetime'"></dxi-column>
+  <dxi-column dataField="requestedEndDateTime"  [dataType]="'datetime'"></dxi-column>
+  <dxi-column dataField="locationName"></dxi-column>
+  <dxi-column dataField="locationAddress"></dxi-column>
+  <dxi-column dataField="coordinator"></dxi-column>
+  <dxi-column dataField="coordinatorPhone" [caption]="'Number'" [editorOptions]="{ mask: '(000) 000-0000' }"></dxi-column>
 </dx-data-grid>
