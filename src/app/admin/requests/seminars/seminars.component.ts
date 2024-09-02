@@ -1,15 +1,19 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import CustomStore from 'devextreme/data/custom_store';
+import { PHONE_TYPES } from 'impactdisciplescommon/src/lists/phone_types.enum';
 import { SeminarModel } from 'impactdisciplescommon/src/models/domain/seminar.model';
 import { SeminarService } from 'impactdisciplescommon/src/services/seminar.service';
+import { EnumHelper } from 'impactdisciplescommon/src/utils/enum_helper';
 
 @Component({
-  selector: 'app-seminar-manager',
-  templateUrl: './seminar-manager.component.html',
-  styleUrls: ['./seminar-manager.component.css']
+  selector: 'app-seminars',
+  templateUrl: './seminars.component.html',
+  styleUrls: ['./seminars.component.css']
 })
-export class SeminarManagerComponent {
+export class SeminarsComponent implements OnInit {
   dataSource: any;
+
+  phone_types: PHONE_TYPES[];
 
   constructor(service: SeminarService) {
     this.dataSource = new CustomStore({
@@ -30,7 +34,8 @@ export class SeminarManagerComponent {
     });
    }
 
-  ngOnInit() {
+   ngOnInit() {
+    this.phone_types = EnumHelper.getPhoneTypesAsArray();
   }
 
   onRowUpdating(options) {

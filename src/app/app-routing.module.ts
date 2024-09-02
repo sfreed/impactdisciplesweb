@@ -19,7 +19,8 @@ import { SubscriptionsComponent } from './admin/subscriptions/subscriptions.comp
 import { MediaComponent } from './admin/media/media.component';
 import { CouponManagerComponent } from './admin/coupon-manager/coupon-manager.component';
 import { WebConfigManagerComponent } from './admin/web-config-manager/web-config-manager.component';
-import { LunchAndLearnManagerComponent } from './events/lunch-and-learn-manager/lunch-and-learn-manager.component';
+import { LunchAndLearnsComponent } from './admin/requests/lunch-and-learns/lunch-and-learns.component';
+import { RequestsComponent } from './admin/requests/requests.component';
 
 const routes: Routes = [
   {
@@ -34,7 +35,7 @@ const routes: Routes = [
       },
       {
         path: 'lunch-and-learns',
-        component: LunchAndLearnManagerComponent,
+        component: LunchAndLearnsComponent,
         canActivate: [ AuthGuardService ]
       },
       {
@@ -60,6 +61,11 @@ const routes: Routes = [
       {
         path: 'subscriptions',
         component: SubscriptionsComponent,
+        canActivate: [ AuthGuardService ]
+      },
+      {
+        path: 'event-requests',
+        component: RequestsComponent,
         canActivate: [ AuthGuardService ]
       },
       {

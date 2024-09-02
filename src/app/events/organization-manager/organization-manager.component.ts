@@ -4,7 +4,6 @@ import CustomStore from 'devextreme/data/custom_store';
 import DataSource from 'devextreme/data/data_source';
 import { PHONE_TYPES } from 'impactdisciplescommon/src/lists/phone_types.enum';
 import { OrganizationModel } from 'impactdisciplescommon/src/models/domain/organization.model';
-import { PhoneNumberMaskPipe } from 'impactdisciplescommon/src/pipes/phone-number.pipe';
 import { OrganizationService } from 'impactdisciplescommon/src/services/organization.service';
 import { EnumHelper } from 'impactdisciplescommon/src/utils/enum_helper';
 import { map, Observable } from 'rxjs';
@@ -12,8 +11,7 @@ import { map, Observable } from 'rxjs';
 @Component({
   selector: 'app-organization-manager',
   templateUrl: './organization-manager.component.html',
-  styleUrls: ['./organization-manager.component.css'],
-  providers:[PhoneNumberMaskPipe]
+  styleUrls: ['./organization-manager.component.css']
 })
 export class OrganizationManagerComponent implements OnInit {
   @ViewChild('grid', { static: false }) grid: DxDataGridComponent;

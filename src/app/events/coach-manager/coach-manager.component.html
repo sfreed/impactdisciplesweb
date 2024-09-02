@@ -98,7 +98,7 @@
     </dxi-column>
     <dxi-column type="buttons" [width]="150" caption="Actions">
       <dxi-button icon="edit" hint="Edit Coach Details" name="edit"></dxi-button>
-      <dxi-button icon="image" hint="Upload Blog Images" [onClick]="editImages.bind(this)"></dxi-button>
+      <dxi-button icon="image" hint="Upload Image" [onClick]="editImages.bind(this)"></dxi-button>
       <dxi-button icon="trash" name="delete"></dxi-button>
     </dxi-column>
 
@@ -108,11 +108,7 @@
       </div>
     </div>
     <div *dxTemplate="let data of 'cellTemplate'">
-      <img
-        width="100"
-        [src]="data.value"
-        alt="Picture of {{ data.data.firstName }} {{ data.data.lastName }}"
-      />
+      <img  width="100" [src]="data.value.url" alt="Picture of {{ data.data.firstName }} {{ data.data.lastName }}"/>
     </div>
   </dx-data-grid>
 </div>

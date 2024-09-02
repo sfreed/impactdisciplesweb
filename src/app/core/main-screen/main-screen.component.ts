@@ -16,10 +16,10 @@ export class MainScreenComponent {
     },
   };
 
-  lunchAndLearnButtonOptions: DxButtonTypes.Properties = {
-    text: 'Lunch and Learns',
+  requestsButtonOptions: DxButtonTypes.Properties = {
+    text: 'Event Requests',
     onClick: () => {
-      this.topNavService.navigate({ id: 0, name:'Lunch and Learns', route:'lunch-and-learns', icon: 'home', level: 0})
+      this.topNavService.navigate({ id: 0, name:'Event Requests', route:'event-requests', icon: 'home', level: 0})
     },
   };
 

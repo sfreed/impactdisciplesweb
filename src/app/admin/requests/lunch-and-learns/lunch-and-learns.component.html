@@ -67,22 +67,23 @@
     </dxo-form>
   </dxo-editing>
 
-  <dxi-column dataField="email"></dxi-column>
-  <dxi-column dataField="firstName"></dxi-column>
-  <dxi-column dataField="lastName"></dxi-column>
+
+  <dxi-column dataField="coordinator" ></dxi-column>
+  <dxi-column dataField="firstName" [visible]="false"></dxi-column>
+  <dxi-column dataField="lastName" [visible]="false"></dxi-column>
+  <dxi-column dataField="locationName"></dxi-column>
   <dxi-column dataField="requestedStartDateTime"  [dataType]="'datetime'" [caption]="'Start Time'"></dxi-column>
   <dxi-column dataField="requestedEndDateTime"  [dataType]="'datetime'" [caption]="'End Time'"></dxi-column>
-  <dxi-column dataField="locationName"></dxi-column>
-  <dxi-column dataField="locationAddress.address1" [visible]="false" [caption]="'Address 1'"></dxi-column>
-  <dxi-column dataField="locationAddress.address2" [visible]="false" [caption]="'Address 2'"></dxi-column>
-  <dxi-column dataField="locationAddress.city" [visible]="false" [caption]="'City'"></dxi-column>
-  <dxi-column dataField="locationAddress.state" [visible]="false" [caption]="'State'"></dxi-column>
-  <dxi-column dataField="locationAddress.zip" [visible]="false" [caption]="'Zip Code'"></dxi-column>
-  <dxi-column dataField="locationAddress.country" [visible]="false" [caption]="'Country'"></dxi-column>
-  <dxi-column dataField="coordinator"></dxi-column>
+  <dxi-column dataField="email"></dxi-column>
+  <dxi-column dataField="locationAddress.address1" [visible]="false" [caption]="'Address 1'" [visible]="false"></dxi-column>
+  <dxi-column dataField="locationAddress.address2" [visible]="false" [caption]="'Address 2'" [visible]="false"></dxi-column>
+  <dxi-column dataField="locationAddress.city" [visible]="false" [caption]="'City'" [visible]="false"></dxi-column>
+  <dxi-column dataField="locationAddress.state" [visible]="false" [caption]="'State'" [visible]="false"></dxi-column>
+  <dxi-column dataField="locationAddress.zip" [visible]="false" [caption]="'Zip Code'" [visible]="false"></dxi-column>
+  <dxi-column dataField="locationAddress.country" [visible]="false" [caption]="'Country'" [visible]="false"></dxi-column>
   <dxi-column dataField="coordinatorPhone.countryCode" [caption]="'Country Code'" [visible]="false"></dxi-column>
-  <dxi-column dataField="coordinatorPhone.number" [caption]="'Number'" [editorOptions]="{ mask: '(000) 000-0000' }" cellTemplate="phoneNumberCellTemplate"></dxi-column>
-  <dxi-column dataField="coordinatorPhone.type" [caption]="'Type'">
+  <dxi-column dataField="coordinatorPhone.number" [caption]="'Number'" [editorOptions]="{ mask: '(000) 000-0000' }" cellTemplate="phoneNumberCellTemplate" [visible]="false"></dxi-column>
+  <dxi-column dataField="coordinatorPhone.type" [caption]="'Type'" [visible]="false">
     <dxo-lookup [dataSource]="phone_types"></dxo-lookup>
   </dxi-column>
 

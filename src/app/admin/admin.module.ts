@@ -13,6 +13,11 @@ import { MediaComponent } from './media/media.component';
 import { CouponManagerComponent } from './coupon-manager/coupon-manager.component';
 import { WebConfigManagerComponent } from './web-config-manager/web-config-manager.component';
 import { ImpactFormsModule } from 'impactdisciplescommon/src/forms/forms.module';
+import { RequestsComponent } from './requests/requests.component';
+import { LunchAndLearnsComponent } from './requests/lunch-and-learns/lunch-and-learns.component';
+import { SeminarsComponent } from './requests/seminars/seminars.component';
+import { PhoneNumberMaskPipe } from 'impactdisciplescommon/src/pipes/phone-number.pipe';
+import { ImpactDisciplesModule } from 'impactdisciplescommon/src/impactdisciples.common.module';
 
 
 @NgModule({
@@ -27,7 +32,8 @@ import { ImpactFormsModule } from 'impactdisciplescommon/src/forms/forms.module'
     DxLoadIndicatorModule,
     DxPopupModule,
     DxSwitchModule,
-    DxTextBoxModule
+    DxTextBoxModule,
+    ImpactDisciplesModule
   ],
   declarations: [
     LogMessagesComponent,
@@ -40,7 +46,13 @@ import { ImpactFormsModule } from 'impactdisciplescommon/src/forms/forms.module'
     PodCastsComponent,
     BlogPostsComponent,
     CouponManagerComponent,
-    WebConfigManagerComponent
+    WebConfigManagerComponent,
+    RequestsComponent,
+    LunchAndLearnsComponent,
+    SeminarsComponent
+  ],
+  providers:[
+    PhoneNumberMaskPipe
   ]
 })
 export class AdminModule { }

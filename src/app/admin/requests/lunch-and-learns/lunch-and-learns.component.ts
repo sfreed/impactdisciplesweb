@@ -6,11 +6,11 @@ import { LunchAndLearnService } from 'impactdisciplescommon/src/services/lunch-a
 import { EnumHelper } from 'impactdisciplescommon/src/utils/enum_helper';
 
 @Component({
-  selector: 'app-lunch-and-learn-manager',
-  templateUrl: './lunch-and-learn-manager.component.html',
-  styleUrls: ['./lunch-and-learn-manager.component.css']
+  selector: 'app-lunch-and-learns',
+  templateUrl: './lunch-and-learns.component.html',
+  styleUrls: ['./lunch-and-learns.component.css']
 })
-export class LunchAndLearnManagerComponent implements OnInit{
+export class LunchAndLearnsComponent implements OnInit{
   dataSource: any;
 
   phone_types: PHONE_TYPES[];

@@ -10,6 +10,7 @@ import { BlogPostService } from 'impactdisciplescommon/src/services/blog-post.se
 })
 export class BlogPostsComponent {
   @Input() imageSelectVisible: boolean = false;
+  @Input() multiImageSelectVisible: boolean = false;
   @Input() editPostVisible: boolean = false;
   @Output() imageSelectClosed = new EventEmitter<boolean>();
 
@@ -40,9 +41,14 @@ export class BlogPostsComponent {
 
   selectedBlog: BlogPostModel;
 
-  editImages(e){
+  editImage(e){
     this.selectedBlog = e.row.data;
     this.imageSelectVisible = true;
+  }
+
+  addImages(e){
+    this.selectedBlog = e.row.data;
+    this.multiImageSelectVisible = true;
   }
 
   editPost(e){
@@ -54,6 +60,7 @@ export class BlogPostsComponent {
     this.service.update(this.selectedBlog.id, this.selectedBlog).then(blog => {
       this.selectedBlog = blog;
       this.imageSelectVisible = false;
+      this.multiImageSelectVisible = false;
       this.editPostVisible = false;
       this.imageSelectClosed.emit(false);
     })

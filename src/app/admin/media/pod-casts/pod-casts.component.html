@@ -47,10 +47,7 @@
     <dxi-button icon="trash" name="delete"></dxi-button>
   </dxi-column>
   <div *dxTemplate="let data of 'cellTemplate'">
-    <img
-      width="100"
-      [src]="data.value"
-    />
+    <img  width="100" [src]="data.value.url" [alt]="data.value.name"/>
   </div>
 </dx-data-grid>
 
