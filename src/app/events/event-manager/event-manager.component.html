@@ -105,6 +105,7 @@
     [showCloseButton]="true"
     [resizeEnabled]="false"
     [toolbarItems]="[{ location: 'left', text: 'Add/Edit Attendee List' }]">
+    <app-event-attendees [event]="selectedEvent"></app-event-attendees>
   </dx-popup>
 </ng-container>
 

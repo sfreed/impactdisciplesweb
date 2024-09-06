@@ -10,6 +10,7 @@ import { OrganizationManagerComponent } from './organization-manager/organizatio
 import { ImpactDisciplesModule } from "../../../impactdisciplescommon/src/impactdisciples.common.module";
 import { EventAgendaComponent } from './event-manager/event-agenda/event-agenda.component';
 import { ImpactFormsModule } from 'impactdisciplescommon/src/forms/forms.module';
+import { EventAttendeesComponent } from './event-manager/event-attendees/event-attendees.component';
 
 @NgModule({
     declarations: [
@@ -18,7 +19,8 @@ import { ImpactFormsModule } from 'impactdisciplescommon/src/forms/forms.module'
         CoachManagerComponent,
         LocationManagerComponent,
         OrganizationManagerComponent,
-        EventAgendaComponent
+        EventAgendaComponent,
+        EventAttendeesComponent
     ],
     imports: [
         CommonModule,
