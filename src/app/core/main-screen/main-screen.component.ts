@@ -93,6 +93,13 @@ export class MainScreenComponent {
     },
   };
 
+  testimonialsButtonOptions: DxButtonTypes.Properties = {
+    text: 'Testimonials',
+    onClick: () => {
+      this.topNavService.navigate({ id: 0, name:'Testimonials', route:'testimonials', icon: 'toolbox', level: 0})
+    },
+  };
+
   logsButtonOptions: DxButtonTypes.Properties = {
     text: 'Logs',
     onClick: () => {

@@ -21,6 +21,7 @@ import { CouponManagerComponent } from './admin/coupon-manager/coupon-manager.co
 import { WebConfigManagerComponent } from './admin/web-config-manager/web-config-manager.component';
 import { LunchAndLearnsComponent } from './admin/requests/lunch-and-learns/lunch-and-learns.component';
 import { RequestsComponent } from './admin/requests/requests.component';
+import { TestimonialsManagerComponent } from './admin/testimonials-manager/testimonials-manager.component';
 
 const routes: Routes = [
   {
@@ -76,6 +77,11 @@ const routes: Routes = [
       {
         path: 'coupons',
         component: CouponManagerComponent,
+        canActivate: [ AuthGuardService ]
+      },
+      {
+        path: 'testimonials',
+        component: TestimonialsManagerComponent,
         canActivate: [ AuthGuardService ]
       },
       {

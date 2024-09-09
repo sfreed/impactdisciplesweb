@@ -15,7 +15,7 @@
     <dxi-item location="before">
       <div *dxTemplate>
         <div class="toolbar-label">
-          <b>Coupon Manager</b>
+          <b>Testimonial Manager</b>
         </div>
       </div>
     </dxi-item>
@@ -30,20 +30,26 @@
     [allowUpdating]="true"
     [allowDeleting]="true">
     <dxo-popup
-      title="Coupons"
+      title="Testimonials"
       [showTitle]="true"
-      [width]="500"
-      [height]="250">
+      [width]="600"
+      [height]="600">
     </dxo-popup>
     <dxo-form [colCount]="2">
-      <dxi-item dataField="code" [colSpan]="1"></dxi-item>
-      <dxi-item dataField="isActive" [colSpan]="1" [editorType]="'dxSwitch'" [editorOptions]="{ switchedOnText: 'Yes', switchedOffText: 'No' }"></dxi-item>
-      <dxi-item dataField="percentOff" [colSpan]="1"></dxi-item>
-      <dxi-item dataField="percentOff" [colSpan]="1"></dxi-item>
+      <dxi-item dataField="author" [colSpan]="1"></dxi-item>
+      <dxi-item dataField="date" [colSpan]="1"></dxi-item>
+      <dxi-item dataField="title" [colSpan]="2"></dxi-item>
+      <dxi-item dataField="text" [colSpan]="2" [editorType]="'dxTextArea'" [editorOptions]="{ height: 250 }"></dxi-item>
+      <dxi-item dataField="type" [colSpan]="2"></dxi-item>
     </dxo-form>
   </dxo-editing>
-  <dxi-column dataField="code"></dxi-column>
-  <dxi-column dataField="isActive" dataType="boolean"></dxi-column>
-  <dxi-column dataField="percentOff" dataType="number"></dxi-column>
-  <dxi-column dataField="dollarsOff" dataType="number" format="currency"></dxi-column>
+  <dxi-column dataField="author"></dxi-column>
+  <dxi-column dataField="date" [dataType]="'date'"></dxi-column>
+  <dxi-column dataField="title"></dxi-column>
+  <dxi-column dataField="text" [visible]="false"></dxi-column>
+  <dxi-column dataField="type" [caption]="'Testimonial Type'">
+    <dxo-lookup [dataSource]="testimonials"></dxo-lookup>
+
+  </dxi-column>
+
 </dx-data-grid>

@@ -18,6 +18,7 @@ import { LunchAndLearnsComponent } from './requests/lunch-and-learns/lunch-and-l
 import { SeminarsComponent } from './requests/seminars/seminars.component';
 import { PhoneNumberMaskPipe } from 'impactdisciplescommon/src/pipes/phone-number.pipe';
 import { ImpactDisciplesModule } from 'impactdisciplescommon/src/impactdisciples.common.module';
+import { TestimonialsManagerComponent } from './testimonials-manager/testimonials-manager.component';
 
 
 @NgModule({
@@ -49,7 +50,8 @@ import { ImpactDisciplesModule } from 'impactdisciplescommon/src/impactdisciples
     WebConfigManagerComponent,
     RequestsComponent,
     LunchAndLearnsComponent,
-    SeminarsComponent
+    SeminarsComponent,
+    TestimonialsManagerComponent
   ],
   providers:[
     PhoneNumberMaskPipe
