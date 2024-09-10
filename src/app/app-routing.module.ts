@@ -1,7 +1,5 @@
-import { UsersComponent } from './admin/users/users.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { LogMessagesComponent } from './admin/log-messages/log-messages.component';
 import { CapturePasswordFormComponent } from 'impactdisciplescommon/src/forms/capture-password-form/capture-password-form.component';
 import { CaptureUsernameFormComponent } from 'impactdisciplescommon/src/forms/capture-username-form/capture-username-form.component';
 import { ChangePasswordFormComponent } from 'impactdisciplescommon/src/forms/change-password-form/change-password-form.component';
@@ -9,19 +7,11 @@ import { CreateAuthFormComponent } from 'impactdisciplescommon/src/forms/create-
 import { ResetPasswordFormComponent } from 'impactdisciplescommon/src/forms/reset-password-form/reset-password-form.component';
 import { AuthGuardService } from 'impactdisciplescommon/src/services/utils/auth.service';
 import { MainScreenComponent } from './core/main-screen/main-screen.component';
-import { EventManagerComponent } from './events/event-manager/event-manager.component';
-import { CoachManagerComponent } from './events/coach-manager/coach-manager.component';
-import { CourseManagerComponent } from './events/course-manager/course-manager.component';
-import { OrganizationManagerComponent } from './events/organization-manager/organization-manager.component';
-import { LocationManagerComponent } from './events/location-manager/location-manager.component';
-import { NotificationsComponent } from './admin/notifications/notifications.component';
-import { SubscriptionsComponent } from './admin/subscriptions/subscriptions.component';
-import { MediaComponent } from './admin/media/media.component';
-import { CouponManagerComponent } from './admin/coupon-manager/coupon-manager.component';
-import { WebConfigManagerComponent } from './admin/web-config-manager/web-config-manager.component';
-import { LunchAndLearnsComponent } from './admin/requests/lunch-and-learns/lunch-and-learns.component';
-import { RequestsComponent } from './admin/requests/requests.component';
-import { TestimonialsManagerComponent } from './admin/testimonials-manager/testimonials-manager.component';
+import { WebManagerComponent } from './web-manager/web-manager.component';
+import { SubscriptionsManagerComponent } from './subscriptions-manager/subscriptions-manager.component';
+import { RequestsManagerComponent } from './requests-manager/requests-manager.component';
+import { AdminManagerComponent } from './admin-manager/admin-manager.component';
+import { EventsManagerComponent } from './events-manager/events-manager.component';
 
 const routes: Routes = [
   {
@@ -30,78 +20,28 @@ const routes: Routes = [
     canActivate: [ AuthGuardService ],
     children: [
       {
-        path: 'events',
-        component: EventManagerComponent,
+        path: 'admin-manager',
+        component: AdminManagerComponent,
         canActivate: [ AuthGuardService ]
       },
       {
-        path: 'lunch-and-learns',
-        component: LunchAndLearnsComponent,
+        path: 'events-manager',
+        component: EventsManagerComponent,
         canActivate: [ AuthGuardService ]
       },
       {
-        path: 'coaches',
-        component: CoachManagerComponent,
+        path: 'requests-manager',
+        component: RequestsManagerComponent,
         canActivate: [ AuthGuardService ]
       },
       {
-        path: 'courses',
-        component: CourseManagerComponent,
+        path: 'subscriptions-manager',
+        component: SubscriptionsManagerComponent,
         canActivate: [ AuthGuardService ]
       },
       {
-        path: 'organizations',
-        component: OrganizationManagerComponent,
-        canActivate: [ AuthGuardService ]
-      },
-      {
-        path: 'locations',
-        component: LocationManagerComponent,
-        canActivate: [ AuthGuardService ]
-      },
-      {
-        path: 'subscriptions',
-        component: SubscriptionsComponent,
-        canActivate: [ AuthGuardService ]
-      },
-      {
-        path: 'event-requests',
-        component: RequestsComponent,
-        canActivate: [ AuthGuardService ]
-      },
-      {
-        path: 'media',
-        component: MediaComponent,
-        canActivate: [ AuthGuardService ]
-      },
-      {
-        path: 'coupons',
-        component: CouponManagerComponent,
-        canActivate: [ AuthGuardService ]
-      },
-      {
-        path: 'testimonials',
-        component: TestimonialsManagerComponent,
-        canActivate: [ AuthGuardService ]
-      },
-      {
-        path: 'web-config',
-        component: WebConfigManagerComponent,
-        canActivate: [ AuthGuardService ]
-      },
-      {
-        path: 'users',
-        component: UsersComponent,
-        canActivate: [ AuthGuardService ]
-      },
-      {
-        path: 'notifications',
-        component: NotificationsComponent,
-        canActivate: [ AuthGuardService ]
-      },
-      {
-        path: 'log-messages',
-        component: LogMessagesComponent,
+        path: 'web-manager',
+        component: WebManagerComponent,
         canActivate: [ AuthGuardService ]
       }
     ]

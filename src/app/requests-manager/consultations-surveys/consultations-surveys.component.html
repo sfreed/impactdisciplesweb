@@ -1,0 +1,80 @@
+<div class="content-block">
+  <dx-data-grid class="dx-card wide-card"
+    #grid
+    [dataSource]="dataSource"
+    [width]="'100%'"
+    [showBorders]="false"
+    [focusedRowEnabled]="true"
+    [columnAutoWidth]="true"
+    [columnHidingEnabled]="true"
+    (onRowUpdating)="onRowUpdating($event)">
+
+    <dxo-paging [pageSize]="10"></dxo-paging>
+    <dxo-pager [showPageSizeSelector]="true" [showInfo]="true"></dxo-pager>
+    <dxo-search-panel [visible]="true" placeholder="Search..."></dxo-search-panel>
+    <dxo-toolbar>
+      <dxi-item location="before">
+        <div *dxTemplate>
+          <div class="toolbar-label">
+            <b>Consultation Surveys</b>
+          </div>
+        </div>
+      </dxi-item>
+
+      <dxi-item name="addRowButton"></dxi-item>
+      <dxi-item name="searchPanel"></dxi-item>
+    </dxo-toolbar>
+    <dxo-editing
+      mode="popup"
+      [allowAdding]="true"
+      [allowUpdating]="true"
+      [allowDeleting]="true"
+      [useIcons]="true">
+      <dxo-popup
+        title="Consultation Request"
+        [showTitle]="true"
+        [width]="850"
+        [height]="550">
+      </dxo-popup>
+      <dxo-form [colCount]="4">
+        <dxi-item dataField="firstName" [colSpan]="2"></dxi-item>
+        <dxi-item dataField="lastName" [colSpan]="2"></dxi-item>
+        <dxi-item dataField="email" [colSpan]="4"></dxi-item>
+        <dxi-item itemType="group" caption="Phone" [colCount]="6" [colSpan]="4">
+          <dxi-item dataField="phone.countryCode" [colSpan]="2"></dxi-item>
+          <dxi-item dataField="phone.number" [colSpan]="2" ></dxi-item>
+          <dxi-item dataField="phone.type" [colSpan]="2"></dxi-item>
+        </dxi-item>
+        <dxi-item dataField="churchName" [colSpan]="2"></dxi-item>
+        <dxi-item dataField="country" [colSpan]="2"></dxi-item>
+        <dxi-item dataField="commitment" [colSpan]="2"></dxi-item>
+        <dxi-item dataField="readiness" [colSpan]="2"></dxi-item>
+        <dxi-item dataField="strategyDescription" [colSpan]="4" [editorType]="'dxTextArea'" [editorOptions]="{ height: 150 }"></dxi-item>
+        <dxi-item dataField="teamDescription" [colSpan]="4" [editorType]="'dxTextArea'" [editorOptions]="{ height: 150 }"></dxi-item>
+        <dxi-item dataField="communicationDescription" [colSpan]="4" [editorType]="'dxTextArea'" [editorOptions]="{ height: 150 }"></dxi-item>
+        <dxi-item dataField="resourceDescription" [colSpan]="4" [editorType]="'dxTextArea'" [editorOptions]="{ height: 150 }"></dxi-item>
+        <dxi-item dataField="resultsDescription" [colSpan]="4" [editorType]="'dxTextArea'" [editorOptions]="{ height: 150 }"></dxi-item>
+        <dxi-item dataField="supportDescription" [colSpan]="4" [editorType]="'dxTextArea'" [editorOptions]="{ height: 150 }"></dxi-item>
+      </dxo-form>
+    </dxo-editing>
+    <dxi-column dataField="firstName"></dxi-column>
+    <dxi-column dataField="lastName"></dxi-column>
+    <dxi-column dataField="email"></dxi-column>
+    <dxi-column dataField="phone.countryCode" [caption]="'Country Code'" [visible]="false"></dxi-column>
+    <dxi-column dataField="phone.number" [caption]="'Number'" [editorOptions]="{ mask: '(000) 000-0000' }" cellTemplate="phoneNumberCellTemplate"></dxi-column>
+    <dxi-column dataField="phone.type" [caption]="'Type'"  [visible]="false">
+      <dxo-lookup [dataSource]="phone_types"></dxo-lookup>
+    </dxi-column>
+    <dxi-column dataField="churchName"></dxi-column>
+    <dxi-column dataField="country" [visible]="false"></dxi-column>
+    <dxi-column dataField="commitment" [dataType]="'number'" [visible]="false"></dxi-column>
+    <dxi-column dataField="readiness" [dataType]="'number'" [visible]="false"></dxi-column>
+    <dxi-column dataField="strategyDescription" [visible]="false"></dxi-column>
+    <dxi-column dataField="teamDescription" [visible]="false"></dxi-column>
+    <dxi-column dataField="communicationDescription" [visible]="false"></dxi-column>
+    <dxi-column dataField="resourceDescription" [visible]="false"></dxi-column>
+    <dxi-column dataField="resultsDescription" [visible]="false"></dxi-column>
+    <dxi-column dataField="supportDescription" [visible]="false"></dxi-column>
+    <dxi-column dataField="date" [dataType]="'date'" [visible]="false"></dxi-column>
+  </dx-data-grid>
+</div>

@@ -6,11 +6,14 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { environment } from 'src/environments/environment';
 import { ToastrModule } from 'ngx-toastr';
-import { AdminModule } from './admin/admin.module';
+import { AdminManagerModule } from './admin-manager/admin-manager.module';
 import { ImpactDisciplesModule } from 'impactdisciplescommon/src/impactdisciples.common.module';
-import { EventsModule } from './events/events.module';
+import { EventsManagerModule } from './events-manager/events-manager.module';
 import { CoreModule } from './core/core.module';
 import { CookieService } from 'ngx-cookie-service';
+import { RequestsManagerModule } from './requests-manager/requests-manager.module';
+import { SubscriptionsManagerModule } from './subscriptions-manager/subscriptions-manager.module';
+import { WebManagerModule } from './web-manager/web-manager.module';
 
 @NgModule({
   declarations: [
@@ -22,9 +25,12 @@ import { CookieService } from 'ngx-cookie-service';
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
     provideFirestore(() => getFirestore()),
     ToastrModule.forRoot(),
-    AdminModule,
+    AdminManagerModule,
+    RequestsManagerModule,
+    SubscriptionsManagerModule,
+    WebManagerModule,
     CoreModule,
-    EventsModule,
+    EventsManagerModule,
     ImpactDisciplesModule
 
   ],

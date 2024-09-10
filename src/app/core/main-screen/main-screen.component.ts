@@ -9,101 +9,38 @@ import { TopNavService } from 'impactdisciplescommon/src/services/utils/top-nav.
   styleUrls: ['./main-screen.component.css']
 })
 export class MainScreenComponent {
-  eventButtonOptions: DxButtonTypes.Properties = {
-    text: 'Events',
+  eventManagerButtonOptions: DxButtonTypes.Properties = {
+    text: 'Events Manager',
     onClick: () => {
-      this.topNavService.navigate({ id: 0, name:'Events', route:'events', icon: 'home', level: 0})
+      this.topNavService.navigate({ id: 0, name:'Events Manager', route:'events-manager', icon: 'home', level: 0})
     },
   };
 
-  requestsButtonOptions: DxButtonTypes.Properties = {
-    text: 'Event Requests',
+  webManagerButtonOptions: DxButtonTypes.Properties = {
+    text: 'Web Manager',
     onClick: () => {
-      this.topNavService.navigate({ id: 0, name:'Event Requests', route:'event-requests', icon: 'home', level: 0})
+      this.topNavService.navigate({ id: 0, name:'Web Manager', route:'web-manager', icon: 'toolbox', level: 0})
     },
   };
 
-  coachesButtonOptions: DxButtonTypes.Properties = {
-    text: 'Coaches',
+  subscriptionsManagerButtonOptions: DxButtonTypes.Properties = {
+    text: 'Subscriptions Manager',
     onClick: () => {
-      this.topNavService.navigate({ id: 0, name:'Events', route:'coaches', icon: 'home', level: 0})
+      this.topNavService.navigate({ id: 0, name:'Subscriptions Manager', route:'subscriptions-manager', icon: 'toolbox', level: 0})
     },
   };
 
-  coursesButtonOptions: DxButtonTypes.Properties = {
-    text: 'Courses',
+  requestsManagerButtonOptions: DxButtonTypes.Properties = {
+    text: 'Requests Manager',
     onClick: () => {
-      this.topNavService.navigate({ id: 0, name:'Events', route:'courses', icon: 'home', level: 0})
+      this.topNavService.navigate({ id: 0, name:'Requests Manager', route:'requests-manager', icon: 'toolbox', level: 0})
     },
   };
 
-  organizationsButtonOptions: DxButtonTypes.Properties = {
-    text: 'Organizations',
+  adminManagerButtonOptions: DxButtonTypes.Properties = {
+    text: 'Admin Manager',
     onClick: () => {
-      this.topNavService.navigate({ id: 0, name:'Events', route:'organizations', icon: 'home', level: 0})
-    },
-  };
-
-  locationsButtonOptions: DxButtonTypes.Properties = {
-    text: 'Locations',
-    onClick: () => {
-      this.topNavService.navigate({ id: 0, name:'Events', route:'locations', icon: 'home', level: 0})
-    },
-  };
-
-  usersButtonOptions: DxButtonTypes.Properties = {
-    text: 'Users',
-    onClick: () => {
-      this.topNavService.navigate({ id: 0, name:'Users', route:'users', icon: 'toolbox', level: 0})
-    },
-  };
-
-  notificationsButtonOptions: DxButtonTypes.Properties = {
-    text: 'Notifications',
-    onClick: () => {
-      this.topNavService.navigate({ id: 0, name:'Notifications', route:'notifications', icon: 'toolbox', level: 0})
-    },
-  };
-
-  subscriptionsButtonOptions: DxButtonTypes.Properties = {
-    text: 'Subscriptions',
-    onClick: () => {
-      this.topNavService.navigate({ id: 0, name:'Subscriptions', route:'subscriptions', icon: 'toolbox', level: 0})
-    },
-  };
-
-  mediaButtonOptions: DxButtonTypes.Properties = {
-    text: 'Media',
-    onClick: () => {
-      this.topNavService.navigate({ id: 0, name:'Media', route:'media', icon: 'toolbox', level: 0})
-    },
-  };
-
-  webConfigButtonOptions: DxButtonTypes.Properties = {
-    text: 'Web Config',
-    onClick: () => {
-      this.topNavService.navigate({ id: 0, name:'Web Config', route:'web-config', icon: 'toolbox', level: 0})
-    },
-  };
-
-  couponButtonOptions: DxButtonTypes.Properties = {
-    text: 'Coupons',
-    onClick: () => {
-      this.topNavService.navigate({ id: 0, name:'Coupon', route:'coupons', icon: 'toolbox', level: 0})
-    },
-  };
-
-  testimonialsButtonOptions: DxButtonTypes.Properties = {
-    text: 'Testimonials',
-    onClick: () => {
-      this.topNavService.navigate({ id: 0, name:'Testimonials', route:'testimonials', icon: 'toolbox', level: 0})
-    },
-  };
-
-  logsButtonOptions: DxButtonTypes.Properties = {
-    text: 'Logs',
-    onClick: () => {
-      this.topNavService.navigate({ id: 0, name:'Logs', route:'log-messages', icon: 'toolbox', level: 0})
+      this.topNavService.navigate({ id: 0, name:'Admin Manager', route:'admin-manager', icon: 'toolbox', level: 0})
     },
   };
 
