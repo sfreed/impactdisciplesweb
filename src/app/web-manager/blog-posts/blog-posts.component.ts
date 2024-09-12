@@ -1,7 +1,9 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import CustomStore from 'devextreme/data/custom_store';
+import DataSource from 'devextreme/data/data_source';
 import { BlogPostModel } from 'impactdisciplescommon/src/models/domain/blog-post.model';
 import { BlogPostService } from 'impactdisciplescommon/src/services/blog-post.service';
+import { map, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-blog-posts',
@@ -14,25 +16,34 @@ export class BlogPostsComponent {
   @Input() editPostVisible: boolean = false;
   @Output() imageSelectClosed = new EventEmitter<boolean>();
 
-  dataSource: any;
+  dataSource: Observable<DataSource>;
 
   constructor(private service: BlogPostService) {
-    this.dataSource = new CustomStore({
-      key: 'id',
-      loadMode: 'raw',
-      load: function (loadOptions: any) {
-        return service.getAll();
-      },
-      insert: function (value: BlogPostModel) {
-        return service.add(value);
-      },
-      update: function (key: any, value: BlogPostModel) {
-        return service.update(key, value)
-      },
-      remove: function (id: any) {
-        return service.delete(id);
-      },
-    });
+    this.dataSource = this.service.streamAll().pipe(
+      map(
+        (items) =>
+          new DataSource({
+            reshapeOnPush: true,
+            pushAggregationTimeout: 100,
+            store: new CustomStore({
+              key: 'id',
+              loadMode: 'raw',
+              load: function (loadOptions: any) {
+                return items;
+              },
+              insert: function (value: BlogPostModel) {
+                return service.add(value);
+              },
+              update: function (key: any, value: BlogPostModel) {
+                return service.update(key, value)
+              },
+              remove: function (id: any) {
+                return service.delete(id);
+              },
+            })
+          })
+      )
+    );
    }
 
   onRowUpdating(options) {

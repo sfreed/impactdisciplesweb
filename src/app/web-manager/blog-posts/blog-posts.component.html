@@ -1,6 +1,6 @@
 <dx-data-grid class="dx-card wide-card"
   #grid
-  [dataSource]="dataSource"
+  [dataSource]="dataSource | async"
   [width]="'100%'"
   [showBorders]="false"
   [focusedRowEnabled]="true"
@@ -42,14 +42,14 @@
   <dxi-column dataField="subject"></dxi-column>
   <dxi-column dataField="blogText" [visible]="false"></dxi-column>
   <dxi-column dataField="extraImages" [visible]="false"></dxi-column>
-  <dxi-column type="buttons" [width]="150" [fixed]="true" caption="Actions">
+  <dxi-column type="buttons" [width]="150" caption="Actions">
     <dxi-button icon="comment" hint="Edit Blog Post" [onClick]="editPost.bind(this)"></dxi-button>
     <dxi-button icon="image" hint="Upload Main Image" [onClick]="editImage.bind(this)"></dxi-button>
     <dxi-button icon="folder" hint="Upload Blog Images" [onClick]="addImages.bind(this)"></dxi-button>
     <dxi-button icon="trash" name="delete"></dxi-button>
   </dxi-column>
   <div *dxTemplate="let data of 'cellTemplate'">
-    <img  width="100" [src]="data.value.url" [alt]="data.value.name"/>
+    <img *ngIf="data?.value" width="100" [src]="data?.value?.url" [alt]="data?.value?.name"/>
   </div>
 </dx-data-grid>
 

@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import CustomStore from 'devextreme/data/custom_store';
+import DataSource from 'devextreme/data/data_source';
 import { TESTIMONIAL_TYPES } from 'impactdisciplescommon/src/lists/testimonial_types.enum';
+import { PodCastModel } from 'impactdisciplescommon/src/models/domain/pod-cast-model';
 import { TestimonialModel } from 'impactdisciplescommon/src/models/domain/testimonial.model';
 import { TestimonialService } from 'impactdisciplescommon/src/services/utils/testimonial.service';
 import { EnumHelper } from 'impactdisciplescommon/src/utils/enum_helper';
+import { map, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-testimonials',
@@ -11,27 +14,36 @@ import { EnumHelper } from 'impactdisciplescommon/src/utils/enum_helper';
   styleUrls: ['./testimonials.component.css']
 })
 export class TestimonialsComponent implements OnInit{
-  dataSource: any;
+  dataSource: Observable<DataSource>;
 
   testimonials:TESTIMONIAL_TYPES[] = [];
 
-  constructor(service: TestimonialService) {
-    this.dataSource = new CustomStore({
-      key: 'id',
-      loadMode: 'raw',
-      load: function (loadOptions: any) {
-        return service.getAll();
-      },
-      insert: function (value: TestimonialModel) {
-        return service.add(value);
-      },
-      update: function (key: any, value: TestimonialModel) {
-        return service.update(key, value)
-      },
-      remove: function (id: any) {
-        return service.delete(id);
-      },
-    });
+  constructor(private service: TestimonialService) {
+    this.dataSource = this.service.streamAll().pipe(
+      map(
+        (items) =>
+          new DataSource({
+            reshapeOnPush: true,
+            pushAggregationTimeout: 100,
+            store: new CustomStore({
+              key: 'id',
+              loadMode: 'raw',
+              load: function (loadOptions: any) {
+                return items;
+              },
+              insert: function (value: TestimonialModel) {
+                return service.add(value);
+              },
+              update: function (key: any, value: TestimonialModel) {
+                return service.update(key, value)
+              },
+              remove: function (id: any) {
+                return service.delete(id);
+              },
+            })
+          })
+      )
+    );
    }
 
   async ngOnInit(): Promise<void> {

@@ -14,6 +14,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { RequestsManagerModule } from './requests-manager/requests-manager.module';
 import { SubscriptionsManagerModule } from './subscriptions-manager/subscriptions-manager.module';
 import { WebManagerModule } from './web-manager/web-manager.module';
+import { NgxsModule } from '@ngxs/store';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { WebManagerModule } from './web-manager/web-manager.module';
   imports: [
     BrowserModule,
     AppRoutingModule,
+    NgxsModule.forRoot([], { developmentMode: !environment.production }),
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
     provideFirestore(() => getFirestore()),
     ToastrModule.forRoot(),
