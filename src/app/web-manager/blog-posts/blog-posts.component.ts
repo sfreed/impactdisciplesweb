@@ -1,8 +1,11 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { DxTagBoxTypes } from 'devextreme-angular/ui/tag-box';
 import CustomStore from 'devextreme/data/custom_store';
 import DataSource from 'devextreme/data/data_source';
 import { BlogPostModel } from 'impactdisciplescommon/src/models/domain/blog-post.model';
+import { BlogTagModel } from 'impactdisciplescommon/src/models/domain/blog-tag.model';
 import { BlogPostService } from 'impactdisciplescommon/src/services/blog-post.service';
+import { BlogTagsService } from 'impactdisciplescommon/src/services/blog-tags.service';
 import { map, Observable } from 'rxjs';
 
 @Component({
@@ -10,7 +13,7 @@ import { map, Observable } from 'rxjs';
   templateUrl: './blog-posts.component.html',
   styleUrls: ['./blog-posts.component.css']
 })
-export class BlogPostsComponent {
+export class BlogPostsComponent implements OnInit {
   @Input() imageSelectVisible: boolean = false;
   @Input() multiImageSelectVisible: boolean = false;
   @Input() editPostVisible: boolean = false;
@@ -18,7 +21,9 @@ export class BlogPostsComponent {
 
   dataSource: Observable<DataSource>;
 
-  constructor(private service: BlogPostService) {
+  blogTags: string[] = [];
+
+  constructor(private service: BlogPostService, private blogTagService: BlogTagsService) {
     this.dataSource = this.service.streamAll().pipe(
       map(
         (items) =>
@@ -45,6 +50,13 @@ export class BlogPostsComponent {
       )
     );
    }
+
+  ngOnInit(){
+    this.blogTagService.streamAll().subscribe(tags => {
+      tags.forEach(tag => this.blogTags.push(tag.tag));
+      return tags;
+    });
+  }
 
   onRowUpdating(options) {
     options.newData = Object.assign(options.oldData, options.newData);
@@ -75,5 +87,22 @@ export class BlogPostsComponent {
       this.editPostVisible = false;
       this.imageSelectClosed.emit(false);
     })
+  }
+
+  onCustomItemCreating(args: DxTagBoxTypes.CustomItemCreatingEvent) {
+    if(args.text){
+      let blogTag: BlogTagModel = {... new BlogTagModel()}
+      blogTag.tag = args.text;
+
+      const isItemInDataSource = this.blogTags.some((item) => item === blogTag.tag);
+      if (!isItemInDataSource) {
+
+        this.blogTagService.add(blogTag).then(tag => {
+          this.blogTags.unshift(tag.tag);
+        })
+      }
+
+      args.customItem = blogTag.tag;
+    }
   }
 }

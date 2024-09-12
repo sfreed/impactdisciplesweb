@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DxButtonModule, DxDataGridModule, DxFileUploaderModule, DxFormModule, DxHtmlEditorModule, DxLoadIndicatorModule, DxPopupModule,
-         DxSwitchModule, DxTabsModule, DxTextBoxModule } from 'devextreme-angular';
+         DxSwitchModule, DxTabsModule, DxTagBoxModule, DxTextBoxModule } from 'devextreme-angular';
 import { ImpactFormsModule } from 'impactdisciplescommon/src/forms/forms.module';
 import { PhoneNumberMaskPipe } from 'impactdisciplescommon/src/pipes/phone-number.pipe';
 import { ImpactDisciplesModule } from 'impactdisciplescommon/src/impactdisciples.common.module';
@@ -24,6 +24,7 @@ import { WebManagerComponent } from './web-manager.component';
     DxPopupModule,
     DxSwitchModule,
     DxTabsModule,
+    DxTagBoxModule,
     DxTextBoxModule,
     ImpactDisciplesModule
   ],
