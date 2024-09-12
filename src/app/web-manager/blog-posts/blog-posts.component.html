@@ -34,6 +34,7 @@
       <dxi-item dataField="subject" [colSpan]="2"></dxi-item>
       <dxi-item dataField="blogText" [colSpan]="2" [editorType]="'dxTextArea'" [editorOptions]="{ height: 200 }"></dxi-item>
       <dxi-item dataField="mainImage" [colSpan]="2"></dxi-item>
+      <dxi-item dataField="tags" [colSpan]="2"></dxi-item>
     </dxo-form>
   </dxo-editing>
   <dxi-column dataField="mainImage" [width]="120" cellTemplate="cellTemplate"></dxi-column>
@@ -42,6 +43,7 @@
   <dxi-column dataField="subject"></dxi-column>
   <dxi-column dataField="blogText" [visible]="false"></dxi-column>
   <dxi-column dataField="extraImages" [visible]="false"></dxi-column>
+  <dxi-column dataField="tags" [visible]="false"></dxi-column>
   <dxi-column type="buttons" [width]="150" caption="Actions">
     <dxi-button icon="comment" hint="Edit Blog Post" [onClick]="editPost.bind(this)"></dxi-button>
     <dxi-button icon="image" hint="Upload Main Image" [onClick]="editImage.bind(this)"></dxi-button>
@@ -82,7 +84,7 @@
     [showCloseButton]="true"
     [resizeEnabled]="false"
     [toolbarItems]="[{ location: 'left', text: 'Edit Blog Post' }]">
-    <dx-html-editor height="85%" [(value)]="selectedBlog.blogText">
+    <dx-html-editor height="80%" [(value)]="selectedBlog.blogText">
       <dxo-toolbar [multiline]="false">
         <dxi-item name="undo"></dxi-item>
         <dxi-item name="redo"></dxi-item>
@@ -146,9 +148,25 @@
         <dxi-item name="deleteColumn"></dxi-item>
       </dxo-toolbar>
     </dx-html-editor>
+    <div class="row pt-1">
+      <div class="col-12"><b>Tags</b></div>
+    </div>
     <div class="row pt-2">
+      <div class="col-12">
+        <dx-tag-box
+          [dataSource]="blogTags"
+          [(value)]="selectedBlog.tags"
+          [acceptCustomValue]="true"
+          [searchEnabled]="true"
+          [hideSelectedItems]="true"
+          placeholder="Tag this Blog..."
+          (onCustomItemCreating)="onCustomItemCreating($event)">
+        </dx-tag-box>
+      </div>
+    </div>
+    <div class="row pt-1">
       <div class="col-11"></div>
-      <div class="col-1">
+      <div class="col-1 alignRight">
         <dx-button text="Save" (onClick)="closeItemWindow($event)"></dx-button>
       </div>
     </div>
