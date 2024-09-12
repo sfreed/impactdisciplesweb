@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import CustomStore from 'devextreme/data/custom_store';
+import DataSource from 'devextreme/data/data_source';
 import { PrayerTeamSubscriptionModel } from 'impactdisciplescommon/src/models/domain/prayer-team-subscription.model';
 import { PrayerTeamSubscriptionService } from 'impactdisciplescommon/src/services/prayer-team-subscription.service';
+import { Observable, map } from 'rxjs';
 
 @Component({
   selector: 'app-prayer-team-subscription',
@@ -9,25 +11,34 @@ import { PrayerTeamSubscriptionService } from 'impactdisciplescommon/src/service
   styleUrls: ['./prayer-team-subscription.component.css']
 })
 export class PrayerTeamSubscriptionComponent {
-  dataSource: any;
+  dataSource: Observable<DataSource>;
 
-  constructor(service: PrayerTeamSubscriptionService) {
-    this.dataSource = new CustomStore({
-      key: 'id',
-      loadMode: 'raw',
-      load: function (loadOptions: any) {
-        return service.getAll();
-      },
-      insert: function (value: PrayerTeamSubscriptionModel) {
-        return service.add(value);
-      },
-      update: function (key: any, value: PrayerTeamSubscriptionModel) {
-        return service.update(key, value)
-      },
-      remove: function (id: any) {
-        return service.delete(id);
-      },
-    });
+  constructor(private service: PrayerTeamSubscriptionService) {
+    this.dataSource = this.service.streamAll().pipe(
+      map(
+        (items) =>
+          new DataSource({
+            reshapeOnPush: true,
+            pushAggregationTimeout: 100,
+            store: new CustomStore({
+              key: 'id',
+              loadMode: 'raw',
+              load: function (loadOptions: any) {
+                return items;
+              },
+              insert: function (value: PrayerTeamSubscriptionModel) {
+                return service.add(value);
+              },
+              update: function (key: any, value: PrayerTeamSubscriptionModel) {
+                return service.update(key, value)
+              },
+              remove: function (id: any) {
+                return service.delete(id);
+              },
+            })
+          })
+      )
+    );
    }
 
   ngOnInit() {

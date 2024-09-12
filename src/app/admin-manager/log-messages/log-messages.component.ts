@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import CustomStore from 'devextreme/data/custom_store';
+import DataSource from 'devextreme/data/data_source';
 import { LogMessage } from 'impactdisciplescommon/src/models/utils/log-message.model';
 import { LoggerService } from 'impactdisciplescommon/src/services/utils/logger.service';
+import { Observable, map } from 'rxjs';
 
 @Component({
   selector: 'app-log-messages',
@@ -9,26 +11,34 @@ import { LoggerService } from 'impactdisciplescommon/src/services/utils/logger.s
   styleUrls: ['./log-messages.component.css']
 })
 export class LogMessagesComponent implements OnInit {
+  dataSource: Observable<DataSource>;
 
-  dataSource: any;
-
-  constructor(logService: LoggerService) {
-    this.dataSource = new CustomStore({
-      key: 'id',
-      loadMode: 'raw',
-      load: function (loadOptions: any) {
-        return logService.getAll();
-      },
-      insert: function (value: LogMessage) {
-        return logService.add(value);
-      },
-      update: function (key: any, value: LogMessage) {
-        return logService.update(key, value)
-      },
-      remove: function (id: any) {
-        return logService.delete(id);
-      },
-    });
+  constructor(private service: LoggerService) {
+    this.dataSource = this.service.streamAll().pipe(
+      map(
+        (items) =>
+          new DataSource({
+            reshapeOnPush: true,
+            pushAggregationTimeout: 100,
+            store: new CustomStore({
+              key: 'id',
+              loadMode: 'raw',
+              load: function (loadOptions: any) {
+                return items;
+              },
+              insert: function (value: LogMessage) {
+                return service.add(value);
+              },
+              update: function (key: any, value: LogMessage) {
+                return service.update(key, value)
+              },
+              remove: function (id: any) {
+                return service.delete(id);
+              },
+            })
+          })
+      )
+    );
    }
 
   ngOnInit() {

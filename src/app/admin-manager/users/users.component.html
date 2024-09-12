@@ -2,7 +2,7 @@
 <div class="content-block">
   <dx-data-grid class="dx-card wide-card"
     #grid
-    [dataSource]="dataSource"
+    [dataSource]="dataSource | async"
     [width]="'100%'"
     [showBorders]="false"
     [focusedRowEnabled]="true"

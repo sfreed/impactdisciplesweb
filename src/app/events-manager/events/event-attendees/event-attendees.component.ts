@@ -4,7 +4,6 @@ import DataSource from 'devextreme/data/data_source';
 import { EventRegistrationModel } from 'impactdisciplescommon/src/models/domain/event-registration.model';
 import { EventModel } from 'impactdisciplescommon/src/models/domain/event.model';
 import { EventRegistrationService } from 'impactdisciplescommon/src/services/event-registration.service';
-import { EventService } from 'impactdisciplescommon/src/services/event.service';
 import { map, Observable } from 'rxjs';
 
 @Component({

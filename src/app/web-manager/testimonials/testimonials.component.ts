@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import CustomStore from 'devextreme/data/custom_store';
 import DataSource from 'devextreme/data/data_source';
 import { TESTIMONIAL_TYPES } from 'impactdisciplescommon/src/lists/testimonial_types.enum';
-import { PodCastModel } from 'impactdisciplescommon/src/models/domain/pod-cast-model';
 import { TestimonialModel } from 'impactdisciplescommon/src/models/domain/testimonial.model';
 import { TestimonialService } from 'impactdisciplescommon/src/services/utils/testimonial.service';
 import { EnumHelper } from 'impactdisciplescommon/src/utils/enum_helper';

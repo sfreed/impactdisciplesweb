@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import CustomStore from 'devextreme/data/custom_store';
+import DataSource from 'devextreme/data/data_source';
 import { CouponModel } from 'impactdisciplescommon/src/models/utils/coupon.model';
 import { CouponService } from 'impactdisciplescommon/src/services/utils/coupon.service';
+import { Observable, map } from 'rxjs';
 
 @Component({
   selector: 'app-coupons',
@@ -9,25 +11,34 @@ import { CouponService } from 'impactdisciplescommon/src/services/utils/coupon.s
   styleUrls: ['./coupons.component.css']
 })
 export class CouponsComponent {
-  dataSource: any;
+  dataSource: Observable<DataSource>;
 
-  constructor(service: CouponService) {
-    this.dataSource = new CustomStore({
-      key: 'id',
-      loadMode: 'raw',
-      load: function (loadOptions: any) {
-        return service.getAll();
-      },
-      insert: function (value: CouponModel) {
-        return service.add(value);
-      },
-      update: function (key: any, value: CouponModel) {
-        return service.update(key, value)
-      },
-      remove: function (id: any) {
-        return service.delete(id);
-      },
-    });
+  constructor(private service: CouponService) {
+    this.dataSource = this.service.streamAll().pipe(
+      map(
+        (items) =>
+          new DataSource({
+            reshapeOnPush: true,
+            pushAggregationTimeout: 100,
+            store: new CustomStore({
+              key: 'id',
+              loadMode: 'raw',
+              load: function (loadOptions: any) {
+                return items;
+              },
+              insert: function (value: CouponModel) {
+                return service.add(value);
+              },
+              update: function (key: any, value: CouponModel) {
+                return service.update(key, value)
+              },
+              remove: function (id: any) {
+                return service.delete(id);
+              },
+            })
+          })
+      )
+    );
    }
 
   ngOnInit() {
