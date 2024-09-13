@@ -80,7 +80,7 @@
     <dxi-column dataField="address.country" [caption]="'Country'" [visible]="false"></dxi-column>
 
     <dxi-column dataField="phone.countryCode" [caption]="'Country Code'" [visible]="false"></dxi-column>
-    <dxi-column dataField="phone.number" [caption]="'Number'" [editorOptions]="{ mask: '(000) 000-0000' }" cellTemplate="phoneNumberCellTemplate"></dxi-column>
+    <dxi-column dataField="phone.number" [caption]="'Phone Number'" [editorOptions]="{ mask: '(000) 000-0000' }" cellTemplate="phoneNumberCellTemplate"></dxi-column>
     <dxi-column dataField="phone.type" [caption]="'Type'">
       <dxo-lookup [dataSource]="phone_types"></dxo-lookup>
     </dxi-column>

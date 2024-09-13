@@ -76,5 +76,10 @@
     <dxi-column dataField="resultsDescription" [visible]="false"></dxi-column>
     <dxi-column dataField="supportDescription" [visible]="false"></dxi-column>
     <dxi-column dataField="date" [dataType]="'date'" [visible]="false"></dxi-column>
+    <div *dxTemplate="let cell of 'phoneNumberCellTemplate'">
+      <div class="">
+        {{ cell.data.phone | phoneNumberMask : false }}
+      </div>
+    </div>
   </dx-data-grid>
 </div>
