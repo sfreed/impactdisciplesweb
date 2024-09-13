@@ -31,7 +31,7 @@ export class OrganizationsComponent implements OnInit {
               key: 'id',
               loadMode: 'raw',
               load: function (loadOptions: any) {
-                return organizationService.getAll();
+                return items;
               },
               insert: function (value: OrganizationModel) {
                 return organizationService.add(value);

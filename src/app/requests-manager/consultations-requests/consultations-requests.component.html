@@ -31,13 +31,13 @@
       [allowDeleting]="true"
       [useIcons]="true">
       <dxo-popup
-        title="Consultation Request"
-        [showTitle]="false"
+        title="Add/Edit Consultation Request"
+        [showTitle]="true"
         [width]="650"
         [height]="550">
       </dxo-popup>
       <dxo-form [colCount]="1">
-        <dxi-item itemType="group" caption="Event" [colCount]="4" [colSpan]="1">
+        <dxi-item itemType="group" [colCount]="4" [colSpan]="1">
           <dxi-item dataField="firstName" [colSpan]="2"></dxi-item>
           <dxi-item dataField="lastName" [colSpan]="2"></dxi-item>
           <dxi-item dataField="email" [colSpan]="4"></dxi-item>

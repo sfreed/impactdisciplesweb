@@ -11,7 +11,7 @@ export class RequestsManagerComponent {
   selectedTab: string = 'Consultation Requests';
 
   tabs: Tab[] = [
-    { id: 0, text: 'Consultation Requests', template: 'Newsletters' },
+    { id: 0, text: 'Consultation Requests', template: 'Consultation Requests' },
     { id: 1, text: 'Consultation Surveys', template: 'Consultation Surveys' },
     { id: 2, text: 'Lunch and Learn Requests', template: 'Lunch and Learn Requests' },
     { id: 3, text: 'Seminar Requests', template: 'Seminar Requests' }
