@@ -1,38 +1,92 @@
-<div class="content-block">
-  <dx-data-grid class="dx-card wide-card"
-    #grid
-    [dataSource]="dataSource | async"
-    [width]="'100%'"
-    [showBorders]="false"
-    [focusedRowEnabled]="true"
-    [columnAutoWidth]="true"
-    [columnHidingEnabled]="true"
-    (onRowUpdating)="onRowUpdating($event)">
-
-    <dxo-paging [pageSize]="10"></dxo-paging>
-    <dxo-pager [showPageSizeSelector]="true" [showInfo]="true"></dxo-pager>
-    <dxo-search-panel [visible]="true" placeholder="Search..."></dxo-search-panel>
-    <dxo-toolbar>
-      <dxi-item location="before">
-        <div *dxTemplate>
-          <div class="toolbar-label">
-            <b>Newsletter Subscriptions</b>
-          </div>
-        </div>
-      </dxi-item>
-
-      <dxi-item name="addRowButton"></dxi-item>
-      <dxi-item name="searchPanel"></dxi-item>
-    </dxo-toolbar>
-    <dxo-editing
-      mode="row"
-      [useIcons]="true"
-      [allowAdding]="true"
-      [allowUpdating]="true"
-      [allowDeleting]="true">
-    </dxo-editing>
-    <dxi-column dataField="firstName"></dxi-column>
-    <dxi-column dataField="lastName"></dxi-column>
-    <dxi-column dataField="email"></dxi-column>
-  </dx-data-grid>
+<h2 class="content-block responsive-paddings underline">Newsletter Subscription</h2>
+<div class="content-block responsive-paddings">
+  <dx-toolbar class="content-list__header">
+    <dxi-item
+      location="after"
+      widget="dxButton"
+      [options]="{
+        hint: 'ADD',
+        type: 'default',
+        text: 'ADD',
+        stylingMode: 'contained',
+        onClick: showAddNewsletterModal
+      }"
+    ></dxi-item>
+  </dx-toolbar>
 </div>
+
+<dx-data-grid
+  #newsletterGrid
+  [dataSource]="newletterList$ | async"
+  [width]="'100%'"
+  [keyExpr]="'id'"
+  [showBorders]="true"
+  [showColumnLines]="true"
+  [showRowLines]="true"
+  [focusedRowEnabled]="true"
+  [columnAutoWidth]="true"
+>
+  <dxo-paging [pageSize]="10"></dxo-paging>
+  <dxo-pager [showPageSizeSelector]="true" [showInfo]="true"></dxo-pager>
+  <dxo-filter-row [visible]="true"></dxo-filter-row>
+
+  <dxi-column dataField="firstName" caption="First Name"></dxi-column>
+  <dxi-column dataField="lastName" caption="Last Name"></dxi-column>
+  <dxi-column dataField="email" caption="Email"></dxi-column>
+  <dxi-column type="buttons" caption="Actions" [allowReordering]="false">
+    <dxi-button icon="edit" hint="EDIT" [onClick]="showEditNewsletterModal"></dxi-button>
+    <dxi-button icon="trash" hint="DELETE" [onClick]="deleteNewsletterSubscription"></dxi-button>
+  </dxi-column>
+
+</dx-data-grid>
+
+<dx-popup
+  #newsletterPopup
+  [showTitle]="true"
+  [dragEnabled]="false"
+  [visible]="isVisible$ | async"
+  height="300px"
+  width="500px"
+  [showCloseButton]="true"
+  (onHiding)="onCancel()"
+>
+  <dxi-toolbar-item toolbar="top" location="center">
+    <div *dxTemplate>
+      <p class="popup-title">
+        {{ newsletter?.id ? 'EDIT' : 'ADD' }} NEWSLETTER SUBSCRIPTION
+      </p>
+    </div>
+  </dxi-toolbar-item>
+  <div *dxTemplate="let data of 'content'">
+    <div class="add-item-modal">
+      <div class="add-item-modal__content" *ngIf="isVisible$ | async">
+        <dx-form
+          #newsletterForm
+          [(formData)]="newsletter"
+          [showColonAfterLabel]="false"
+          labelLocation="left"
+        >
+          <dxi-item dataField="firstName" [label]="{ text: 'First Name' }" [isRequired]="true"></dxi-item>
+          <dxi-item dataField="lastName" [label]="{ text: 'Last Name' }" [isRequired]="true"></dxi-item>
+          <dxi-item dataField="email" [label]="{ text: 'Email' }" [isRequired]="true"></dxi-item>
+        </dx-form>
+      </div>
+      <div class="add-item-modal__button-group">
+        <dx-button
+          text="CANCEL"
+          stylingMode="contained"
+          type="normal"
+          [disabled]="inProgress$ | async"
+          (onClick)="onCancel()"
+        ></dx-button>
+        <app-indicator-button
+          [isInProgress]="inProgress$ | async"
+          [title]="'SAVE'"
+          [disabled]="inProgress$ | async"
+          (onClick)="onSave(newsletter)"
+        ></app-indicator-button>
+    
+      </div>
+    </div>
+  </div>
+</dx-popup>
