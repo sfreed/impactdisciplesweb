@@ -15,6 +15,9 @@ import { RequestsManagerModule } from './requests-manager/requests-manager.modul
 import { SubscriptionsManagerModule } from './subscriptions-manager/subscriptions-manager.module';
 import { WebManagerModule } from './web-manager/web-manager.module';
 import { NgxsModule } from '@ngxs/store';
+import { IndicatorButtonComponent } from './shared/indicator-button/indicator-button.component';
+import { DxLoadIndicatorModule } from 'devextreme-angular';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -33,7 +36,8 @@ import { NgxsModule } from '@ngxs/store';
     WebManagerModule,
     CoreModule,
     EventsManagerModule,
-    ImpactDisciplesModule
+    ImpactDisciplesModule,
+    SharedModule
 
   ],
   providers: [
