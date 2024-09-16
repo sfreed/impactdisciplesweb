@@ -15,10 +15,12 @@ export class AdminManagerComponent {
     { id: 1, text: 'Logs', template: 'Logs' },
     { id: 2, text: 'Notifications', template: 'Notifications' },
     { id: 3, text: 'Users', template: 'Users' },
-    { id: 3, text: 'Web Config', template: 'Web Config' }
+    { id: 4, text: 'Web Config', template: 'Web Config' },
+    { id: 5, text: 'Email Templates', template: 'Email Templates' }
   ];
 
   selectTab(e) {
     this.selectedTab = e.itemData.template;
+    this.selectedIndex = e.itemData.id;
   }
 }

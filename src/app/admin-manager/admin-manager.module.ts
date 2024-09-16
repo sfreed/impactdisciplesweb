@@ -13,6 +13,7 @@ import { PhoneNumberMaskPipe } from 'impactdisciplescommon/src/pipes/phone-numbe
 import { ImpactDisciplesModule } from 'impactdisciplescommon/src/impactdisciples.common.module';
 import { AdminManagerComponent } from './admin-manager.component';
 import { SharedModule } from '../shared/shared.module';
+import { EmailTemplatesComponent } from './email-templates/email-templates.component';
 
 
 @NgModule({
@@ -40,7 +41,8 @@ import { SharedModule } from '../shared/shared.module';
     LogMessagesComponent,
     NotificationsComponent,
     UsersComponent,
-    WebConfigComponent
+    WebConfigComponent,
+    EmailTemplatesComponent
   ],
   providers:[
     PhoneNumberMaskPipe
