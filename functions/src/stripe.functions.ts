@@ -2,7 +2,7 @@
 import * as functions from "firebase-functions";
 
 // eslint-disable-next-line max-len
-const stripe = require("stripe")("sk_test_51Pn1LoCnBBfbRmrnnnPcB7b22eouBhl6Pbmco0GNsovWnGFvy6kmh6eFjeGddnJIqQhUEYmLnasJpWLXk36Z6eHz00Vdkfd7ws");
+const stripe = require("stripe")("sk_test_51IP8IBC4Pv6WfeJrQEz7yFtaw4k22dNegkjr9ySOYt6AxnMoGQxLXyQYaD7wuQCcrmu39sS8tCfEGLnwdKlT10Cx00UqG7qkw9");
 
 const cors = require("cors")({
   origin: true,
@@ -20,6 +20,8 @@ exports.checkout = functions.https.onRequest((request, response) => {
         enabled: true,
       },
     });
+
+    console.log(paymentIntent.client_secret);
 
     response.send({
       clientSecret: paymentIntent.client_secret,

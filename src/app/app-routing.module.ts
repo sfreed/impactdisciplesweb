@@ -12,6 +12,7 @@ import { SubscriptionsManagerComponent } from './subscriptions-manager/subscript
 import { RequestsManagerComponent } from './requests-manager/requests-manager.component';
 import { AdminManagerComponent } from './admin-manager/admin-manager.component';
 import { EventsManagerComponent } from './events-manager/events-manager.component';
+import { DashboardComponent } from './core/dashboard/dashboard.component';
 
 const routes: Routes = [
   {
@@ -19,6 +20,11 @@ const routes: Routes = [
     component: MainScreenComponent,
     canActivate: [ AuthGuardService ],
     children: [
+      {
+        path: '',
+        component: DashboardComponent,
+        canActivate: [ AuthGuardService ]
+      },
       {
         path: 'admin-manager',
         component: AdminManagerComponent,
