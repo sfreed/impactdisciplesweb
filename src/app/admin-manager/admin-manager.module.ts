@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { LogMessagesComponent } from './log-messages/log-messages.component';
 import { UsersComponent } from './users/users.component';
 import { DxButtonModule, DxDataGridModule, DxFileUploaderModule, DxFormModule, DxHtmlEditorModule, DxLoadIndicatorModule,
-         DxPopupModule, DxSwitchModule, DxTabsModule, DxTextBoxModule } from 'devextreme-angular';
+         DxPopupModule, DxSwitchModule, DxTabsModule, DxTagBoxModule, DxTextBoxModule } from 'devextreme-angular';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { CouponsComponent } from './coupons/coupons.component';
 import { WebConfigComponent } from './web-config/web-config.component';
@@ -26,6 +26,7 @@ import { AdminManagerComponent } from './admin-manager.component';
     DxPopupModule,
     DxSwitchModule,
     DxTabsModule,
+    DxTagBoxModule,
     DxTextBoxModule,
     ImpactDisciplesModule
   ],

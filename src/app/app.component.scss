@@ -42,6 +42,10 @@
     justify-content: flex-end;
     padding-top: 20px;
 
+    .action-button {
+      justify-content: flex-start;
+    }
+
     .dx-button {
       width: 130px;
       height: 40px;

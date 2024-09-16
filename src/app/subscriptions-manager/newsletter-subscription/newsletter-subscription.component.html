@@ -1,4 +1,4 @@
-<h2 class="content-block responsive-paddings underline">Newsletter Subscription</h2>
+<h2 class="content-block responsive-paddings underline">{{itemType}}</h2>
 <div class="content-block responsive-paddings">
   <dx-toolbar class="content-list__header">
     <dxi-item
@@ -9,17 +9,16 @@
         type: 'default',
         text: 'ADD',
         stylingMode: 'contained',
-        onClick: showAddNewsletterModal
+        onClick: showAddModal
       }"
     ></dxi-item>
   </dx-toolbar>
 </div>
 
 <dx-data-grid
-  #newsletterGrid
-  [dataSource]="newletterList$ | async"
+  #grid
+  [dataSource]="datasource$ | async"
   [width]="'100%'"
-  [keyExpr]="'id'"
   [showBorders]="true"
   [showColumnLines]="true"
   [showRowLines]="true"
@@ -30,18 +29,17 @@
   <dxo-pager [showPageSizeSelector]="true" [showInfo]="true"></dxo-pager>
   <dxo-filter-row [visible]="true"></dxo-filter-row>
 
-  <dxi-column dataField="firstName" caption="First Name"></dxi-column>
+  <dxi-column dataField="firstName" caption="First Name" sortOrder="asc"></dxi-column>
   <dxi-column dataField="lastName" caption="Last Name"></dxi-column>
   <dxi-column dataField="email" caption="Email"></dxi-column>
   <dxi-column type="buttons" caption="Actions" [allowReordering]="false">
-    <dxi-button icon="edit" hint="EDIT" [onClick]="showEditNewsletterModal"></dxi-button>
-    <dxi-button icon="trash" hint="DELETE" [onClick]="deleteNewsletterSubscription"></dxi-button>
+    <dxi-button icon="edit" hint="EDIT" [onClick]="showEditModal"></dxi-button>
+    <dxi-button icon="trash" hint="DELETE" [onClick]="delete"></dxi-button>
   </dxi-column>
 
 </dx-data-grid>
 
 <dx-popup
-  #newsletterPopup
   [showTitle]="true"
   [dragEnabled]="false"
   [visible]="isVisible$ | async"
@@ -53,7 +51,7 @@
   <dxi-toolbar-item toolbar="top" location="center">
     <div *dxTemplate>
       <p class="popup-title">
-        {{ newsletter?.id ? 'EDIT' : 'ADD' }} NEWSLETTER SUBSCRIPTION
+        {{ selectedItem?.id ? 'EDIT' : 'ADD' }} {{itemType | uppercase}}
       </p>
     </div>
   </dxi-toolbar-item>
@@ -61,8 +59,8 @@
     <div class="add-item-modal">
       <div class="add-item-modal__content" *ngIf="isVisible$ | async">
         <dx-form
-          #newsletterForm
-          [(formData)]="newsletter"
+          #addEditForm
+          [(formData)]="selectedItem"
           [showColonAfterLabel]="false"
           labelLocation="left"
         >
@@ -83,9 +81,9 @@
           [isInProgress]="inProgress$ | async"
           [title]="'SAVE'"
           [disabled]="inProgress$ | async"
-          (onClick)="onSave(newsletter)"
+          (onClick)="onSave(selectedItem)"
         ></app-indicator-button>
-    
+
       </div>
     </div>
   </div>

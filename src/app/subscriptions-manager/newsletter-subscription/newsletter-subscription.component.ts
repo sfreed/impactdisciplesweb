@@ -14,24 +14,25 @@ import { DxFormComponent } from 'devextreme-angular';
   styleUrls: ['./newsletter-subscription.component.scss']
 })
 export class NewsletterSubscriptionComponent {
-  @ViewChild('newsletterForm', { static: false }) newsletterForm: DxFormComponent;
+  @ViewChild('addEditForm', { static: false }) addEditForm: DxFormComponent;
 
-  newletterList$: Observable<DataSource>;
-  newsletter: NewsletterSubscriptionModel;
+  datasource$: Observable<DataSource>;
+  selectedItem: NewsletterSubscriptionModel;
+
+  itemType = 'Newsletter Subscription';
 
   public inProgress$ = new BehaviorSubject<boolean>(false)
   public isVisible$ = new BehaviorSubject<boolean>(false);
 
-  constructor(private newsletterSubscriptionService: NewsletterSubscriptionService) {}
+  constructor(private service: NewsletterSubscriptionService) {}
 
   ngOnInit() {
-    this.newletterList$ = this.newsletterSubscriptionService.streamAll().pipe(
+    this.datasource$ = this.service.streamAll().pipe(
       map(
-        (data) => 
+        (data) =>
           new DataSource({
             reshapeOnPush: true,
             pushAggregationTimeout: 100,
-            sort: 'firstName',
             store: new ArrayStore({
               key: 'id',
               data
@@ -41,21 +42,21 @@ export class NewsletterSubscriptionComponent {
     )
   }
 
-  showEditNewsletterModal = ({ row: { data } }) => {
-    this.newsletter = data
+  showEditModal = ({ row: { data } }) => {
+    this.selectedItem = data
     this.isVisible$.next(true);
   }
 
-  showAddNewsletterModal = () => {
+  showAddModal = () => {
     this.isVisible$.next(true);
   }
 
-  deleteNewsletterSubscription = ({ row: { data } }) => {
+  delete = ({ row: { data } }) => {
     confirm('<i>Are you sure you want to delete this record?</i>', 'Confirm').then((dialogResult) => {
       if (dialogResult) {
-        this.newsletterSubscriptionService.delete(data.id).then(() => {
+        this.service.delete(data.id).then(() => {
           notify({
-            message: 'Newsletter Subscription Deleted',
+            message: this.itemType + ' Deleted',
             position: 'top',
             width: 600,
             type: 'success'
@@ -65,14 +66,14 @@ export class NewsletterSubscriptionComponent {
     });
   }
 
-  onSave(newsletter: NewsletterSubscriptionModel) {
-    if(this.newsletterForm.instance.validate().isValid) {
+  onSave(item: NewsletterSubscriptionModel) {
+    if(this.addEditForm.instance.validate().isValid) {
       this.inProgress$.next(true);
-      if(newsletter.id) {
-        this.newsletterSubscriptionService.update(newsletter.id, newsletter).then((newNewsletter) => {
-          if(newNewsletter) {
+      if(item.id) {
+        this.service.update(item.id, item).then((item) => {
+          if(item) {
             notify({
-              message: 'Newsletter Subscription Updated',
+              message: this.itemType + ' Updated',
               position: 'top',
               width: 600,
               type: 'success'
@@ -89,13 +90,13 @@ export class NewsletterSubscriptionComponent {
           }
         })
       } else {
-        this.newsletterSubscriptionService.add(newsletter).then((newNewsletter) => {
-          if(newNewsletter) {
+        this.service.add(item).then((item) => {
+          if(item) {
             notify({
-              message: 'Newsletter Subscription Added',
+              message: this.itemType + ' Added',
               position: 'top',
               width: 600,
-              type: 'error'
+              type: 'success'
             });
             this.onCancel();
           } else {
@@ -113,7 +114,7 @@ export class NewsletterSubscriptionComponent {
   }
 
   onCancel() {
-    this.newsletter = null;
+    this.selectedItem = null;
     this.inProgress$.next(false);
     this.isVisible$.next(false);
   }

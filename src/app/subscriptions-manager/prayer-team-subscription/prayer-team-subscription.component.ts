@@ -1,9 +1,12 @@
-import { Component } from '@angular/core';
-import CustomStore from 'devextreme/data/custom_store';
+import { Component, ViewChild } from '@angular/core';
+import ArrayStore from 'devextreme/data/array_store';
 import DataSource from 'devextreme/data/data_source';
+import notify from 'devextreme/ui/notify';
 import { PrayerTeamSubscriptionModel } from 'impactdisciplescommon/src/models/domain/prayer-team-subscription.model';
 import { PrayerTeamSubscriptionService } from 'impactdisciplescommon/src/services/prayer-team-subscription.service';
-import { Observable, map } from 'rxjs';
+import { BehaviorSubject, Observable, map } from 'rxjs';
+import { confirm } from 'devextreme/ui/dialog';
+import { DxFormComponent } from 'devextreme-angular';
 
 @Component({
   selector: 'app-prayer-team-subscription',
@@ -11,40 +14,108 @@ import { Observable, map } from 'rxjs';
   styleUrls: ['./prayer-team-subscription.component.css']
 })
 export class PrayerTeamSubscriptionComponent {
-  dataSource: Observable<DataSource>;
+  @ViewChild('addEditForm', { static: false }) addEditForm: DxFormComponent;
 
-  constructor(private service: PrayerTeamSubscriptionService) {
-    this.dataSource = this.service.streamAll().pipe(
+  datasource$: Observable<DataSource>;
+  selectedItem :PrayerTeamSubscriptionModel
+
+  itemType = 'Prayer Team Subscription';
+
+  public inProgress$ = new BehaviorSubject<boolean>(false)
+  public isVisible$ = new BehaviorSubject<boolean>(false);
+
+  constructor(private service: PrayerTeamSubscriptionService) {}
+
+   ngOnInit() {
+    this.datasource$ = this.service.streamAll().pipe(
       map(
-        (items) =>
+        (data) =>
           new DataSource({
             reshapeOnPush: true,
             pushAggregationTimeout: 100,
-            store: new CustomStore({
+            store: new ArrayStore({
               key: 'id',
-              loadMode: 'raw',
-              load: function (loadOptions: any) {
-                return items;
-              },
-              insert: function (value: PrayerTeamSubscriptionModel) {
-                return service.add(value);
-              },
-              update: function (key: any, value: PrayerTeamSubscriptionModel) {
-                return service.update(key, value)
-              },
-              remove: function (id: any) {
-                return service.delete(id);
-              },
-            })
+              data
           })
+        })
       )
-    );
-   }
-
-  ngOnInit() {
+    )
   }
 
-  onRowUpdating(options) {
-    options.newData = Object.assign(options.oldData, options.newData);
+  showEditModal = ({ row: { data } }) => {
+    this.selectedItem = data
+    this.isVisible$.next(true);
+  }
+
+  showAddModal = () => {
+    this.isVisible$.next(true);
+  }
+
+  delete = ({ row: { data } }) => {
+    confirm('<i>Are you sure you want to delete this record?</i>', 'Confirm').then((dialogResult) => {
+      if (dialogResult) {
+        this.service.delete(data.id).then(() => {
+          notify({
+            message: this.itemType + ' Deleted',
+            position: 'top',
+            width: 600,
+            type: 'success'
+          });
+        })
+      }
+    });
+  }
+
+  onSave(item: PrayerTeamSubscriptionModel) {
+    if(this.addEditForm.instance.validate().isValid) {
+      this.inProgress$.next(true);
+      if(item.id) {
+        this.service.update(item.id, item).then((item) => {
+          if(item) {
+            notify({
+              message: this.itemType + ' Updated',
+              position: 'top',
+              width: 600,
+              type: 'success'
+            });
+            this.onCancel();
+          } else {
+            this.inProgress$.next(false);
+            notify({
+              message: 'Some Error Occured',
+              position: 'top',
+              width: 600,
+              type: 'success'
+            });
+          }
+        })
+      } else {
+        this.service.add(item).then((item) => {
+          if(item) {
+            notify({
+              message: this.itemType + ' Added',
+              position: 'top',
+              width: 600,
+              type: 'success'
+            });
+            this.onCancel();
+          } else {
+            this.inProgress$.next(false);
+            notify({
+              message: 'Some Error Occured',
+              position: 'top',
+              width: 600,
+              type: 'error'
+            });
+          }
+        })
+      }
+    }
+  }
+
+  onCancel() {
+    this.selectedItem = null;
+    this.inProgress$.next(false);
+    this.isVisible$.next(false);
   }
 }
