@@ -30,19 +30,7 @@
   <dxo-pager [showPageSizeSelector]="true" [showInfo]="true"></dxo-pager>
   <dxo-filter-row [visible]="true"></dxo-filter-row>
 
-  <dxo-editing
-    mode="popup"
-    [useIcons]="true"
-    [allowAdding]="true"
-    [allowUpdating]="true"
-    [allowDeleting]="true">
-    <dxo-popup
-      title="Coupons"
-      [showTitle]="true"
-      [width]="500"
-      [height]="250">
-    </dxo-popup>
-  </dxo-editing>
+
   <dxi-column dataField="code"></dxi-column>
   <dxi-column dataField="isActive" dataType="boolean"></dxi-column>
   <dxi-column dataField="percentOff" dataType="number"></dxi-column>

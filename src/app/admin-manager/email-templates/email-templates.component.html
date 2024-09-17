@@ -33,7 +33,6 @@
   <dxo-editing
     mode="popup"
     [useIcons]="true"
-    [allowAdding]="true"
     [allowUpdating]="true"
     [allowDeleting]="true">
     <dxo-popup
@@ -54,7 +53,7 @@
   [showTitle]="true"
   [dragEnabled]="false"
   [visible]="isVisible$ | async"
-  height="1000px"
+  height="900px"
   width="1000px"
   [showCloseButton]="true"
   (onHiding)="onCancel()"

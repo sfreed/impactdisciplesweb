@@ -6,7 +6,7 @@ import notify from 'devextreme/ui/notify';
 import { Observable, BehaviorSubject, map } from 'rxjs';
 import { confirm } from 'devextreme/ui/dialog';
 import { EMailTemplatesService } from 'impactdisciplescommon/src/services/admin/email-templates.service';
-import { MailTemplateModel } from 'impactdisciplescommon/src/models/admin/mail-templates.model';
+import { MailTemplateModel } from 'impactdisciplescommon/src/models/admin/mail.model';
 
 @Component({
   selector: 'app-email-templates',
