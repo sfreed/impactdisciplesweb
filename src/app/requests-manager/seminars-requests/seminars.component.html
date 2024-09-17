@@ -1,75 +1,40 @@
+<div class="content-block responsive-paddings">
+  <dx-toolbar class="content-list__header py-2">
+    <dxi-item location="before" locateInMenu="never">
+      <div *dxTemplate>
+        <h2 class="content-block responsive-paddings underline">{{itemType}}</h2>
+      </div>
+    </dxi-item>
+    <dxi-item
+      location="after"
+      widget="dxButton"
+      [options]="{
+        hint: 'ADD',
+        type: 'default',
+        text: 'ADD',
+        stylingMode: 'contained',
+        onClick: showAddModal
+      }"
+    ></dxi-item>
+  </dx-toolbar>
+</div>
+
 <dx-data-grid class="dx-card wide-card"
   #grid
-  [dataSource]="dataSource| async"
+  [dataSource]="datasource$ | async"
   [width]="'100%'"
   [showBorders]="false"
+  [showColumnLines]="true"
+  [showColumnLines]="true"
+  [showRowLines]="true"
   [focusedRowEnabled]="true"
-  [columnAutoWidth]="true"
-  [columnHidingEnabled]="true"
-  (onRowUpdating)="onRowUpdating($event)">
+  [columnAutoWidth]="true">
 
   <dxo-paging [pageSize]="10"></dxo-paging>
   <dxo-pager [showPageSizeSelector]="true" [showInfo]="true"></dxo-pager>
-  <dxo-search-panel [visible]="true" placeholder="Search..."></dxo-search-panel>
-  <dxo-toolbar>
-    <dxi-item location="before">
-      <div *dxTemplate>
-        <div class="toolbar-label">
-          <b>Seminars</b>
-        </div>
-      </div>
-    </dxi-item>
+  <dxo-filter-row [visible]="true"></dxo-filter-row>
 
-    <dxi-item name="addRowButton"></dxi-item>
-    <dxi-item name="searchPanel"></dxi-item>
-  </dxo-toolbar>
-
-  <dxo-editing
-    mode="popup"
-    [allowAdding]="true"
-    [allowUpdating]="true"
-    [allowDeleting]="true"
-    [useIcons]="true">
-    <dxo-popup
-      title="Add/Edit Seminar"
-      [showTitle]="true"
-      [width]="750"
-      [height]="550">
-    </dxo-popup>
-    <dxo-form [colCount]="1">
-      <dxi-item itemType="group" [colCount]="4" [colSpan]="1">
-        <dxi-item dataField="requestedStartDateTime" [colSpan]="2"></dxi-item>
-        <dxi-item dataField="requestedEndDateTime" [colSpan]="2"></dxi-item>
-        <dxi-item dataField="preferredTrainer" [colSpan]="2"></dxi-item>
-      </dxi-item>
-      <dxi-item itemType="group" caption="Contact" [colCount]="6" [colSpan]="1">
-        <dxi-item dataField="eventCoordinator" [colSpan]="6"></dxi-item>
-        <dxi-item dataField="email" [colSpan]="6"></dxi-item>
-        <dxi-item dataField="phone.countryCode" [colSpan]="2"></dxi-item>
-        <dxi-item dataField="phone.number" [colSpan]="2"></dxi-item>
-        <dxi-item dataField="phone.type" [colSpan]="2"></dxi-item>
-      </dxi-item>
-      <dxi-item itemType="group" caption="Location" [colCount]="6" [colSpan]="1">
-        <dxi-item dataField="preferredLocationName" [colSpan]="6"></dxi-item>
-        <dxi-item dataField="preferredLocation.address1" [colSpan]="6"></dxi-item>
-        <dxi-item dataField="preferredLocation.address2" [colSpan]="6"></dxi-item>
-        <dxi-item dataField="preferredLocation.city" [colSpan]="2"></dxi-item>
-        <dxi-item dataField="preferredLocation.state" [colSpan]="2"></dxi-item>
-        <dxi-item dataField="preferredLocation.zip" [colSpan]="2"></dxi-item>
-      </dxi-item>
-      <dxi-item itemType="group" caption="Information" [colCount]="4" [colSpan]="1">
-        <dxi-item dataField="hasProjectingDevice" [colSpan]="2" [editorType]="'dxSwitch'" [editorOptions]="{ switchedOnText: 'Yes', switchedOffText: 'No' }"></dxi-item>
-        <dxi-item dataField="volunteersAvailable" [colSpan]="2" [editorType]="'dxSwitch'" [editorOptions]="{ switchedOnText: 'Yes', switchedOffText: 'No' }"></dxi-item>
-        <dxi-item dataField="isPrivateEvent" [colSpan]="2" [editorType]="'dxSwitch'" [editorOptions]="{ switchedOnText: 'Yes', switchedOffText: 'No' }"></dxi-item>
-        <dxi-item dataField="isPersonalRegistration" [colSpan]="2" [editorType]="'dxSwitch'" [editorOptions]="{ switchedOnText: 'Yes', switchedOffText: 'No' }"></dxi-item>
-        <dxi-item dataField="requestedTicketPrice" [colSpan]="2"></dxi-item>
-        <dxi-item dataField="isLunchProvided" [colSpan]="2" [editorType]="'dxSwitch'" [editorOptions]="{ switchedOnText: 'Yes', switchedOffText: 'No' }"></dxi-item>
-        <dxi-item dataField="isLunchIncluded" [colSpan]="4" [editorType]="'dxSwitch'" [editorOptions]="{ switchedOnText: 'Yes', switchedOffText: 'No' }"></dxi-item>
-        <dxi-item dataField="comments" [colSpan]="4" [editorType]="'dxTextArea'" [editorOptions]="{ height: 150 }"></dxi-item>
-      </dxi-item>
-    </dxo-form>
-  </dxo-editing>
-  <dxi-column dataField="eventCoordinator"></dxi-column>
+  <dxi-column dataField="eventCoordinator" [caption]="'Coordinator'"></dxi-column>
   <dxi-column dataField="preferredLocationName" [caption]="'Location Name'"></dxi-column>
   <dxi-column dataField="requestedStartDateTime" [dataType]="'datetime'" [caption]="'Start Time'"></dxi-column>
   <dxi-column dataField="requestedEndDateTime" [dataType]="'datetime'" [caption]="'End Time'"></dxi-column>
@@ -93,9 +58,93 @@
   <dxi-column dataField="isLunchProvided" [visible]="false"></dxi-column>
   <dxi-column dataField="isLunchIncluded" [visible]="false"></dxi-column>
   <dxi-column dataField="comments" [visible]="false"></dxi-column>
+  <dxi-column type="buttons" caption="Actions" [allowReordering]="false">
+    <dxi-button icon="edit" hint="EDIT" [onClick]="showEditModal"></dxi-button>
+    <dxi-button icon="trash" hint="DELETE" [onClick]="delete"></dxi-button>
+  </dxi-column>
   <div *dxTemplate="let cell of 'phoneNumberCellTemplate'">
     <div class="">
       {{ cell.data.phone | phoneNumberMask : false }}
     </div>
   </div>
 </dx-data-grid>
+
+<dx-popup
+  [showTitle]="true"
+  [dragEnabled]="false"
+  [visible]="isVisible$ | async"
+  height="850px"
+  width="850px"
+  [showCloseButton]="true"
+  (onHiding)="onCancel()"
+>
+  <dxi-toolbar-item toolbar="top" location="center">
+    <div *dxTemplate>
+      <p class="popup-title">
+        {{ selectedItem?.id ? 'EDIT' : 'ADD' }} {{itemType | uppercase}}
+      </p>
+    </div>
+  </dxi-toolbar-item>
+  <div *dxTemplate="let data of 'content'">
+    <div class="add-item-modal">
+      <div class="add-item-modal__content" *ngIf="isVisible$ | async">
+        <dx-form
+          #addEditForm
+          [(formData)]="selectedItem"
+          [showColonAfterLabel]="false"
+          labelLocation="left"
+        >
+        <dxi-item itemType="group" [colCount]="4" [colSpan]="1">
+          <dxi-item dataField="requestedStartDateTime" [colSpan]="2" [label]="{text: 'Start Date / Time'}"></dxi-item>
+          <dxi-item dataField="requestedEndDateTime" [colSpan]="2" [label]="{text: 'End Date / Time'}"></dxi-item>
+          <dxi-item dataField="preferredTrainer" [colSpan]="4"></dxi-item>
+        </dxi-item>
+        <dxi-item itemType="group" caption="Address" [colCount]="6" [colSpan]="1">
+          <dxi-item dataField="preferredLocationName" [colSpan]="6" [label]="{text: 'Location Name'}"></dxi-item>
+          <dxi-item dataField="preferredLocation.address1" [colSpan]="6" [label]="{text: 'Address1'}"></dxi-item>
+          <dxi-item dataField="preferredLocation.address2" [colSpan]="6" [label]="{text: 'Address2'}"></dxi-item>
+          <dxi-item dataField="preferredLocation.city" [colSpan]="3" [label]="{text: 'City'}"></dxi-item>
+          <dxi-item dataField="preferredLocation.state" [colSpan]="2" [label]="{text: 'State'}"></dxi-item>
+          <dxi-item dataField="preferredLocation.zip" [colSpan]="1" [label]="{text: 'Zip'}"></dxi-item>
+        </dxi-item>
+        <dxi-item itemType="group" caption="Contact Information" [colCount]="6" [colSpan]="1">
+          <dxi-item dataField="eventCoordinator" [colSpan]="6" [label]="{text: 'Coordinator'}"></dxi-item>
+          <dxi-item dataField="email" [colSpan]="6"></dxi-item>
+          <dxi-item dataField="phone.countryCode" [colSpan]="2" [label]="{text: 'Countyr Code'}"></dxi-item>
+          <dxi-item dataField="phone.number" [colSpan]="2" [label]="{text: 'Number'}" [editorOptions]="phoneEditorOptions"></dxi-item>
+          <dxi-item dataField="phone.type" [colSpan]="2" [label]="{text: 'Type'}">
+            <div *dxTemplate>
+              <dx-select-box [value]="'phone.type'" [dataSource]="phone_types"></dx-select-box>
+            </div>
+          </dxi-item>
+        </dxi-item>
+        <dxi-item itemType="group" caption="Information" [colCount]="4" [colSpan]="1">
+          <dxi-item dataField="hasProjectingDevice" [colSpan]="2" [editorType]="'dxSwitch'" [editorOptions]="{ switchedOnText: 'Yes', switchedOffText: 'No' }"></dxi-item>
+          <dxi-item dataField="volunteersAvailable" [colSpan]="2" [editorType]="'dxSwitch'" [editorOptions]="{ switchedOnText: 'Yes', switchedOffText: 'No' }"></dxi-item>
+          <dxi-item dataField="isPrivateEvent" [colSpan]="2" [editorType]="'dxSwitch'" [editorOptions]="{ switchedOnText: 'Yes', switchedOffText: 'No' }"></dxi-item>
+          <dxi-item dataField="isPersonalRegistration" [colSpan]="2" [editorType]="'dxSwitch'" [editorOptions]="{ switchedOnText: 'Yes', switchedOffText: 'No' }"></dxi-item>
+          <dxi-item dataField="requestedTicketPrice" [colSpan]="2"></dxi-item>
+          <dxi-item dataField="isLunchProvided" [colSpan]="2" [editorType]="'dxSwitch'" [editorOptions]="{ switchedOnText: 'Yes', switchedOffText: 'No' }"></dxi-item>
+          <dxi-item dataField="isLunchIncluded" [colSpan]="4" [editorType]="'dxSwitch'" [editorOptions]="{ switchedOnText: 'Yes', switchedOffText: 'No' }"></dxi-item>
+          <dxi-item dataField="comments" [colSpan]="4" [editorType]="'dxTextArea'" [editorOptions]="{ height: 150 }"></dxi-item>
+        </dxi-item>
+        </dx-form>
+      </div>
+      <div class="add-item-modal__button-group">
+        <dx-button
+          text="CANCEL"
+          stylingMode="contained"
+          type="normal"
+          [disabled]="inProgress$ | async"
+          (onClick)="onCancel()"
+        ></dx-button>
+        <app-indicator-button
+          [isInProgress]="inProgress$ | async"
+          [title]="'SAVE'"
+          [disabled]="inProgress$ | async"
+          (onClick)="onSave(selectedItem)"
+        ></app-indicator-button>
+      </div>
+    </div>
+  </div>
+</dx-popup>

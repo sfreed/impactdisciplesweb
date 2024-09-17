@@ -1,11 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import CustomStore from 'devextreme/data/custom_store';
 import DataSource from 'devextreme/data/data_source';
 import { PHONE_TYPES } from 'impactdisciplescommon/src/lists/phone_types.enum';
 import { LunchAndLearnModel } from 'impactdisciplescommon/src/models/domain/lunch-and-learn.model';
 import { LunchAndLearnService } from 'impactdisciplescommon/src/services/lunch-and-learn.service';
 import { EnumHelper } from 'impactdisciplescommon/src/utils/enum_helper';
-import { Observable, map } from 'rxjs';
+import { BehaviorSubject, Observable, map } from 'rxjs';
+import { confirm } from 'devextreme/ui/dialog';
+import notify from 'devextreme/ui/notify';
+import { DxFormComponent } from 'devextreme-angular';
 
 @Component({
   selector: 'app-lunch-and-learns',
@@ -13,12 +16,31 @@ import { Observable, map } from 'rxjs';
   styleUrls: ['./lunch-and-learns.component.css']
 })
 export class LunchAndLearnsComponent implements OnInit{
-  dataSource: Observable<DataSource>;
+  @ViewChild('addEditForm', { static: false }) addEditForm: DxFormComponent;
+
+  datasource$: Observable<DataSource>;
+  selectedItem: LunchAndLearnModel;
+
+  itemType = 'Lunch and Learns';
+
+  public inProgress$ = new BehaviorSubject<boolean>(false)
+  public isVisible$ = new BehaviorSubject<boolean>(false);
 
   phone_types: PHONE_TYPES[];
 
-  constructor(private service: LunchAndLearnService) {
-    this.dataSource = this.service.streamAll().pipe(
+  phoneEditorOptions = {
+    mask: '+1 (X00) 000-0000',
+    maskRules: {
+      X: /[02-9]/,
+    },
+    maskInvalidMessage: 'The phone must have a correct USA phone format',
+    valueChangeEvent: 'keyup',
+  };
+
+  constructor(private service: LunchAndLearnService) {}
+
+  ngOnInit() {
+    this.datasource$ = this.service.streamAll().pipe(
       map(
         (items) =>
           new DataSource({
@@ -29,27 +51,89 @@ export class LunchAndLearnsComponent implements OnInit{
               loadMode: 'raw',
               load: function (loadOptions: any) {
                 return items;
-              },
-              insert: function (value: LunchAndLearnModel) {
-                return service.add(value);
-              },
-              update: function (key: any, value: LunchAndLearnModel) {
-                return service.update(key, value)
-              },
-              remove: function (id: any) {
-                return service.delete(id);
-              },
+              }
             })
           })
       )
     );
-   }
 
-  ngOnInit() {
     this.phone_types = EnumHelper.getPhoneTypesAsArray();
   }
 
-  onRowUpdating(options) {
-    options.newData = Object.assign(options.oldData, options.newData);
+  showEditModal = ({ row: { data } }) => {
+    this.selectedItem = data
+    this.isVisible$.next(true);
+  }
+
+  showAddModal = () => {
+    this.isVisible$.next(true);
+  }
+
+  delete = ({ row: { data } }) => {
+    confirm('<i>Are you sure you want to delete this record?</i>', 'Confirm').then((dialogResult) => {
+      if (dialogResult) {
+        this.service.delete(data.id).then(() => {
+          notify({
+            message: this.itemType + ' Deleted',
+            position: 'top',
+            width: 600,
+            type: 'success'
+          });
+        })
+      }
+    });
+  }
+
+  onSave(item: LunchAndLearnModel) {
+    if(this.addEditForm.instance.validate().isValid) {
+      this.inProgress$.next(true);
+      if(item.id) {
+        this.service.update(item.id, item).then((item) => {
+          if(item) {
+            notify({
+              message: this.itemType + ' Updated',
+              position: 'top',
+              width: 600,
+              type: 'success'
+            });
+            this.onCancel();
+          } else {
+            this.inProgress$.next(false);
+            notify({
+              message: 'Some Error Occured',
+              position: 'top',
+              width: 600,
+              type: 'success'
+            });
+          }
+        })
+      } else {
+        this.service.add(item).then((item) => {
+          if(item) {
+            notify({
+              message: this.itemType + ' Added',
+              position: 'top',
+              width: 600,
+              type: 'success'
+            });
+            this.onCancel();
+          } else {
+            this.inProgress$.next(false);
+            notify({
+              message: 'Some Error Occured',
+              position: 'top',
+              width: 600,
+              type: 'error'
+            });
+          }
+        })
+      }
+    }
+  }
+
+  onCancel() {
+    this.selectedItem = null;
+    this.inProgress$.next(false);
+    this.isVisible$.next(false);
   }
 }

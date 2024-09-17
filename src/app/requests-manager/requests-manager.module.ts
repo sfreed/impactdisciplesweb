@@ -1,7 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DxButtonModule, DxDataGridModule, DxFileUploaderModule, DxFormModule, DxHtmlEditorModule, DxLoadIndicatorModule, DxPopupModule,
-         DxSwitchModule, DxTabsModule, DxTextBoxModule } from 'devextreme-angular';
+         DxSelectBoxModule,
+         DxSwitchModule, DxTabsModule, DxTextBoxModule,
+         DxToolbarModule} from 'devextreme-angular';
 import { ImpactFormsModule } from 'impactdisciplescommon/src/forms/forms.module';
 import { LunchAndLearnsComponent } from './lunch-and-learns-requests/lunch-and-learns.component';
 import { SeminarsComponent } from './seminars-requests/seminars.component';
@@ -10,6 +12,7 @@ import { ImpactDisciplesModule } from 'impactdisciplescommon/src/impactdisciples
 import { ConsultationsRequestsComponent } from './consultations-requests/consultations-requests.component';
 import { ConsultationsSurveysComponent } from './consultations-surveys/consultations-surveys.component';
 import { RequestsManagerComponent } from './requests-manager.component';
+import { SharedModule } from '../shared/shared.module';
 
 
 @NgModule({
@@ -23,10 +26,13 @@ import { RequestsManagerComponent } from './requests-manager.component';
     DxHtmlEditorModule,
     DxLoadIndicatorModule,
     DxPopupModule,
+    DxSelectBoxModule,
     DxSwitchModule,
     DxTabsModule,
     DxTextBoxModule,
-    ImpactDisciplesModule
+    DxToolbarModule,
+    ImpactDisciplesModule,
+    SharedModule
   ],
   declarations: [
     RequestsManagerComponent,

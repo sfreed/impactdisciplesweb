@@ -1,72 +1,38 @@
+<div class="content-block responsive-paddings">
+  <dx-toolbar class="content-list__header py-2">
+    <dxi-item location="before" locateInMenu="never">
+      <div *dxTemplate>
+        <h2 class="content-block responsive-paddings underline">{{itemType}}</h2>
+      </div>
+    </dxi-item>
+    <dxi-item
+      location="after"
+      widget="dxButton"
+      [options]="{
+        hint: 'ADD',
+        type: 'default',
+        text: 'ADD',
+        stylingMode: 'contained',
+        onClick: showAddModal
+      }"
+    ></dxi-item>
+  </dx-toolbar>
+</div>
+
 <dx-data-grid class="dx-card wide-card"
   #grid
-  [dataSource]="dataSource | async"
+  [dataSource]="datasource$ | async"
   [width]="'100%'"
   [showBorders]="false"
+  [showColumnLines]="true"
+  [showColumnLines]="true"
+  [showRowLines]="true"
   [focusedRowEnabled]="true"
-  [columnAutoWidth]="true"
-  [columnHidingEnabled]="true"
-  (onRowUpdating)="onRowUpdating($event)">
+  [columnAutoWidth]="true">
 
   <dxo-paging [pageSize]="10"></dxo-paging>
   <dxo-pager [showPageSizeSelector]="true" [showInfo]="true"></dxo-pager>
-  <dxo-search-panel
-    [visible]="true"
-    [width]="240"
-    placeholder="Search...">
-  </dxo-search-panel>
-  <dxo-toolbar>
-    <dxi-item location="before">
-      <div *dxTemplate>
-        <div class="toolbar-label">
-          <b>Lunch and Learns</b>
-        </div>
-      </div>
-    </dxi-item>
-
-    <dxi-item name="addRowButton"></dxi-item>
-    <dxi-item name="searchPanel"></dxi-item>
-  </dxo-toolbar>
-  <dxo-editing
-    mode="popup"
-    [allowAdding]="true"
-    [allowUpdating]="true"
-    [allowDeleting]="true"
-    [useIcons]="true">
-    <dxo-popup
-      title="Lunch and Learn"
-      [showTitle]="true"
-      [width]="800"
-      [height]="800">
-    </dxo-popup>
-    <dxo-form [colCount]="1">
-      <dxi-item itemType="group" [colCount]="3" [colSpan]="1">
-        <dxi-item dataField="firstName" [colSpan]="1"></dxi-item>
-        <dxi-item dataField="lastName" [colSpan]="1"></dxi-item>
-        <dxi-item dataField="email" [colSpan]="2"></dxi-item>
-      </dxi-item>
-      <dxi-item itemType="group" caption="Information" [colCount]="2" [colSpan]="1">
-        <dxi-item dataField="requestedStartDateTime" [colSpan]="1"></dxi-item>
-        <dxi-item dataField="requestedEndDateTime" [colSpan]="1"></dxi-item>
-      </dxi-item>
-      <dxi-item itemType="group" caption="Address" [colCount]="4" [colSpan]="1">
-        <dxi-item dataField="locationName" [colSpan]="4"></dxi-item>
-        <dxi-item dataField="locationAddress.address1" [colSpan]="4"></dxi-item>
-        <dxi-item dataField="locationAddress.address2" [colSpan]="4"></dxi-item>
-        <dxi-item dataField="locationAddress.city" [colSpan]="2"></dxi-item>
-        <dxi-item dataField="locationAddress.state" [colSpan]="2"></dxi-item>
-        <dxi-item dataField="locationAddress.zip" [colSpan]="2"></dxi-item>
-        <dxi-item dataField="locationAddress.country" [colSpan]="2"></dxi-item>
-      </dxi-item>
-      <dxi-item itemType="group" caption="Contact Information" [colCount]="3" [colSpan]="1">
-        <dxi-item dataField="coordinator" [colSpan]="3"></dxi-item>
-        <dxi-item dataField="coordinatorPhone.countryCode" [colSpan]="1"></dxi-item>
-        <dxi-item dataField="coordinatorPhone.number" [colSpan]="1" ></dxi-item>
-        <dxi-item dataField="coordinatorPhone.type" [colSpan]="1"></dxi-item>
-      </dxi-item>
-    </dxo-form>
-  </dxo-editing>
-
+  <dxo-filter-row [visible]="true"></dxo-filter-row>
 
   <dxi-column dataField="coordinator" ></dxi-column>
   <dxi-column dataField="firstName" [visible]="false"></dxi-column>
@@ -86,6 +52,10 @@
   <dxi-column dataField="coordinatorPhone.type" [caption]="'Type'" [visible]="false">
     <dxo-lookup [dataSource]="phone_types"></dxo-lookup>
   </dxi-column>
+  <dxi-column type="buttons" caption="Actions" [allowReordering]="false">
+    <dxi-button icon="edit" hint="EDIT" [onClick]="showEditModal"></dxi-button>
+    <dxi-button icon="trash" hint="DELETE" [onClick]="delete"></dxi-button>
+  </dxi-column>
 
   <div *dxTemplate="let cell of 'phoneNumberCellTemplate'">
     <div class="">
@@ -93,3 +63,77 @@
     </div>
   </div>
 </dx-data-grid>
+
+<dx-popup
+  [showTitle]="true"
+  [dragEnabled]="false"
+  [visible]="isVisible$ | async"
+  height="850px"
+  width="800px"
+  [showCloseButton]="true"
+  (onHiding)="onCancel()"
+>
+  <dxi-toolbar-item toolbar="top" location="center">
+    <div *dxTemplate>
+      <p class="popup-title">
+        {{ selectedItem?.id ? 'EDIT' : 'ADD' }} {{itemType | uppercase}}
+      </p>
+    </div>
+  </dxi-toolbar-item>
+  <div *dxTemplate="let data of 'content'">
+    <div class="add-item-modal  pb-2">
+      <div class="add-item-modal__content" *ngIf="isVisible$ | async">
+        <dx-form
+          #addEditForm
+          [(formData)]="selectedItem"
+          [showColonAfterLabel]="false"
+          labelLocation="left"
+        >
+          <dxi-item itemType="group" [colCount]="2" [colSpan]="1">
+            <dxi-item dataField="firstName" [colSpan]="1"></dxi-item>
+            <dxi-item dataField="lastName" [colSpan]="1"></dxi-item>
+            <dxi-item dataField="email" [colSpan]="2"></dxi-item>
+          </dxi-item>
+          <dxi-item itemType="group" caption="Information" [colCount]="2" [colSpan]="1">
+            <dxi-item dataField="requestedStartDateTime" [colSpan]="1" [label]="{text: 'Start Date / Time'}"></dxi-item>
+            <dxi-item dataField="requestedEndDateTime" [colSpan]="1" [label]="{text: 'End Date / Time'}"></dxi-item>
+          </dxi-item>
+          <dxi-item itemType="group" caption="Address" [colCount]="4" [colSpan]="1">
+            <dxi-item dataField="locationName" [colSpan]="4"></dxi-item>
+            <dxi-item dataField="locationAddress.address1" [colSpan]="4" [label]="{text: 'Addres1'}"></dxi-item>
+            <dxi-item dataField="locationAddress.address2" [colSpan]="4" [label]="{text: 'Addres2'}"></dxi-item>
+            <dxi-item dataField="locationAddress.city" [colSpan]="2" [label]="{text: 'City'}"></dxi-item>
+            <dxi-item dataField="locationAddress.state" [colSpan]="2" [label]="{text: 'State'}"></dxi-item>
+            <dxi-item dataField="locationAddress.zip" [colSpan]="2" [label]="{text: 'Zip'}"></dxi-item>
+            <dxi-item dataField="locationAddress.country" [colSpan]="2" [label]="{text: 'Country'}"></dxi-item>
+          </dxi-item>
+          <dxi-item itemType="group" caption="Contact Information" [colCount]="3" [colSpan]="1">
+            <dxi-item dataField="coordinator" [colSpan]="3"></dxi-item>
+            <dxi-item dataField="coordinatorPhone.countryCode" [colSpan]="1" [label]="{text: 'Country Code'}"></dxi-item>
+            <dxi-item dataField="coordinatorPhone.number" [colSpan]="1" [label]="{text: 'Number'}" [editorOptions]="phoneEditorOptions"></dxi-item>
+            <dxi-item dataField="coordinatorPhone.type" [colSpan]="1" [label]="{text: 'Type'}">
+              <div *dxTemplate>
+                <dx-select-box [value]="'phone.type'" [dataSource]="phone_types"></dx-select-box>
+              </div>
+            </dxi-item>
+          </dxi-item>
+        </dx-form>
+      </div>
+      <div class="add-item-modal__button-group">
+        <dx-button
+          text="CANCEL"
+          stylingMode="contained"
+          type="normal"
+          [disabled]="inProgress$ | async"
+          (onClick)="onCancel()"
+        ></dx-button>
+        <app-indicator-button
+          [isInProgress]="inProgress$ | async"
+          [title]="'SAVE'"
+          [disabled]="inProgress$ | async"
+          (onClick)="onSave(selectedItem)"
+        ></app-indicator-button>
+      </div>
+    </div>
+  </div>
+</dx-popup>
