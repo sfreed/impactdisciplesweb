@@ -1,6 +1,10 @@
-<h2 class="content-block responsive-paddings underline">{{itemType}}</h2>
 <div class="content-block responsive-paddings">
-  <dx-toolbar class="content-list__header">
+  <dx-toolbar class="content-list__header py-2">
+    <dxi-item location="before" locateInMenu="never">
+      <div *dxTemplate>
+        <h2 class="content-block responsive-paddings underline">{{itemType}}</h2>
+      </div>
+    </dxi-item>
     <dxi-item
       location="after"
       widget="dxButton"

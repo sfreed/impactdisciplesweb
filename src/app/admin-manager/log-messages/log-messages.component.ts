@@ -11,10 +11,14 @@ import { Observable, map } from 'rxjs';
   styleUrls: ['./log-messages.component.css']
 })
 export class LogMessagesComponent implements OnInit {
-  dataSource: Observable<DataSource>;
+  datasource$: Observable<DataSource>;
 
-  constructor(private service: LoggerService) {
-    this.dataSource = this.service.streamAll().pipe(
+  itemType = 'Logs';
+
+  constructor(private service: LoggerService) {}
+
+  ngOnInit() {
+    this.datasource$ = this.service.streamAll().pipe(
       map(
         (items) =>
           new DataSource({
@@ -25,27 +29,10 @@ export class LogMessagesComponent implements OnInit {
               loadMode: 'raw',
               load: function (loadOptions: any) {
                 return items;
-              },
-              insert: function (value: LogMessage) {
-                return service.add(value);
-              },
-              update: function (key: any, value: LogMessage) {
-                return service.update(key, value)
-              },
-              remove: function (id: any) {
-                return service.delete(id);
-              },
+              }
             })
           })
       )
     );
-   }
-
-  ngOnInit() {
   }
-
-  onRowUpdating(options) {
-    options.newData = Object.assign(options.oldData, options.newData);
-  }
-
 }

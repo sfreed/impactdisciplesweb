@@ -9,11 +9,28 @@
   </dx-load-indicator>
   </div>
 </div>
-<div class="toolbar-label my-2">
-  <b>Web Config</b>
+<div class="content-block responsive-paddings">
+  <dx-toolbar class="content-list__header py-2">
+    <dxi-item location="before" locateInMenu="never">
+      <div *dxTemplate>
+        <h2 class="content-block responsive-paddings underline">{{itemType}}</h2>
+      </div>
+    </dxi-item>
+    <dxi-item
+      location="after"
+      widget="dxButton"
+      [options]="{
+        hint: 'Save',
+        type: 'default',
+        text: 'SAVE',
+        stylingMode: 'contained',
+        onClick: save
+      }"
+    ></dxi-item>
+  </dx-toolbar>
 </div>
 
-<dx-form [colCount]="2" [formData]="dataSource">
+<dx-form [colCount]="2" [formData]="selectedItem">
   <dxi-item itemType="tabbed" [colSpan]="2">
     <dxi-tab title="Info" [colCount]="2">
       <dxi-item itemType="group" caption="Socials" [colCount]="2" [colSpan]="1">
@@ -57,7 +74,7 @@
   </dxi-item>
 
   <div *dxTemplate="let data of 'policy_template'">
-    <dx-html-editor height="75vh" [(value)]="dataSource.policy">
+    <dx-html-editor height="75vh" [(value)]="selectedItem.policy">
       <dxo-toolbar [multiline]="false">
         <dxi-item name="undo"></dxi-item>
         <dxi-item name="redo"></dxi-item>
@@ -123,7 +140,7 @@
     </dx-html-editor>
   </div>
   <div *dxTemplate="let data of 'tos_template'">
-    <dx-html-editor height="75vh" [(value)]="dataSource.tos">
+    <dx-html-editor height="75vh" [(value)]="selectedItem.tos">
       <dxo-toolbar [multiline]="false">
         <dxi-item name="undo"></dxi-item>
         <dxi-item name="redo"></dxi-item>
@@ -189,11 +206,5 @@
     </dx-html-editor>
   </div>
 </dx-form>
-<div class="row pt-2">
-  <div class="col-11"></div>
-  <div class="col-1">
-    <dx-button text="Save" (onClick)="save()"></dx-button>
-  </div>
-</div>
 
 

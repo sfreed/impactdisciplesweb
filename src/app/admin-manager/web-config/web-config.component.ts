@@ -9,28 +9,33 @@ import { WebConfigService } from 'impactdisciplescommon/src/services/utils/web-c
   styleUrls: ['./web-config.component.css']
 })
 export class WebConfigComponent implements OnInit{
-  public dataSource: WebConfigModel;
+  selectedItem: WebConfigModel;
+
   spinnerVisible: boolean = true;
+
+  itemType = 'Web Configuration';
 
   constructor(private service: WebConfigService, private toastr:ToastrService) {}
 
   async ngOnInit() {
-    this.dataSource = await this.service.getAll().then(config => {
+    this.selectedItem = await this.service.getAll().then(config => {
       this.spinnerVisible = false;
+
       if(config && config.length == 1){
         return config[0];
       } else {
-        return new WebConfigModel();
+        return {...new WebConfigModel()};
       }
     });
   }
 
-  async save() {
+  save = async () => {
     this.spinnerVisible = true;
-    if(this.dataSource.id){
-      this.dataSource = await this.service.update(this.dataSource.id, {... this.dataSource});
+
+    if(this.selectedItem.id){
+      this.selectedItem = await this.service.update(this.selectedItem.id, {... this.selectedItem});
     } else {
-      this.dataSource = await this.service.add({... this.dataSource});
+      this.selectedItem = await this.service.add({... this.selectedItem});
     }
     this.toastr.success("Configuration Saved Successfully!");
 

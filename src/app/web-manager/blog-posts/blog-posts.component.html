@@ -1,6 +1,10 @@
-<h2 class="content-block responsive-paddings underline">{{itemType}}</h2>
 <div class="content-block responsive-paddings">
-  <dx-toolbar class="content-list__header">
+  <dx-toolbar class="content-list__header py-2">
+    <dxi-item location="before" locateInMenu="never">
+      <div *dxTemplate>
+        <h2 class="content-block responsive-paddings underline">{{itemType}}</h2>
+      </div>
+    </dxi-item>
     <dxi-item
       location="after"
       widget="dxButton"
@@ -34,7 +38,7 @@
   <dxi-column dataField="date" [dataType]="'datetime'"></dxi-column>
   <dxi-column dataField="blogText" [visible]="false"></dxi-column>
   <dxi-column dataField="extraImages" [visible]="false"></dxi-column>
-  <dxi-column dataField="tags" [visible]="false"></dxi-column>
+  <dxi-column dataField="tags"></dxi-column>
   <dxi-column type="buttons" caption="Actions" [allowReordering]="false">
     <dxi-button icon="edit" hint="EDIT" [onClick]="showEditModal"></dxi-button>
     <dxi-button icon="trash" hint="DELETE" [onClick]="delete"></dxi-button>
@@ -49,7 +53,7 @@
   [showTitle]="true"
   [dragEnabled]="false"
   [visible]="isVisible$ | async"
-  height="1000px"
+  height="850px"
   width="1000px"
   [showCloseButton]="true"
   (onHiding)="onCancel()"
@@ -75,7 +79,7 @@
           <dxi-item dataField="date" [editorType]="'dxDateBox'" [isRequired]="true" [colSpan]="1"></dxi-item>
           <dxi-item dataField="title" [isRequired]="true" [colSpan]="2"></dxi-item>
       </dx-form>
-      <dx-html-editor height="80%" [(value)]="selectedItem.blogText">
+      <dx-html-editor [height]="'600px'" [(value)]="selectedItem.blogText">
         <dxo-toolbar [multiline]="false">
           <dxi-item name="undo"></dxi-item>
           <dxi-item name="redo"></dxi-item>
@@ -163,7 +167,7 @@
           stylingMode="contained"
           type="normal"
           [disabled]="inProgress$ | async"
-          (onClick)="imageSelectVisible = true"
+          (onClick)="showSingleImageModal()"
         ></dx-button>
         <dx-button
           text="Upload Other Image"
@@ -171,7 +175,7 @@
           stylingMode="contained"
           type="normal"
           [disabled]="inProgress$ | async"
-          (onClick)="multiImageSelectVisible = true"
+          (onClick)="showMultipleImageModal()"
         ></dx-button>
         <dx-button
           text="CANCEL"
@@ -191,25 +195,25 @@
   </div>
 </dx-popup>
 
-<ng-container *ngIf="imageSelectVisible">
+<ng-container *ngIf="isSingleImageVisible$ | async">
   <app-image-uploader
     [card]="selectedItem"
     [isList]="false"
     [field]="'mainImage'"
     [selectionMode]="'single'"
-    [imageSelectVisible]="imageSelectVisible"
-    (imageSelectClosed)="closeItemWindow($event)">
+    [imageSelectVisible]="isSingleImageVisible$ | async"
+    (imageSelectClosed)="closeSingleImageModal()">
   </app-image-uploader>
 </ng-container>
 
-<ng-container *ngIf="multiImageSelectVisible">
+<ng-container *ngIf="isMultipleImageVisible$ | async">
   <app-image-uploader
     [card]="selectedItem"
     [isList]="true"
     [field]="'extraImages'"
     [selectionMode]="'multiple'"
-    [imageSelectVisible]="multiImageSelectVisible"
-    (imageSelectClosed)="closeItemWindow($event)">
+    [imageSelectVisible]="isMultipleImageVisible$ | async"
+    (imageSelectClosed)="closeMultipleImageModal()">
   </app-image-uploader>
 </ng-container>
 

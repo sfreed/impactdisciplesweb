@@ -1,50 +1,46 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { DxFormComponent } from 'devextreme-angular';
 import { DxButtonTypes } from 'devextreme-angular/ui/button';
 import CustomStore from 'devextreme/data/custom_store';
 import DataSource from 'devextreme/data/data_source';
+import notify from 'devextreme/ui/notify';
 import { Functions, getFunctions, HttpsCallable, httpsCallable } from "firebase/functions";
 import { NotificationRegistrationModel } from 'impactdisciplescommon/src/models/admin/notification-registration.model';
 import { NotificationRegistrationService } from 'impactdisciplescommon/src/services/admin/notification-registration.service';
-import { map, Observable } from 'rxjs';
+import { BehaviorSubject, map, Observable } from 'rxjs';
+import { confirm } from 'devextreme/ui/dialog';
+
 
 @Component({
   selector: 'app-notifications',
   templateUrl: './notifications.component.html',
   styleUrls: ['./notifications.component.css']
 })
-export class NotificationsComponent {
+export class NotificationsComponent implements OnInit {
+  @ViewChild('addEditForm', { static: false }) addEditForm: DxFormComponent;
+
+  datasource$: Observable<DataSource>;
+  selectedItem: NotificationRegistrationModel;
+
+  itemType = 'Notifications';
+
+  public inProgress$ = new BehaviorSubject<boolean>(false)
+  public isVisible$ = new BehaviorSubject<boolean>(false);
+
   functions: Functions;
 
   addMessageFunction: HttpsCallable;
 
-  dataSource: Observable<DataSource>;
-
-  isSendScreenVisible: boolean = false;
-
   title: string = '';
   body: string = '';
-
-  addSessionButtonOptions: DxButtonTypes.Properties = {
-    text: 'Send',
-    onClick: () => {
-      setTimeout(() => this.sendMessage(), 5000);
-
-    },
-  };
-
-  cancelSessionButtonOptions: DxButtonTypes.Properties = {
-    text: 'Cancel',
-    onClick: () => {
-      this.isSendScreenVisible = false;
-      this.clearForm()
-    },
-  };
 
   constructor(private service: NotificationRegistrationService) {
     this.functions = getFunctions();
     this.addMessageFunction = httpsCallable(this.functions, 'sendNotification');
+   }
 
-    this.dataSource = this.service.streamAll().pipe(
+  ngOnInit() {
+    this.datasource$ = this.service.streamAll().pipe(
       map(
         (items) =>
           new DataSource({
@@ -55,32 +51,72 @@ export class NotificationsComponent {
               loadMode: 'raw',
               load: function (loadOptions: any) {
                 return items;
-              },
-              insert: function (value: NotificationRegistrationModel) {
-                return service.add(value);
-              },
-              update: function (key: any, value: NotificationRegistrationModel) {
-                return service.update(key, value)
-              },
-              remove: function (id: any) {
-                return service.delete(id);
-              },
+              }
+
             })
           })
       )
     );
-   }
-
-  ngOnInit() {
   }
 
-  onRowUpdating(options) {
-    options.newData = Object.assign(options.oldData, options.newData);
+  showEditModal = ({ row: { data } }) => {
+    this.selectedItem = data
+    this.isVisible$.next(true);
+  }
+
+  showAddModal = () => {
+    this.selectedItem = {... new NotificationRegistrationModel()};
+    this.isVisible$.next(true);
+  }
+
+  delete = ({ row: { data } }) => {
+    confirm('<i>Are you sure you want to delete this record?</i>', 'Confirm').then((dialogResult) => {
+      if (dialogResult) {
+        this.service.delete(data.id).then(() => {
+          notify({
+            message: this.itemType + ' Deleted',
+            position: 'top',
+            width: 600,
+            type: 'success'
+          });
+        })
+      }
+    });
+  }
+
+  onSave() {
+    if(this.addEditForm.instance.validate().isValid) {
+      this.inProgress$.next(true);
+      notify({
+        message: this.itemType + ' Sent',
+        position: 'top',
+        width: 600,
+        type: 'success'
+      });
+      setTimeout(() => {
+        this.sendMessage();
+
+        notify({
+          message: this.itemType + ' Sent',
+          position: 'top',
+          width: 600,
+          type: 'success'
+        });
+      }, 5000);
+
+      this.onCancel();
+
+    }
+  }
+
+  onCancel() {
+    this.selectedItem = null;
+    this.inProgress$.next(false);
+    this.isVisible$.next(false);
   }
 
   sendMessage(){
     this.addMessageFunction({ title: this.title, body: this.body, token: this.selectedRegistration.fcmId }).then((result: any) => {
-      this.isSendScreenVisible = false;
       this.body = '';
       this.title = '';
     });
@@ -95,7 +131,7 @@ export class NotificationsComponent {
 
   showSendMessage(e){
     this.selectedRegistration = e.row.data;
-    this.isSendScreenVisible = true;
+    this.onCancel();
   }
 }
 

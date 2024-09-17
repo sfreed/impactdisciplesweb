@@ -1,11 +1,16 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { DxDataGridComponent } from 'devextreme-angular';
+import { DxFormComponent } from 'devextreme-angular';
 import CustomStore from 'devextreme/data/custom_store';
 import DataSource from 'devextreme/data/data_source';
-import { Role } from 'impactdisciplescommon/src/lists/roles.enum';
+import notify from 'devextreme/ui/notify';
 import { AppUser } from 'impactdisciplescommon/src/models/admin/appuser.model';
 import { AppUserService } from 'impactdisciplescommon/src/services/admin/user.service';
-import { Observable, map } from 'rxjs';
+import { BehaviorSubject, Observable, map } from 'rxjs';
+import { confirm } from 'devextreme/ui/dialog';
+import { EnumHelper } from 'impactdisciplescommon/src/utils/enum_helper';
+import { Address } from 'impactdisciplescommon/src/models/domain/utils/address.model';
+import { Phone } from 'impactdisciplescommon/src/models/domain/utils/phone.model';
+
 
 @Component({
   selector: 'app-users',
@@ -13,16 +18,26 @@ import { Observable, map } from 'rxjs';
   styleUrls: ['./users.component.scss']
 })
 export class UsersComponent implements OnInit {
-  @ViewChild('grid', { static: false }) grid: DxDataGridComponent;
+  @ViewChild('addEditForm', { static: false }) addEditForm: DxFormComponent;
 
-  dataSource: Observable<DataSource>;
+  datasource$: Observable<DataSource>;
+  selectedItem: AppUser;
 
-  selectedRow: any;
+  itemType = 'Users';
 
-  roles: Role[] = [];
+  public inProgress$ = new BehaviorSubject<boolean>(false)
+  public isVisible$ = new BehaviorSubject<boolean>(false);
 
-  constructor(private service: AppUserService) {
-    this.dataSource = this.service.streamAll().pipe(
+  roles;
+  phone_types;
+
+  constructor(private service: AppUserService) {}
+
+  ngOnInit(): void {
+    this.roles = EnumHelper.getRoleTypesAsArray();
+    this.phone_types = EnumHelper.getPhoneTypesAsArray();
+
+    this.datasource$ = this.service.streamAll().pipe(
       map(
         (items) =>
           new DataSource({
@@ -34,26 +49,89 @@ export class UsersComponent implements OnInit {
               load: function (loadOptions: any) {
                 return items;
               },
-              insert: function (value: AppUser) {
-                return service.add(value);
-              },
-              update: function (key: any, value: AppUser) {
-                return service.update(key, value)
-              },
-              remove: function (id: any) {
-                return service.delete(id);
-              },
             })
           })
       )
     );
-
-    this.roles = [Role.CUSTOMER, Role.EMPLOYEE, Role.ADMIN];
   }
 
-  ngOnInit(): void {}
+  showEditModal = ({ row: { data } }) => {
+    this.selectedItem = data
+    this.isVisible$.next(true);
+  }
 
-  onRowUpdating(options) {
-    options.newData = Object.assign(options.oldData, options.newData);
+  showAddModal = () => {
+    this.selectedItem = {... new AppUser()};
+    this.selectedItem.address = {... new Address()}
+    this.selectedItem.phone = {... new Phone()}
+    this.isVisible$.next(true);
+  }
+
+  delete = ({ row: { data } }) => {
+    confirm('<i>Are you sure you want to delete this record?</i>', 'Confirm').then((dialogResult) => {
+      if (dialogResult) {
+        this.service.delete(data.id).then(() => {
+          notify({
+            message: this.itemType + ' Deleted',
+            position: 'top',
+            width: 600,
+            type: 'success'
+          });
+        })
+      }
+    });
+  }
+
+  onSave(item: AppUser) {
+    if(this.addEditForm.instance.validate().isValid) {
+      this.inProgress$.next(true);
+      if(item.id) {
+        this.service.update(item.id, item).then((item) => {
+          if(item) {
+            notify({
+              message: this.itemType + ' Updated',
+              position: 'top',
+              width: 600,
+              type: 'success'
+            });
+            this.onCancel();
+          } else {
+            this.inProgress$.next(false);
+            notify({
+              message: 'Some Error Occured',
+              position: 'top',
+              width: 600,
+              type: 'success'
+            });
+          }
+        })
+      } else {
+        this.service.add(item).then((item) => {
+          if(item) {
+            notify({
+              message: this.itemType + ' Added',
+              position: 'top',
+              width: 600,
+              type: 'success'
+            });
+            this.onCancel();
+          } else {
+            this.inProgress$.next(false);
+            notify({
+              message: 'Some Error Occured',
+              position: 'top',
+              width: 600,
+              type: 'error'
+            });
+          }
+        })
+      }
+    }
+  }
+
+  onCancel() {
+    this.selectedItem = null;
+    this.inProgress$.next(false);
+    this.isVisible$.next(false);
   }
 }

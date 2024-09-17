@@ -1,55 +1,98 @@
+<div class="content-block responsive-paddings">
+  <dx-toolbar class="content-list__header py-2">
+    <dxi-item location="before" locateInMenu="never">
+      <div *dxTemplate>
+        <h2 class="content-block responsive-paddings underline">{{itemType}}</h2>
+      </div>
+    </dxi-item>
+    <dxi-item
+      location="after"
+      widget="dxButton"
+      [options]="{
+        hint: 'ADD',
+        type: 'default',
+        text: 'ADD',
+        stylingMode: 'contained',
+        onClick: showAddModal
+      }"
+    ></dxi-item>
+  </dx-toolbar>
+</div>
+
 <dx-data-grid class="dx-card wide-card"
   #grid
-  [dataSource]="dataSource | async"
+  [dataSource]="datasource$ | async"
   [width]="'100%'"
-  [showBorders]="false"
+  [showBorders]="true"
+  [showColumnLines]="true"
+  [showRowLines]="true"
   [focusedRowEnabled]="true"
-  [columnAutoWidth]="true"
-  [columnHidingEnabled]="true"
-  (onRowUpdating)="onRowUpdating($event)">
+  [columnAutoWidth]="true">
 
   <dxo-paging [pageSize]="10"></dxo-paging>
   <dxo-pager [showPageSizeSelector]="true" [showInfo]="true"></dxo-pager>
-  <dxo-search-panel [visible]="true" placeholder="Search..."></dxo-search-panel>
-  <dxo-toolbar>
-    <dxi-item location="before">
-      <div *dxTemplate>
-        <div class="toolbar-label">
-          <b>Testimonials</b>
-        </div>
-      </div>
-    </dxi-item>
-
-    <dxi-item name="addRowButton"></dxi-item>
-    <dxi-item name="searchPanel"></dxi-item>
-  </dxo-toolbar>
-  <dxo-editing
-    mode="popup"
-    [useIcons]="true"
-    [allowAdding]="true"
-    [allowUpdating]="true"
-    [allowDeleting]="true">
-    <dxo-popup
-      title="Add/Edit Testimonials"
-      [showTitle]="true"
-      [width]="600"
-      [height]="600">
-    </dxo-popup>
-    <dxo-form [colCount]="2">
-      <dxi-item dataField="author" [colSpan]="1"></dxi-item>
-      <dxi-item dataField="date" [colSpan]="1"></dxi-item>
-      <dxi-item dataField="title" [colSpan]="2"></dxi-item>
-      <dxi-item dataField="text" [colSpan]="2" [editorType]="'dxTextArea'" [editorOptions]="{ height: 250 }"></dxi-item>
-      <dxi-item dataField="type" [colSpan]="2"></dxi-item>
-    </dxo-form>
-  </dxo-editing>
+  <dxo-filter-row [visible]="true"></dxo-filter-row>
   <dxi-column dataField="author"></dxi-column>
   <dxi-column dataField="date" [dataType]="'date'"></dxi-column>
   <dxi-column dataField="title"></dxi-column>
   <dxi-column dataField="text" [visible]="false"></dxi-column>
   <dxi-column dataField="type" [caption]="'Testimonial Type'">
     <dxo-lookup [dataSource]="testimonials"></dxo-lookup>
-
   </dxi-column>
-
+  <dxi-column type="buttons" caption="Actions" [allowReordering]="false">
+    <dxi-button icon="edit" hint="EDIT" [onClick]="showEditModal"></dxi-button>
+    <dxi-button icon="trash" hint="DELETE" [onClick]="delete"></dxi-button>
+  </dxi-column>
 </dx-data-grid>
+
+<dx-popup
+  [showTitle]="true"
+  [dragEnabled]="false"
+  [visible]="isVisible$ | async"
+  height="600px"
+  width="600px"
+  [showCloseButton]="true"
+  (onHiding)="onCancel()"
+>
+  <dxi-toolbar-item toolbar="top" location="center">
+    <div *dxTemplate>
+      <p class="popup-title">
+        {{ selectedItem?.id ? 'EDIT' : 'ADD' }} {{itemType | uppercase}}
+      </p>
+    </div>
+  </dxi-toolbar-item>
+  <div *dxTemplate="let data of 'content'">
+    <div class="add-item-modal">
+      <div class="add-item-modal__content" *ngIf="isVisible$ | async">
+        <dx-form [colCount]="2" [(formData)]="selectedItem">
+          <dxi-item dataField="author" [colSpan]="2"></dxi-item>
+          <dxi-item dataField="title" [colSpan]="2"></dxi-item>
+          <dxi-item dataField="text" [colSpan]="2" [editorType]="'dxTextArea'" [editorOptions]="{ height: 250 }"></dxi-item>
+          <dxi-item [label]="{ text: 'Type' }" [colSpan]="2">
+            <div *dxTemplate>
+              <dx-select-box
+                [items]="testimonials"
+                [(value)]="selectedItem.type">
+              </dx-select-box>
+            </div>
+          </dxi-item>
+        </dx-form>
+      </div>
+      <div class="add-item-modal__button-group pb-2">
+        <dx-button
+          text="CANCEL"
+          stylingMode="contained"
+          type="normal"
+          [disabled]="inProgress$ | async"
+          (onClick)="onCancel()"
+        ></dx-button>
+        <app-indicator-button
+          [isInProgress]="inProgress$ | async"
+          [title]="'SAVE'"
+          [disabled]="inProgress$ | async"
+          (onClick)="onSave(selectedItem)"
+        ></app-indicator-button>
+      </div>
+    </div>
+  </div>
+</dx-popup>

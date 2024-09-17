@@ -1,69 +1,86 @@
-<div class="content-block">
-  <dx-data-grid class="dx-card wide-card"
-    #grid
-    [dataSource]="dataSource | async"
-    [width]="'100%'"
-    [showBorders]="false"
-    [focusedRowEnabled]="true"
-    [columnAutoWidth]="true"
-    [columnHidingEnabled]="true"
-    (onRowUpdating)="onRowUpdating($event)">
-
-    <dxo-paging [pageSize]="10"></dxo-paging>
-    <dxo-pager [showPageSizeSelector]="true" [showInfo]="true"></dxo-pager>
-    <dxo-search-panel [visible]="true" placeholder="Search..."></dxo-search-panel>
-    <dxo-toolbar>
-      <dxi-item location="before">
-        <div *dxTemplate>
-          <div class="toolbar-label">
-            <b>Notifications</b>
-          </div>
-        </div>
-      </dxi-item>
-
-      <dxi-item name="addRowButton"></dxi-item>
-      <dxi-item name="searchPanel"></dxi-item>
-    </dxo-toolbar>
-
-    <dxi-column dataField="id"></dxi-column>
-    <dxi-column dataField="email"></dxi-column>
-    <dxi-column dataField="dateRegistered" dataType="datetime" format="MM/dd/yyy"></dxi-column>
-    <dxi-column dataField="dateRemoved" dataType="datetime" format="MM/dd/yyy"></dxi-column>
-    <dxi-column dataField="fcmId"></dxi-column>
-    <dxi-column type="buttons" [width]="150" [fixed]="true" caption="Actions">
-      <dxi-button icon="comment" hint="Send Notification" [onClick]="showSendMessage.bind(this)"></dxi-button>
-      </dxi-column>
-  </dx-data-grid>
+<div class="content-block responsive-paddings">
+  <dx-toolbar class="content-list__header py-2">
+    <dxi-item location="before" locateInMenu="never">
+      <div *dxTemplate>
+        <h2 class="content-block responsive-paddings underline">{{itemType}}</h2>
+      </div>
+    </dxi-item>
+  </dx-toolbar>
 </div>
+<dx-data-grid class="dx-card wide-card"
+  #grid
+  [dataSource]="datasource$ | async"
+  [width]="'100%'"
+  [showBorders]="false"
+  [showColumnLines]="true"
+  [showColumnLines]="true"
+  [showRowLines]="true"
+  [focusedRowEnabled]="true"
+  [columnAutoWidth]="true"
+  [columnHidingEnabled]="true">
 
-<ng-container *ngIf="isSendScreenVisible">
-  <dx-popup
-    [width]="400"
-    [(visible)]="isSendScreenVisible"
-    [deferRendering]="true"
-    [showCloseButton]="true"
-    [resizeEnabled]="false"
-    [toolbarItems]="[{ location: 'left', text: 'Send Notification' }]"
-    (onHiding)="clearForm()">
-    <dx-form id="form" [formData]="this" [colCount]="2">
-      <dxi-item dataField="title" [colSpan]="2" [editorType]="'dxTextBox'">
-        <dxo-label [visible]="false" ></dxo-label>
-      </dxi-item>
-      <dxi-item dataField="body" [colSpan]="2" [editorType]="'dxTextArea'" [editorOptions]="{ height: 200 }">
-        <dxo-label [visible]="false" ></dxo-label>
-      </dxi-item>
-      <dxi-item
-        itemType="button"
-        [colSpan]="1"
-        alignItemLabels="right"
-        [buttonOptions]="addSessionButtonOptions">
-      </dxi-item>
-      <dxi-item
-        itemType="button"
-        [colSpan]="1"
-        alignItemLabels="right"
-        [buttonOptions]="cancelSessionButtonOptions">
-      </dxi-item>
-    </dx-form>
-  </dx-popup>
-</ng-container>
+  <dxo-paging [pageSize]="10"></dxo-paging>
+  <dxo-pager [showPageSizeSelector]="true" [showInfo]="true"></dxo-pager>
+  <dxo-filter-row [visible]="true"></dxo-filter-row>
+
+  <dxi-column dataField="id"></dxi-column>
+  <dxi-column dataField="email"></dxi-column>
+  <dxi-column dataField="dateRegistered" dataType="datetime" format="MM/dd/yyy"></dxi-column>
+  <dxi-column dataField="dateRemoved" dataType="datetime" format="MM/dd/yyy"></dxi-column>
+  <dxi-column dataField="fcmId"></dxi-column>
+  <dxi-column type="buttons" [width]="150" [fixed]="true" caption="Actions">
+    <dxi-button icon="comment" hint="Send Notification" [onClick]="showEditModal"></dxi-button>
+    </dxi-column>
+</dx-data-grid>
+
+<dx-popup
+  [showTitle]="true"
+  [dragEnabled]="false"
+  [visible]="isVisible$ | async"
+  [height]="'500px'"
+  [width]="'800px'"
+  [showCloseButton]="true"
+  (onHiding)="onCancel()"
+>
+  <dxi-toolbar-item toolbar="top" location="center">
+    <div *dxTemplate>
+      <p class="popup-title">
+        {{ selectedItem?.id ? 'EDIT' : 'ADD' }} {{itemType | uppercase}}
+      </p>
+    </div>
+  </dxi-toolbar-item>
+  <div *dxTemplate="let data of 'content'">
+    <div class="add-item-modal">
+      <div class="add-item-modal__content" *ngIf="isVisible$ | async">
+        <dx-form
+          #addEditForm
+          [(formData)]="selectedItem"
+          [showColonAfterLabel]="false"
+          labelLocation="left"
+          [colCount]="2">
+          <dxi-item dataField="title" [colSpan]="2" [editorType]="'dxTextBox'">
+            <dxo-label [visible]="false" ></dxo-label>
+          </dxi-item>
+          <dxi-item dataField="body" [colSpan]="2" [editorType]="'dxTextArea'" [editorOptions]="{ height: 200 }">
+            <dxo-label [visible]="false" ></dxo-label>
+          </dxi-item>
+        </dx-form>
+      </div>
+      <div class="add-item-modal__button-group">
+        <dx-button
+          text="CANCEL"
+          stylingMode="contained"
+          type="normal"
+          [disabled]="inProgress$ | async"
+          (onClick)="onCancel()"
+        ></dx-button>
+        <app-indicator-button
+          [isInProgress]="inProgress$ | async"
+          [title]="'SEND'"
+          [disabled]="inProgress$ | async"
+          (onClick)="onSave()"
+        ></app-indicator-button>
+      </div>
+    </div>
+  </div>
+</dx-popup>

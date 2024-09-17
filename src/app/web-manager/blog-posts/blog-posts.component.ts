@@ -2,7 +2,6 @@ import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angu
 import { DxFormComponent } from 'devextreme-angular';
 import { DxTagBoxTypes } from 'devextreme-angular/ui/tag-box';
 import ArrayStore from 'devextreme/data/array_store';
-import CustomStore from 'devextreme/data/custom_store';
 import DataSource from 'devextreme/data/data_source';
 import notify from 'devextreme/ui/notify';
 import { BlogPostModel } from 'impactdisciplescommon/src/models/domain/blog-post.model';
@@ -32,6 +31,8 @@ export class BlogPostsComponent implements OnInit {
 
   public inProgress$ = new BehaviorSubject<boolean>(false)
   public isVisible$ = new BehaviorSubject<boolean>(false);
+  public isSingleImageVisible$ = new BehaviorSubject<boolean>(false);
+  public isMultipleImageVisible$ = new BehaviorSubject<boolean>(false);
 
   blogTags: string[] = [];
 
@@ -79,6 +80,22 @@ export class BlogPostsComponent implements OnInit {
   showAddModal = () => {
     this.selectedItem = {... new BlogPostModel()};
     this.isVisible$.next(true);
+  }
+
+  showSingleImageModal = () => {
+    this.isSingleImageVisible$.next(true);
+  }
+
+  closeSingleImageModal = () => {
+    this.isSingleImageVisible$.next(false);
+  }
+
+  showMultipleImageModal = () => {
+    this.isMultipleImageVisible$.next(true);
+  }
+
+  closeMultipleImageModal = () => {
+    this.isMultipleImageVisible$.next(false);
   }
 
   delete = ({ row: { data } }) => {

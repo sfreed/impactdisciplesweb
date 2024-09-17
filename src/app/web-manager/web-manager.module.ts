@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DxButtonModule, DxDataGridModule, DxFileUploaderModule, DxFormModule, DxHtmlEditorModule, DxLoadIndicatorModule, DxPopupModule,
+import { DxButtonModule, DxDataGridModule, DxDateBoxModule, DxFileUploaderModule, DxFormModule, DxHtmlEditorModule, DxLoadIndicatorModule, DxPopupModule,
+         DxSelectBoxModule,
          DxSwitchModule, DxTabsModule, DxTagBoxModule, DxTextBoxModule,
          DxToolbarModule} from 'devextreme-angular';
 import { ImpactFormsModule } from 'impactdisciplescommon/src/forms/forms.module';
@@ -19,11 +20,13 @@ import { SharedModule } from '../shared/shared.module';
     ImpactFormsModule,
     DxDataGridModule,
     DxButtonModule,
+    DxDateBoxModule,
     DxFormModule,
     DxFileUploaderModule,
     DxHtmlEditorModule,
     DxLoadIndicatorModule,
     DxPopupModule,
+    DxSelectBoxModule,
     DxSwitchModule,
     DxTabsModule,
     DxTagBoxModule,
