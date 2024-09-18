@@ -38,8 +38,9 @@
   <dxi-column dataField="firstName" [visible]="false"></dxi-column>
   <dxi-column dataField="lastName" [visible]="false"></dxi-column>
   <dxi-column dataField="locationName"></dxi-column>
-  <dxi-column dataField="requestedStartDateTime"  [dataType]="'datetime'" [caption]="'Start Time'"></dxi-column>
-  <dxi-column dataField="requestedEndDateTime"  [dataType]="'datetime'" [caption]="'End Time'"></dxi-column>
+  <dxi-column dataField="requestedDate"  [dataType]="'date'" [caption]="'Date'"></dxi-column>
+  <dxi-column dataField="requestedStartTime"  [dataType]="'datetime'" [caption]="'Start Time'" cellTemplate="startDateCellTemplate"></dxi-column>
+  <dxi-column dataField="requestedEndTime"  [dataType]="'datetime'" [caption]="'End Time'" cellTemplate="endDateCellTemplate"></dxi-column>
   <dxi-column dataField="email"></dxi-column>
   <dxi-column dataField="locationAddress.address1" [visible]="false" [caption]="'Address 1'" [visible]="false"></dxi-column>
   <dxi-column dataField="locationAddress.address2" [visible]="false" [caption]="'Address 2'" [visible]="false"></dxi-column>
@@ -60,6 +61,16 @@
   <div *dxTemplate="let cell of 'phoneNumberCellTemplate'">
     <div class="">
       {{ cell.data.phone | phoneNumberMask : false }}
+    </div>
+  </div>
+  <div *dxTemplate="let cell of 'startDateCellTemplate'">
+    <div class="">
+      {{ cell.data.requestedStartTime | date : 'HH:mm'}}
+    </div>
+  </div>
+  <div *dxTemplate="let cell of 'endDateCellTemplate'">
+    <div class="">
+      {{ cell.data.requestedEndTime | date : 'HH:mm'}}
     </div>
   </div>
 </dx-data-grid>
@@ -94,9 +105,37 @@
             <dxi-item dataField="lastName" [colSpan]="1"></dxi-item>
             <dxi-item dataField="email" [colSpan]="2"></dxi-item>
           </dxi-item>
-          <dxi-item itemType="group" caption="Information" [colCount]="2" [colSpan]="1">
-            <dxi-item dataField="requestedStartDateTime" [colSpan]="1" [label]="{text: 'Start Date / Time'}"></dxi-item>
-            <dxi-item dataField="requestedEndDateTime" [colSpan]="1" [label]="{text: 'End Date / Time'}"></dxi-item>
+          <dxi-item itemType="group" caption="Information" [colCount]="3" [colSpan]="1">
+            <dxi-item
+              dataField="requestedDate"
+              editorType="dxDateBox"
+              [label]="{ text: 'Requested Date' }"
+              [editorOptions]="{
+                displayFormat: 'M/d/yyyy',
+                type: 'date',
+                useMaskBehavior: true
+              }"
+            ></dxi-item>
+            <dxi-item
+              dataField="requestedStartTime"
+              editorType="dxDateBox"
+              [label]="{ text: 'Requested Start Time' }"
+              [editorOptions]="{
+                displayFormat: 'HH:mm',
+                type: 'time',
+                useMaskBehavior: true
+              }"
+            ></dxi-item>
+            <dxi-item
+              dataField="requestedEndTime"
+              editorType="dxDateBox"
+              [label]="{ text: 'Requested End Time' }"
+              [editorOptions]="{
+                displayFormat: 'HH:mm',
+                type: 'time',
+                useMaskBehavior: true
+              }"
+            ></dxi-item>
           </dxi-item>
           <dxi-item itemType="group" caption="Address" [colCount]="6" [colSpan]="1">
             <dxi-item dataField="locationName" [colSpan]="6"></dxi-item>

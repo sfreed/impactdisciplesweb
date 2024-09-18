@@ -36,8 +36,9 @@
 
   <dxi-column dataField="eventCoordinator" [caption]="'Coordinator'"></dxi-column>
   <dxi-column dataField="preferredLocationName" [caption]="'Location Name'"></dxi-column>
-  <dxi-column dataField="requestedStartDateTime" [dataType]="'datetime'" [caption]="'Start Time'"></dxi-column>
-  <dxi-column dataField="requestedEndDateTime" [dataType]="'datetime'" [caption]="'End Time'"></dxi-column>
+  <dxi-column dataField="requestedDate" [dataType]="'date'" [caption]="'Date'"></dxi-column>
+  <dxi-column dataField="requestedStartTime" [dataType]="'time'" [caption]="'Start Time'" cellTemplate="startTimeCellTemplate"></dxi-column>
+  <dxi-column dataField="requestedEndTime" [dataType]="'time'" [caption]="'End Time'" cellTemplate="endTimeCellTemplate"></dxi-column>
   <dxi-column dataField="email"></dxi-column>
   <dxi-column dataField="preferredTrainer" [caption]="'Trainer'" [visible]="false"></dxi-column>
   <dxi-column dataField="preferredLocation.address1" [caption]="'Address 1'" [visible]="false"></dxi-column>
@@ -67,6 +68,16 @@
       {{ cell.data.phone | phoneNumberMask : false }}
     </div>
   </div>
+  <div *dxTemplate="let cell of 'startTimeCellTemplate'">
+    <div class="">
+      {{ cell.data.requestedStartTime | date : 'HH:mm'}}
+    </div>
+  </div>
+  <div *dxTemplate="let cell of 'endTimeCellTemplate'">
+    <div class="">
+      {{ cell.data.requestedEndTime | date : 'HH:mm'}}
+    </div>
+  </div>
 </dx-data-grid>
 
 <dx-popup
@@ -74,7 +85,7 @@
   [dragEnabled]="false"
   [visible]="isVisible$ | async"
   height="850px"
-  width="850px"
+  width="950px"
   [showCloseButton]="true"
   (onHiding)="onCancel()"
 >
@@ -94,10 +105,38 @@
           [showColonAfterLabel]="false"
           labelLocation="left"
         >
-        <dxi-item itemType="group" [colCount]="4" [colSpan]="1">
-          <dxi-item dataField="requestedStartDateTime" [colSpan]="2" [label]="{text: 'Start Date / Time'}"></dxi-item>
-          <dxi-item dataField="requestedEndDateTime" [colSpan]="2" [label]="{text: 'End Date / Time'}"></dxi-item>
-          <dxi-item dataField="preferredTrainer" [colSpan]="4"></dxi-item>
+        <dxi-item dataField="preferredTrainer" [colSpan]="1"></dxi-item>
+        <dxi-item itemType="group" caption="Information" [colCount]="3" [colSpan]="1">
+          <dxi-item
+            dataField="requestedDate"
+            editorType="dxDateBox"
+            [label]="{ text: 'Date' }"
+            [editorOptions]="{
+              displayFormat: 'M/d/yyyy',
+              type: 'date',
+              useMaskBehavior: true
+            }"
+          ></dxi-item>
+          <dxi-item
+            dataField="requestedStartTime"
+            editorType="dxDateBox"
+            [label]="{ text: 'Start Time' }"
+            [editorOptions]="{
+              displayFormat: 'HH:mm',
+              type: 'time',
+              useMaskBehavior: true
+            }"
+          ></dxi-item>
+          <dxi-item
+            dataField="requestedEndTime"
+            editorType="dxDateBox"
+            [label]="{ text: 'End Time' }"
+            [editorOptions]="{
+              displayFormat: 'HH:mm',
+              type: 'time',
+              useMaskBehavior: true
+            }"
+          ></dxi-item>
         </dxi-item>
         <dxi-item itemType="group" caption="Address" [colCount]="6" [colSpan]="1">
           <dxi-item dataField="preferredLocationName" [colSpan]="6" [label]="{text: 'Location Name'}"></dxi-item>
@@ -118,7 +157,7 @@
             </div>
           </dxi-item>
         </dxi-item>
-        <dxi-item itemType="group" caption="Information" [colCount]="4" [colSpan]="1">
+        <dxi-item itemType="group" [colCount]="4" [colSpan]="1">
           <dxi-item dataField="hasProjectingDevice" [colSpan]="2" [editorType]="'dxSwitch'" [editorOptions]="{ switchedOnText: 'Yes', switchedOffText: 'No' }"></dxi-item>
           <dxi-item dataField="volunteersAvailable" [colSpan]="2" [editorType]="'dxSwitch'" [editorOptions]="{ switchedOnText: 'Yes', switchedOffText: 'No' }"></dxi-item>
           <dxi-item dataField="isPrivateEvent" [colSpan]="2" [editorType]="'dxSwitch'" [editorOptions]="{ switchedOnText: 'Yes', switchedOffText: 'No' }"></dxi-item>
