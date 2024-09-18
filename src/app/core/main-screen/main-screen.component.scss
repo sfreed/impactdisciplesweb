@@ -1,0 +1,82 @@
+::ng-deep .impact-drawer {
+  height: 100vh;
+  background-color: #f3f3f3;
+  .dx-list-item-content {
+    padding: 20px;
+  }
+  .dx-drawer-panel-content {
+    background-color: #252525;
+  }
+ .dx-state-hover, .dx-list-item-selected {
+    .dx-list-item-content {
+      background-color: #ffcc00;
+    }
+    .impact-drawer__link {
+      color: #252525;
+      font-weight: 600;
+    }
+    .dx-icon, .dx-list-item-icon {
+      color: #252525 !important;
+    }
+  }
+  dx-list {
+    border-top: 1px solid #ffffff4d;
+  }
+  &__link {
+    text-decoration: none;
+    color: #fff;
+    &-text {
+      font-size: 15px;
+    }
+  }
+  .header-container {
+    height: 60px;
+    margin-bottom: 20px;
+    .dx-toolbar .dx-toolbar-items-container {
+      height: 60px;
+      border-bottom: 1px solid #d9d9d9;
+    }
+  }
+  .logout {
+    padding-right: 20px !important;
+  }
+}
+
+.drawer-logo {
+  margin: 20px 0;
+  display: flex;
+  justify-content: center;
+}
+.portal-content {
+  margin: 0 25px;
+  background-color: #fff;
+}
+#Impact-Logo {
+  padding-right: 20px;
+  width: 10%;
+}
+
+#Impact-Title {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+}
+
+.titlebar {
+  display: inline-flex;
+  width: 100%;
+  text-align: center;
+}
+
+
+.app-container{
+  margin: 25px;
+}
+
+
+.footer-container {
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  width: 100vw;
+}

@@ -6,43 +6,24 @@ import { TopNavService } from 'impactdisciplescommon/src/services/utils/top-nav.
 @Component({
   selector: 'app-main-screen',
   templateUrl: './main-screen.component.html',
-  styleUrls: ['./main-screen.component.css']
+  styleUrls: ['./main-screen.component.scss']
 })
-export class MainScreenComponent {
-  eventManagerButtonOptions: DxButtonTypes.Properties = {
-    text: 'Events Manager',
-    onClick: () => {
-      this.topNavService.navigate({ id: 0, name:'Events Manager', route:'events-manager', icon: 'home', level: 0})
-    },
-  };
-
-  webManagerButtonOptions: DxButtonTypes.Properties = {
-    text: 'Web Manager',
-    onClick: () => {
-      this.topNavService.navigate({ id: 0, name:'Web Manager', route:'web-manager', icon: 'toolbox', level: 0})
-    },
-  };
-
-  subscriptionsManagerButtonOptions: DxButtonTypes.Properties = {
-    text: 'Subscriptions Manager',
-    onClick: () => {
-      this.topNavService.navigate({ id: 0, name:'Subscriptions Manager', route:'subscriptions-manager', icon: 'toolbox', level: 0})
-    },
-  };
-
-  requestsManagerButtonOptions: DxButtonTypes.Properties = {
-    text: 'Requests Manager',
-    onClick: () => {
-      this.topNavService.navigate({ id: 0, name:'Requests Manager', route:'requests-manager', icon: 'toolbox', level: 0})
-    },
-  };
-
-  adminManagerButtonOptions: DxButtonTypes.Properties = {
-    text: 'Admin Manager',
-    onClick: () => {
-      this.topNavService.navigate({ id: 0, name:'Admin Manager', route:'admin-manager', icon: 'toolbox', level: 0})
-    },
-  };
+export class MainScreenComponent {  
+  navigation: any[] = [
+    { id: 0, text: "HOME", icon: "home", path:"" },
+    { id: 1, text: "EVENTS MANAGER", icon: "event", path: "events-manager" },
+    { id: 2, text: "WEB MANAGER", icon: "toolbox", path: "web-manager" },
+    { id: 3, text: "SUBSCRIPTIONS MANAGER", icon: "message", path: "subscriptions-manager" },
+    { id: 4, text: "REQUESTS MANAGER", icon: "belloutline", path: "requests-manager" },
+    { id: 5, text: "ADMIN MANAGER", icon: "user", path: "admin-manager" }
+  ];
+  isDrawerOpen: boolean = false;
+  buttonOptions: any = {
+      icon: "menu",
+      onClick: () => {
+          this.isDrawerOpen = !this.isDrawerOpen;
+      }
+  }
 
   logOffButtonOptions: DxButtonTypes.Properties = {
     text: 'Log Off',

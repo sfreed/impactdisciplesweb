@@ -1,56 +1,45 @@
-<div class="header-container">
-  <dx-toolbar>
-    <dxi-item location="center" widget="dxButton" locateInMenu="never">
-      <div *dxTemplate>
-        <div class="titlebar">
-          <span id="Impact-Logo"><img src="../../../assets/Impact-Logo_Black.png" width="48.23px" height="43.19px"></span>
-          <span id="Impact-Title">Impact Discipleship Ministries</span>
-        </div>
+<dx-drawer
+  position="left"
+  template="template"
+  [opened]="true"
+  [closeOnOutsideClick]="false" 
+  class="impact-drawer"
+>
+  <div *dxTemplate="let data of 'template'">
+    <div class="drawer-logo">    
+      <span><img src="../../../assets/Impact-Logo_Light.png" height="120px"></span>
+    </div>
+    <dx-list
+      [items]="navigation"
+      [width]="250"
+      selectionMode="single"
+      (onSelectionChanged)="this.isDrawerOpen = false"
+      itemTemplate="links">
+      <div *dxTemplate="let link of 'links'">
+        <a class="impact-drawer__link" [routerLink]="['/' + link.path]">
+          <div>
+            <div class="dx-list-item-icon-container">
+              <i class="dx-icon dx-list-item-icon dx-icon-{{link.icon}}"></i>
+            </div>
+            <span class="impact-drawer__link-text">{{ link.text }}</span>
+          </div>
+        </a>
       </div>
-    </dxi-item>
-    <dxi-item
-      location="after"
-      widget="dxButton"
-      locateInMenu="always"
-      [options]="eventManagerButtonOptions">
-    </dxi-item>
-    <dxi-item
-      location="after"
-      widget="dxButton"
-      locateInMenu="always"
-      [options]="adminManagerButtonOptions">
-    </dxi-item>
-    <dxi-item
-      location="after"
-      widget="dxButton"
-      locateInMenu="always"
-      [options]="webManagerButtonOptions">
-    </dxi-item>
-    <dxi-item
-      location="after"
-      widget="dxButton"
-      locateInMenu="always"
-      [options]="subscriptionsManagerButtonOptions">
-    </dxi-item>
-    <dxi-item
-      location="after"
-      widget="dxButton"
-      locateInMenu="always"
-      [options]="requestsManagerButtonOptions">
-    </dxi-item>
-    <dxi-item
-      location="after"
-      widget="dxButton"
-      locateInMenu="always"
-      [options]="logOffButtonOptions">
-    </dxi-item>
-  </dx-toolbar>
-</div>
-<div class="app-container">
-  <router-outlet>
-  </router-outlet>
-</div>
-
-<div class="footer-container">
-
-</div>
+    </dx-list>
+  </div>
+  <div id="view">
+    <div class="header-container">
+      <dx-toolbar>
+        <dxi-item
+          location="after"
+          widget="dxButton"
+          cssClass="logout"
+          [options]="logOffButtonOptions">
+        </dxi-item>
+      </dx-toolbar>
+    </div>
+    <div class="portal-content">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</dx-drawer>

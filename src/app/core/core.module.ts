@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MainScreenComponent } from './main-screen/main-screen.component';
-import { DxChartModule, DxFormModule, DxTabsModule, DxToolbarModule } from 'devextreme-angular';
+import { DxChartModule, DxDrawerModule, DxFormModule, DxListModule, DxTabsModule, DxToolbarModule } from 'devextreme-angular';
 import { RouterModule } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component';
 
@@ -16,7 +16,9 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     DxToolbarModule,
     DxTabsModule,
     DxFormModule,
-    DxChartModule
+    DxChartModule,
+    DxDrawerModule,
+    DxListModule
   ]
 })
 export class CoreModule { }

@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CoursesComponent } from './courses/courses.component';
 import { LocationsComponent } from './locations/locations.component';
-import { DxButtonModule, DxDataGridModule, DxDraggableModule, DxFileManagerModule, DxFormModule, DxListModule, DxLoadPanelModule, DxNumberBoxModule, DxPopupModule, DxSchedulerModule, DxScrollViewModule, DxTabsModule, DxTextAreaModule, DxTextBoxModule } from 'devextreme-angular';
+import { DxButtonModule, DxDataGridModule, DxDraggableModule, DxDropDownBoxModule, DxFileManagerModule, DxFormModule, DxListModule, DxLoadIndicatorModule, DxLoadPanelModule, DxNumberBoxModule, DxPopupModule, DxSchedulerModule, DxScrollViewModule, DxSelectBoxModule, DxTabsModule, DxTextAreaModule, DxTextBoxModule, DxToolbarModule } from 'devextreme-angular';
 import { OrganizationsComponent } from './organizations/organizations.component';
 import { ImpactDisciplesModule } from "../../../impactdisciplescommon/src/impactdisciples.common.module";
 import { ImpactFormsModule } from 'impactdisciplescommon/src/forms/forms.module';
@@ -12,6 +12,7 @@ import { EventsComponent } from './events/events.component';
 import { EventAttendeesComponent } from './events/event-attendees/event-attendees.component';
 import { EventAgendaComponent } from './events/event-agenda/event-agenda.component';
 import { EventsManagerComponent } from './events-manager.component';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
     declarations: [
@@ -26,6 +27,7 @@ import { EventsManagerComponent } from './events-manager.component';
     ],
     imports: [
       CommonModule,
+      SharedModule,
       FormsModule,
       ImpactFormsModule,
       DxButtonModule,
@@ -42,6 +44,10 @@ import { EventsManagerComponent } from './events-manager.component';
       DxTabsModule,
       DxTextAreaModule,
       DxTextBoxModule,
+      DxToolbarModule,
+      DxSelectBoxModule,
+      DxDropDownBoxModule,
+      DxLoadIndicatorModule,
       ImpactDisciplesModule
     ]
 })
