@@ -53,12 +53,11 @@
     <dxi-button icon="trash" hint="DELETE" [onClick]="delete"></dxi-button>
   </dxi-column>
 </dx-data-grid>
+
 <dx-popup
   [showTitle]="true"
   [dragEnabled]="false"
   [visible]="isVisible$ | async"
-  height="900px"
-  width="1000px"
   [showCloseButton]="true"
   (onHiding)="onCancel()"
 >
