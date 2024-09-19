@@ -109,7 +109,7 @@
               <dxi-item
                 dataField="requestedDate"
                 editorType="dxDateBox"
-                [label]="{ text: 'Requested Date' }"
+                [label]="{ text: 'Date' }"
                 [editorOptions]="{
                   displayFormat: 'M/d/yyyy',
                   type: 'date',
@@ -119,7 +119,7 @@
               <dxi-item
                 dataField="requestedStartTime"
                 editorType="dxDateBox"
-                [label]="{ text: 'Requested Start Time' }"
+                [label]="{ text: 'Start Time' }"
                 [editorOptions]="{
                   displayFormat: 'HH:mm',
                   type: 'time',
@@ -129,7 +129,7 @@
               <dxi-item
                 dataField="requestedEndTime"
                 editorType="dxDateBox"
-                [label]="{ text: 'Requested End Time' }"
+                [label]="{ text: 'End Time' }"
                 [editorOptions]="{
                   displayFormat: 'HH:mm',
                   type: 'time',
@@ -146,10 +146,10 @@
               <dxi-item dataField="locationAddress.zip" [colSpan]="1" [label]="{text: 'Zip'}"></dxi-item>
               <dxi-item dataField="locationAddress.country" [colSpan]="3" [label]="{text: 'Country'}"></dxi-item>
             </dxi-item>
-            <dxi-item itemType="group" caption="Contact Information" [colCount]="3" [colSpan]="1">
-              <dxi-item dataField="coordinator" [colSpan]="3"></dxi-item>
-              <dxi-item dataField="coordinatorPhone.countryCode" [colSpan]="1" [label]="{text: 'Country Code'}"></dxi-item>
-              <dxi-item dataField="coordinatorPhone.number" [colSpan]="1" [label]="{text: 'Number'}" [editorOptions]="phoneEditorOptions"></dxi-item>
+            <dxi-item itemType="group" caption="Contact Information" [colCount]="6" [colSpan]="1">
+              <dxi-item dataField="coordinator" [colSpan]="6"></dxi-item>
+              <dxi-item dataField="coordinatorPhone.countryCode" [colSpan]="3" [label]="{text: 'Country Code'}"></dxi-item>
+              <dxi-item dataField="coordinatorPhone.number" [colSpan]="3" [label]="{text: 'Number'}" [editorOptions]="phoneEditorOptions"></dxi-item>
               <dxi-item dataField="coordinatorPhone.type" [colSpan]="1" [label]="{text: 'Type'}">
                 <div *dxTemplate>
                   <dx-select-box [(value)]="selectedItem.coordinatorPhone.type" [dataSource]="phone_types"></dx-select-box>
