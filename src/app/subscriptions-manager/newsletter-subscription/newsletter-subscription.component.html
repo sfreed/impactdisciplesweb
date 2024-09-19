@@ -2,16 +2,16 @@
   <dx-toolbar class="content-list__header py-2">
     <dxi-item location="before" locateInMenu="never">
       <div *dxTemplate>
-        <h2 class="content-block responsive-paddings underline">{{itemType}}</h2>
+        <h2 class="content-block responsive-paddings underline">{{itemType}}s</h2>
       </div>
     </dxi-item>
     <dxi-item
       location="after"
       widget="dxButton"
       [options]="{
-        hint: 'ADD',
+        hint: 'ADD ' + itemType | uppercase,
         type: 'default',
-        text: 'ADD',
+        text: 'ADD ' + itemType | uppercase,
         stylingMode: 'contained',
         onClick: showAddModal
       }"
@@ -22,15 +22,14 @@
 <dx-data-grid
   #grid
   [dataSource]="datasource$ | async"
-  [width]="'100%'"
+  [height]="'75vh'"
   [showBorders]="true"
   [showColumnLines]="true"
   [showRowLines]="true"
   [focusedRowEnabled]="true"
-  [columnAutoWidth]="true"
->
-  <dxo-paging [pageSize]="10"></dxo-paging>
-  <dxo-pager [showPageSizeSelector]="true" [showInfo]="true"></dxo-pager>
+  [columnAutoWidth]="true">
+
+  <dxo-scrolling mode="virtual"></dxo-scrolling>
   <dxo-filter-row [visible]="true"></dxo-filter-row>
 
   <dxi-column dataField="firstName" caption="First Name" sortOrder="asc"></dxi-column>
@@ -40,18 +39,16 @@
     <dxi-button icon="edit" hint="EDIT" [onClick]="showEditModal"></dxi-button>
     <dxi-button icon="trash" hint="DELETE" [onClick]="delete"></dxi-button>
   </dxi-column>
-
 </dx-data-grid>
 
 <dx-popup
   [showTitle]="true"
   [dragEnabled]="false"
   [visible]="isVisible$ | async"
-  height="300px"
-  width="500px"
+  height="40%"
+  width="60%"
   [showCloseButton]="true"
-  (onHiding)="onCancel()"
->
+  (onHiding)="onCancel()">
   <dxi-toolbar-item toolbar="top" location="center">
     <div *dxTemplate>
       <p class="popup-title">
@@ -66,8 +63,7 @@
           #addEditForm
           [(formData)]="selectedItem"
           [showColonAfterLabel]="false"
-          labelLocation="left"
-        >
+          labelLocation="left">
           <dxi-item dataField="firstName" [label]="{ text: 'First Name' }" [isRequired]="true"></dxi-item>
           <dxi-item dataField="lastName" [label]="{ text: 'Last Name' }" [isRequired]="true"></dxi-item>
           <dxi-item dataField="email" [label]="{ text: 'Email' }" [isRequired]="true"></dxi-item>
@@ -79,15 +75,14 @@
           stylingMode="contained"
           type="normal"
           [disabled]="inProgress$ | async"
-          (onClick)="onCancel()"
-        ></dx-button>
+          (onClick)="onCancel()">
+        </dx-button>
         <app-indicator-button
           [isInProgress]="inProgress$ | async"
           [title]="'SAVE'"
           [disabled]="inProgress$ | async"
-          (onClick)="onSave(selectedItem)"
-        ></app-indicator-button>
-
+          (onClick)="onSave(selectedItem)">
+        </app-indicator-button>
       </div>
     </div>
   </div>

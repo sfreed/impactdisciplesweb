@@ -19,7 +19,7 @@ export class EmailTemplatesComponent implements OnInit{
   datasource$: Observable<DataSource>;
   selectedItem: MailTemplateModel;
 
-  itemType = 'Email Templates';
+  itemType = 'Email Template';
 
   public inProgress$ = new BehaviorSubject<boolean>(false)
   public isVisible$ = new BehaviorSubject<boolean>(false);

@@ -2,16 +2,16 @@
   <dx-toolbar class="content-list__header py-2">
     <dxi-item location="before" locateInMenu="never">
       <div *dxTemplate>
-        <h2 class="content-block responsive-paddings underline">{{itemType}}</h2>
+        <h2 class="content-block responsive-paddings underline">{{itemType}}s</h2>
       </div>
     </dxi-item>
     <dxi-item
       location="after"
       widget="dxButton"
       [options]="{
-        hint: 'ADD',
+        hint: 'ADD ' + itemType | uppercase,
         type: 'default',
-        text: 'ADD',
+        text: 'ADD ' + itemType | uppercase,
         stylingMode: 'contained',
         onClick: showAddModal
       }"
@@ -22,7 +22,7 @@
 <dx-data-grid class="dx-card wide-card"
   #grid
   [dataSource]="datasource$ | async"
-  [width]="'100%'"
+  [height]="'75vh'"
   [showBorders]="false"
   [showColumnLines]="true"
   [showColumnLines]="true"
@@ -30,8 +30,7 @@
   [focusedRowEnabled]="true"
   [columnAutoWidth]="true">
 
-  <dxo-paging [pageSize]="10"></dxo-paging>
-  <dxo-pager [showPageSizeSelector]="true" [showInfo]="true"></dxo-pager>
+  <dxo-scrolling mode="virtual"></dxo-scrolling>
   <dxo-filter-row [visible]="true"></dxo-filter-row>
 
   <dxi-column dataField="firstName"></dxi-column>
@@ -57,6 +56,7 @@
     <dxi-button icon="edit" hint="EDIT" [onClick]="showEditModal"></dxi-button>
     <dxi-button icon="trash" hint="DELETE" [onClick]="delete"></dxi-button>
   </dxi-column>
+
   <div *dxTemplate="let cell of 'phoneNumberCellTemplate'">
     <div class="">
       {{ cell.data.phone | phoneNumberMask : false }}
@@ -68,11 +68,10 @@
   [showTitle]="true"
   [dragEnabled]="false"
   [visible]="isVisible$ | async"
-  height="850px"
-  width="800px"
+  [width]="'60%'"
+  [height]="'80%'"
   [showCloseButton]="true"
-  (onHiding)="onCancel()"
->
+  (onHiding)="onCancel()">
   <dxi-toolbar-item toolbar="top" location="center">
     <div *dxTemplate>
       <p class="popup-title">
@@ -82,57 +81,57 @@
   </dxi-toolbar-item>
   <div *dxTemplate="let data of 'content'">
     <div class="add-item-modal">
-      <div class="add-item-modal__content" *ngIf="isVisible$ | async">
-        <dx-form
-          #addEditForm
-          [(formData)]="selectedItem"
-          [showColonAfterLabel]="false"
-          labelLocation="left"
-          [colCount]="1"
-        >
-          <dxi-item itemType="group" [colCount]="4" [colSpan]="1">
-            <dxi-item dataField="firstName" [colSpan]="2"></dxi-item>
-            <dxi-item dataField="lastName" [colSpan]="2"></dxi-item>
-            <dxi-item dataField="email" [colSpan]="4"></dxi-item>
-          </dxi-item>
-          <dxi-item itemType="group" caption="Contact Information" [colCount]="6" [colSpan]="1">
-            <dxi-item dataField="phone.countryCode" [colSpan]="2" [label]="{text: 'Country Code'}"></dxi-item>
-            <dxi-item dataField="phone.number" [colSpan]="2" [label]="{text: 'Number'}" [editorOptions]="phoneEditorOptions"></dxi-item>
-            <dxi-item dataField="phone.type" [colSpan]="2" [label]="{text: 'Type'}">
-              <div *dxTemplate>
-                <dx-select-box [value]="'phone.type'" [dataSource]="phone_types"></dx-select-box>
-              </div>
+      <dx-scroll-view height="90%">
+        <div class="add-item-modal__content" *ngIf="isVisible$ | async">
+          <dx-form
+            #addEditForm
+            [(formData)]="selectedItem"
+            [showColonAfterLabel]="false"
+            labelLocation="left"
+            [colCount]="1">
+            <dxi-item itemType="group" [colCount]="4" [colSpan]="1">
+              <dxi-item dataField="firstName" [colSpan]="2"></dxi-item>
+              <dxi-item dataField="lastName" [colSpan]="2"></dxi-item>
+              <dxi-item dataField="email" [colSpan]="4"></dxi-item>
             </dxi-item>
-          </dxi-item>
-          <dxi-item itemType="group" [colCount]="4" [colSpan]="1">
-            <dxi-item dataField="churchName" [colSpan]="2"></dxi-item>
-            <dxi-item dataField="country" [colSpan]="2"></dxi-item>
-            <dxi-item dataField="commitment" [colSpan]="2"></dxi-item>
-            <dxi-item dataField="readiness" [colSpan]="2"></dxi-item>
-            <dxi-item dataField="strategyDescription" [colSpan]="4" [editorType]="'dxTextArea'" [editorOptions]="{ height: 150 }"></dxi-item>
-            <dxi-item dataField="teamDescription" [colSpan]="4" [editorType]="'dxTextArea'" [editorOptions]="{ height: 150 }"></dxi-item>
-            <dxi-item dataField="communicationDescription" [colSpan]="4" [editorType]="'dxTextArea'" [editorOptions]="{ height: 150 }"></dxi-item>
-            <dxi-item dataField="resourceDescription" [colSpan]="4" [editorType]="'dxTextArea'" [editorOptions]="{ height: 150 }"></dxi-item>
-            <dxi-item dataField="resultsDescription" [colSpan]="4" [editorType]="'dxTextArea'" [editorOptions]="{ height: 150 }"></dxi-item>
-            <dxi-item dataField="supportDescription" [colSpan]="4" [editorType]="'dxTextArea'" [editorOptions]="{ height: 150 }"></dxi-item>
-          </dxi-item>
-        </dx-form>
-      </div>
-      <div class="add-item-modal__button-group">
+            <dxi-item itemType="group" caption="Contact Information" [colCount]="6" [colSpan]="1">
+              <dxi-item dataField="phone.countryCode" [colSpan]="2" [label]="{text: 'Country Code'}"></dxi-item>
+              <dxi-item dataField="phone.number" [colSpan]="2" [label]="{text: 'Number'}" [editorOptions]="phoneEditorOptions"></dxi-item>
+              <dxi-item dataField="phone.type" [colSpan]="2" [label]="{text: 'Type'}">
+                <div *dxTemplate>
+                  <dx-select-box [value]="'phone.type'" [dataSource]="phone_types"></dx-select-box>
+                </div>
+              </dxi-item>
+            </dxi-item>
+            <dxi-item itemType="group" [colCount]="4" [colSpan]="1">
+              <dxi-item dataField="churchName" [colSpan]="2"></dxi-item>
+              <dxi-item dataField="country" [colSpan]="2"></dxi-item>
+              <dxi-item dataField="commitment" [colSpan]="2"></dxi-item>
+              <dxi-item dataField="readiness" [colSpan]="2"></dxi-item>
+              <dxi-item dataField="strategyDescription" [colSpan]="4" [editorType]="'dxTextArea'" [editorOptions]="{ height: 150 }"></dxi-item>
+              <dxi-item dataField="teamDescription" [colSpan]="4" [editorType]="'dxTextArea'" [editorOptions]="{ height: 150 }"></dxi-item>
+              <dxi-item dataField="communicationDescription" [colSpan]="4" [editorType]="'dxTextArea'" [editorOptions]="{ height: 150 }"></dxi-item>
+              <dxi-item dataField="resourceDescription" [colSpan]="4" [editorType]="'dxTextArea'" [editorOptions]="{ height: 150 }"></dxi-item>
+              <dxi-item dataField="resultsDescription" [colSpan]="4" [editorType]="'dxTextArea'" [editorOptions]="{ height: 150 }"></dxi-item>
+              <dxi-item dataField="supportDescription" [colSpan]="4" [editorType]="'dxTextArea'" [editorOptions]="{ height: 150 }"></dxi-item>
+            </dxi-item>
+          </dx-form>
+        </div>
+      </dx-scroll-view>
+      <div class="add-item-modal__button-group" style="bottom: 10px; right: 10px; position: fixed;">
         <dx-button
           text="CANCEL"
           stylingMode="contained"
           type="normal"
           [disabled]="inProgress$ | async"
-          (onClick)="onCancel()"
-        ></dx-button>
+          (onClick)="onCancel()">
+        </dx-button>
         <app-indicator-button
           [isInProgress]="inProgress$ | async"
           [title]="'SAVE'"
           [disabled]="inProgress$ | async"
-          (onClick)="onSave(selectedItem)"
-        ></app-indicator-button>
-
+          (onClick)="onSave(selectedItem)">
+        </app-indicator-button>
       </div>
     </div>
   </div>

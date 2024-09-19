@@ -74,7 +74,9 @@
   </dxi-item>
 
   <div *dxTemplate="let data of 'policy_template'">
-    <dx-html-editor height="75vh" [(value)]="selectedItem.policy">
+    <dx-html-editor
+      height="60vh"
+      [(value)]="selectedItem.policy">
       <dxo-toolbar [multiline]="false">
         <dxi-item name="undo"></dxi-item>
         <dxi-item name="redo"></dxi-item>
@@ -82,8 +84,8 @@
         <dxi-item
           name="size"
           [acceptedValues]="['8pt', '10pt', '12pt', '14pt', '18pt', '24pt', '36pt']"
-          [options]="{ inputAttr: { 'aria-label': 'Font size' } }"
-        ></dxi-item>
+          [options]="{ inputAttr: { 'aria-label': 'Font size' } }">
+        </dxi-item>
         <dxi-item
           name="font"
           [acceptedValues]="[
@@ -96,8 +98,8 @@
             'Times New Roman',
             'Verdana'
           ]"
-          [options]="{ inputAttr: { 'aria-label': 'Font family' } }"
-        ></dxi-item>
+          [options]="{ inputAttr: { 'aria-label': 'Font family' } }">
+        </dxi-item>
         <dxi-item name="separator"></dxi-item>
         <dxi-item name="bold"></dxi-item>
         <dxi-item name="italic"></dxi-item>
@@ -115,8 +117,8 @@
         <dxi-item
           name="header"
           [acceptedValues]="[false, 1, 2, 3, 4, 5]"
-          [options]="{ inputAttr: { 'aria-label': 'Header' } }"
-        ></dxi-item>
+          [options]="{ inputAttr: { 'aria-label': 'Header' } }">
+        </dxi-item>
         <dxi-item name="separator"></dxi-item>
         <dxi-item name="color"></dxi-item>
         <dxi-item name="background"></dxi-item>
@@ -140,7 +142,9 @@
     </dx-html-editor>
   </div>
   <div *dxTemplate="let data of 'tos_template'">
-    <dx-html-editor height="75vh" [(value)]="selectedItem.tos">
+    <dx-html-editor
+      height="60vh"
+      [(value)]="selectedItem.tos">
       <dxo-toolbar [multiline]="false">
         <dxi-item name="undo"></dxi-item>
         <dxi-item name="redo"></dxi-item>
@@ -148,8 +152,8 @@
         <dxi-item
           name="size"
           [acceptedValues]="['8pt', '10pt', '12pt', '14pt', '18pt', '24pt', '36pt']"
-          [options]="{ inputAttr: { 'aria-label': 'Font size' } }"
-        ></dxi-item>
+          [options]="{ inputAttr: { 'aria-label': 'Font size' } }">
+        </dxi-item>
         <dxi-item
           name="font"
           [acceptedValues]="[
@@ -162,8 +166,8 @@
             'Times New Roman',
             'Verdana'
           ]"
-          [options]="{ inputAttr: { 'aria-label': 'Font family' } }"
-        ></dxi-item>
+          [options]="{ inputAttr: { 'aria-label': 'Font family' } }">
+        </dxi-item>
         <dxi-item name="separator"></dxi-item>
         <dxi-item name="bold"></dxi-item>
         <dxi-item name="italic"></dxi-item>
@@ -181,8 +185,8 @@
         <dxi-item
           name="header"
           [acceptedValues]="[false, 1, 2, 3, 4, 5]"
-          [options]="{ inputAttr: { 'aria-label': 'Header' } }"
-        ></dxi-item>
+          [options]="{ inputAttr: { 'aria-label': 'Header' } }">
+        </dxi-item>
         <dxi-item name="separator"></dxi-item>
         <dxi-item name="color"></dxi-item>
         <dxi-item name="background"></dxi-item>

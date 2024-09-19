@@ -2,16 +2,16 @@
   <dx-toolbar class="content-list__header py-2 px-2">
     <dxi-item location="before" locateInMenu="never">
       <div *dxTemplate>
-        <h2 class="content-block responsive-paddings underline">{{itemType}}</h2>
+        <h2 class="content-block responsive-paddings underline">{{itemType}}s</h2>
       </div>
     </dxi-item>
     <dxi-item
       location="after"
       widget="dxButton"
       [options]="{
-        hint: 'ADD EVENT',
+        hint: 'ADD ' + itemType | uppercase,
         type: 'default',
-        text: 'ADD EVENT',
+        text: 'ADD ' + itemType | uppercase,
         stylingMode: 'contained',
         onClick: showAddModal
       }"
@@ -19,52 +19,46 @@
   </dx-toolbar>
 </div>
 
-<div class="content-block responsive-paddings">
-  <dx-data-grid
-    #grid
-    [dataSource]="datasource$ | async"
-    [width]="'100%'"
-    [showBorders]="true"
-    [showColumnLines]="true"
-    [showRowLines]="true"
-    [focusedRowEnabled]="true"
-    [columnAutoWidth]="true"
-  >
-    <dxo-paging [pageSize]="10"></dxo-paging>
-    <dxo-pager [showPageSizeSelector]="true" [showInfo]="true"></dxo-pager>
-    <dxo-filter-row [visible]="true"></dxo-filter-row>
+<dx-data-grid
+  #grid
+  [dataSource]="datasource$ | async"
+  [height]="'75vh'"
+  [showBorders]="true"
+  [showColumnLines]="true"
+  [showRowLines]="true"
+  [focusedRowEnabled]="true"
+  [columnAutoWidth]="true">
+  <dxo-scrolling mode="virtual"></dxo-scrolling>
+  <dxo-filter-row [visible]="true"></dxo-filter-row>
 
-    <dxi-column dataField="startDate" [caption]="'From'" [dataType]="'datetime'"></dxi-column>
-    <dxi-column dataField="endDate" [caption]="'To'" [dataType]="'datetime'"></dxi-column>
-    <dxi-column dataField="costInDollars" [caption]="'Cost'" format="currency"></dxi-column>
-    <dxi-column dataField="isSummit" [caption]="'Summit?'"></dxi-column>
-    <dxi-column dataField="eventName" [caption]="'Event Name'"></dxi-column>
-    <dxi-column dataField="organization" [caption]="'Organization'">
-      <dxo-lookup [dataSource]="organizations$ | async" displayExpr="name" valueExpr="id"></dxo-lookup>
-    </dxi-column>
-    <dxi-column dataField="location" [caption]="'Location'">
-      <dxo-lookup [dataSource]="locations$ | async" displayExpr="name" valueExpr="id"></dxo-lookup>
-    </dxi-column>
-    <dxi-column dataField="description" [visible]="false"></dxi-column>
-    <dxi-column type="buttons" caption="Actions" [allowReordering]="false">
-      <dxi-button icon="edit" hint="EVENT DETAILS" [onClick]="showEditModal"></dxi-button>
-      <dxi-button icon="event" hint="EVENT AGENDA" [onClick]="editAgenda.bind(this)"></dxi-button>
-      <dxi-button icon="group" hint="ATTENDEE LIST" [onClick]="viewAttendees.bind(this)"></dxi-button>
-      <dxi-button icon="trash" hint="DELETE" [onClick]="delete"></dxi-button>
-    </dxi-column>
-
-  </dx-data-grid>
-</div>
+  <dxi-column dataField="startDate" [caption]="'From'" [dataType]="'datetime'"></dxi-column>
+  <dxi-column dataField="endDate" [caption]="'To'" [dataType]="'datetime'"></dxi-column>
+  <dxi-column dataField="costInDollars" [caption]="'Cost'" format="currency"></dxi-column>
+  <dxi-column dataField="isSummit" [caption]="'Summit?'"></dxi-column>
+  <dxi-column dataField="eventName" [caption]="'Event Name'"></dxi-column>
+  <dxi-column dataField="organization" [caption]="'Organization'">
+    <dxo-lookup [dataSource]="organizations$ | async" displayExpr="name" valueExpr="id"></dxo-lookup>
+  </dxi-column>
+  <dxi-column dataField="location" [caption]="'Location'">
+    <dxo-lookup [dataSource]="locations$ | async" displayExpr="name" valueExpr="id"></dxo-lookup>
+  </dxi-column>
+  <dxi-column dataField="description" [visible]="false"></dxi-column>
+  <dxi-column type="buttons" caption="Actions" [allowReordering]="false">
+    <dxi-button icon="edit" hint="EVENT DETAILS" [onClick]="showEditModal"></dxi-button>
+    <dxi-button icon="event" hint="EVENT AGENDA" [onClick]="editAgenda.bind(this)"></dxi-button>
+    <dxi-button icon="group" hint="ATTENDEE LIST" [onClick]="viewAttendees.bind(this)"></dxi-button>
+    <dxi-button icon="trash" hint="DELETE" [onClick]="delete"></dxi-button>
+  </dxi-column>
+</dx-data-grid>
 
 <dx-popup
   [showTitle]="true"
   [dragEnabled]="false"
   [visible]="isVisible$ | async"
-  height="60%"
-  width="30%"
+  height="80%"
+  width="60%"
   [showCloseButton]="true"
-  (onHiding)="onCancel()"
->
+  (onHiding)="onCancel()">
   <dxi-toolbar-item toolbar="top" location="center">
     <div *dxTemplate>
       <p class="popup-title">
@@ -80,8 +74,7 @@
           [(formData)]="selectedItem"
           [showColonAfterLabel]="false"
           labelLocation="left"
-          [colCount]="2"
-        >
+          [colCount]="2">
         <dxi-item dataField="eventName" [colSpan]="2" [label]="{ text: 'Event Name' }"></dxi-item>
         <dxi-item
           dataField="startDate"
@@ -92,8 +85,8 @@
             type: 'datetime',
             dateSerializationFormat: 'yyyy-MM-ddTHH:mm:ss',
             useMaskBehavior: true
-          }"
-        ></dxi-item>
+          }">
+        </dxi-item>
         <dxi-item
           dataField="endDate"
           editorType="dxDateBox"
@@ -103,18 +96,18 @@
             type: 'datetime',
             dateSerializationFormat: 'yyyy-MM-ddTHH:mm:ss',
             useMaskBehavior: true
-          }"
-        ></dxi-item>
+          }">
+        </dxi-item>
         <dxi-item dataField="isSummit" [editorType]="'dxSwitch'" [editorOptions]="{ switchedOnText: 'Yes', switchedOffText: 'No' }" [label]="{ text: 'Is Annual Summit?' }"></dxi-item>
-        <dxi-item 
-          dataField="costInDollars" 
+        <dxi-item
+          dataField="costInDollars"
           editorType="dxNumberBox"
           [label]="{ text: 'Cost' }"
           [editorOptions]="{
             format: { type: 'currency', currency: 'USD', precision: 2 },
             min: 0
-          }"
-        ></dxi-item>
+          }">
+        </dxi-item>
         <dxi-item dataField="location" [colSpan]="2" [label]="{ text: 'Location' }">
           <div *dxTemplate>
             <dx-drop-down-box
@@ -124,8 +117,7 @@
               [showDropDownButton]="false"
               [openOnFieldClick]="true"
               displayExpr="name"
-              valueExpr="id"
-            >
+              valueExpr="id">
               <dxi-button
                 name="add"
                 location="after"
@@ -137,8 +129,7 @@
                   onClick: showAddLocationModal,
                   template: 'buttonTemplate',
                   disabled: inProgress$ | async
-                }"
-              >
+                }">
                 <div *dxTemplate="let data of 'buttonTemplate'">
                   <i class="dx-icon dx-icon-add" *ngIf="(inProgress$ | async) === false"></i>
                   <dx-load-indicator [visible]="inProgress$ | async" height="20" width="20"></dx-load-indicator>
@@ -166,8 +157,7 @@
               [showDropDownButton]="true"
               [openOnFieldClick]="true"
               displayExpr="name"
-              valueExpr="id"
-            >
+              valueExpr="id">
               <dxi-button
                 name="add"
                 location="after"
@@ -179,8 +169,7 @@
                   onClick: showAddOrganizationModal,
                   template: 'buttonTemplate',
                   disabled: inProgress$ | async
-                }"
-              >
+                }">
                 <div *dxTemplate="let data of 'buttonTemplate'">
                   <i class="dx-icon dx-icon-add" *ngIf="(inProgress$ | async) === false"></i>
                   <dx-load-indicator [visible]="inProgress$ | async" height="20" width="20"></dx-load-indicator>
@@ -207,15 +196,14 @@
           stylingMode="contained"
           type="normal"
           [disabled]="inProgress$ | async"
-          (onClick)="onCancel()"
-        ></dx-button>
+          (onClick)="onCancel()">
+        </dx-button>
         <app-indicator-button
           [isInProgress]="inProgress$ | async"
           [title]="'SAVE'"
           [disabled]="inProgress$ | async"
-          (onClick)="onSave(selectedItem)"
-        ></app-indicator-button>
-
+          (onClick)="onSave(selectedItem)">
+        </app-indicator-button>
       </div>
     </div>
   </div>
@@ -235,6 +223,7 @@
     <app-event-agenda [event]="selectedItem" (onCloseWindow)="isAgendaVisible = $event"></app-event-agenda>
   </dx-popup>
 </ng-container>
+
 <ng-container *ngIf="isAttendeesListVisible">
   <dx-popup
     [(visible)]="isAttendeesListVisible"

@@ -2,16 +2,16 @@
   <dx-toolbar class="content-list__header py-2">
     <dxi-item location="before" locateInMenu="never">
       <div *dxTemplate>
-        <h2 class="content-block responsive-paddings underline">{{itemType}}</h2>
+        <h2 class="content-block responsive-paddings underline">{{itemType}}s</h2>
       </div>
     </dxi-item>
     <dxi-item
       location="after"
       widget="dxButton"
       [options]="{
-        hint: 'ADD',
+        hint: 'ADD ' + itemType | uppercase,
         type: 'default',
-        text: 'ADD',
+        text: 'ADD ' + itemType | uppercase,
         stylingMode: 'contained',
         onClick: showAddModal
       }"
@@ -22,7 +22,7 @@
 <dx-data-grid class="dx-card wide-card"
   #grid
   [dataSource]="datasource$ | async"
-  [width]="'100%'"
+  [height]="'75vh'"
   [showBorders]="false"
   [showColumnLines]="true"
   [showColumnLines]="true"
@@ -30,8 +30,7 @@
   [focusedRowEnabled]="true"
   [columnAutoWidth]="true">
 
-  <dxo-paging [pageSize]="10"></dxo-paging>
-  <dxo-pager [showPageSizeSelector]="true" [showInfo]="true"></dxo-pager>
+  <dxo-scrolling mode="virtual"></dxo-scrolling>
   <dxo-filter-row [visible]="true"></dxo-filter-row>
 
   <dxi-column dataField="code"></dxi-column>
@@ -54,8 +53,7 @@
   height="400px"
   width="500px"
   [showCloseButton]="true"
-  (onHiding)="onCancel()"
->
+  (onHiding)="onCancel()">
   <dxi-toolbar-item toolbar="top" location="center">
     <div *dxTemplate>
       <p class="popup-title">
@@ -70,13 +68,11 @@
           #addEditForm
           [(formData)]="selectedItem"
           [showColonAfterLabel]="false"
-          labelLocation="left"
-        >
+          labelLocation="left">
           <dxi-item dataField="code" [colSpan]="1"></dxi-item>
           <dxi-item dataField="isActive" [colSpan]="1" [editorType]="'dxSwitch'" [editorOptions]="{ switchedOnText: 'Yes', switchedOffText: 'No' }"></dxi-item>
           <dxi-item dataField="percentOff" [colSpan]="1"></dxi-item>
           <dxi-item dataField="percentOff" [colSpan]="1"></dxi-item>
-
           <dxi-item [label]="{ text: 'Event Tags' }">
             <div *dxTemplate>
               <dx-tag-box
@@ -98,15 +94,14 @@
           stylingMode="contained"
           type="normal"
           [disabled]="inProgress$ | async"
-          (onClick)="onCancel()"
-        ></dx-button>
+          (onClick)="onCancel()">
+        </dx-button>
         <app-indicator-button
           [isInProgress]="inProgress$ | async"
           [title]="'SAVE'"
           [disabled]="inProgress$ | async"
-          (onClick)="onSave(selectedItem)"
-        ></app-indicator-button>
-
+          (onClick)="onSave(selectedItem)">
+        </app-indicator-button>
       </div>
     </div>
   </div>

@@ -21,7 +21,7 @@ export class LunchAndLearnsComponent implements OnInit{
   datasource$: Observable<DataSource>;
   selectedItem: LunchAndLearnModel;
 
-  itemType = 'Lunch and Learns';
+  itemType = 'Lunch and Learn Request';
 
   public inProgress$ = new BehaviorSubject<boolean>(false)
   public isVisible$ = new BehaviorSubject<boolean>(false);

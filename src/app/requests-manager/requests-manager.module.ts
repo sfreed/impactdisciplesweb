@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DxButtonModule, DxDataGridModule, DxFileUploaderModule, DxFormModule, DxHtmlEditorModule, DxLoadIndicatorModule, DxPopupModule,
+         DxScrollViewModule,
          DxSelectBoxModule,
          DxSwitchModule, DxTabsModule, DxTextBoxModule,
          DxToolbarModule} from 'devextreme-angular';
@@ -26,6 +27,7 @@ import { SharedModule } from '../shared/shared.module';
     DxHtmlEditorModule,
     DxLoadIndicatorModule,
     DxPopupModule,
+    DxScrollViewModule,
     DxSelectBoxModule,
     DxSwitchModule,
     DxTabsModule,

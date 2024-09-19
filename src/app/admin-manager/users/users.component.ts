@@ -23,7 +23,7 @@ export class UsersComponent implements OnInit {
   datasource$: Observable<DataSource>;
   selectedItem: AppUser;
 
-  itemType = 'Users';
+  itemType = 'User';
 
   public inProgress$ = new BehaviorSubject<boolean>(false)
   public isVisible$ = new BehaviorSubject<boolean>(false);

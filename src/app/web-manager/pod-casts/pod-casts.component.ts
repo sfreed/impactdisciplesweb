@@ -23,7 +23,7 @@ export class PodCastsComponent implements OnInit{
   datasource$: Observable<DataSource>;
   selectedItem: PodCastModel;
 
-  itemType = 'Pod Casts'
+  itemType = 'Pod Cast'
 
   public inProgress$ = new BehaviorSubject<boolean>(false)
   public isVisible$ = new BehaviorSubject<boolean>(false);

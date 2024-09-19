@@ -29,7 +29,7 @@ export class EventsComponent implements OnInit, OnDestroy {
   locations$: Observable<LocationModel[]>;
   datasource$: Observable<DataSource>;
   selectedItem: EventModel = {};
-  itemType = 'Events';
+  itemType = 'Event';
   selectedLocation = [];
   isAgendaVisible: boolean = false;
   isAttendeesListVisible: boolean = false;

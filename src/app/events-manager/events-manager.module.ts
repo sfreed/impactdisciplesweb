@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CoursesComponent } from './courses/courses.component';
 import { LocationsComponent } from './locations/locations.component';
-import { DxButtonModule, DxDataGridModule, DxDraggableModule, DxDropDownBoxModule, DxFileManagerModule, DxFormModule, DxListModule, DxLoadIndicatorModule, DxLoadPanelModule, DxNumberBoxModule, DxPopupModule, DxSchedulerModule, DxScrollViewModule, DxSelectBoxModule, DxTabsModule, DxTextAreaModule, DxTextBoxModule, DxToolbarModule } from 'devextreme-angular';
+import { DxButtonModule, DxDataGridModule, DxDraggableModule, DxDropDownBoxModule, DxFileManagerModule, DxFormModule, DxListModule, DxLoadIndicatorModule, DxLoadPanelModule, DxNumberBoxModule, DxPopupModule, DxSchedulerModule, DxScrollViewModule, DxSelectBoxModule, DxTabsModule, DxTagBoxModule, DxTextAreaModule, DxTextBoxModule, DxToolbarModule } from 'devextreme-angular';
 import { OrganizationsComponent } from './organizations/organizations.component';
 import { ImpactDisciplesModule } from "../../../impactdisciplescommon/src/impactdisciples.common.module";
 import { ImpactFormsModule } from 'impactdisciplescommon/src/forms/forms.module';
@@ -42,6 +42,7 @@ import { SharedModule } from '../shared/shared.module';
       DxSchedulerModule,
       DxScrollViewModule,
       DxTabsModule,
+      DxTagBoxModule,
       DxTextAreaModule,
       DxTextBoxModule,
       DxToolbarModule,

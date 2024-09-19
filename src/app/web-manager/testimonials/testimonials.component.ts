@@ -22,7 +22,7 @@ export class TestimonialsComponent implements OnInit{
   datasource$: Observable<DataSource>;
   selectedItem: TestimonialModel;
 
-  itemType = 'Testimonials'
+  itemType = 'Testimonial'
 
   public inProgress$ = new BehaviorSubject<boolean>(false)
   public isVisible$ = new BehaviorSubject<boolean>(false);

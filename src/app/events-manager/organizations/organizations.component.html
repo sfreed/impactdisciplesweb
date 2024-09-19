@@ -1,90 +1,121 @@
-<div class="content-block">
-  <dx-data-grid class="dx-card wide-card"
-    #grid
-    [dataSource]="dataSource | async"
-    [width]="'100%'"
-    [showBorders]="false"
-    [focusedRowEnabled]="true"
-    [columnAutoWidth]="true"
-    [columnHidingEnabled]="true"
-    [rowAlternationEnabled]="true"
-    (onRowUpdating)="onRowUpdating($event)">
+<div class="content-block responsive-paddings">
+  <dx-toolbar class="content-list__header py-2">
+    <dxi-item location="before" locateInMenu="never">
+      <div *dxTemplate>
+        <h2 class="content-block responsive-paddings underline">{{itemType}}s</h2>
+      </div>
+    </dxi-item>
+    <dxi-item
+      location="after"
+      widget="dxButton"
+      [options]="{
+        hint: 'ADD ' + itemType | uppercase,
+        type: 'default',
+        text: 'ADD ' + itemType | uppercase,
+        stylingMode: 'contained',
+        onClick: showAddModal
+      }"
+    ></dxi-item>
+  </dx-toolbar>
+</div>
 
-    <dxo-paging [pageSize]="10"></dxo-paging>
-    <dxo-pager [showPageSizeSelector]="true" [showInfo]="true"></dxo-pager>
-    <dxo-filter-row [visible]="false"></dxo-filter-row>
-    <dxo-header-filter [visible]="false"></dxo-header-filter>
-    <dxo-search-panel
-      [visible]="true"
-      [width]="240"
-      placeholder="Search...">
-    </dxo-search-panel>
-    <dxo-toolbar>
-      <dxi-item location="before">
-        <div *dxTemplate>
-          <div class="toolbar-label">
-            <b>Organizations</b>
-          </div>
-        </div>
-      </dxi-item>
+<dx-data-grid class="dx-card wide-card"
+  #grid
+  [dataSource]="datasource$ | async"
+  [height]="'75vh'"
+  [showBorders]="false"
+  [showColumnLines]="true"
+  [showColumnLines]="true"
+  [showRowLines]="true"
+  [focusedRowEnabled]="true"
+  [columnAutoWidth]="true">
 
-      <dxi-item name="addRowButton"></dxi-item>
-      <dxi-item name="searchPanel"></dxi-item>
-    </dxo-toolbar>
-    <dxo-editing
-      mode="popup"
-      [allowAdding]="true"
-      [allowUpdating]="true"
-      [allowDeleting]="true"
-      [useIcons]="true">
-      <dxo-popup
-        title="Add/Edit Organization"
-        [showTitle]="true">
-      </dxo-popup>
-      <dxo-form [colCount]="1">
-        <dxi-item itemType="group" [colCount]="1" [colSpan]="1">
-          <dxi-item dataField="name" [colSpan]="1"></dxi-item>
-          <dxi-item dataField="contactName" [colSpan]="1"></dxi-item>
-        </dxi-item>
+  <dxo-scrolling mode="virtual"></dxo-scrolling>
+  <dxo-filter-row [visible]="true"></dxo-filter-row>
 
-        <dxi-item itemType="group" caption="Address" [colCount]="4" [colSpan]="1">
-          <dxi-item dataField="address.address1" [colSpan]="4"></dxi-item>
-          <dxi-item dataField="address.address2" [colSpan]="4"></dxi-item>
-          <dxi-item dataField="address.city" [colSpan]="2"></dxi-item>
-          <dxi-item dataField="address.state" [colSpan]="2"></dxi-item>
-          <dxi-item dataField="address.zip" [colSpan]="2"></dxi-item>
-          <dxi-item dataField="address.country" [colSpan]="2"></dxi-item>
-        </dxi-item>
-        <dxi-item itemType="group" caption="Phone" [colCount]="4" [colSpan]="1">
-          <dxi-item dataField="phone.countryCode" [colSpan]="1"></dxi-item>
-          <dxi-item dataField="phone.number" [colSpan]="2" ></dxi-item>
-          <dxi-item dataField="phone.type" [colSpan]="1"></dxi-item>
-        </dxi-item>
-      </dxo-form>
-    </dxo-editing>
+  <dxi-column dataField="name"></dxi-column>
+  <dxi-column dataField="contactName"></dxi-column>
+  <dxi-column dataField="address.address1" [caption]="'Address 1'" [visible]="false"></dxi-column>
+  <dxi-column dataField="address.address2" [caption]="'Address 2'" [visible]="false"></dxi-column>
+  <dxi-column dataField="address.city" [caption]="'City'"></dxi-column>
+  <dxi-column dataField="address.state" [caption]="'State'"></dxi-column>
+  <dxi-column dataField="address.zip" [caption]="'Zip Code'" [visible]="false"></dxi-column>
+  <dxi-column dataField="address.country" [caption]="'Country'" [visible]="false"></dxi-column>
+  <dxi-column dataField="phone.countryCode" [caption]="'Country Code'" [visible]="false"></dxi-column>
+  <dxi-column dataField="phone.number" [caption]="'Number'" [editorOptions]="{ mask: '(000) 000-0000' }" cellTemplate="phoneNumberCellTemplate"></dxi-column>
+  <dxi-column dataField="phone.extension" [caption]="'Ext'" [visible]="false"></dxi-column>
+  <dxi-column dataField="phone.type" [caption]="'Type'">
+    <dxo-lookup [dataSource]="phone_types"></dxo-lookup>
+  </dxi-column>
 
-    <dxi-column dataField="name"></dxi-column>
-    <dxi-column dataField="contactName"></dxi-column>
+  <div *dxTemplate="let cell of 'phoneNumberCellTemplate'">
+    <div class="">
+      {{ cell.data.phone | phoneNumberMask : false }}
+    </div>
+  </div>
+</dx-data-grid>
 
-    <dxi-column dataField="address.address1" [caption]="'Address 1'" [visible]="false"></dxi-column>
-    <dxi-column dataField="address.address2" [caption]="'Address 2'" [visible]="false"></dxi-column>
-    <dxi-column dataField="address.city" [caption]="'City'"></dxi-column>
-    <dxi-column dataField="address.state" [caption]="'State'"></dxi-column>
-    <dxi-column dataField="address.zip" [caption]="'Zip Code'" [visible]="false"></dxi-column>
-    <dxi-column dataField="address.country" [caption]="'Country'" [visible]="false"></dxi-column>
-
-    <dxi-column dataField="phone.countryCode" [caption]="'Country Code'" [visible]="false"></dxi-column>
-    <dxi-column dataField="phone.number" [caption]="'Number'" [editorOptions]="{ mask: '(000) 000-0000' }" cellTemplate="phoneNumberCellTemplate"></dxi-column>
-    <dxi-column dataField="phone.extension" [caption]="'Ext'" [visible]="false"></dxi-column>
-    <dxi-column dataField="phone.type" [caption]="'Type'">
-      <dxo-lookup [dataSource]="phone_types"></dxo-lookup>
-    </dxi-column>
-
-    <div *dxTemplate="let cell of 'phoneNumberCellTemplate'">
-      <div class="">
-        {{ cell.data.phone | phoneNumberMask : false }}
+<dx-popup
+  [showTitle]="true"
+  [dragEnabled]="false"
+  [visible]="isVisible$ | async"
+  [width]="'60%'"
+  [height]="'90%'"
+  [showCloseButton]="true"
+  (onHiding)="onCancel()">
+  <dxi-toolbar-item toolbar="top" location="center">
+    <div *dxTemplate>
+      <p class="popup-title">
+        {{ selectedItem?.id ? 'EDIT' : 'ADD' }} {{itemType | uppercase}}
+      </p>
+    </div>
+  </dxi-toolbar-item>
+  <div *dxTemplate="let data of 'content'">
+    <div class="add-item-modal">
+      <div class="add-item-modal__content" *ngIf="isVisible$ | async">
+        <dx-form
+          #addEditForm
+          [(formData)]="selectedItem"
+          [showColonAfterLabel]="false"
+          labelLocation="left">
+          <dxi-item itemType="group" [colCount]="1" [colSpan]="1">
+            <dxi-item dataField="name" [colSpan]="1"></dxi-item>
+            <dxi-item dataField="contactName" [colSpan]="1"></dxi-item>
+          </dxi-item>
+          <dxi-item itemType="group" caption="Address" [colCount]="6" [colSpan]="1">
+            <dxi-item dataField="address.address1" [colSpan]="6" [label]="{ text: 'Address 1' }"></dxi-item>
+            <dxi-item dataField="address.address2" [colSpan]="6" [label]="{ text: 'Address 2' }"></dxi-item>
+            <dxi-item dataField="address.city" [colSpan]="3"  [label]="{ text: 'City' }"></dxi-item>
+            <dxi-item dataField="address.state" [colSpan]="2" [label]="{ text: 'State' }"></dxi-item>
+            <dxi-item dataField="address.zip" [colSpan]="1" [label]="{ text: 'Zip' }"></dxi-item>
+          </dxi-item>
+          <dxi-item itemType="group" caption="Phone" [colCount]="4" [colSpan]="1">
+            <dxi-item dataField="phone.countryCode" [colSpan]="1"  [label]="{ text: 'Country Code' }"></dxi-item>
+            <dxi-item dataField="phone.number" [colSpan]="2" [label]="{ text: 'Number' }"></dxi-item>
+            <dxi-item dataField="phone.type" [colSpan]="2" [label]="{text: 'Type'}">
+              <div *dxTemplate>
+                <dx-select-box [value]="'phone.type'" [dataSource]="phone_types"></dx-select-box>
+              </div>
+            </dxi-item>
+          </dxi-item>
+        </dx-form>
+      </div>
+      <div class="add-item-modal__button-group">
+        <dx-button
+          text="CANCEL"
+          stylingMode="contained"
+          type="normal"
+          [disabled]="inProgress$ | async"
+          (onClick)="onCancel()">
+        </dx-button>
+        <app-indicator-button
+          [isInProgress]="inProgress$ | async"
+          [title]="'SAVE'"
+          [disabled]="inProgress$ | async"
+          (onClick)="onSave(selectedItem)">
+        </app-indicator-button>
       </div>
     </div>
-  </dx-data-grid>
-</div>
+  </div>
+</dx-popup>
 

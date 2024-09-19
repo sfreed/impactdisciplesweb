@@ -19,7 +19,7 @@ export class ConsultationsRequestsComponent implements OnInit{
   datasource$: Observable<DataSource>;
   selectedItem: ConsultationRequestModel;
 
-  itemType = 'Consultation Requests';
+  itemType = 'Consultation Request';
 
   public inProgress$ = new BehaviorSubject<boolean>(false)
   public isVisible$ = new BehaviorSubject<boolean>(false);

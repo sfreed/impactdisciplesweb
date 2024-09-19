@@ -1,23 +1,33 @@
-import { Component, ViewChild } from '@angular/core';
-import { DxDataGridComponent } from 'devextreme-angular';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { DxFormComponent } from 'devextreme-angular';
 import CustomStore from 'devextreme/data/custom_store';
 import DataSource from 'devextreme/data/data_source';
 import { CourseModel } from 'impactdisciplescommon/src/models/domain/course.model';
 import { CourseService } from 'impactdisciplescommon/src/services/course.service';
-import { map, Observable } from 'rxjs';
+import { BehaviorSubject, map, Observable } from 'rxjs';
+import { confirm } from 'devextreme/ui/dialog';
+import notify from 'devextreme/ui/notify';
 
 @Component({
   selector: 'app-courses',
   templateUrl: './courses.component.html',
   styleUrls: ['./courses.component.css']
 })
-export class CoursesComponent {
-  @ViewChild('grid', { static: false }) grid: DxDataGridComponent;
+export class CoursesComponent implements OnInit {
+  @ViewChild('addEditForm', { static: false }) addEditForm: DxFormComponent;
 
-  dataSource: Observable<DataSource>;
+  datasource$: Observable<DataSource>;
+  selectedItem: CourseModel;
 
-  constructor(public courseService: CourseService){
-    this.dataSource = this.courseService.streamAll().pipe(
+  itemType = 'Course';
+
+  public inProgress$ = new BehaviorSubject<boolean>(false)
+  public isVisible$ = new BehaviorSubject<boolean>(false);
+
+  constructor(public service: CourseService){}
+
+  ngOnInit(): void {
+    this.datasource$ = this.service.streamAll().pipe(
       map(
         (items) =>
           new DataSource({
@@ -28,24 +38,87 @@ export class CoursesComponent {
               loadMode: 'raw',
               load: function (loadOptions: any) {
                 return items;
-              },
-              insert: function (value: CourseModel) {
-                return courseService.add(value);
-              },
-              update: function (key: any, value: CourseModel) {
-                return courseService.update(key, value)
-              },
-              remove: function (id: any) {
-                return courseService.delete(id);
-              },
+              }
             })
-
           })
       )
     );
   }
 
-  onRowUpdating(options) {
-    options.newData = Object.assign({}, options.oldData, options.newData);
+  showEditModal = ({ row: { data } }) => {
+    this.selectedItem = data
+    this.isVisible$.next(true);
+  }
+
+  showAddModal = () => {
+    this.isVisible$.next(true);
+  }
+
+  delete = ({ row: { data } }) => {
+    confirm('<i>Are you sure you want to delete this record?</i>', 'Confirm').then((dialogResult) => {
+      if (dialogResult) {
+        this.service.delete(data.id).then(() => {
+          notify({
+            message: this.itemType + ' Deleted',
+            position: 'top',
+            width: 600,
+            type: 'success'
+          });
+        })
+      }
+    });
+  }
+
+  onSave(item: CourseModel) {
+    if(this.addEditForm.instance.validate().isValid) {
+      this.inProgress$.next(true);
+      if(item.id) {
+        this.service.update(item.id, item).then((item) => {
+          if(item) {
+            notify({
+              message: this.itemType + ' Updated',
+              position: 'top',
+              width: 600,
+              type: 'success'
+            });
+            this.onCancel();
+          } else {
+            this.inProgress$.next(false);
+            notify({
+              message: 'Some Error Occured',
+              position: 'top',
+              width: 600,
+              type: 'success'
+            });
+          }
+        })
+      } else {
+        this.service.add(item).then((item) => {
+          if(item) {
+            notify({
+              message: this.itemType + ' Added',
+              position: 'top',
+              width: 600,
+              type: 'success'
+            });
+            this.onCancel();
+          } else {
+            this.inProgress$.next(false);
+            notify({
+              message: 'Some Error Occured',
+              position: 'top',
+              width: 600,
+              type: 'error'
+            });
+          }
+        })
+      }
+    }
+  }
+
+  onCancel() {
+    this.selectedItem = null;
+    this.inProgress$.next(false);
+    this.isVisible$.next(false);
   }
 }

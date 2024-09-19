@@ -1,14 +1,17 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { DxDataGridComponent } from 'devextreme-angular';
+import { DxFormComponent } from 'devextreme-angular';
 import CustomStore from 'devextreme/data/custom_store';
 import DataSource from 'devextreme/data/data_source';
+import notify from 'devextreme/ui/notify';
+import { confirm } from 'devextreme/ui/dialog';
+
 import { PHONE_TYPES } from 'impactdisciplescommon/src/lists/phone_types.enum';
 import { LocationModel } from 'impactdisciplescommon/src/models/domain/location.model';
 import { OrganizationModel } from 'impactdisciplescommon/src/models/domain/organization.model';
 import { LocationService } from 'impactdisciplescommon/src/services/location.service';
 import { OrganizationService } from 'impactdisciplescommon/src/services/organization.service';
 import { EnumHelper } from 'impactdisciplescommon/src/utils/enum_helper';
-import { map, Observable } from 'rxjs';
+import { BehaviorSubject, map, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-locations',
@@ -16,16 +19,24 @@ import { map, Observable } from 'rxjs';
   styleUrls: ['./locations.component.css']
 })
 export class LocationsComponent implements OnInit {
-  @ViewChild('grid', { static: false }) grid: DxDataGridComponent;
+  @ViewChild('addEditForm', { static: false }) addEditForm: DxFormComponent;
 
-  dataSource: Observable<DataSource>;
+  datasource$: Observable<DataSource>;
+  selectedItem: LocationModel;
+
+  itemType = 'Location';
+
+  public inProgress$ = new BehaviorSubject<boolean>(false)
+  public isVisible$ = new BehaviorSubject<boolean>(false);
 
   phone_types: PHONE_TYPES[];
 
   organizations: OrganizationModel[];
 
-  constructor(public locationService: LocationService, private organizationService: OrganizationService){
-    this.dataSource = this.locationService.streamAll().pipe(
+  constructor(public service: LocationService, private organizationService: OrganizationService){}
+
+  async ngOnInit(): Promise<void> {
+    this.datasource$ = this.service.streamAll().pipe(
       map(
         (items) =>
           new DataSource({
@@ -37,29 +48,88 @@ export class LocationsComponent implements OnInit {
               load: function (loadOptions: any) {
                 return items;
               },
-              insert: function (value: LocationModel) {
-                return locationService.add(value);
-              },
-              update: function (key: any, value: LocationModel) {
-                return locationService.update(key, value)
-              },
-              remove: function (id: any) {
-                return locationService.delete(id);
-              },
             })
           })
       )
     )
-  }
-
-  async ngOnInit(): Promise<void> {
     this.phone_types = EnumHelper.getPhoneTypesAsArray();
     this.organizations = await this.organizationService.getAll();
   }
 
-  onRowUpdating(options) {
-    options.newData = Object.assign({}, options.oldData, options.newData);
-    options.newData.address = Object.assign({}, options.oldData.address, options.newData.address);
-    options.newData.phone = Object.assign({}, options.oldData.phone, options.newData.phone);
+  showEditModal = ({ row: { data } }) => {
+    this.selectedItem = data
+    this.isVisible$.next(true);
+  }
+
+  showAddModal = () => {
+    this.isVisible$.next(true);
+  }
+
+  delete = ({ row: { data } }) => {
+    confirm('<i>Are you sure you want to delete this record?</i>', 'Confirm').then((dialogResult) => {
+      if (dialogResult) {
+        this.service.delete(data.id).then(() => {
+          notify({
+            message: this.itemType + ' Deleted',
+            position: 'top',
+            width: 600,
+            type: 'success'
+          });
+        })
+      }
+    });
+  }
+
+  onSave(item: LocationModel) {
+    if(this.addEditForm.instance.validate().isValid) {
+      this.inProgress$.next(true);
+      if(item.id) {
+        this.service.update(item.id, item).then((item) => {
+          if(item) {
+            notify({
+              message: this.itemType + ' Updated',
+              position: 'top',
+              width: 600,
+              type: 'success'
+            });
+            this.onCancel();
+          } else {
+            this.inProgress$.next(false);
+            notify({
+              message: 'Some Error Occured',
+              position: 'top',
+              width: 600,
+              type: 'success'
+            });
+          }
+        })
+      } else {
+        this.service.add(item).then((item) => {
+          if(item) {
+            notify({
+              message: this.itemType + ' Added',
+              position: 'top',
+              width: 600,
+              type: 'success'
+            });
+            this.onCancel();
+          } else {
+            this.inProgress$.next(false);
+            notify({
+              message: 'Some Error Occured',
+              position: 'top',
+              width: 600,
+              type: 'error'
+            });
+          }
+        })
+      }
+    }
+  }
+
+  onCancel() {
+    this.selectedItem = null;
+    this.inProgress$.next(false);
+    this.isVisible$.next(false);
   }
 }
