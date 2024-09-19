@@ -1,10 +1,8 @@
-import { EventService } from 'impactdisciplescommon/src/services/event.service';
 import { dateFromTimestamp } from './../../../../../impactdisciplescommon/src/utils/date-from-timestamp';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import Query from 'devextreme/data/query';
 import { DxSchedulerTypes } from 'devextreme-angular/ui/scheduler';
 import { EventModel } from 'impactdisciplescommon/src/models/domain/event.model';
-import { ToastrService } from 'ngx-toastr';
 import { CourseModel } from 'impactdisciplescommon/src/models/domain/course.model';
 import { CourseService } from 'impactdisciplescommon/src/services/course.service';
 import { CoachService } from 'impactdisciplescommon/src/services/coach.service';
@@ -27,8 +25,7 @@ export class EventAgendaComponent implements OnInit{
   coursesList: CourseModel[] = [];
   coaches: CoachModel[] = [];
 
-  constructor(private eventService: EventService, private courseService: CourseService, private coachService: CoachService,
-    private toastrService: ToastrService){}
+  constructor(private courseService: CourseService, private coachService: CoachService){}
 
   async ngOnInit(): Promise<void> {
     if(!this.event.agendaItems){
@@ -77,7 +74,7 @@ export class EventAgendaComponent implements OnInit{
       label: {
         text: 'Create Course?',
       },
-      colSpan: 2,
+      colSpan: 1,
       editorType: 'dxSwitch',
       dataField: 'isCourse',
       editorOptions: {
@@ -90,22 +87,15 @@ export class EventAgendaComponent implements OnInit{
         }
       }
     }, {
-      dataField: 'startDate',
-      colSpan: 1,
-      editorType: 'dxDateBox',
-      editorOptions: {
-        width: '100%',
-        type: 'datetime'
+      label: {
+        text: 'Max Participants',
       },
-    }, {
-      name: 'endDate',
       colSpan: 1,
-      dataField: 'endDate',
-      editorType: 'dxDateBox',
+      editorType: 'dxNumberBox',
+      dataField: 'maxParticipants',
       editorOptions: {
-        width: '100%',
-        type: 'datetime',
-      },
+
+      }
     },{
       label: {
         text: 'Course',
@@ -129,8 +119,7 @@ export class EventAgendaComponent implements OnInit{
       editorOptions: {
         items: that.coaches,
         displayExpr: 'fullname',
-        valueExpr: 'id',
-        value: data.appointmentData['coaches'] ? data.appointmentData['coaches'] : [],
+        valueExpr: 'id'
       },
     }];
     form.repaint();
@@ -170,22 +159,7 @@ export class EventAgendaComponent implements OnInit{
       },
       colSpan:2,
       editorType: 'dxTextArea',
-      dataField: 'description',
-    }, {
-      dataField: 'startDate',
-      editorType: 'dxDateBox',
-      editorOptions: {
-        width: '100%',
-        type: 'datetime'
-      },
-    }, {
-      name: 'endDate',
-      dataField: 'endDate',
-      editorType: 'dxDateBox',
-      editorOptions: {
-        width: '100%',
-        type: 'datetime',
-      },
+      dataField: 'description'
     }];
     form.repaint();
   }

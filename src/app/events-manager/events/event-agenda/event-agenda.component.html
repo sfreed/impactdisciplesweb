@@ -28,6 +28,9 @@
           Coach:  <strong>{{getCoachById(coach)?.fullname }}</strong>
         </div>
         <div>{{getCourseById(model.appointmentData.course)?.shortDescription}}</div>
+        <div *ngIf="model.appointmentData.maxParticipants > 0">
+          Capcacity Left: {{model.appointmentData.maxParticipants - (model.appointmentData.signedUp ? model.appointmentData.signedUp : 0)}}
+        </div>
       </div>
       <div class="showtime-preview" *ngIf="!model.targetedAppointmentData.isCourse">
         <div><strong>{{model.appointmentData.text}}</strong></div>
