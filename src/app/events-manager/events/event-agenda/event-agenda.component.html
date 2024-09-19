@@ -24,7 +24,9 @@
     <div *dxTemplate="let model of 'appointment-template'">
       <div class="showtime-preview" *ngIf="model.targetedAppointmentData.isCourse">
         <div>Course: <strong>{{getCourseById(model.appointmentData.course)?.title}}</strong></div>
-        <div>Coach:  <strong>{{getCoachById(model.targetedAppointmentData.coach)?.fullname }}</strong></div>
+        <div *ngFor="let coach of model.targetedAppointmentData.coaches">
+          Coach:  <strong>{{getCoachById(coach)?.fullname }}</strong>
+        </div>
         <div>{{getCourseById(model.appointmentData.course)?.shortDescription}}</div>
       </div>
       <div class="showtime-preview" *ngIf="!model.targetedAppointmentData.isCourse">

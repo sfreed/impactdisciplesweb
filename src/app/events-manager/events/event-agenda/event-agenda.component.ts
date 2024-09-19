@@ -77,7 +77,7 @@ export class EventAgendaComponent implements OnInit{
       label: {
         text: 'Create Course?',
       },
-      colSpan: 1,
+      colSpan: 2,
       editorType: 'dxSwitch',
       dataField: 'isCourse',
       editorOptions: {
@@ -89,32 +89,6 @@ export class EventAgendaComponent implements OnInit{
           }
         }
       }
-    },,{
-      label: {
-        text: 'Course',
-      },
-      colSpan: 1,
-      editorType: 'dxSelectBox',
-      dataField: 'course',
-      editorOptions: {
-        items: that.courses,
-        displayExpr: 'title',
-        valueExpr: 'id',
-        value: data.appointmentData['course']? data.appointmentData['course']['id'] : '',
-      },
-    }, {
-      label: {
-        text: 'Coach',
-      },
-      colSpan: 1,
-      editorType: 'dxSelectBox',
-      dataField: 'coach',
-      editorOptions: {
-        items: that.coaches,
-        displayExpr: 'fullname',
-        valueExpr: 'id',
-        value: data.appointmentData['coach']?data.appointmentData['coach']['id'] : '',
-      },
     }, {
       dataField: 'startDate',
       colSpan: 1,
@@ -131,6 +105,32 @@ export class EventAgendaComponent implements OnInit{
       editorOptions: {
         width: '100%',
         type: 'datetime',
+      },
+    },{
+      label: {
+        text: 'Course',
+      },
+      colSpan: 2,
+      editorType: 'dxSelectBox',
+      dataField: 'course',
+      editorOptions: {
+        items: that.courses,
+        displayExpr: 'title',
+        valueExpr: 'id',
+        value: data.appointmentData['course']? data.appointmentData['course']['id'] : '',
+      },
+    }, {
+      label: {
+        text: 'Coaches',
+      },
+      colSpan: 2,
+      editorType: 'dxTagBox',
+      dataField: 'coaches',
+      editorOptions: {
+        items: that.coaches,
+        displayExpr: 'fullname',
+        valueExpr: 'id',
+        value: data.appointmentData['coaches'] ? data.appointmentData['coaches'] : [],
       },
     }];
     form.repaint();
