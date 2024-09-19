@@ -112,83 +112,83 @@
               dataField="preferredTrainer"
               editorType="dxAutocomplete"
               [colSpan]="6"
-              [label]="{ text: 'Preferrred Trainer' }"
+              [label]="{ text: 'Preferred Trainer' }"
               [editorOptions]="{
                 items: coaches$ | async,
                 valueExpr: 'fullname',
                 displayExpr: 'fullname',
                 showClearButton: true,
                 searchExpr: ['fullname']
-              }"
-            ></dxi-item>
-          <dxi-item itemType="group" caption="Information" [colCount]="3" [colSpan]="1">
-            <dxi-item
-              dataField="requestedDate"
-              editorType="dxDateBox"
-              [label]="{ text: 'Date' }"
-              [editorOptions]="{
-                displayFormat: 'M/d/yyyy',
-                type: 'date',
-                useMaskBehavior: true
               }">
             </dxi-item>
-            <dxi-item
-              dataField="requestedStartTime"
-              editorType="dxDateBox"
-              [label]="{ text: 'Start Time' }"
-              [editorOptions]="{
-                displayFormat: 'HH:mm',
-                type: 'time',
-                useMaskBehavior: true
-              }">
+            <dxi-item itemType="group" caption="Information" [colCount]="3" [colSpan]="1">
+              <dxi-item
+                dataField="requestedDate"
+                editorType="dxDateBox"
+                [label]="{ text: 'Date' }"
+                [editorOptions]="{
+                  displayFormat: 'M/d/yyyy',
+                  type: 'date',
+                  useMaskBehavior: true
+                }">
+              </dxi-item>
+              <dxi-item
+                dataField="requestedStartTime"
+                editorType="dxDateBox"
+                [label]="{ text: 'Start Time' }"
+                [editorOptions]="{
+                  displayFormat: 'HH:mm',
+                  type: 'time',
+                  useMaskBehavior: true
+                }">
+              </dxi-item>
+              <dxi-item
+                dataField="requestedEndTime"
+                editorType="dxDateBox"
+                [label]="{ text: 'End Time' }"
+                [editorOptions]="{
+                  displayFormat: 'HH:mm',
+                  type: 'time',
+                  useMaskBehavior: true
+                }">
+              </dxi-item>
             </dxi-item>
-            <dxi-item
-              dataField="requestedEndTime"
-              editorType="dxDateBox"
-              [label]="{ text: 'End Time' }"
-              [editorOptions]="{
-                displayFormat: 'HH:mm',
-                type: 'time',
-                useMaskBehavior: true
-              }">
+            <dxi-item itemType="group" caption="Address" [colCount]="6" [colSpan]="1">
+              <dxi-item dataField="preferredLocationName" [colSpan]="6" [label]="{text: 'Location Name'}"></dxi-item>
+              <dxi-item dataField="preferredLocation.address1" [colSpan]="6" [label]="{text: 'Address1'}"></dxi-item>
+              <dxi-item dataField="preferredLocation.address2" [colSpan]="6" [label]="{text: 'Address2'}"></dxi-item>
+              <dxi-item dataField="preferredLocation.city" [colSpan]="3" [label]="{text: 'City'}"></dxi-item>
+              <dxi-item dataField="preferredLocation.state" [colSpan]="2" [label]="{text: 'State'}">
+                <div *dxTemplate>
+                  <dx-select-box
+                    [items]="states"
+                    [(value)]="selectedItem.preferredLocation.state">
+                  </dx-select-box>
+                </div>
+              </dxi-item>
+              <dxi-item dataField="preferredLocation.zip" [colSpan]="1" [label]="{text: 'Zip'}"></dxi-item>
             </dxi-item>
-          </dxi-item>
-          <dxi-item itemType="group" caption="Address" [colCount]="6" [colSpan]="1">
-            <dxi-item dataField="preferredLocationName" [colSpan]="6" [label]="{text: 'Location Name'}"></dxi-item>
-            <dxi-item dataField="preferredLocation.address1" [colSpan]="6" [label]="{text: 'Address1'}"></dxi-item>
-            <dxi-item dataField="preferredLocation.address2" [colSpan]="6" [label]="{text: 'Address2'}"></dxi-item>
-            <dxi-item dataField="preferredLocation.city" [colSpan]="3" [label]="{text: 'City'}"></dxi-item>
-            <dxi-item dataField="preferredLocation.state" [colSpan]="2" [label]="{text: 'State'}">
-              <div *dxTemplate>
-                <dx-select-box
-                  [items]="states"
-                  [(value)]="selectedItem.preferredLocation.state">
-                </dx-select-box>
-              </div>
+            <dxi-item itemType="group" caption="Contact Information" [colCount]="6" [colSpan]="1">
+              <dxi-item dataField="eventCoordinator" [colSpan]="6" [label]="{text: 'Coordinator'}"></dxi-item>
+              <dxi-item dataField="email" [colSpan]="6"></dxi-item>
+              <dxi-item dataField="phone.countryCode" [colSpan]="2" [label]="{text: 'Countyr Code'}"></dxi-item>
+              <dxi-item dataField="phone.number" [colSpan]="2" [label]="{text: 'Number'}" [editorOptions]="phoneEditorOptions"></dxi-item>
+              <dxi-item dataField="phone.type" [colSpan]="2" [label]="{text: 'Type'}">
+                <div *dxTemplate>
+                  <dx-select-box [(value)]="selectedItem.phone.type" [dataSource]="phone_types"></dx-select-box>
+                </div>
+              </dxi-item>
             </dxi-item>
-            <dxi-item dataField="preferredLocation.zip" [colSpan]="1" [label]="{text: 'Zip'}"></dxi-item>
-          </dxi-item>
-          <dxi-item itemType="group" caption="Contact Information" [colCount]="6" [colSpan]="1">
-            <dxi-item dataField="eventCoordinator" [colSpan]="6" [label]="{text: 'Coordinator'}"></dxi-item>
-            <dxi-item dataField="email" [colSpan]="6"></dxi-item>
-            <dxi-item dataField="phone.countryCode" [colSpan]="2" [label]="{text: 'Countyr Code'}"></dxi-item>
-            <dxi-item dataField="phone.number" [colSpan]="2" [label]="{text: 'Number'}" [editorOptions]="phoneEditorOptions"></dxi-item>
-            <dxi-item dataField="phone.type" [colSpan]="2" [label]="{text: 'Type'}">
-              <div *dxTemplate>
-                <dx-select-box [(value)]="selectedItem.phone.type" [dataSource]="phone_types"></dx-select-box>
-              </div>
+            <dxi-item itemType="group" [colCount]="4" [colSpan]="1">
+              <dxi-item dataField="hasProjectingDevice" [colSpan]="2" [editorType]="'dxSwitch'" [editorOptions]="{ switchedOnText: 'Yes', switchedOffText: 'No' }"></dxi-item>
+              <dxi-item dataField="volunteersAvailable" [colSpan]="2" [editorType]="'dxSwitch'" [editorOptions]="{ switchedOnText: 'Yes', switchedOffText: 'No' }"></dxi-item>
+              <dxi-item dataField="isPrivateEvent" [colSpan]="2" [editorType]="'dxSwitch'" [editorOptions]="{ switchedOnText: 'Yes', switchedOffText: 'No' }"></dxi-item>
+              <dxi-item dataField="isPersonalRegistration" [colSpan]="2" [editorType]="'dxSwitch'" [editorOptions]="{ switchedOnText: 'Yes', switchedOffText: 'No' }"></dxi-item>
+              <dxi-item dataField="requestedTicketPrice" [colSpan]="2"></dxi-item>
+              <dxi-item dataField="isLunchProvided" [colSpan]="2" [editorType]="'dxSwitch'" [editorOptions]="{ switchedOnText: 'Yes', switchedOffText: 'No' }"></dxi-item>
+              <dxi-item dataField="isLunchIncluded" [colSpan]="4" [editorType]="'dxSwitch'" [editorOptions]="{ switchedOnText: 'Yes', switchedOffText: 'No' }"></dxi-item>
+              <dxi-item dataField="comments" [colSpan]="4" [editorType]="'dxTextArea'" [editorOptions]="{ height: 150 }"></dxi-item>
             </dxi-item>
-          </dxi-item>
-          <dxi-item itemType="group" [colCount]="4" [colSpan]="1">
-            <dxi-item dataField="hasProjectingDevice" [colSpan]="2" [editorType]="'dxSwitch'" [editorOptions]="{ switchedOnText: 'Yes', switchedOffText: 'No' }"></dxi-item>
-            <dxi-item dataField="volunteersAvailable" [colSpan]="2" [editorType]="'dxSwitch'" [editorOptions]="{ switchedOnText: 'Yes', switchedOffText: 'No' }"></dxi-item>
-            <dxi-item dataField="isPrivateEvent" [colSpan]="2" [editorType]="'dxSwitch'" [editorOptions]="{ switchedOnText: 'Yes', switchedOffText: 'No' }"></dxi-item>
-            <dxi-item dataField="isPersonalRegistration" [colSpan]="2" [editorType]="'dxSwitch'" [editorOptions]="{ switchedOnText: 'Yes', switchedOffText: 'No' }"></dxi-item>
-            <dxi-item dataField="requestedTicketPrice" [colSpan]="2"></dxi-item>
-            <dxi-item dataField="isLunchProvided" [colSpan]="2" [editorType]="'dxSwitch'" [editorOptions]="{ switchedOnText: 'Yes', switchedOffText: 'No' }"></dxi-item>
-            <dxi-item dataField="isLunchIncluded" [colSpan]="4" [editorType]="'dxSwitch'" [editorOptions]="{ switchedOnText: 'Yes', switchedOffText: 'No' }"></dxi-item>
-            <dxi-item dataField="comments" [colSpan]="4" [editorType]="'dxTextArea'" [editorOptions]="{ height: 150 }"></dxi-item>
-          </dxi-item>
           </dx-form>
         </div>
       </dx-scroll-view>
