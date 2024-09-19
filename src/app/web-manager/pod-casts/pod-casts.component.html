@@ -35,8 +35,8 @@
   <dxi-column dataField="thumbnail" [width]="120" cellTemplate="cellTemplate"></dxi-column>
   <dxi-column dataField="title"></dxi-column>
   <dxi-column dataField="date" [dataType]="'datetime'"></dxi-column>
-  <dxi-column dataField="subject"></dxi-column>
-  <dxi-column dataField="url" [visible]="false"></dxi-column>
+  <dxi-column dataField="videoType"></dxi-column>
+  <dxi-column dataField="videoId"></dxi-column>
   <dxi-column type="buttons" caption="Actions" [allowReordering]="false">
     <dxi-button icon="edit" hint="EDIT" [onClick]="showEditModal"></dxi-button>
     <dxi-button icon="trash" hint="DELETE" [onClick]="delete"></dxi-button>
@@ -68,8 +68,15 @@
       <div class="add-item-modal__content" *ngIf="isVisible$ | async">
         <dx-form [colCount]="2" [(formData)]="selectedItem">
           <dxi-item dataField="title" [colSpan]="2"></dxi-item>
-          <dxi-item dataField="subject" [colSpan]="2"></dxi-item>
-          <dxi-item dataField="url" [colSpan]="2"></dxi-item>
+          <dxi-item dataField="videoType" [colSpan]="2">
+            <div *dxTemplate>
+              <dx-select-box
+                [items]="['Youtube', 'Apple', 'Vimeo']"
+                [(value)]="selectedItem.videoType">
+              </dx-select-box>
+            </div>
+          </dxi-item>
+          <dxi-item dataField="videoId" [colSpan]="2"></dxi-item>
           <dxi-item dataField="thumbnail.name" [colSpan]="2"></dxi-item>
         </dx-form>
         <div class="row pt-1">
