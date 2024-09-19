@@ -44,17 +44,25 @@
   <dxi-column dataField="address.address1" [caption]="'Address 1'" [visible]="false"></dxi-column>
   <dxi-column dataField="address.address2" [caption]="'Address 2'" [visible]="false"></dxi-column>
   <dxi-column dataField="address.city" [caption]="'City'" [visible]="false"></dxi-column>
-  <dxi-column dataField="address.state" [caption]="'State'" [visible]="false"></dxi-column>
+  <dxi-column dataField="address.state" [caption]="'State'" [visible]="false">
+    <dxo-lookup [dataSource]="states"></dxo-lookup>
+  </dxi-column>
   <dxi-column dataField="address.zip" [caption]="'Zip'"[visible]="false"></dxi-column>
   <dxi-column dataField="address.county" [caption]="'County'"[visible]="false"></dxi-column>
   <dxi-column dataField="address.country" [caption]="'Country'"[visible]="false"></dxi-column>
   <dxi-column dataField="phone.countryCode" [caption]="'Country Code'"[visible]="false"></dxi-column>
-  <dxi-column dataField="phone.number" [caption]="'Number'"[visible]="false"></dxi-column>
+  <dxi-column dataField="phone.number" [caption]="'Number'" cellTemplate="phoneNumberCellTemplate"></dxi-column>
   <dxi-column dataField="phone.type" [caption]="'Type'"[visible]="false"></dxi-column>
   <dxi-column type="buttons" caption="Actions" [allowReordering]="false">
     <dxi-button icon="edit" hint="EDIT" [onClick]="showEditModal"></dxi-button>
     <dxi-button icon="trash" hint="DELETE" [onClick]="delete"></dxi-button>
   </dxi-column>
+
+  <div *dxTemplate="let cell of 'phoneNumberCellTemplate'">
+    <div class="">
+      {{ (cell.data?.phone?.countryCode ? "+" + cell.data?.phone?.countryCode : '')}} {{cell.data.phone? ((cell.data.phone | phoneNumberMask : false)) : '' }}
+    </div>
+  </div>
 </dx-data-grid>
 
 <dx-popup
@@ -102,7 +110,14 @@
                 <dxi-item dataField="address.address1" [colSpan]="6" [label]="{ text: 'Address1' }"></dxi-item>
                 <dxi-item dataField="address.address2" [colSpan]="6" [label]="{ text: 'Address2' }"></dxi-item>
                 <dxi-item dataField="address.city" [colSpan]="3" [label]="{ text: 'City' }"></dxi-item>
-                <dxi-item dataField="address.state" [colSpan]="1" [label]="{ text: 'State' }"></dxi-item>
+                <dxi-item dataField="address.state" [colSpan]="2" [label]="{ text: 'State' }">
+                  <div *dxTemplate>
+                    <dx-select-box
+                      [items]="states"
+                      [(value)]="selectedItem.address.state">
+                    </dx-select-box>
+                  </div>
+                </dxi-item>
                 <dxi-item dataField="address.zip" [colSpan]="2" [label]="{ text: 'Zip' }"></dxi-item>
                 <dxi-item dataField="address.county" [colSpan]="3" [label]="{ text: 'County' }"></dxi-item>
                 <dxi-item dataField="address.country" [colSpan]="3" [label]="{ text: 'Country' }"></dxi-item>
@@ -111,7 +126,7 @@
             <dxi-tab title="Contact">
               <dxi-item itemType="group" caption="Phone Number" [colCount]="6" [colSpan]="2">
                 <dxi-item dataField="phone.countryCode" [colSpan]="2" [label]="{ text: 'Country Code' }"></dxi-item>
-                <dxi-item dataField="phone.number" [colSpan]="2" [label]="{ text: 'Number' }"></dxi-item>
+                <dxi-item dataField="phone.number" [colSpan]="2" [label]="{ text: 'Number' }" [editorOptions]="phoneEditorOptions"></dxi-item>
                 <dxi-item [label]="{ text: 'Type' }" [colSpan]="2">
                   <div *dxTemplate>
                     <dx-select-box

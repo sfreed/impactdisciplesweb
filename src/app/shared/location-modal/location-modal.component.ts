@@ -19,7 +19,7 @@ export class LocationModalComponent implements OnInit {
   phone_types: PHONE_TYPES[];
   organizations$: Observable<OrganizationModel[]>;
   phoneEditorOptions = {
-    mask: '+1 (X00) 000-0000',
+    mask: '(X00) 000-0000',
     maskRules: {
       X: /[02-9]/,
     },

@@ -28,15 +28,24 @@ export class UsersComponent implements OnInit {
   public inProgress$ = new BehaviorSubject<boolean>(false)
   public isVisible$ = new BehaviorSubject<boolean>(false);
 
+
+  phoneEditorOptions = {
+    mask: '(X00) 000-0000',
+    maskRules: {
+      X: /[02-9]/,
+    },
+    maskInvalidMessage: 'The phone must have a correct USA phone format',
+    valueChangeEvent: 'keyup',
+  };
+
+  public states: string[];
+
   roles;
   phone_types;
-
+address
   constructor(private service: AppUserService) {}
 
   ngOnInit(): void {
-    this.roles = EnumHelper.getRoleTypesAsArray();
-    this.phone_types = EnumHelper.getPhoneTypesAsArray();
-
     this.datasource$ = this.service.streamAll().pipe(
       map(
         (items) =>
@@ -53,6 +62,11 @@ export class UsersComponent implements OnInit {
           })
       )
     );
+
+    this.roles = EnumHelper.getRoleTypesAsArray();
+    this.phone_types = EnumHelper.getPhoneTypesAsArray();
+    this.states = EnumHelper.getStateRoleTypesAsArray();
+
   }
 
   showEditModal = ({ row: { data } }) => {

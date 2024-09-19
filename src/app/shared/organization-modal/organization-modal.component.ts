@@ -1,8 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Actions, ofActionSuccessful, Store } from '@ngxs/store';
-import { LocationModel } from 'impactdisciplescommon/src/models/domain/location.model';
 import { BehaviorSubject, Observable, Subject, takeUntil } from 'rxjs';
-import { LocationService } from 'impactdisciplescommon/src/services/location.service';
 import notify from 'devextreme/ui/notify';
 import { PHONE_TYPES } from 'impactdisciplescommon/src/lists/phone_types.enum';
 import { EnumHelper } from 'impactdisciplescommon/src/utils/enum_helper';
@@ -19,7 +17,7 @@ export class OrganizationModalComponent implements OnInit {
   phone_types: PHONE_TYPES[];
   public organization: OrganizationModel;
   phoneEditorOptions = {
-    mask: '+1 (X00) 000-0000',
+    mask: '(X00) 000-0000',
     maskRules: {
       X: /[02-9]/,
     },

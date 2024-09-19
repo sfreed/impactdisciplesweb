@@ -37,7 +37,7 @@
   <dxi-column dataField="lastName"></dxi-column>
   <dxi-column dataField="email"></dxi-column>
   <dxi-column dataField="phone.countryCode" [caption]="'Country Code'" [visible]="false"></dxi-column>
-  <dxi-column dataField="phone.number" [caption]="'Number'" [editorOptions]="{ mask: '(000) 000-0000' }" cellTemplate="phoneNumberCellTemplate"></dxi-column>
+  <dxi-column dataField="phone.number" [caption]="'Number'" cellTemplate="phoneNumberCellTemplate"></dxi-column>
   <dxi-column dataField="phone.type" [caption]="'Type'"  [visible]="false">
     <dxo-lookup [dataSource]="phone_types"></dxo-lookup>
   </dxi-column>
@@ -59,7 +59,7 @@
 
   <div *dxTemplate="let cell of 'phoneNumberCellTemplate'">
     <div class="">
-      {{ cell.data.phone | phoneNumberMask : false }}
+      {{ (cell.data?.phone?.countryCode ? "+" + cell.data?.phone?.countryCode : '')}} {{cell.data.phone? ((cell.data.phone | phoneNumberMask : false)) : '' }}
     </div>
   </div>
 </dx-data-grid>

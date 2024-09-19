@@ -44,11 +44,13 @@
   <dxi-column dataField="locationAddress.address1" [visible]="false" [caption]="'Address 1'" [visible]="false"></dxi-column>
   <dxi-column dataField="locationAddress.address2" [visible]="false" [caption]="'Address 2'" [visible]="false"></dxi-column>
   <dxi-column dataField="locationAddress.city" [visible]="false" [caption]="'City'" [visible]="false"></dxi-column>
-  <dxi-column dataField="locationAddress.state" [visible]="false" [caption]="'State'" [visible]="false"></dxi-column>
+  <dxi-column dataField="locationAddress.state" [visible]="false" [caption]="'State'" [visible]="false">
+    <dxo-lookup [dataSource]="states"></dxo-lookup>
+  </dxi-column>
   <dxi-column dataField="locationAddress.zip" [visible]="false" [caption]="'Zip Code'" [visible]="false"></dxi-column>
   <dxi-column dataField="locationAddress.country" [visible]="false" [caption]="'Country'" [visible]="false"></dxi-column>
   <dxi-column dataField="coordinatorPhone.countryCode" [caption]="'Country Code'" [visible]="false"></dxi-column>
-  <dxi-column dataField="coordinatorPhone.number" [caption]="'Number'" [editorOptions]="{ mask: '(000) 000-0000' }" cellTemplate="phoneNumberCellTemplate" [visible]="false"></dxi-column>
+  <dxi-column dataField="coordinatorPhone.number" [caption]="'Number'" cellTemplate="phoneNumberCellTemplate" [visible]="false"></dxi-column>
   <dxi-column dataField="coordinatorPhone.type" [caption]="'Type'" [visible]="false">
     <dxo-lookup [dataSource]="phone_types"></dxo-lookup>
   </dxi-column>
@@ -59,7 +61,7 @@
 
   <div *dxTemplate="let cell of 'phoneNumberCellTemplate'">
     <div class="">
-      {{ cell.data.phone | phoneNumberMask : false }}
+      {{ (cell.data?.phone?.countryCode ? "+" + cell.data?.phone?.countryCode : '')}} {{cell.data.phone? ((cell.data.phone | phoneNumberMask : false)) : '' }}
     </div>
   </div>
 
@@ -142,7 +144,14 @@
               <dxi-item dataField="locationAddress.address1" [colSpan]="6" [label]="{text: 'Addres1'}"></dxi-item>
               <dxi-item dataField="locationAddress.address2" [colSpan]="6" [label]="{text: 'Addres2'}"></dxi-item>
               <dxi-item dataField="locationAddress.city" [colSpan]="3" [label]="{text: 'City'}"></dxi-item>
-              <dxi-item dataField="locationAddress.state" [colSpan]="2" [label]="{text: 'State'}"></dxi-item>
+              <dxi-item dataField="locationAddress.state" [colSpan]="2" [label]="{text: 'State'}">
+                <div *dxTemplate>
+                  <dx-select-box
+                    [items]="states"
+                    [(value)]="selectedItem.locationAddress.state">
+                  </dx-select-box>
+                </div>
+              </dxi-item>
               <dxi-item dataField="locationAddress.zip" [colSpan]="1" [label]="{text: 'Zip'}"></dxi-item>
               <dxi-item dataField="locationAddress.country" [colSpan]="3" [label]="{text: 'Country'}"></dxi-item>
             </dxi-item>

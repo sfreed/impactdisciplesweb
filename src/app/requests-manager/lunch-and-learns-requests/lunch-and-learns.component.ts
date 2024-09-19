@@ -30,8 +30,10 @@ export class LunchAndLearnsComponent implements OnInit{
 
   phone_types: PHONE_TYPES[];
 
+  public states: string[];
+
   phoneEditorOptions = {
-    mask: '+1 (X00) 000-0000',
+    mask: '(X00) 000-0000',
     maskRules: {
       X: /[02-9]/,
     },
@@ -60,6 +62,7 @@ export class LunchAndLearnsComponent implements OnInit{
     );
 
     this.phone_types = EnumHelper.getPhoneTypesAsArray();
+    this.states = EnumHelper.getStateRoleTypesAsArray();
   }
 
   showEditModal = ({ row: { data } }) => {

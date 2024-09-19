@@ -35,6 +35,17 @@ export class LocationsComponent implements OnInit {
 
   organizations: OrganizationModel[];
 
+  public states: string[];
+
+  phoneEditorOptions = {
+    mask: '(X00) 000-0000',
+    maskRules: {
+      X: /[02-9]/,
+    },
+    maskInvalidMessage: 'The phone must have a correct USA phone format',
+    valueChangeEvent: 'keyup',
+  };
+
   constructor(public service: LocationService, private organizationService: OrganizationService){}
 
   async ngOnInit(): Promise<void> {
@@ -56,6 +67,7 @@ export class LocationsComponent implements OnInit {
     )
     this.phone_types = EnumHelper.getPhoneTypesAsArray();
     this.organizations = await this.organizationService.getAll();
+    this.states = EnumHelper.getStateRoleTypesAsArray();
   }
 
   showEditModal = ({ row: { data } }) => {
