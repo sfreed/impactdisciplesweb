@@ -68,7 +68,7 @@
       <div class="add-item-modal__content" *ngIf="isVisible$ | async">
         <dx-form [colCount]="2" [(formData)]="selectedItem">
           <dxi-item dataField="title" [colSpan]="2"></dxi-item>
-          <dxi-item dataField="videoType" [colSpan]="2">
+          <dxi-item dataField="videoType" [colSpan]="1">
             <div *dxTemplate>
               <dx-select-box
                 [items]="['Youtube', 'Apple', 'Vimeo']"
@@ -76,7 +76,7 @@
               </dx-select-box>
             </div>
           </dxi-item>
-          <dxi-item dataField="videoId" [colSpan]="2"></dxi-item>
+          <dxi-item dataField="videoId" [colSpan]="1"></dxi-item>
           <dxi-item dataField="thumbnail.name" [colSpan]="2"></dxi-item>
         </dx-form>
         <div class="row pt-1">
