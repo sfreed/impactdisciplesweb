@@ -56,14 +56,23 @@ export class UsersComponent implements OnInit {
   }
 
   showEditModal = ({ row: { data } }) => {
-    this.selectedItem = data
+    this.selectedItem = (Object.assign({}, data));
+
+    if(!this.selectedItem.phone){
+      this.selectedItem.phone = {... new Phone()};
+    }
+
+    if(!this.selectedItem.address){
+      this.selectedItem.address = {... new Address()};
+    }
     this.isVisible$.next(true);
   }
 
   showAddModal = () => {
     this.selectedItem = {... new AppUser()};
     this.selectedItem.address = {... new Address()}
-    this.selectedItem.phone = {... new Phone()}
+    this.selectedItem.phone = {... new Phone()};
+
     this.isVisible$.next(true);
   }
 

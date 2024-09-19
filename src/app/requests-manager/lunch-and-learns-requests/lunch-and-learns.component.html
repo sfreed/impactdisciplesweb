@@ -152,7 +152,7 @@
               <dxi-item dataField="coordinatorPhone.number" [colSpan]="1" [label]="{text: 'Number'}" [editorOptions]="phoneEditorOptions"></dxi-item>
               <dxi-item dataField="coordinatorPhone.type" [colSpan]="1" [label]="{text: 'Type'}">
                 <div *dxTemplate>
-                  <dx-select-box [value]="'phone.type'" [dataSource]="phone_types"></dx-select-box>
+                  <dx-select-box [(value)]="selectedItem.coordinatorPhone.type" [dataSource]="phone_types"></dx-select-box>
                 </div>
               </dxi-item>
             </dxi-item>

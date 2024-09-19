@@ -11,6 +11,8 @@ import { OrganizationModel } from 'impactdisciplescommon/src/models/domain/organ
 import { CoachService } from 'impactdisciplescommon/src/services/coach.service';
 import { EnumHelper } from 'impactdisciplescommon/src/utils/enum_helper';
 import { BehaviorSubject, map, Observable } from 'rxjs';
+import { Phone } from 'impactdisciplescommon/src/models/domain/utils/phone.model';
+import { Address } from 'impactdisciplescommon/src/models/domain/utils/address.model';
 
 @Component({
   selector: 'app-coaches',
@@ -62,10 +64,22 @@ export class CoachesComponent implements OnInit{
 
   showEditModal = ({ row: { data } }) => {
     this.selectedItem = (Object.assign({}, data));
+
+    if(!this.selectedItem.phone){
+      this.selectedItem.phone = {... new Phone()};
+    }
+
+    if(!this.selectedItem.address){
+      this.selectedItem.address = {... new Address()};
+    }
     this.isVisible$.next(true);
   }
 
   showAddModal = () => {
+    this.selectedItem = {... new CoachModel()};
+    this.selectedItem.address = {... new Address()}
+    this.selectedItem.phone = {... new Phone()};
+
     this.isVisible$.next(true);
   }
 

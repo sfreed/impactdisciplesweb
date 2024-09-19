@@ -49,6 +49,10 @@
   <dxi-column dataField="phone.type" [caption]="'Type'">
     <dxo-lookup [dataSource]="phone_types"></dxo-lookup>
   </dxi-column>
+  <dxi-column type="buttons" caption="Actions" [allowReordering]="false">
+    <dxi-button icon="edit" hint="EDIT" [onClick]="showEditModal"></dxi-button>
+    <dxi-button icon="trash" hint="DELETE" [onClick]="delete"></dxi-button>
+  </dxi-column>
 
   <div *dxTemplate="let cell of 'phoneNumberCellTemplate'">
     <div class="">
@@ -83,7 +87,11 @@
           <dxi-item itemType="group" [colCount]="2" [colSpan]="1">
             <dxi-item dataField="name" [colSpan]="1"></dxi-item>
             <dxi-item dataField="contactName" [colSpan]="1"></dxi-item>
-            <dxi-item dataField="organization" [colSpan]="1"></dxi-item>
+            <dxi-item dataField="organization" [colSpan]="1">
+              <div *dxTemplate>
+                <dx-select-box [(value)]="selectedItem.organization" [dataSource]="organizations" [displayExpr]="'name'" [valueExpr]="'id'"></dx-select-box>
+              </div>
+            </dxi-item>
           </dxi-item>
           <dxi-item itemType="group" caption="Address" [colCount]="6" [colSpan]="1">
             <dxi-item dataField="address.address1" [colSpan]="6" [label]="{ text: 'Address 1' }"></dxi-item>
@@ -97,7 +105,7 @@
             <dxi-item dataField="phone.number" [colSpan]="2" [label]="{ text: 'Number' }"></dxi-item>
             <dxi-item dataField="phone.type" [colSpan]="2" [label]="{text: 'Type'}">
               <div *dxTemplate>
-                <dx-select-box [value]="'phone.type'" [dataSource]="phone_types"></dx-select-box>
+                <dx-select-box [(value)]="selectedItem.phone.type" [dataSource]="phone_types"></dx-select-box>
               </div>
             </dxi-item>
           </dxi-item>

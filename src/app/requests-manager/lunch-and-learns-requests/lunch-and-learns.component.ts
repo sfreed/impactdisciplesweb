@@ -9,6 +9,8 @@ import { BehaviorSubject, Observable, map } from 'rxjs';
 import { confirm } from 'devextreme/ui/dialog';
 import notify from 'devextreme/ui/notify';
 import { DxFormComponent } from 'devextreme-angular';
+import { Phone } from 'impactdisciplescommon/src/models/domain/utils/phone.model';
+import { Address } from 'impactdisciplescommon/src/models/domain/utils/address.model';
 
 @Component({
   selector: 'app-lunch-and-learns',
@@ -61,11 +63,24 @@ export class LunchAndLearnsComponent implements OnInit{
   }
 
   showEditModal = ({ row: { data } }) => {
-    this.selectedItem = data
+    this.selectedItem = (Object.assign({}, data));
+
+    if(!this.selectedItem.coordinatorPhone){
+      this.selectedItem.coordinatorPhone = {... new Phone()};
+    }
+
+    if(!this.selectedItem.locationAddress){
+      this.selectedItem.locationAddress = {... new Address()};
+    }
+
     this.isVisible$.next(true);
   }
 
   showAddModal = () => {
+    this.selectedItem = {... new LunchAndLearnModel()};
+    this.selectedItem.coordinatorPhone = {... new Phone()};
+    this.selectedItem.locationAddress = {... new Address()};
+
     this.isVisible$.next(true);
   }
 

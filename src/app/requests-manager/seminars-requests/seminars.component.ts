@@ -9,6 +9,7 @@ import { EnumHelper } from 'impactdisciplescommon/src/utils/enum_helper';
 import { BehaviorSubject, Observable, map } from 'rxjs';
 import notify from 'devextreme/ui/notify';
 import { confirm } from 'devextreme/ui/dialog';
+import { Phone } from 'impactdisciplescommon/src/models/domain/utils/phone.model';
 
 @Component({
   selector: 'app-seminars',
@@ -60,12 +61,20 @@ export class SeminarsComponent implements OnInit {
     this.phone_types = EnumHelper.getPhoneTypesAsArray();
   }
 
-showEditModal = ({ row: { data } }) => {
-    this.selectedItem = data
+  showEditModal = ({ row: { data } }) => {
+    this.selectedItem = (Object.assign({}, data));
+
+    if(!this.selectedItem.phone){
+      this.selectedItem.phone = {... new Phone()};
+    }
+
     this.isVisible$.next(true);
   }
 
   showAddModal = () => {
+    this.selectedItem = {... new SeminarModel()};
+    this.selectedItem.phone = {... new Phone()};
+
     this.isVisible$.next(true);
   }
 

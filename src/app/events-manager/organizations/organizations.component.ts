@@ -9,6 +9,8 @@ import { EnumHelper } from 'impactdisciplescommon/src/utils/enum_helper';
 import { BehaviorSubject, map, Observable } from 'rxjs';
 import { confirm } from 'devextreme/ui/dialog';
 import notify from 'devextreme/ui/notify';
+import { Address } from 'impactdisciplescommon/src/models/domain/utils/address.model';
+import { Phone } from 'impactdisciplescommon/src/models/domain/utils/phone.model';
 
 @Component({
   selector: 'app-organizations',
@@ -51,11 +53,22 @@ export class OrganizationsComponent implements OnInit {
   }
 
   showEditModal = ({ row: { data } }) => {
-    this.selectedItem = data
+    this.selectedItem = (Object.assign({}, data));
+
+    if(!this.selectedItem.phone){
+      this.selectedItem.phone = {... new Phone()};
+    }
+
+    if(!this.selectedItem.address){
+      this.selectedItem.address = {... new Address()};
+    }
     this.isVisible$.next(true);
   }
 
   showAddModal = () => {
+    this.selectedItem = {... new OrganizationModel()};
+    this.selectedItem.phone = {... new Phone()};
+
     this.isVisible$.next(true);
   }
 

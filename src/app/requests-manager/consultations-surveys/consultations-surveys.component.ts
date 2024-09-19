@@ -9,6 +9,7 @@ import { ConsultationSurveyModel } from 'impactdisciplescommon/src/models/domain
 import { ConsultationSurveyService } from 'impactdisciplescommon/src/services/consultation-survey.service';
 import { EnumHelper } from 'impactdisciplescommon/src/utils/enum_helper';
 import { BehaviorSubject, Observable, map } from 'rxjs';
+import { Phone } from 'impactdisciplescommon/src/models/domain/utils/phone.model';
 
 @Component({
   selector: 'app-consultations-surveys',
@@ -60,11 +61,19 @@ export class ConsultationsSurveysComponent implements OnInit {
   }
 
   showEditModal = ({ row: { data } }) => {
-    this.selectedItem = data
+    this.selectedItem = (Object.assign({}, data));
+
+    if(!this.selectedItem.phone){
+      this.selectedItem.phone = {... new Phone()};
+    }
+
     this.isVisible$.next(true);
   }
 
   showAddModal = () => {
+    this.selectedItem = {... new ConsultationSurveyModel()};
+    this.selectedItem.phone = {... new Phone()};
+
     this.isVisible$.next(true);
   }
 

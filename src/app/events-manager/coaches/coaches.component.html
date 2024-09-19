@@ -98,7 +98,11 @@
                   <dxi-item dataField="firstName" [colSpan]="2"></dxi-item>
                   <dxi-item dataField="lastName" [colSpan]="2"></dxi-item>
                   <dxi-item dataField="title" [colSpan]="2"></dxi-item>
-                  <dxi-item dataField="organization" [colSpan]="2"></dxi-item>
+                  <dxi-item dataField="organization" [colSpan]="2">
+                    <div *dxTemplate>
+                      <dx-select-box [(value)]="selectedItem.organization" [dataSource]="organizations" [displayExpr]="'name'" [valueExpr]="'id'"></dx-select-box>
+                    </div>
+                  </dxi-item>
                 </dxi-item>
                 <dxi-item itemType="group" caption="Address" [colCount]="6" [colSpan]="1">
                   <dxi-item dataField="address.address1" [colSpan]="6" [label]="{ text: 'Address 1' }"></dxi-item>
@@ -112,7 +116,7 @@
                   <dxi-item dataField="phone.number" [colSpan]="2" [label]="{ text: 'Number' }"></dxi-item>
                   <dxi-item dataField="phone.type" [colSpan]="2" [label]="{text: 'Type'}">
                     <div *dxTemplate>
-                      <dx-select-box [value]="'phone.type'" [dataSource]="phone_types"></dx-select-box>
+                      <dx-select-box [(value)]="selectedItem.phone.type" [dataSource]="phone_types"></dx-select-box>
                     </div>
                   </dxi-item>
                 </dxi-item>

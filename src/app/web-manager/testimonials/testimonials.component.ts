@@ -53,7 +53,7 @@ export class TestimonialsComponent implements OnInit{
   }
 
   showEditModal = ({ row: { data } }) => {
-    this.selectedItem = data
+    this.selectedItem = (Object.assign({}, data));
     this.isVisible$.next(true);
   }
 

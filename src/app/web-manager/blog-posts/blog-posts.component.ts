@@ -36,19 +36,6 @@ export class BlogPostsComponent implements OnInit {
 
   blogTags: string[] = [];
 
-  selectedIndex: number = 0;
-  selectedTab: string = 'Blog Post';
-
-  tabs: Tab[] = [
-    { id: 0, text: 'Blog Post', template: 'Blog Post' },
-    { id: 1, text: 'Main Image', template: 'Main Image' },
-    { id: 2, text: 'Other Images', template: 'Other Images' },
-  ];
-
-  selectTab(e) {
-    this.selectedTab = e.itemData.template;
-  }
-
   constructor(private service: BlogPostService, private blogTagService: BlogTagsService) {}
 
   ngOnInit() {
@@ -73,7 +60,7 @@ export class BlogPostsComponent implements OnInit {
   }
 
   showEditModal = ({ row: { data } }) => {
-    this.selectedItem = data
+    this.selectedItem = (Object.assign({}, data));
     this.isVisible$.next(true);
   }
 
