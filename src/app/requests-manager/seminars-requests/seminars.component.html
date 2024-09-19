@@ -108,7 +108,19 @@
             [(formData)]="selectedItem"
             [showColonAfterLabel]="false"
             labelLocation="left">
-          <dxi-item dataField="preferredTrainer" [colSpan]="1"></dxi-item>
+            <dxi-item
+              dataField="preferredTrainer"
+              editorType="dxAutocomplete"
+              [colSpan]="6"
+              [label]="{ text: 'Preferrred Trainer' }"
+              [editorOptions]="{
+                items: coaches$ | async,
+                valueExpr: 'fullname',
+                displayExpr: 'fullname',
+                showClearButton: true,
+                searchExpr: ['fullname']
+              }"
+            ></dxi-item>
           <dxi-item itemType="group" caption="Information" [colCount]="3" [colSpan]="1">
             <dxi-item
               dataField="requestedDate"

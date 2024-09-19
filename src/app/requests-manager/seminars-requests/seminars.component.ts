@@ -11,6 +11,8 @@ import notify from 'devextreme/ui/notify';
 import { confirm } from 'devextreme/ui/dialog';
 import { Phone } from 'impactdisciplescommon/src/models/domain/utils/phone.model';
 import { Address } from 'impactdisciplescommon/src/models/domain/utils/address.model';
+import { CoachService } from 'impactdisciplescommon/src/services/coach.service';
+import { CoachModel } from 'impactdisciplescommon/src/models/domain/coach.model';
 
 @Component({
   selector: 'app-seminars',
@@ -28,6 +30,8 @@ export class SeminarsComponent implements OnInit {
   public inProgress$ = new BehaviorSubject<boolean>(false)
   public isVisible$ = new BehaviorSubject<boolean>(false);
 
+  coaches$: Observable<CoachModel[]>;
+
   phone_types: PHONE_TYPES[];
 
   public states: string[];
@@ -41,7 +45,7 @@ export class SeminarsComponent implements OnInit {
     valueChangeEvent: 'keyup',
   };
 
-  constructor(private service: SeminarService) {}
+  constructor(private service: SeminarService, private coachService: CoachService) {}
 
    ngOnInit() {
     this.datasource$ = this.service.streamAll().pipe(
@@ -63,6 +67,14 @@ export class SeminarsComponent implements OnInit {
 
     this.phone_types = EnumHelper.getPhoneTypesAsArray();
     this.states = EnumHelper.getStateRoleTypesAsArray();
+
+    this.coaches$ = this.coachService.streamAll().pipe(
+      map(coaches => {
+        coaches.forEach(coach => coach.fullname = coach.firstName + ' ' + coach.lastName)
+
+        return coaches;
+      })
+    );
   }
 
   showEditModal = ({ row: { data } }) => {
