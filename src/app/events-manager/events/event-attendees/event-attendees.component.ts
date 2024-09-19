@@ -30,22 +30,24 @@ export class EventAttendeesComponent implements OnInit{
   constructor(public service: EventRegistrationService){}
 
   async ngOnInit(): Promise<void> {
-    this.datasource$ = this.service.streamAllByValue('eventId', this.event.id).pipe(
-      map(
-        (items) =>
-          new DataSource({
-            reshapeOnPush: true,
-            pushAggregationTimeout: 100,
-            store: new CustomStore({
-              key: 'id',
-              loadMode: 'raw',
-              load: function (loadOptions: any) {
-                return items;
-              }
+    if(this.event?.id){
+      this.datasource$ = this.service.streamAllByValue('eventId', this.event.id).pipe(
+        map(
+          (items) =>
+            new DataSource({
+              reshapeOnPush: true,
+              pushAggregationTimeout: 100,
+              store: new CustomStore({
+                key: 'id',
+                loadMode: 'raw',
+                load: function (loadOptions: any) {
+                  return items;
+                }
+              })
             })
-          })
-      )
-    );
+        )
+      );
+    }
   }
 
   showEditModal = ({ row: { data } }) => {

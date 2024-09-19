@@ -10,6 +10,7 @@ import { BehaviorSubject, Observable, map } from 'rxjs';
 import notify from 'devextreme/ui/notify';
 import { confirm } from 'devextreme/ui/dialog';
 import { Phone } from 'impactdisciplescommon/src/models/domain/utils/phone.model';
+import { Address } from 'impactdisciplescommon/src/models/domain/utils/address.model';
 
 @Component({
   selector: 'app-seminars',
@@ -71,12 +72,17 @@ export class SeminarsComponent implements OnInit {
       this.selectedItem.phone = {... new Phone()};
     }
 
+    if(!this.selectedItem.preferredLocation){
+      this.selectedItem.preferredLocation = {... new Address()};
+    }
+
     this.isVisible$.next(true);
   }
 
   showAddModal = () => {
     this.selectedItem = {... new SeminarModel()};
     this.selectedItem.phone = {... new Phone()};
+    this.selectedItem.preferredLocation = {... new Address()};
 
     this.isVisible$.next(true);
   }

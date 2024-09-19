@@ -48,7 +48,6 @@
     <dxo-lookup [dataSource]="states"></dxo-lookup>
   </dxi-column>
   <dxi-column dataField="locationAddress.zip" [visible]="false" [caption]="'Zip Code'" [visible]="false"></dxi-column>
-  <dxi-column dataField="locationAddress.country" [visible]="false" [caption]="'Country'" [visible]="false"></dxi-column>
   <dxi-column dataField="coordinatorPhone.countryCode" [caption]="'Country Code'" [visible]="false"></dxi-column>
   <dxi-column dataField="coordinatorPhone.number" [caption]="'Number'" cellTemplate="phoneNumberCellTemplate" [visible]="false"></dxi-column>
   <dxi-column dataField="coordinatorPhone.type" [caption]="'Type'" [visible]="false">
@@ -61,7 +60,7 @@
 
   <div *dxTemplate="let cell of 'phoneNumberCellTemplate'">
     <div class="">
-      {{ (cell.data?.phone?.countryCode ? "+" + cell.data?.phone?.countryCode : '')}} {{cell.data.phone? ((cell.data.phone | phoneNumberMask : false)) : '' }}
+      {{ cell.data.phone | phoneNumberMask : false }}
     </div>
   </div>
 
@@ -153,12 +152,11 @@
                 </div>
               </dxi-item>
               <dxi-item dataField="locationAddress.zip" [colSpan]="1" [label]="{text: 'Zip'}"></dxi-item>
-              <dxi-item dataField="locationAddress.country" [colSpan]="3" [label]="{text: 'Country'}"></dxi-item>
             </dxi-item>
             <dxi-item itemType="group" caption="Contact Information" [colCount]="6" [colSpan]="1">
               <dxi-item dataField="coordinator" [colSpan]="6"></dxi-item>
               <dxi-item dataField="coordinatorPhone.countryCode" [colSpan]="3" [label]="{text: 'Country Code'}"></dxi-item>
-              <dxi-item dataField="coordinatorPhone.number" [colSpan]="3" [label]="{text: 'Number'}" [editorOptions]="phoneEditorOptions"></dxi-item>
+              <dxi-item dataField="coordinatorPhone.number" [colSpan]="2" [label]="{text: 'Number'}" [editorOptions]="phoneEditorOptions"></dxi-item>
               <dxi-item dataField="coordinatorPhone.type" [colSpan]="1" [label]="{text: 'Type'}">
                 <div *dxTemplate>
                   <dx-select-box [(value)]="selectedItem.coordinatorPhone.type" [dataSource]="phone_types"></dx-select-box>

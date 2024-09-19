@@ -87,6 +87,7 @@ export class LocationsComponent implements OnInit {
   showAddModal = () => {
     this.selectedItem = {... new LocationModel()};
     this.selectedItem.phone = {... new Phone()};
+    this.selectedItem.address = {... new Address()};
     this.isVisible$.next(true);
   }
 
