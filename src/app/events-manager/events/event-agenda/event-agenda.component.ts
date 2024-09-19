@@ -64,11 +64,7 @@ export class EventAgendaComponent implements OnInit{
 
   onAppointmentFormOpening = (data: DxSchedulerTypes.AppointmentFormOpeningEvent) => {
     if(data.appointmentData['isCourse']){
-      if(data.appointmentData['isMultiSessionCourse']){
-        this.setMultiSessionCourseForm(data);
-      } else {
-        this.setSingleSessionCourseForm(data);
-      }
+      this.setSingleSessionCourseForm(data);
     } else {
       this.setAgendaForm(data);
     }
@@ -93,23 +89,7 @@ export class EventAgendaComponent implements OnInit{
           }
         }
       }
-    },{
-      label: {
-        text: 'Multi Session Course?',
-      },
-      colSpan: 1,
-      editorType: 'dxSwitch',
-      dataField: 'isMultiSessionCourse',
-      editorOptions: {
-        switchedOnText: 'Yes',
-        switchedOffText: 'No',
-        onValueChanged({ value }) {
-          if(value){
-            that.setMultiSessionCourseForm(data)
-          }
-        }
-      }
-    },{
+    },,{
       label: {
         text: 'Course',
       },
@@ -146,72 +126,6 @@ export class EventAgendaComponent implements OnInit{
     }, {
       name: 'endDate',
       colSpan: 1,
-      dataField: 'endDate',
-      editorType: 'dxDateBox',
-      editorOptions: {
-        width: '100%',
-        type: 'datetime',
-      },
-    }];
-    form.repaint();
-  }
-
-  setMultiSessionCourseForm(data: DxSchedulerTypes.AppointmentFormOpeningEvent){
-    const that = this;
-    const form = data.form;
-
-    form.option().items = [{
-      label: {
-        text: 'Create Course?',
-      },
-      editorType: 'dxSwitch',
-      dataField: 'isCourse',
-      editorOptions: {
-        switchedOnText: 'Yes',
-        switchedOffText: 'No',
-        onValueChanged({ value }) {
-          if(!value){
-            that.setAgendaForm(data);
-          }
-        }
-      }
-    },{
-      label: {
-        text: 'Multi Session Course?',
-      },
-      editorType: 'dxSwitch',
-      dataField: 'isMultiSessionCourse',
-      editorOptions: {
-        switchedOnText: 'Yes',
-        switchedOffText: 'No',
-        onValueChanged({ value }) {
-          if(!value){
-            that.setSingleSessionCourseForm(data);
-          }
-        }
-      }
-    }, {
-      label: {
-        text: 'Available Courses',
-      },
-      dataField: 'courses',
-      colSpan: 2,
-      editorType: 'dxTagBox',
-      editorOptions: {
-        width: '100%',
-        items: that.courses,
-        displayExpr: 'title',
-        valueExpr: 'id',
-      },
-    }, {
-      dataField: 'startDate',
-      editorType: 'dxDateBox',
-      editorOptions: {
-        width: '100%',
-        type: 'datetime'
-      },
-    }, {
-      name: 'endDate',
       dataField: 'endDate',
       editorType: 'dxDateBox',
       editorOptions: {
@@ -274,12 +188,5 @@ export class EventAgendaComponent implements OnInit{
       },
     }];
     form.repaint();
-  }
-
-  saveAgenda(){
-    this.eventService.update(this.event.id, this.event).then(event => {
-      this.toastrService.success('Event Saved!');
-      this.onCloseWindow.emit(false);
-    })
   }
 }

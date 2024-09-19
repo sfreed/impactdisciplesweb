@@ -1,10 +1,13 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { DxFormComponent } from 'devextreme-angular';
 import CustomStore from 'devextreme/data/custom_store';
 import DataSource from 'devextreme/data/data_source';
 import { EventRegistrationModel } from 'impactdisciplescommon/src/models/domain/event-registration.model';
 import { EventModel } from 'impactdisciplescommon/src/models/domain/event.model';
 import { EventRegistrationService } from 'impactdisciplescommon/src/services/event-registration.service';
-import { map, Observable } from 'rxjs';
+import { BehaviorSubject, map, Observable } from 'rxjs';
+import { confirm } from 'devextreme/ui/dialog';
+import notify from 'devextreme/ui/notify';
 
 @Component({
   selector: 'app-event-attendees',
@@ -14,14 +17,20 @@ import { map, Observable } from 'rxjs';
 export class EventAttendeesComponent implements OnInit{
   @Input('event') event: EventModel;
 
-  dataSource: Observable<DataSource>;
+  @ViewChild('addEditForm', { static: false }) addEditForm: DxFormComponent;
 
-  constructor(public eventRegistrationService: EventRegistrationService){}
+  datasource$: Observable<DataSource>;
+  selectedItem: EventRegistrationModel;
+
+  itemType = 'Registered User';
+
+  public inProgress$ = new BehaviorSubject<boolean>(false)
+  public isVisible$ = new BehaviorSubject<boolean>(false);
+
+  constructor(public service: EventRegistrationService){}
 
   async ngOnInit(): Promise<void> {
-    let that = this;
-
-    this.dataSource = this.eventRegistrationService.streamAllByValue('eventId', this.event.id).pipe(
+    this.datasource$ = this.service.streamAllByValue('eventId', this.event.id).pipe(
       map(
         (items) =>
           new DataSource({
@@ -32,24 +41,91 @@ export class EventAttendeesComponent implements OnInit{
               loadMode: 'raw',
               load: function (loadOptions: any) {
                 return items;
-              },
-              insert: function (value: EventRegistrationModel) {
-                value.eventId = that.event.id;
-                return that.eventRegistrationService.add(value);
-              },
-              update: function (key: any, value: EventRegistrationModel) {
-                return that.eventRegistrationService.update(key, value)
-              },
-              remove: function (id: any) {
-                return that.eventRegistrationService.delete(id);
-              },
+              }
             })
           })
       )
     );
   }
 
-  onRowUpdating(options) {
-    options.newData = Object.assign({}, options.oldData, options.newData);
+  showEditModal = ({ row: { data } }) => {
+    this.selectedItem = (Object.assign({}, data));
+
+    this.isVisible$.next(true);
+  }
+
+  showAddModal = () => {
+    this.selectedItem = {... new EventRegistrationModel()};
+
+    this.isVisible$.next(true);
+  }
+
+  delete = ({ row: { data } }) => {
+    confirm('<i>Are you sure you want to delete this record?</i>', 'Confirm').then((dialogResult) => {
+      if (dialogResult) {
+        this.service.delete(data.id).then(() => {
+          notify({
+            message: this.itemType + ' Deleted',
+            position: 'top',
+            width: 600,
+            type: 'success'
+          });
+        })
+      }
+    });
+  }
+
+  onSave(item: EventRegistrationModel) {
+    item.eventId = this.event.id;
+    if(this.addEditForm.instance.validate().isValid) {
+      this.inProgress$.next(true);
+      if(item.id) {
+        this.service.update(item.id, item).then((item) => {
+          if(item) {
+            notify({
+              message: this.itemType + ' Updated',
+              position: 'top',
+              width: 600,
+              type: 'success'
+            });
+            this.onCancel();
+          } else {
+            this.inProgress$.next(false);
+            notify({
+              message: 'Some Error Occured',
+              position: 'top',
+              width: 600,
+              type: 'success'
+            });
+          }
+        })
+      } else {
+        this.service.add(item).then((item) => {
+          if(item) {
+            notify({
+              message: this.itemType + ' Added',
+              position: 'top',
+              width: 600,
+              type: 'success'
+            });
+            this.onCancel();
+          } else {
+            this.inProgress$.next(false);
+            notify({
+              message: 'Some Error Occured',
+              position: 'top',
+              width: 600,
+              type: 'error'
+            });
+          }
+        })
+      }
+    }
+  }
+
+  onCancel() {
+    this.selectedItem = null;
+    this.inProgress$.next(false);
+    this.isVisible$.next(false);
   }
 }

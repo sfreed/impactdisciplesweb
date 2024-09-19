@@ -31,8 +31,7 @@ export class EventsComponent implements OnInit, OnDestroy {
   selectedItem: EventModel = {};
   itemType = 'Event';
   selectedLocation = [];
-  isAgendaVisible: boolean = false;
-  isAttendeesListVisible: boolean = false;
+
 
   public isOrganizationModalVisible$ = new BehaviorSubject<boolean>(false);
   public isLocationModalVisible$ = new BehaviorSubject<boolean>(false);
@@ -101,17 +100,6 @@ export class EventsComponent implements OnInit, OnDestroy {
 
   showAddOrganizationModal = () => {
     this.store.dispatch(new ShowOrganizationModal());
-  }
-
-  editAgenda(e){
-    this.selectedItem = e.row.data;
-
-    this.isAgendaVisible = true;
-  }
-
-  viewAttendees(e){
-    this.selectedItem = e.row.data;
-    this.isAttendeesListVisible = true;
   }
 
   delete = ({ row: { data } }) => {

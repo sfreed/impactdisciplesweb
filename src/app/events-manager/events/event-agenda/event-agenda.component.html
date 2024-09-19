@@ -1,58 +1,45 @@
-<div class="container">
-  <div class="row">
-    <div class="col-10">
-      <dx-scheduler
-        timeZone="America/Los_Angeles"
-        id="scheduler"
-        [dataSource]="event.agendaItems"
-        [currentDate]="currentDate"
-        [startDayHour]="9"
-        [height]="600"
-        [editing]="true"
-        appointmentTemplate="appointment-template"
-        (onAppointmentFormOpening)="onAppointmentFormOpening($event)"
-        [textExpr]="'name'">
-        <dxi-resource
-          fieldExpr="course"
-          [useColorAsDefault]="true"
-          [dataSource]="courses">
-        </dxi-resource>
-        <dxi-resource
-          fieldExpr="coach"
-          [useColorAsDefault]="true"
-          [dataSource]="coaches">
-        </dxi-resource>
-        <dxi-view type="day" [intervalCount]="3"> </dxi-view>
-        <div *dxTemplate="let model of 'appointment-template'">
-          <div class="showtime-preview" *ngIf="model.targetedAppointmentData.isCourse">
-            <div class="showtime-preview" *ngIf="!model.targetedAppointmentData.isMultiSessionCourse">
-              <div>Course: <strong>{{getCourseById(model.appointmentData.course)?.title}}</strong></div>
-              <div>Coach:  <strong>{{getCoachById(model.targetedAppointmentData.coach)?.fullname }}</strong></div>
-              <div>{{getCourseById(model.appointmentData.course)?.shortDescription}}</div>
-            </div>
-            <div class="showtime-preview" *ngIf="model.targetedAppointmentData.isMultiSessionCourse">
-              <div *ngFor="let course of model.targetedAppointmentData.courses">Course: <strong>{{getCourseById(course)?.title}}</strong></div>
-            </div>
-          </div>
-          <div class="showtime-preview" *ngIf="!model.targetedAppointmentData.isCourse">
-            <div><strong>{{model.appointmentData.text}}</strong></div>
-            <div><strong>{{model.targetedAppointmentData.description }}</strong></div>
-          </div>
-          <div>
-            <div class="dropdown-appointment-dates">
-              {{
-                (model.targetedAppointmentData?.displayStartDate | date : "shortTime") +
-                  " - " +
-                  (model.targetedAppointmentData?.displayEndDate | date : "shortTime")
-              }}
-            </div>
-          </div>
+
+  <dx-scheduler
+    timeZone="America/Los_Angeles"
+    id="scheduler"
+    [dataSource]="event.agendaItems"
+    [currentDate]="currentDate"
+    [startDayHour]="9"
+    [width]="'83vw'"
+    [editing]="true"
+    appointmentTemplate="appointment-template"
+    (onAppointmentFormOpening)="onAppointmentFormOpening($event)"
+    [textExpr]="'name'">
+    <dxi-resource
+      fieldExpr="course"
+      [useColorAsDefault]="true"
+      [dataSource]="courses">
+    </dxi-resource>
+    <dxi-resource
+      fieldExpr="coach"
+      [useColorAsDefault]="true"
+      [dataSource]="coaches">
+    </dxi-resource>
+    <dxi-view type="day" [intervalCount]="3"> </dxi-view>
+    <div *dxTemplate="let model of 'appointment-template'">
+      <div class="showtime-preview" *ngIf="model.targetedAppointmentData.isCourse">
+        <div>Course: <strong>{{getCourseById(model.appointmentData.course)?.title}}</strong></div>
+        <div>Coach:  <strong>{{getCoachById(model.targetedAppointmentData.coach)?.fullname }}</strong></div>
+        <div>{{getCourseById(model.appointmentData.course)?.shortDescription}}</div>
+      </div>
+      <div class="showtime-preview" *ngIf="!model.targetedAppointmentData.isCourse">
+        <div><strong>{{model.appointmentData.text}}</strong></div>
+        <div><strong>{{model.targetedAppointmentData.description }}</strong></div>
+      </div>
+      <div>
+        <div class="dropdown-appointment-dates">
+          {{
+            (model.targetedAppointmentData?.displayStartDate | date : "shortTime") +
+              " - " +
+              (model.targetedAppointmentData?.displayEndDate | date : "shortTime")
+          }}
         </div>
-      </dx-scheduler>
+      </div>
     </div>
-  </div>
-  <div class="row" style="width: 100%; position: absolute; bottom: 15px;">
-    <div class="col-9"></div>
-    <div class="col-3"><dx-button text="Save" (onClick)="saveAgenda()"></dx-button></div>
-  </div>
-</div>
+  </dx-scheduler>
+
