@@ -52,7 +52,7 @@
   [dragEnabled]="false"
   [visible]="isVisible$ | async"
   [width]="'60%'"
-  [height]="'50%'"
+  [height]="'60%'"
   [showCloseButton]="true"
   (onHiding)="onCancel()"
 >
@@ -72,6 +72,22 @@
           <dxi-item dataField="url" [colSpan]="2"></dxi-item>
           <dxi-item dataField="thumbnail.name" [colSpan]="2"></dxi-item>
         </dx-form>
+        <div class="row pt-1">
+          <div class="col-12"><b>Tags</b></div>
+        </div>
+        <div class="row pt-2">
+          <div class="col-12">
+            <dx-tag-box
+              [dataSource]="blogTags"
+              [(value)]="selectedItem.tags"
+              [acceptCustomValue]="true"
+              [searchEnabled]="true"
+              [hideSelectedItems]="true"
+              placeholder="Tag this Blog..."
+              (onCustomItemCreating)="onCustomItemCreating($event)">
+            </dx-tag-box>
+          </div>
+        </div>
       </div>
       <div class="add-item-modal__button-group pb-2">
         <dx-button
@@ -80,15 +96,15 @@
           stylingMode="contained"
           type="normal"
           [disabled]="inProgress$ | async"
-          (onClick)="imageSelectVisible = true"
-        ></dx-button>
+          (onClick)="showSingleImageModal()">
+        </dx-button>
         <dx-button
           text="CANCEL"
           stylingMode="contained"
           type="normal"
           [disabled]="inProgress$ | async"
-          (onClick)="onCancel()"
-        ></dx-button>
+          (onClick)="onCancel()">
+        </dx-button>
         <app-indicator-button
           [isInProgress]="inProgress$ | async"
           [title]="'SAVE'"
@@ -100,11 +116,13 @@
   </div>
 </dx-popup>
 
-<ng-container *ngIf="imageSelectVisible">
+<ng-container *ngIf="isSingleImageVisible$ | async">
   <app-image-uploader
     [card]="selectedItem"
+    [isList]="false"
     [field]="'thumbnail'"
-    [imageSelectVisible]="imageSelectVisible"
-    (imageSelectClosed)="closeItemWindow($event)">
+    [selectionMode]="'single'"
+    [imageSelectVisible]="isSingleImageVisible$ | async"
+    (imageSelectClosed)="closeSingleImageModal()">
   </app-image-uploader>
 </ng-container>

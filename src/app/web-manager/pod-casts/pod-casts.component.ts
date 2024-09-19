@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { DxFormComponent } from 'devextreme-angular';
 import CustomStore from 'devextreme/data/custom_store';
 import DataSource from 'devextreme/data/data_source';
@@ -8,6 +8,9 @@ import { PodCastService } from 'impactdisciplescommon/src/services/pod-cast.serv
 import { BehaviorSubject, map, Observable } from 'rxjs';
 import { confirm } from 'devextreme/ui/dialog';
 import { Timestamp } from 'firebase/firestore';
+import { BlogTagsService } from 'impactdisciplescommon/src/services/blog-tags.service';
+import { DxTagBoxTypes } from 'devextreme-angular/ui/tag-box';
+import { TagModel } from 'impactdisciplescommon/src/models/domain/tag.model';
 
 @Component({
   selector: 'app-pod-casts',
@@ -17,9 +20,6 @@ import { Timestamp } from 'firebase/firestore';
 export class PodCastsComponent implements OnInit{
   @ViewChild('addEditForm', { static: false }) addEditForm: DxFormComponent;
 
-  @Input() imageSelectVisible: boolean = false;
-  @Output() imageSelectClosed = new EventEmitter<boolean>();
-
   datasource$: Observable<DataSource>;
   selectedItem: PodCastModel;
 
@@ -28,7 +28,11 @@ export class PodCastsComponent implements OnInit{
   public inProgress$ = new BehaviorSubject<boolean>(false)
   public isVisible$ = new BehaviorSubject<boolean>(false);
 
-  constructor(private service: PodCastService) {}
+  public isSingleImageVisible$ = new BehaviorSubject<boolean>(false);
+
+  blogTags: string[] = [];
+
+  constructor(private service: PodCastService, private blogTagService: BlogTagsService) {}
 
   ngOnInit(): void {
       this.datasource$ = this.service.streamAll().pipe(
@@ -47,6 +51,11 @@ export class PodCastsComponent implements OnInit{
           })
       )
     );
+
+    this.blogTagService.streamAll().subscribe(tags => {
+      tags.forEach(tag => this.blogTags.push(tag.tag));
+      return tags;
+    });
   }
 
   showEditModal = ({ row: { data } }) => {
@@ -127,20 +136,28 @@ export class PodCastsComponent implements OnInit{
     this.isVisible$.next(false);
   }
 
+  onCustomItemCreating(args: DxTagBoxTypes.CustomItemCreatingEvent) {
+    if(args.text){
+      let blogTag: TagModel = {... new TagModel()}
+      blogTag.tag = args.text;
 
-  editImages(e){
-    this.selectedItem = e.row.data;
-    this.imageSelectVisible = true;
+      const isItemInDataSource = this.blogTags.some((item) => item === blogTag.tag);
+      if (!isItemInDataSource) {
+
+        this.blogTagService.add(blogTag).then(tag => {
+          this.blogTags.unshift(tag.tag);
+        })
+      }
+
+      args.customItem = blogTag.tag;
+    }
   }
 
-  async closeItemWindow(e){
-    if(this.selectedItem.id){
-      this.selectedItem = await this.service.update(this.selectedItem.id, this.selectedItem);
-    } else {
-      this.selectedItem = await this.service.add(this.selectedItem);
-    }
+  showSingleImageModal = () => {
+    this.isSingleImageVisible$.next(true);
+  }
 
-    this.imageSelectVisible = false;
-    this.imageSelectClosed.emit(false);
+  closeSingleImageModal = () => {
+    this.isSingleImageVisible$.next(false);
   }
 }

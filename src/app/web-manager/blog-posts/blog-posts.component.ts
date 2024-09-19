@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { DxFormComponent } from 'devextreme-angular';
 import { DxTagBoxTypes } from 'devextreme-angular/ui/tag-box';
 import ArrayStore from 'devextreme/data/array_store';
@@ -10,7 +10,6 @@ import { BlogPostService } from 'impactdisciplescommon/src/services/blog-post.se
 import { BlogTagsService } from 'impactdisciplescommon/src/services/blog-tags.service';
 import { BehaviorSubject, map, Observable } from 'rxjs';
 import { confirm } from 'devextreme/ui/dialog';
-import { Tab } from 'impactdisciplescommon/src/models/utils/tab.model';
 
 @Component({
   selector: 'app-blog-posts',
@@ -19,10 +18,6 @@ import { Tab } from 'impactdisciplescommon/src/models/utils/tab.model';
 })
 export class BlogPostsComponent implements OnInit {
   @ViewChild('addEditForm', { static: false }) addEditForm: DxFormComponent;
-  @Input() imageSelectVisible: boolean = false;
-  @Input() multiImageSelectVisible: boolean = false;
-  @Input() editPostVisible: boolean = false;
-  @Output() imageSelectClosed = new EventEmitter<boolean>();
 
   datasource$: Observable<DataSource>;
   selectedItem: BlogPostModel;
@@ -31,6 +26,7 @@ export class BlogPostsComponent implements OnInit {
 
   public inProgress$ = new BehaviorSubject<boolean>(false)
   public isVisible$ = new BehaviorSubject<boolean>(false);
+
   public isSingleImageVisible$ = new BehaviorSubject<boolean>(false);
   public isMultipleImageVisible$ = new BehaviorSubject<boolean>(false);
 
@@ -67,22 +63,6 @@ export class BlogPostsComponent implements OnInit {
   showAddModal = () => {
     this.selectedItem = {... new BlogPostModel()};
     this.isVisible$.next(true);
-  }
-
-  showSingleImageModal = () => {
-    this.isSingleImageVisible$.next(true);
-  }
-
-  closeSingleImageModal = () => {
-    this.isSingleImageVisible$.next(false);
-  }
-
-  showMultipleImageModal = () => {
-    this.isMultipleImageVisible$.next(true);
-  }
-
-  closeMultipleImageModal = () => {
-    this.isMultipleImageVisible$.next(false);
   }
 
   delete = ({ row: { data } }) => {
@@ -169,13 +149,19 @@ export class BlogPostsComponent implements OnInit {
     }
   }
 
-  closeItemWindow(e){
-    this.service.update(this.selectedItem.id, this.selectedItem).then(blog => {
-      this.selectedItem = blog;
-      this.imageSelectVisible = false;
-      this.multiImageSelectVisible = false;
-      this.editPostVisible = false;
-      this.imageSelectClosed.emit(false);
-    })
+  showSingleImageModal = () => {
+    this.isSingleImageVisible$.next(true);
+  }
+
+  closeSingleImageModal = () => {
+    this.isSingleImageVisible$.next(false);
+  }
+
+  showMultipleImageModal = () => {
+    this.isMultipleImageVisible$.next(true);
+  }
+
+  closeMultipleImageModal = () => {
+    this.isMultipleImageVisible$.next(false);
   }
 }

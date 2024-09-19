@@ -54,7 +54,6 @@
   </dxi-column>
   <dxi-column type="buttons" [width]="150" caption="Actions">
     <dxi-button icon="edit" hint="EDIT" [onClick]="showEditModal"></dxi-button>
-    <dxi-button icon="image" hint="Upload Image" [onClick]="editImages.bind(this)"></dxi-button>
     <dxi-button icon="trash" hint="DELETE" [onClick]="delete"></dxi-button>
   </dxi-column>
 
@@ -132,6 +131,14 @@
       </dx-scroll-view>
       <div class="add-item-modal__button-group" style="bottom: 10px; right: 10px; position: fixed;">
         <dx-button
+          text="Upload Main Image"
+          width="250px"
+          stylingMode="contained"
+          type="normal"
+          [disabled]="inProgress$ | async"
+          (onClick)="showSingleImageModal()">
+        </dx-button>
+        <dx-button
           text="CANCEL"
           stylingMode="contained"
           type="normal"
@@ -149,11 +156,13 @@
   </div>
 </dx-popup>
 
-<ng-container *ngIf="imageSelectVisible">
+<ng-container *ngIf="isSingleImageVisible$ | async">
   <app-image-uploader
     [card]="selectedItem"
+    [isList]="false"
     [field]="'photoUrl'"
-    [imageSelectVisible]="imageSelectVisible"
-    (imageSelectClosed)="closeItemWindow($event)">
+    [selectionMode]="'single'"
+    [imageSelectVisible]="isSingleImageVisible$ | async"
+    (imageSelectClosed)="closeSingleImageModal()">
   </app-image-uploader>
 </ng-container>

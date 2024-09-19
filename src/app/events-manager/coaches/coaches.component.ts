@@ -1,5 +1,5 @@
 import { OrganizationService } from '../../../../impactdisciplescommon/src/services/organization.service';
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { DxFormComponent } from 'devextreme-angular';
 import CustomStore from 'devextreme/data/custom_store';
 import DataSource from 'devextreme/data/data_source';
@@ -30,8 +30,7 @@ export class CoachesComponent implements OnInit{
   public inProgress$ = new BehaviorSubject<boolean>(false)
   public isVisible$ = new BehaviorSubject<boolean>(false);
 
-  @Input() imageSelectVisible: boolean = false;
-  @Output() imageSelectClosed = new EventEmitter<boolean>();
+  public isSingleImageVisible$ = new BehaviorSubject<boolean>(false);
 
   organizations: OrganizationModel[];
 
@@ -151,20 +150,11 @@ export class CoachesComponent implements OnInit{
     this.isVisible$.next(false);
   }
 
-  editImages(e){
-    this.selectedItem = e.row.data;
-    this.imageSelectVisible = true;
+  showSingleImageModal = () => {
+    this.isSingleImageVisible$.next(true);
   }
 
-  async closeItemWindow(e){
-    if(this.selectedItem.id){
-      this.selectedItem = await this.service.update(this.selectedItem.id, this.selectedItem);
-    } else {
-      this.selectedItem = await this.service.add(this.selectedItem);
-    }
-
-    this.imageSelectVisible = false;
-    this.imageSelectClosed.emit(false);
-
+  closeSingleImageModal = () => {
+    this.isSingleImageVisible$.next(false);
   }
 }
