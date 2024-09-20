@@ -15,9 +15,8 @@ import { RequestsManagerModule } from './requests-manager/requests-manager.modul
 import { SubscriptionsManagerModule } from './subscriptions-manager/subscriptions-manager.module';
 import { WebManagerModule } from './web-manager/web-manager.module';
 import { NgxsModule } from '@ngxs/store';
-import { IndicatorButtonComponent } from './shared/indicator-button/indicator-button.component';
-import { DxLoadIndicatorModule } from 'devextreme-angular';
 import { SharedModule } from './shared/shared.module';
+import { StoreManagerModule } from './store-manager/store-manager.module';
 
 @NgModule({
   declarations: [
@@ -32,6 +31,7 @@ import { SharedModule } from './shared/shared.module';
     ToastrModule.forRoot(),
     AdminManagerModule,
     RequestsManagerModule,
+    StoreManagerModule,
     SubscriptionsManagerModule,
     WebManagerModule,
     CoreModule,

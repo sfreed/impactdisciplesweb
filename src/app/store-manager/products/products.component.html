@@ -23,7 +23,8 @@
   #grid
   [dataSource]="datasource$ | async"
   [height]="'75vh'"
-  [showBorders]="true"
+  [showBorders]="false"
+  [showColumnLines]="true"
   [showColumnLines]="true"
   [showRowLines]="true"
   [focusedRowEnabled]="true"
@@ -32,17 +33,20 @@
   <dxo-scrolling mode="virtual"></dxo-scrolling>
   <dxo-filter-row [visible]="true"></dxo-filter-row>
 
-  <dxi-column dataField="thumbnail" [width]="120" cellTemplate="cellTemplate"></dxi-column>
+  <dxi-column dataField="imageUrl" [width]="120" cellTemplate="imageCellTemplate" [caption]="'Image'"></dxi-column>
   <dxi-column dataField="title"></dxi-column>
-  <dxi-column dataField="date" [dataType]="'datetime'"></dxi-column>
-  <dxi-column dataField="videoType" [visible]="false"></dxi-column>
-  <dxi-column dataField="videoId" [visible]="false"></dxi-column>
+  <dxi-column dataField="cost" dataType="number"dataType="number" format="currency"></dxi-column>
+  <dxi-column dataField="description" [visible]="false"></dxi-column>
+  <dxi-column dataField="length" [visible]="false"></dxi-column>
+  <dxi-column dataField="tags">
+    <dxo-lookup [dataSource]="productTags"></dxo-lookup>
+  </dxi-column>
   <dxi-column type="buttons" caption="Actions" [allowReordering]="false">
     <dxi-button icon="edit" hint="EDIT" [onClick]="showEditModal"></dxi-button>
     <dxi-button icon="trash" hint="DELETE" [onClick]="delete"></dxi-button>
   </dxi-column>
 
-  <div *dxTemplate="let data of 'cellTemplate'">
+  <div *dxTemplate="let data of 'imageCellTemplate'">
     <img *ngIf="data?.value" width="100" [src]="data?.value?.url" [alt]="data?.value?.name"/>
   </div>
 </dx-data-grid>
@@ -52,10 +56,9 @@
   [dragEnabled]="false"
   [visible]="isVisible$ | async"
   [width]="'60%'"
-  [height]="'60%'"
+  [height]="'90%'"
   [showCloseButton]="true"
-  (onHiding)="onCancel()"
->
+  (onHiding)="onCancel()">
   <dxi-toolbar-item toolbar="top" location="center">
     <div *dxTemplate>
       <p class="popup-title">
@@ -66,19 +69,25 @@
   <div *dxTemplate="let data of 'content'">
     <div class="add-item-modal">
       <div class="add-item-modal__content" *ngIf="isVisible$ | async">
-        <dx-form [colCount]="2" [(formData)]="selectedItem">
-          <dxi-item dataField="title" [colSpan]="2"></dxi-item>
-          <dxi-item dataField="thumbnail.name" [colSpan]="2" [label]="'Image Name'" [disabled]="true"></dxi-item>
-          <dxi-item dataField="videoType" [colSpan]="1">
-            <div *dxTemplate>
-              <dx-select-box
-                [items]="['Youtube', 'Apple', 'Vimeo']"
-                [(value)]="selectedItem.videoType">
-              </dx-select-box>
-            </div>
+        <dx-form
+          #addEditForm
+          [(formData)]="selectedItem"
+          [showColonAfterLabel]="false"
+          labelLocation="left"
+          [colCount]="2">
+          <dxi-item dataField="title" [colSpan]="1"></dxi-item>
+          <dxi-item
+            dataField="cost"
+            editorType="dxNumberBox"
+            [label]="{ text: 'Cost' }"
+            [editorOptions]="{
+              format: { type: 'currency', currency: 'USD', precision: 2 },
+              min: 0
+            }">
           </dxi-item>
-          <dxi-item dataField="videoId" [colSpan]="1"></dxi-item>
-          <dxi-item dataField="thumbnail.name" [colSpan]="2"></dxi-item>
+          <dxi-item dataField="description" [colSpan]="2" [editorType]="'dxTextArea'" [editorOptions]="{ height: 150 }" [label]="{ text: 'Description' }"></dxi-item>
+          <dxi-item dataField="length" [colSpan]="2"></dxi-item>
+          <dxi-item dataField="imageUrl.name" [colSpan]="2" [label]="{ text: 'Image Name' }" [disabled]="true"></dxi-item>
         </dx-form>
         <div class="row pt-1">
           <div class="col-12"><b>Tags</b></div>
@@ -86,7 +95,7 @@
         <div class="row pt-2">
           <div class="col-12">
             <dx-tag-box
-              [dataSource]="blogTags"
+              [dataSource]="productTags"
               [(value)]="selectedItem.tags"
               [acceptCustomValue]="true"
               [searchEnabled]="true"
@@ -97,7 +106,7 @@
           </div>
         </div>
       </div>
-      <div class="add-item-modal__button-group pb-2">
+      <div class="add-item-modal__button-group">
         <dx-button
           text="Upload Main Image"
           width="250px"
@@ -117,8 +126,8 @@
           [isInProgress]="inProgress$ | async"
           [title]="'SAVE'"
           [disabled]="inProgress$ | async"
-          (onClick)="onSave(selectedItem)"
-        ></app-indicator-button>
+          (onClick)="onSave(selectedItem)">
+        </app-indicator-button>
       </div>
     </div>
   </div>
@@ -128,7 +137,7 @@
   <app-image-uploader
     [card]="selectedItem"
     [isList]="false"
-    [field]="'thumbnail'"
+    [field]="'imageUrl'"
     [selectionMode]="'single'"
     [imageSelectVisible]="isSingleImageVisible$ | async"
     (imageSelectClosed)="closeSingleImageModal()">
