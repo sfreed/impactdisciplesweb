@@ -3,7 +3,6 @@ import { DxFormComponent } from 'devextreme-angular';
 import CustomStore from 'devextreme/data/custom_store';
 import DataSource from 'devextreme/data/data_source';
 import notify from 'devextreme/ui/notify';
-import { EventService } from 'impactdisciplescommon/src/services/event.service';
 import { Observable, BehaviorSubject, map } from 'rxjs';
 import { confirm } from 'devextreme/ui/dialog';
 import { ProductModel } from 'impactdisciplescommon/src/models/utils/product.model';
@@ -11,6 +10,7 @@ import { ProductService } from 'impactdisciplescommon/src/services/utils/product
 import { ProductTagsService } from 'impactdisciplescommon/src/services/product-tags.service';
 import { DxTagBoxTypes } from 'devextreme-angular/ui/tag-box';
 import { TagModel } from 'impactdisciplescommon/src/models/domain/tag.model';
+import { SeriesService } from 'impactdisciplescommon/src/services/utils/series.service';
 
 @Component({
   selector: 'app-products',
@@ -27,12 +27,15 @@ export class ProductsComponent implements OnInit {
 
   public inProgress$ = new BehaviorSubject<boolean>(false)
   public isVisible$ = new BehaviorSubject<boolean>(false);
+  public isSeriesVisible$ = new BehaviorSubject<boolean>(false);
 
   public isSingleImageVisible$ = new BehaviorSubject<boolean>(false);
 
   productTags: any[] = [];
 
-  constructor(private service: ProductService, private productTagService: ProductTagsService) {}
+  series: any[] = [];
+
+  constructor(private service: ProductService, private productTagService: ProductTagsService, private seriesService: SeriesService) {}
 
   ngOnInit() {
     this.datasource$ = this.service.streamAll().pipe(
@@ -56,6 +59,11 @@ export class ProductsComponent implements OnInit {
       tags.forEach(tag => this.productTags.push(tag.tag));
       return tags;
     });
+
+    this.seriesService.streamAll().subscribe(series => {
+      series.forEach(tag => this.series.push(tag.name));
+      return series;
+    });
   }
 
   showEditModal = ({ row: { data } }) => {
@@ -68,6 +76,10 @@ export class ProductsComponent implements OnInit {
     this.selectedItem = {... new ProductModel()};
 
     this.isVisible$.next(true);
+  }
+
+  showSeriesModal = () => {
+    this.isSeriesVisible$.next(true);
   }
 
   delete = ({ row: { data } }) => {
@@ -136,6 +148,11 @@ export class ProductsComponent implements OnInit {
     this.selectedItem = null;
     this.inProgress$.next(false);
     this.isVisible$.next(false);
+  }
+
+  onSeriesCancel() {
+    this.inProgress$.next(false);
+    this.isSeriesVisible$.next(false);
   }
 
   onCustomItemCreating(args: DxTagBoxTypes.CustomItemCreatingEvent) {

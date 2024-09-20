@@ -1,0 +1,37 @@
+<dx-form [colCount]="3" class="pb-2">
+  <dxi-item [colSpan]="2" [label]="{text: 'Series Name'}">
+    <div *dxTemplate>
+      <dx-text-box [(value)]="selectedItem"></dx-text-box>
+    </div>
+  </dxi-item>
+
+  <dxi-item>
+    <div *dxTemplate>
+      <dx-button
+        [hint]="'Add Series'"
+        [type]="'default'"
+        [text]="'ADD'"
+        [stylingMode]="'contained'"
+        (onClick)="addToList($event)">
+      </dx-button>
+    </div>
+  </dxi-item>
+</dx-form>
+<div class="widget-container">
+  <dx-list
+    [displayExpr]="'name'"
+    [dataSource]="seriesList | async"
+    [height]="350"
+    [allowItemDeleting]="true"
+    [itemDeleteMode]="'toggle'"
+    (onItemDeleted)="removeFromList($event)">
+  </dx-list>
+</div>
+<div class="add-item-modal__button-group pb-1">
+  <dx-button
+    text="Close"
+    stylingMode="contained"
+    type="normal"
+    (onClick)="onClose()">
+  </dx-button>
+</div>

@@ -9,13 +9,24 @@
       location="after"
       widget="dxButton"
       [options]="{
+        hint: 'MANAGE SERIES',
+        type: 'default',
+        text: 'MANAGE SERIES',
+        stylingMode: 'contained',
+        onClick: showSeriesModal
+      }">
+    </dxi-item>
+    <dxi-item
+      location="after"
+      widget="dxButton"
+      [options]="{
         hint: 'ADD ' + itemType | uppercase,
         type: 'default',
         text: 'ADD ' + itemType | uppercase,
         stylingMode: 'contained',
         onClick: showAddModal
-      }"
-    ></dxi-item>
+      }">
+    </dxi-item>
   </dx-toolbar>
 </div>
 
@@ -37,7 +48,9 @@
   <dxi-column dataField="title"></dxi-column>
   <dxi-column dataField="cost" dataType="number"dataType="number" format="currency"></dxi-column>
   <dxi-column dataField="description" [visible]="false"></dxi-column>
-  <dxi-column dataField="length" [visible]="false"></dxi-column>
+  <dxi-column dataField="series">
+    <dxo-lookup [dataSource]="series"></dxo-lookup>
+  </dxi-column>
   <dxi-column dataField="tags">
     <dxo-lookup [dataSource]="productTags"></dxo-lookup>
   </dxi-column>
@@ -75,18 +88,91 @@
           [showColonAfterLabel]="false"
           labelLocation="left"
           [colCount]="2">
-          <dxi-item dataField="title" [colSpan]="1"></dxi-item>
+          <dxi-item dataField="title" [colSpan]="2"></dxi-item>
+          <dxi-item dataField="series" [colSpan]="1">
+            <div *dxTemplate>
+              <dx-select-box [(value)]="selectedItem.series" [dataSource]="series" ></dx-select-box>
+            </div>
+          </dxi-item>
           <dxi-item
             dataField="cost"
             editorType="dxNumberBox"
             [label]="{ text: 'Cost' }"
+            [colSpan]="1"
             [editorOptions]="{
               format: { type: 'currency', currency: 'USD', precision: 2 },
               min: 0
             }">
           </dxi-item>
-          <dxi-item dataField="description" [colSpan]="2" [editorType]="'dxTextArea'" [editorOptions]="{ height: 150 }" [label]="{ text: 'Description' }"></dxi-item>
-          <dxi-item dataField="length" [colSpan]="2"></dxi-item>
+          <dxi-item dataField="description" [colSpan]="2">
+            <div *dxTemplate>
+              <dx-html-editor [height]="'300px'" [(value)]="selectedItem.description">
+                <dxo-toolbar [multiline]="false">
+                  <dxi-item name="undo"></dxi-item>
+                  <dxi-item name="redo"></dxi-item>
+                  <dxi-item name="separator"></dxi-item>
+                  <dxi-item
+                    name="size"
+                    [acceptedValues]="['8pt', '10pt', '12pt', '14pt', '18pt', '24pt', '36pt']"
+                    [options]="{ inputAttr: { 'aria-label': 'Font size' } }">
+                  </dxi-item>
+                  <dxi-item
+                    name="font"
+                    [acceptedValues]="[
+                      'Arial',
+                      'Courier New',
+                      'Georgia',
+                      'Impact',
+                      'Lucida Console',
+                      'Tahoma',
+                      'Times New Roman',
+                      'Verdana'
+                    ]"
+                    [options]="{ inputAttr: { 'aria-label': 'Font family' } }">
+                  </dxi-item>
+                  <dxi-item name="separator"></dxi-item>
+                  <dxi-item name="bold"></dxi-item>
+                  <dxi-item name="italic"></dxi-item>
+                  <dxi-item name="strike"></dxi-item>
+                  <dxi-item name="underline"></dxi-item>
+                  <dxi-item name="separator"></dxi-item>
+                  <dxi-item name="alignLeft"></dxi-item>
+                  <dxi-item name="alignCenter"></dxi-item>
+                  <dxi-item name="alignRight"></dxi-item>
+                  <dxi-item name="alignJustify"></dxi-item>
+                  <dxi-item name="separator"></dxi-item>
+                  <dxi-item name="orderedList"></dxi-item>
+                  <dxi-item name="bulletList"></dxi-item>
+                  <dxi-item name="separator"></dxi-item>
+                  <dxi-item
+                    name="header"
+                    [acceptedValues]="[false, 1, 2, 3, 4, 5]"
+                    [options]="{ inputAttr: { 'aria-label': 'Header' } }">
+                  </dxi-item>
+                  <dxi-item name="separator"></dxi-item>
+                  <dxi-item name="color"></dxi-item>
+                  <dxi-item name="background"></dxi-item>
+                  <dxi-item name="separator"></dxi-item>
+                  <dxi-item name="link"></dxi-item>
+                  <dxi-item name="image"></dxi-item>
+                  <dxi-item name="separator"></dxi-item>
+                  <dxi-item name="clear"></dxi-item>
+                  <dxi-item name="codeBlock"></dxi-item>
+                  <dxi-item name="blockquote"></dxi-item>
+                  <dxi-item name="separator"></dxi-item>
+                  <dxi-item name="insertTable"></dxi-item>
+                  <dxi-item name="deleteTable"></dxi-item>
+                  <dxi-item name="insertRowAbove"></dxi-item>
+                  <dxi-item name="insertRowBelow"></dxi-item>
+                  <dxi-item name="deleteRow"></dxi-item>
+                  <dxi-item name="insertColumnLeft"></dxi-item>
+                  <dxi-item name="insertColumnRight"></dxi-item>
+                  <dxi-item name="deleteColumn"></dxi-item>
+                </dxo-toolbar>
+              </dx-html-editor>
+            </div>
+
+          </dxi-item>
           <dxi-item dataField="imageUrl.name" [colSpan]="2" [label]="{ text: 'Image Name' }" [disabled]="true"></dxi-item>
         </dx-form>
         <div class="row pt-1">
@@ -131,6 +217,17 @@
       </div>
     </div>
   </div>
+</dx-popup>
+
+<dx-popup
+  [showTitle]="true"
+  [dragEnabled]="false"
+  [visible]="isSeriesVisible$ | async"
+  [width]="'30%'"
+  [height]="'70%'"
+  [showCloseButton]="true"
+  (onHiding)="onSeriesCancel()">
+  <app-series (seriesSelectClosed)="onSeriesCancel()"></app-series>
 </dx-popup>
 
 <ng-container *ngIf="isSingleImageVisible$ | async">
