@@ -1,0 +1,242 @@
+<div class="content-block responsive-paddings">
+  <dx-toolbar class="content-list__header py-2">
+    <dxi-item location="before" locateInMenu="never">
+      <div *dxTemplate>
+        <h2 class="content-block responsive-paddings underline">{{itemType}}s</h2>
+      </div>
+    </dxi-item>
+    <dxi-item
+      location="after"
+      widget="dxButton"
+      [options]="{
+        hint: 'MANAGE SERIES',
+        type: 'default',
+        text: 'MANAGE SERIES',
+        stylingMode: 'contained',
+        onClick: showSeriesModal
+      }">
+    </dxi-item>
+    <dxi-item
+      location="after"
+      widget="dxButton"
+      [options]="{
+        hint: 'ADD ' + itemType | uppercase,
+        type: 'default',
+        text: 'ADD ' + itemType | uppercase,
+        stylingMode: 'contained',
+        onClick: showAddModal
+      }">
+    </dxi-item>
+  </dx-toolbar>
+</div>
+
+<dx-data-grid class="dx-card wide-card"
+  #grid
+  [dataSource]="datasource$ | async"
+  [height]="'75vh'"
+  [showBorders]="false"
+  [showColumnLines]="true"
+  [showColumnLines]="true"
+  [showRowLines]="true"
+  [focusedRowEnabled]="true"
+  [columnAutoWidth]="true">
+
+  <dxo-scrolling mode="virtual"></dxo-scrolling>
+  <dxo-filter-row [visible]="true"></dxo-filter-row>
+
+  <dxi-column dataField="imageUrl" [width]="120" cellTemplate="imageCellTemplate" [caption]="'Image'"></dxi-column>
+  <dxi-column dataField="title"></dxi-column>
+  <dxi-column dataField="cost" dataType="number"dataType="number" format="currency"></dxi-column>
+  <dxi-column dataField="description" [visible]="false"></dxi-column>
+  <dxi-column dataField="series">
+    <dxo-lookup [dataSource]="series"></dxo-lookup>
+  </dxi-column>
+  <dxi-column dataField="tags">
+    <dxo-lookup [dataSource]="productTags"></dxo-lookup>
+  </dxi-column>
+  <dxi-column type="buttons" caption="Actions" [allowReordering]="false">
+    <dxi-button icon="edit" hint="EDIT" [onClick]="showEditModal"></dxi-button>
+    <dxi-button icon="trash" hint="DELETE" [onClick]="delete"></dxi-button>
+  </dxi-column>
+
+  <div *dxTemplate="let data of 'imageCellTemplate'">
+    <img *ngIf="data?.value" width="100" [src]="data?.value?.url" [alt]="data?.value?.name"/>
+  </div>
+</dx-data-grid>
+
+<dx-popup
+  [showTitle]="true"
+  [dragEnabled]="false"
+  [visible]="isVisible$ | async"
+  [width]="'60%'"
+  [height]="'90%'"
+  [showCloseButton]="true"
+  (onHiding)="onCancel()">
+  <dxi-toolbar-item toolbar="top" location="center">
+    <div *dxTemplate>
+      <p class="popup-title">
+        {{ selectedItem?.id ? 'EDIT' : 'ADD' }} {{itemType | uppercase}}
+      </p>
+    </div>
+  </dxi-toolbar-item>
+  <div *dxTemplate="let data of 'content'">
+    <div class="add-item-modal">
+      <div class="add-item-modal__content" *ngIf="isVisible$ | async">
+        <dx-form
+          #addEditForm
+          [(formData)]="selectedItem"
+          [showColonAfterLabel]="false"
+          labelLocation="left"
+          [colCount]="2">
+          <dxi-item dataField="title" [colSpan]="2"></dxi-item>
+          <dxi-item dataField="series" [colSpan]="1">
+            <div *dxTemplate>
+              <dx-select-box [(value)]="selectedItem.series" [dataSource]="series" ></dx-select-box>
+            </div>
+          </dxi-item>
+          <dxi-item
+            dataField="cost"
+            editorType="dxNumberBox"
+            [label]="{ text: 'Cost' }"
+            [colSpan]="1"
+            [editorOptions]="{
+              format: { type: 'currency', currency: 'USD', precision: 2 },
+              min: 0
+            }">
+          </dxi-item>
+          <dxi-item dataField="description" [colSpan]="2">
+            <div *dxTemplate>
+              <dx-html-editor [height]="'300px'" [(value)]="selectedItem.description">
+                <dxo-toolbar [multiline]="false">
+                  <dxi-item name="undo"></dxi-item>
+                  <dxi-item name="redo"></dxi-item>
+                  <dxi-item name="separator"></dxi-item>
+                  <dxi-item
+                    name="size"
+                    [acceptedValues]="['8pt', '10pt', '12pt', '14pt', '18pt', '24pt', '36pt']"
+                    [options]="{ inputAttr: { 'aria-label': 'Font size' } }">
+                  </dxi-item>
+                  <dxi-item
+                    name="font"
+                    [acceptedValues]="[
+                      'Arial',
+                      'Courier New',
+                      'Georgia',
+                      'Impact',
+                      'Lucida Console',
+                      'Tahoma',
+                      'Times New Roman',
+                      'Verdana'
+                    ]"
+                    [options]="{ inputAttr: { 'aria-label': 'Font family' } }">
+                  </dxi-item>
+                  <dxi-item name="separator"></dxi-item>
+                  <dxi-item name="bold"></dxi-item>
+                  <dxi-item name="italic"></dxi-item>
+                  <dxi-item name="strike"></dxi-item>
+                  <dxi-item name="underline"></dxi-item>
+                  <dxi-item name="separator"></dxi-item>
+                  <dxi-item name="alignLeft"></dxi-item>
+                  <dxi-item name="alignCenter"></dxi-item>
+                  <dxi-item name="alignRight"></dxi-item>
+                  <dxi-item name="alignJustify"></dxi-item>
+                  <dxi-item name="separator"></dxi-item>
+                  <dxi-item name="orderedList"></dxi-item>
+                  <dxi-item name="bulletList"></dxi-item>
+                  <dxi-item name="separator"></dxi-item>
+                  <dxi-item
+                    name="header"
+                    [acceptedValues]="[false, 1, 2, 3, 4, 5]"
+                    [options]="{ inputAttr: { 'aria-label': 'Header' } }">
+                  </dxi-item>
+                  <dxi-item name="separator"></dxi-item>
+                  <dxi-item name="color"></dxi-item>
+                  <dxi-item name="background"></dxi-item>
+                  <dxi-item name="separator"></dxi-item>
+                  <dxi-item name="link"></dxi-item>
+                  <dxi-item name="image"></dxi-item>
+                  <dxi-item name="separator"></dxi-item>
+                  <dxi-item name="clear"></dxi-item>
+                  <dxi-item name="codeBlock"></dxi-item>
+                  <dxi-item name="blockquote"></dxi-item>
+                  <dxi-item name="separator"></dxi-item>
+                  <dxi-item name="insertTable"></dxi-item>
+                  <dxi-item name="deleteTable"></dxi-item>
+                  <dxi-item name="insertRowAbove"></dxi-item>
+                  <dxi-item name="insertRowBelow"></dxi-item>
+                  <dxi-item name="deleteRow"></dxi-item>
+                  <dxi-item name="insertColumnLeft"></dxi-item>
+                  <dxi-item name="insertColumnRight"></dxi-item>
+                  <dxi-item name="deleteColumn"></dxi-item>
+                </dxo-toolbar>
+              </dx-html-editor>
+            </div>
+
+          </dxi-item>
+          <dxi-item dataField="imageUrl.name" [colSpan]="2" [label]="{ text: 'Image Name' }" [disabled]="true"></dxi-item>
+        </dx-form>
+        <div class="row pt-1">
+          <div class="col-12"><b>Tags</b></div>
+        </div>
+        <div class="row pt-2">
+          <div class="col-12">
+            <dx-tag-box
+              [dataSource]="productTags"
+              [(value)]="selectedItem.tags"
+              [acceptCustomValue]="true"
+              [searchEnabled]="true"
+              [hideSelectedItems]="true"
+              placeholder="Tag this Blog..."
+              (onCustomItemCreating)="onCustomItemCreating($event)">
+            </dx-tag-box>
+          </div>
+        </div>
+      </div>
+      <div class="add-item-modal__button-group">
+        <dx-button
+          text="Upload Main Image"
+          width="250px"
+          stylingMode="contained"
+          type="normal"
+          [disabled]="inProgress$ | async"
+          (onClick)="showSingleImageModal()">
+        </dx-button>
+        <dx-button
+          text="CANCEL"
+          stylingMode="contained"
+          type="normal"
+          [disabled]="inProgress$ | async"
+          (onClick)="onCancel()">
+        </dx-button>
+        <app-indicator-button
+          [isInProgress]="inProgress$ | async"
+          [title]="'SAVE'"
+          [disabled]="inProgress$ | async"
+          (onClick)="onSave(selectedItem)">
+        </app-indicator-button>
+      </div>
+    </div>
+  </div>
+</dx-popup>
+
+<dx-popup
+  [showTitle]="true"
+  [dragEnabled]="false"
+  [visible]="isSeriesVisible$ | async"
+  [width]="'30%'"
+  [height]="'70%'"
+  [showCloseButton]="true"
+  (onHiding)="onSeriesCancel()">
+  <app-series (seriesSelectClosed)="onSeriesCancel()"></app-series>
+</dx-popup>
+
+<ng-container *ngIf="isSingleImageVisible$ | async">
+  <app-image-uploader
+    [card]="selectedItem"
+    [isList]="false"
+    [field]="'imageUrl'"
+    [selectionMode]="'single'"
+    [imageSelectVisible]="isSingleImageVisible$ | async"
+    (imageSelectClosed)="closeSingleImageModal()">
+  </app-image-uploader>
+</ng-container>

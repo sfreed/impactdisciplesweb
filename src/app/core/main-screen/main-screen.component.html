@@ -2,11 +2,11 @@
   position="left"
   template="template"
   [opened]="true"
-  [closeOnOutsideClick]="false" 
+  [closeOnOutsideClick]="false"
   class="impact-drawer"
 >
   <div *dxTemplate="let data of 'template'">
-    <div class="drawer-logo">    
+    <div class="drawer-logo">
       <span><img src="../../../assets/Impact-Logo_Light.png" height="120px"></span>
     </div>
     <dx-list
@@ -14,9 +14,10 @@
       [width]="250"
       selectionMode="single"
       (onSelectionChanged)="this.isDrawerOpen = false"
-      itemTemplate="links">
+      itemTemplate="links"
+      (onItemClick)="menuItemClicked($event)">
       <div *dxTemplate="let link of 'links'">
-        <a class="impact-drawer__link" [routerLink]="['/' + link.path]">
+        <a class="impact-drawer__link">
           <div>
             <div class="dx-list-item-icon-container">
               <i class="dx-icon dx-list-item-icon dx-icon-{{link.icon}}"></i>
