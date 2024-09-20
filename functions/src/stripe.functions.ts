@@ -21,10 +21,23 @@ exports.checkout = functions.https.onRequest((request, response) => {
       },
     });
 
-    console.log(paymentIntent.client_secret);
-
     response.send({
       clientSecret: paymentIntent.client_secret,
+      paymentIntent: paymentIntent.id,
+    });
+  });
+});
+
+
+exports.cancel = functions.https.onRequest((request, response) => {
+  return cors(request, response, async () => {
+    response.set("Access-Control-Allow-Credentials", "true");
+    response.set("Access-Control-Allow-Origin", "*");
+
+    await stripe.paymentIntents.cancel(request.body.paymentIntent);
+
+    response.send({
+      id: request.body,
     });
   });
 });
