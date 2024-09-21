@@ -1,3 +1,102 @@
-<p>
-  sales works!
-</p>
+<div class="content-block responsive-paddings">
+  <dx-toolbar class="content-list__header py-2">
+    <dxi-item location="before" locateInMenu="never">
+      <div *dxTemplate>
+        <h2 class="content-block responsive-paddings underline">{{itemType}}s</h2>
+      </div>
+    </dxi-item>
+  </dx-toolbar>
+</div>
+
+<dx-data-grid class="dx-card wide-card"
+  #grid
+  [dataSource]="datasource$ | async"
+  [height]="'75vh'"
+  [showBorders]="false"
+  [showColumnLines]="true"
+  [showColumnLines]="true"
+  [showRowLines]="true"
+  [focusedRowEnabled]="true"
+  [columnAutoWidth]="true">
+
+  <dxo-scrolling mode="virtual"></dxo-scrolling>
+  <dxo-filter-row [visible]="true"></dxo-filter-row>
+
+  <dxi-column dataField="dateProcessed" cellTemplate="dateProcessedTemplate" [caption]="'Date'"></dxi-column>
+  <dxi-column dataField="couponCode"></dxi-column>
+  <dxi-column dataField="firstName"></dxi-column>
+  <dxi-column dataField="lastName"></dxi-column>
+  <dxi-column dataField="email"></dxi-column>
+  <dxi-column dataField="paymentIntent.status" [caption]="'Status'"></dxi-column>
+  <dxi-column dataField="count" cellTemplate="itemCountTemplate"></dxi-column>
+  <dxi-column dataField="paymentIntent.amount" cellTemplate="amountTemplate" [caption]="'Amount'"></dxi-column>
+
+  <div *dxTemplate="let data of 'itemCountTemplate'">
+    {{data.data.cartItems.length}}
+  </div>
+
+  <div *dxTemplate="let data of 'amountTemplate'">
+    {{data.value / 100 | currency}}
+  </div>
+
+  <div *dxTemplate="let data of 'dateProcessedTemplate'">
+    {{formatDate(data.value)}}
+  </div>
+</dx-data-grid>
+
+<dx-popup
+  [showTitle]="true"
+  [dragEnabled]="false"
+  [visible]="isVisible$ | async"
+  [width]="'60%'"
+  [height]="'90%'"
+  [showCloseButton]="true"
+  (onHiding)="onCancel()">
+  <dxi-toolbar-item toolbar="top" location="center">
+    <div *dxTemplate>
+      <p class="popup-title">
+        {{ selectedItem?.id ? 'EDIT' : 'ADD' }} {{itemType | uppercase}}
+      </p>
+    </div>
+  </dxi-toolbar-item>
+  <div *dxTemplate="let data of 'content'">
+    <div class="add-item-modal">
+      <div class="add-item-modal__content" *ngIf="isVisible$ | async">
+        <dx-form
+          #addEditForm
+          [(formData)]="selectedItem"
+          [showColonAfterLabel]="false"
+          labelLocation="left"
+          [colCount]="2">
+          <dxi-item dataField="title" [colSpan]="2"></dxi-item>
+          <dxi-item
+            dataField="cost"
+            editorType="dxNumberBox"
+            [label]="{ text: 'Cost' }"
+            [colSpan]="1"
+            [editorOptions]="{
+              format: { type: 'currency', currency: 'USD', precision: 2 },
+              min: 0
+            }">
+          </dxi-item>
+          <dxi-item dataField="imageUrl.name" [colSpan]="2" [label]="{ text: 'Image Name' }" [disabled]="true"></dxi-item>
+        </dx-form>
+      </div>
+      <div class="add-item-modal__button-group">
+        <dx-button
+          text="CANCEL"
+          stylingMode="contained"
+          type="normal"
+          [disabled]="inProgress$ | async"
+          (onClick)="onCancel()">
+        </dx-button>
+        <app-indicator-button
+          [isInProgress]="inProgress$ | async"
+          [title]="'SAVE'"
+          [disabled]="inProgress$ | async"
+          (onClick)="onSave(selectedItem)">
+        </app-indicator-button>
+      </div>
+    </div>
+  </div>
+</dx-popup>
