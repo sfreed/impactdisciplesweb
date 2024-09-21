@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { StoreManagerComponent } from './store-manager.component';
-import { DxButtonModule, DxDataGridModule, DxFormModule, DxHtmlEditorModule, DxListModule, DxPopupModule, DxSelectBoxModule, DxTabsModule, DxTagBoxModule, DxTextBoxModule, DxToolbarModule } from 'devextreme-angular';
+import { DxButtonModule, DxDataGridModule, DxFormModule, DxHtmlEditorModule, DxListModule, DxNumberBoxModule, DxPopupModule, DxSelectBoxModule, DxTabsModule, DxTagBoxModule, DxTextBoxModule, DxToolbarModule } from 'devextreme-angular';
 import { ProductsComponent } from './products/products.component';
 import { SalesComponent } from './sales/sales.component';
 import { SharedModule } from '../shared/shared.module';
@@ -23,6 +23,7 @@ import { SeriesComponent } from './series/series.component';
     DxFormModule,
     DxHtmlEditorModule,
     DxListModule,
+    DxNumberBoxModule,
     DxPopupModule,
     DxSelectBoxModule,
     DxTabsModule,

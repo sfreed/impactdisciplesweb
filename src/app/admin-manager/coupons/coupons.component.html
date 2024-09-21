@@ -90,12 +90,11 @@
           <dxi-item [label]="{ text: 'Affilliate Sales' }" [colSpan]="2">
             <div *dxTemplate>
               <dx-list
-                [displayExpr]="'name'"
                 [dataSource]="affilliateSales"
                 [height]="350">
                 <div *dxTemplate="let item of 'item'">
                   <div class="row">
-                    <div class="col">{{formatDate(item.data)}}</div>
+                    <div class="col">{{formatDate(item.date)}}</div>
                     <div class="col">{{item.email}}</div>
                     <div class="col">{{item.receipt}}</div>
                     <div class="col">{{item.totalBeforeDiscount | currency}}</div>
