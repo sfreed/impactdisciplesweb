@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LogMessagesComponent } from './log-messages/log-messages.component';
 import { UsersComponent } from './users/users.component';
-import { DxButtonModule, DxDataGridModule, DxFileUploaderModule, DxFormModule, DxHtmlEditorModule, DxLoadIndicatorModule,
+import { DxButtonModule, DxDataGridModule, DxFileUploaderModule, DxFormModule, DxHtmlEditorModule, DxListModule, DxLoadIndicatorModule,
          DxPopupModule, DxSelectBoxModule, DxSwitchModule, DxTabsModule, DxTagBoxModule, DxTextBoxModule,
          DxToolbarModule} from 'devextreme-angular';
 import { NotificationsComponent } from './notifications/notifications.component';
@@ -25,6 +25,7 @@ import { EmailTemplatesComponent } from './email-templates/email-templates.compo
     DxFormModule,
     DxFileUploaderModule,
     DxHtmlEditorModule,
+    DxListModule,
     DxLoadIndicatorModule,
     DxPopupModule,
     DxSelectBoxModule,

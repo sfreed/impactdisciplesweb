@@ -8,6 +8,8 @@ import { CouponService } from 'impactdisciplescommon/src/services/utils/coupon.s
 import { BehaviorSubject, Observable, map } from 'rxjs';
 import { confirm } from 'devextreme/ui/dialog';
 import { EventService } from 'impactdisciplescommon/src/services/event.service';
+import { AffilliateSalesService } from 'impactdisciplescommon/src/services/utils/affiliate-sales.service';
+import { dateFromTimestamp } from 'impactdisciplescommon/src/utils/date-from-timestamp';
 
 @Component({
   selector: 'app-coupons',
@@ -26,8 +28,9 @@ export class CouponsComponent implements OnInit{
   public isVisible$ = new BehaviorSubject<boolean>(false);
 
   eventTags: any[] = [];
+  affilliateSales: any[] = [];
 
-  constructor(private service: CouponService, private eventService: EventService) {}
+  constructor(private service: CouponService, private eventService: EventService, private affiliateSalesService: AffilliateSalesService) {}
 
   ngOnInit() {
     this.datasource$ = this.service.streamAll().pipe(
@@ -53,10 +56,12 @@ export class CouponsComponent implements OnInit{
     });
   }
 
-  showEditModal = ({ row: { data } }) => {
+  showEditModal = async ({ row: { data } }) => {
     this.selectedItem = (Object.assign({}, data));
 
     this.isVisible$.next(true);
+
+    this.affilliateSales = await this.affiliateSalesService.getAllByValue("code", this.selectedItem.code);
   }
 
   showAddModal = () => {
@@ -131,5 +136,9 @@ export class CouponsComponent implements OnInit{
     this.selectedItem = null;
     this.inProgress$.next(false);
     this.isVisible$.next(false);
+  }
+
+  formatDate(time: number){
+    return (dateFromTimestamp(time) as Date).toDateString();
   }
 }

@@ -50,8 +50,8 @@
   [showTitle]="true"
   [dragEnabled]="false"
   [visible]="isVisible$ | async"
-  height="400px"
-  width="500px"
+  height="70%"
+  width="70%"
   [showCloseButton]="true"
   (onHiding)="onCancel()">
   <dxi-toolbar-item toolbar="top" location="center">
@@ -68,12 +68,13 @@
           #addEditForm
           [(formData)]="selectedItem"
           [showColonAfterLabel]="false"
-          labelLocation="left">
-          <dxi-item dataField="code" [colSpan]="1"></dxi-item>
+          labelLocation="left"
+          [colCount]="2">
+          <dxi-item dataField="code" [colSpan]="2"></dxi-item>
           <dxi-item dataField="isActive" [colSpan]="1" [editorType]="'dxSwitch'" [editorOptions]="{ switchedOnText: 'Yes', switchedOffText: 'No' }"></dxi-item>
           <dxi-item dataField="percentOff" [colSpan]="1"></dxi-item>
           <dxi-item dataField="dollarsOff" [colSpan]="1"></dxi-item>
-          <dxi-item [label]="{ text: 'Event Tags' }">
+          <dxi-item [label]="{ text: 'Event Tags' }" [colSpan]="2">
             <div *dxTemplate>
               <dx-tag-box
                 [dataSource]="eventTags"
@@ -84,6 +85,24 @@
                 [hideSelectedItems]="true"
                 placeholder="Tag this Coupon...">
               </dx-tag-box>
+            </div>
+          </dxi-item>
+          <dxi-item [label]="{ text: 'Affilliate Sales' }" [colSpan]="2">
+            <div *dxTemplate>
+              <dx-list
+                [displayExpr]="'name'"
+                [dataSource]="affilliateSales"
+                [height]="350">
+                <div *dxTemplate="let item of 'item'">
+                  <div class="row">
+                    <div class="col">{{formatDate(item.data)}}</div>
+                    <div class="col">{{item.email}}</div>
+                    <div class="col">{{item.receipt}}</div>
+                    <div class="col">{{item.totalBeforeDiscount | currency}}</div>
+                    <div class="col">{{item.totalAfterDiscount | currency}}</div>
+                  </div>
+                </div>
+              </dx-list>
             </div>
           </dxi-item>
         </dx-form>
