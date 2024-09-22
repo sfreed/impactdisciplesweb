@@ -93,42 +93,52 @@ export class CouponsComponent implements OnInit{
   }
 
   pay = async () => {
-    let sum: number = 0;
-    let ids: string[] = [];
+    if(this.selectedRows.length == 0){
+      notify({
+        message: 'No Sales Selected to pay!',
+        position: 'top',
+        width: 600,
+        type: 'warning'
+      });
+    }  else if(this.selectedRows.find(x => x.isPayed == true)){
+      notify({
+        message: 'The selected Sales include already payed!',
+        position: 'top',
+        width: 600,
+        type: 'warning'
+      });
+    } else {
+      let sum: number = this.selectedRows.map(row => row.totalBeforeDiscount - row.totalAfterDiscount).reduce((a,b) => a + b, 0);
+      let ids: string[] = this.selectedRows.map(row => row.id)
 
-    //update sales records and get sum
-    this.selectedRows.forEach(row => {
-      ids.push(row.id);
-      sum += row.totalBeforeDiscount - row.totalAfterDiscount;
-    });
+      await this.affilliatePaymentService.pay(this.selectedItem.affiliatePaypalAccount, sum).then(async response => {
+        //  create payment record
+        let payment: AffilliatePaymentModel = {... new AffilliatePaymentModel()}
+        payment.code = this.selectedItem.code;
+        payment.date = Timestamp.now();
+        payment.amountPayed = sum;
+        payment.saleIdsPayed = ids;
+        payment.receipt = response;
 
-    await this.affilliatePaymentService.pay(this.selectedItem.affiliatePaypalAccount, sum).then(async response => {
-      //  create payment record
-      let payment: AffilliatePaymentModel = {... new AffilliatePaymentModel()}
-      payment.code = this.selectedItem.code;
-      payment.date = Timestamp.now();
-      payment.amountPayed = sum;
-      payment.saleIdsPayed = ids;
-      payment.receipt = response;
+        payment = await this.affilliatePaymentService.add(payment);
 
-      payment = await this.affilliatePaymentService.add(payment);
+        //  update sales record
+        this.selectedRows.forEach(async row => {
+          row.isPayed = true;
+          row.paymentReceipt = payment.id;
+          row.amountPayed = row.totalBeforeDiscount - row.totalAfterDiscount;
 
-      //  update sales record
-      this.selectedRows.forEach(async row => {
-        row.isPayed = true;
-        row.paymentReceipt = payment.id;
-        row.amountPayed = row.totalBeforeDiscount - row.totalAfterDiscount;
-
-        await this.affiliateSalesService.update(row.id, row);
+          await this.affiliateSalesService.update(row.id, row);
+        })
       })
-    })
 
-    notify({
-      message: 'All Sales Paid!',
-      position: 'top',
-      width: 600,
-      type: 'success'
-    });
+      notify({
+        message: 'All Sales Paid!',
+        position: 'top',
+        width: 600,
+        type: 'success'
+      });
+    }
   }
 
   delete = ({ row: { data } }) => {
