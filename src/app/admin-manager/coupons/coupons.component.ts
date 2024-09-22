@@ -10,6 +10,10 @@ import { confirm } from 'devextreme/ui/dialog';
 import { EventService } from 'impactdisciplescommon/src/services/event.service';
 import { AffilliateSalesService } from 'impactdisciplescommon/src/services/utils/affiliate-sales.service';
 import { dateFromTimestamp } from 'impactdisciplescommon/src/utils/date-from-timestamp';
+import { AffilliateSaleModel } from 'impactdisciplescommon/src/models/utils/affilliate-sale.model';
+import { Timestamp } from 'firebase/firestore';
+import { AffilliatePaymentsService } from 'impactdisciplescommon/src/services/utils/affiliate-payment.service';
+import { AffilliatePaymentModel } from 'impactdisciplescommon/src/models/utils/affilliate-payment.model';
 
 @Component({
   selector: 'app-coupons',
@@ -28,9 +32,15 @@ export class CouponsComponent implements OnInit{
   public isVisible$ = new BehaviorSubject<boolean>(false);
 
   eventTags: any[] = [];
-  affilliateSales: any[] = [];
+  affilliateSales: Observable<AffilliateSaleModel[]>;
+  affilliatePayments: Observable<AffilliatePaymentModel[]>;
 
-  constructor(private service: CouponService, private eventService: EventService, private affiliateSalesService: AffilliateSalesService) {}
+  selectedRows: AffilliateSaleModel[] = [];
+
+  constructor(private service: CouponService,
+    private eventService: EventService,
+    private affiliateSalesService: AffilliateSalesService,
+    private affilliatePaymentService: AffilliatePaymentsService) {}
 
   ngOnInit() {
     this.datasource$ = this.service.streamAll().pipe(
@@ -61,13 +71,64 @@ export class CouponsComponent implements OnInit{
 
     this.isVisible$.next(true);
 
-    this.affilliateSales = await this.affiliateSalesService.getAllByValue("code", this.selectedItem.code);
+    this.affilliateSales = await this.affiliateSalesService.streamAllByValue("code", this.selectedItem.code).pipe(
+      map(sales => {
+        sales.forEach(sale => sale.date = dateFromTimestamp(sale.date as Timestamp))
+        return sales;
+      })
+    );
+
+    this.affilliatePayments = await this.affilliatePaymentService.streamAllByValue("code", this.selectedItem.code).pipe(
+      map(payments => {
+        payments.forEach(payment => payment.date = dateFromTimestamp(payment.date as Timestamp))
+        return payments;
+      })
+    );
   }
 
   showAddModal = () => {
     this.selectedItem = {... new CouponModel()};
 
     this.isVisible$.next(true);
+  }
+
+  pay = async () => {
+    let sum: number = 0;
+    let ids: string[] = [];
+
+    //update sales records and get sum
+    this.selectedRows.forEach(row => {
+      ids.push(row.id);
+      sum += row.totalBeforeDiscount - row.totalAfterDiscount;
+    });
+
+    await this.affilliatePaymentService.pay(this.selectedItem.affiliatePaypalAccount, sum).then(async response => {
+      //  create payment record
+      let payment: AffilliatePaymentModel = {... new AffilliatePaymentModel()}
+      payment.code = this.selectedItem.code;
+      payment.date = Timestamp.now();
+      payment.amountPayed = sum;
+      payment.saleIdsPayed = ids;
+      payment.receipt = response;
+
+      payment = await this.affilliatePaymentService.add(payment);
+
+      //  update sales record
+      this.selectedRows.forEach(async row => {
+        row.isPayed = true;
+        row.paymentReceipt = payment.id;
+        row.amountPayed = row.totalBeforeDiscount - row.totalAfterDiscount;
+
+        await this.affiliateSalesService.update(row.id, row);
+      })
+    })
+
+    notify({
+      message: 'All Sales Paid!',
+      position: 'top',
+      width: 600,
+      type: 'success'
+    });
   }
 
   delete = ({ row: { data } }) => {

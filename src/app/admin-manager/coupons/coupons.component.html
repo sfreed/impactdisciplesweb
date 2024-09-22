@@ -14,8 +14,8 @@
         text: 'ADD ' + itemType | uppercase,
         stylingMode: 'contained',
         onClick: showAddModal
-      }"
-    ></dxi-item>
+      }">
+    </dxi-item>
   </dx-toolbar>
 </div>
 
@@ -50,7 +50,7 @@
   [showTitle]="true"
   [dragEnabled]="false"
   [visible]="isVisible$ | async"
-  height="70%"
+  height="85%"
   width="70%"
   [showCloseButton]="true"
   (onHiding)="onCancel()">
@@ -69,12 +69,23 @@
           [(formData)]="selectedItem"
           [showColonAfterLabel]="false"
           labelLocation="left"
-          [colCount]="2">
+          [colCount]="4">
           <dxi-item dataField="code" [colSpan]="2"></dxi-item>
           <dxi-item dataField="isActive" [colSpan]="1" [editorType]="'dxSwitch'" [editorOptions]="{ switchedOnText: 'Yes', switchedOffText: 'No' }"></dxi-item>
-          <dxi-item dataField="percentOff" [colSpan]="1"></dxi-item>
-          <dxi-item dataField="dollarsOff" [colSpan]="1"></dxi-item>
-          <dxi-item [label]="{ text: 'Event Tags' }" [colSpan]="2">
+          <dxi-item dataField="isAffilliate" [colSpan]="1" [editorType]="'dxSwitch'" [editorOptions]="{ switchedOnText: 'Yes', switchedOffText: 'No' }"></dxi-item>
+          <dxi-item dataField="affilliateName" [visible]="selectedItem.isAffilliate" [colSpan]="2"></dxi-item>
+          <dxi-item dataField="affiliatePaypalAccount" [visible]="selectedItem.isAffilliate" [colSpan]="2"></dxi-item>
+          <dxi-item dataField="percentOff" [colSpan]="2">
+            <div *dxTemplate>
+              <dx-number-box [(value)]="selectedItem.percentOff"></dx-number-box>
+            </div>
+          </dxi-item>
+          <dxi-item dataField="dollarsOff" [colSpan]="2">
+            <div *dxTemplate>
+              <dx-number-box [(value)]="selectedItem.dollarsOff" [format]="'currency'"></dx-number-box>
+            </div>
+          </dxi-item>
+          <dxi-item [label]="{ text: 'Event Tags' }" [colSpan]="4">
             <div *dxTemplate>
               <dx-tag-box
                 [dataSource]="eventTags"
@@ -87,21 +98,90 @@
               </dx-tag-box>
             </div>
           </dxi-item>
-          <dxi-item [label]="{ text: 'Affilliate Sales' }" [colSpan]="2">
+          <dxi-item [colSpan]="4">
             <div *dxTemplate>
-              <dx-list
-                [dataSource]="affilliateSales"
-                [height]="350">
-                <div *dxTemplate="let item of 'item'">
-                  <div class="row">
-                    <div class="col">{{formatDate(item.date)}}</div>
-                    <div class="col">{{item.email}}</div>
-                    <div class="col">{{item.receipt}}</div>
-                    <div class="col">{{item.totalBeforeDiscount | currency}}</div>
-                    <div class="col">{{item.totalAfterDiscount | currency}}</div>
+              <div class="row">
+                <div class="col-7">
+                  <div class="content-block responsive-paddings">
+                    <dx-toolbar class="content-list__header py-2">
+                      <dxi-item location="before" locateInMenu="never">
+                        <div *dxTemplate>
+                          <h2 class="content-block responsive-paddings underline">Affilliate Sales</h2>
+                        </div>
+                      </dxi-item>
+                      <dxi-item
+                        location="after"
+                        widget="dxButton"
+                        [options]="{
+                          hint: 'PAY',
+                          type: 'default',
+                          text: 'PAY',
+                          stylingMode: 'contained',
+                          onClick: pay
+                        }">
+                      </dxi-item>
+                    </dx-toolbar>
                   </div>
+                  <dx-data-grid class="dx-card wide-card"
+                    #grid
+                    [dataSource]="affilliateSales | async"
+                    [height]="'35vh'"
+                    [showBorders]="false"
+                    [showColumnLines]="true"
+                    [(selectedRowKeys)]="selectedRows"
+                    [showColumnLines]="true"
+                    [showRowLines]="true"
+                    [columnAutoWidth]="true">
+
+                    <dxo-selection mode="multiple"> </dxo-selection>
+                    <dxo-scrolling mode="virtual"></dxo-scrolling>
+                    <dxo-filter-row [visible]="true"></dxo-filter-row>
+
+                    <dxi-column dataField="date" dataType="date"></dxi-column>
+                    <dxi-column dataField="email"></dxi-column>
+                    <dxi-column dataField="totalBeforeDiscount" dataType="number" format="currency" [caption]="'Total'"></dxi-column>
+                    <dxi-column dataField="totalAfterDiscount" dataType="number" format="currency" [caption]="'Discounted Total'"></dxi-column>
+                    <dxi-column dataField="amountPayed" dataType="number" format="currency" [caption]="'Payed Amount'"></dxi-column>
+                    <dxi-column dataField="isPayed" dataType="boolean"></dxi-column>
+                    <dxo-summary>
+                      <dxi-total-item
+                        column="date"
+                        summaryType="count">
+                      </dxi-total-item>
+                      <dxi-total-item column="totalBeforeDiscount" summaryType="sum" valueFormat="currency"></dxi-total-item>
+                      <dxi-total-item column="totalAfterDiscount" summaryType="sum" valueFormat="currency"></dxi-total-item>
+                      <dxi-total-item column="payedAmount" summaryType="sum" valueFormat="currency"></dxi-total-item>
+                    </dxo-summary>
+                  </dx-data-grid>
                 </div>
-              </dx-list>
+                <div class="col-5">
+                  <h2 class="content-block responsive-paddings underline pb-1">Affilliate Payments</h2>
+                  <dx-data-grid class="dx-card wide-card"
+                    #grid
+                    [dataSource]="affilliatePayments | async"
+                    [height]="'35vh'"
+                    [showBorders]="false"
+                    [showColumnLines]="true"
+                    [showColumnLines]="true"
+                    [showRowLines]="true"
+                    [columnAutoWidth]="true"
+                    [columnHidingEnabled]="true">
+
+                    <dxo-scrolling mode="virtual"></dxo-scrolling>
+                    <dxo-filter-row [visible]="true"></dxo-filter-row>
+
+                    <dxi-column dataField="date" dataType="date"></dxi-column>
+                    <dxi-column dataField="receipt"></dxi-column>
+                    <dxi-column dataField="amountPayed" dataType="number" format="currency" [caption]="'Payed Amount'"></dxi-column>
+                    <dxi-column dataField="saleIdsPayed" [hidden]="true" ></dxi-column>
+                    <dxo-summary>
+                      <dxi-total-item column="date" summaryType="count">
+                      </dxi-total-item>
+                      <dxi-total-item column="amountPayed" summaryType="sum" valueFormat="currency"></dxi-total-item>
+                    </dxo-summary>
+                  </dx-data-grid>
+                </div>
+              </div>
             </div>
           </dxi-item>
         </dx-form>
