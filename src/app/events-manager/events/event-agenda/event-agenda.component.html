@@ -21,6 +21,11 @@
       [useColorAsDefault]="true"
       [dataSource]="coaches">
     </dxi-resource>
+    <dxi-resource
+      fieldExpr="room"
+      [useColorAsDefault]="true"
+      [dataSource]="rooms">
+    </dxi-resource>
     <dxi-view type="day" [intervalCount]="3"> </dxi-view>
     <div *dxTemplate="let model of 'appointment-template'">
       <div class="showtime-preview" *ngIf="model.targetedAppointmentData.isCourse">

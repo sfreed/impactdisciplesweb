@@ -7,6 +7,8 @@ import { CourseModel } from 'impactdisciplescommon/src/models/domain/course.mode
 import { CourseService } from 'impactdisciplescommon/src/services/course.service';
 import { CoachService } from 'impactdisciplescommon/src/services/coach.service';
 import { CoachModel } from 'impactdisciplescommon/src/models/domain/coach.model';
+import { TrainingRoomModel } from 'impactdisciplescommon/src/models/domain/training-room.model';
+import { LocationService } from 'impactdisciplescommon/src/services/location.service';
 
 @Component({
   selector: 'app-event-agenda',
@@ -24,8 +26,9 @@ export class EventAgendaComponent implements OnInit{
   courses: CourseModel[] = [];
   coursesList: CourseModel[] = [];
   coaches: CoachModel[] = [];
+  rooms: TrainingRoomModel[] = []
 
-  constructor(private courseService: CourseService, private coachService: CoachService){}
+  constructor(private courseService: CourseService, private coachService: CoachService, private locationService: LocationService){}
 
   async ngOnInit(): Promise<void> {
     if(!this.event.agendaItems){
@@ -36,6 +39,8 @@ export class EventAgendaComponent implements OnInit{
     this.courses = await this.courseService.getAll();
 
     this.coaches = await this.coachService.getAll();
+
+    this.rooms = (await this.locationService.getById(this.event.location)).trainingrooms;
   }
 
   getCoachById = (id: string) => Query(this.coaches).filter(['id', '=', id]).toArray()[0];
@@ -121,6 +126,18 @@ export class EventAgendaComponent implements OnInit{
         displayExpr: 'fullname',
         valueExpr: 'id'
       },
+    }, {
+      label: {
+        text: 'Room',
+      },
+      colSpan: 2,
+      editorType: 'dxSelectBox',
+      dataField: 'room',
+      editorOptions: {
+        items: that.rooms,
+        displayExpr: 'name',
+        valueExpr: 'id'
+      },
     }];
     form.repaint();
   }
@@ -160,7 +177,19 @@ export class EventAgendaComponent implements OnInit{
       colSpan:2,
       editorType: 'dxTextArea',
       dataField: 'description'
-    }];
+    }], {
+      label: {
+        text: 'Room',
+      },
+      colSpan: 2,
+      editorType: 'dxSelectBox',
+      dataField: 'room',
+      editorOptions: {
+        items: that.rooms,
+        displayExpr: 'name',
+        valueExpr: 'id'
+      },
+    };
     form.repaint();
   }
 }
