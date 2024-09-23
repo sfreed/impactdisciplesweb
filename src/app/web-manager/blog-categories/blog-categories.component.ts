@@ -1,4 +1,4 @@
-import { CategoryModel } from './../../../../impactdisciplescommon/src/models/utils/categories.model';
+import { CategoryModel } from '../../../../impactdisciplescommon/src/models/utils/categories.model';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { BehaviorSubject, map, Observable } from 'rxjs';
 import notify from 'devextreme/ui/notify';
@@ -6,15 +6,15 @@ import { confirm } from 'devextreme/ui/dialog';
 import { DxFormComponent } from 'devextreme-angular';
 import CustomStore from 'devextreme/data/custom_store';
 import DataSource from 'devextreme/data/data_source';
-import { CategoriesService } from 'impactdisciplescommon/src/services/utils/categories.service';
 import { TagModel } from 'impactdisciplescommon/src/models/domain/tag.model';
+import { BlogCategoriesService } from 'impactdisciplescommon/src/services/utils/blog-categories.service';
 
 @Component({
-  selector: 'app-categories',
-  templateUrl: './categories.component.html',
-  styleUrls: ['./categories.component.css']
+  selector: 'app-blog-categories',
+  templateUrl: './blog-categories.component.html',
+  styleUrls: ['./blog-categories.component.css']
 })
-export class CategoriesComponent implements OnInit {
+export class BlogCategoriesComponent implements OnInit {
   @ViewChild('addEditForm', { static: false }) addEditForm: DxFormComponent;
 
   datasource$: Observable<DataSource>;
@@ -25,7 +25,7 @@ export class CategoriesComponent implements OnInit {
   public inProgress$ = new BehaviorSubject<boolean>(false)
   public isVisible$ = new BehaviorSubject<boolean>(false);
 
-  constructor(private service: CategoriesService) {}
+  constructor(private service: BlogCategoriesService) {}
 
   ngOnInit() {
     this.datasource$ = this.service.streamAll().pipe(

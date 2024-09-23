@@ -258,7 +258,7 @@
   [height]="'60%'"
   [showCloseButton]="true"
   (onHiding)="onCategoriesCancel()">
-  <app-categories (seriesSelectClosed)="onCategoriesCancel()"></app-categories>
+  <app-product-categories (seriesSelectClosed)="onCategoriesCancel()"></app-product-categories>
 </dx-popup>
 
 <ng-container *ngIf="isSingleImageVisible$ | async">

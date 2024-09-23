@@ -7,7 +7,7 @@ import { SalesComponent } from './sales/sales.component';
 import { SharedModule } from '../shared/shared.module';
 import { ImpactFormsModule } from 'impactdisciplescommon/src/forms/forms.module';
 import { SeriesComponent } from './series/series.component';
-import { CategoriesComponent } from './categories/categories.component';
+import { ProductCategoriesComponent } from './product-categories/product-categories.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +15,7 @@ import { CategoriesComponent } from './categories/categories.component';
     ProductsComponent,
     SalesComponent,
     SeriesComponent,
-    CategoriesComponent
+    ProductCategoriesComponent
   ],
   imports: [
     CommonModule,
