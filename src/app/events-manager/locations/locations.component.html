@@ -118,6 +118,11 @@
               </div>
             </dxi-item>
           </dxi-item>
+          <dxi-item [colSpan]="1">
+            <div *dxTemplate>
+              <app-room [trainingRooms]="selectedItem.trainingrooms"></app-room>
+            </div>
+          </dxi-item>
         </dx-form>
       </div>
       <div class="add-item-modal__button-group">
