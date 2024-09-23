@@ -1,50 +1,33 @@
+import { CategoryModel } from '../../../../impactdisciplescommon/src/models/utils/categories.model';
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { BehaviorSubject, map, Observable } from 'rxjs';
+import notify from 'devextreme/ui/notify';
+import { confirm } from 'devextreme/ui/dialog';
 import { DxFormComponent } from 'devextreme-angular';
 import CustomStore from 'devextreme/data/custom_store';
 import DataSource from 'devextreme/data/data_source';
-import notify from 'devextreme/ui/notify';
-import { Observable, BehaviorSubject, map } from 'rxjs';
-import { confirm } from 'devextreme/ui/dialog';
-import { ProductModel } from 'impactdisciplescommon/src/models/utils/product.model';
-import { ProductService } from 'impactdisciplescommon/src/services/utils/product.service';
-import { ProductTagsService } from 'impactdisciplescommon/src/services/product-tags.service';
-import { DxTagBoxTypes } from 'devextreme-angular/ui/tag-box';
 import { TagModel } from 'impactdisciplescommon/src/models/domain/tag.model';
-import { SeriesService } from 'impactdisciplescommon/src/services/utils/series.service';
 import { ProductCategoriesService } from 'impactdisciplescommon/src/services/utils/product-categories.service';
 
 @Component({
-  selector: 'app-products',
-  templateUrl: './products.component.html',
-  styleUrls: ['./products.component.css']
+  selector: 'app-product-categories',
+  templateUrl: './product-categories.component.html',
+  styleUrls: ['./product-categories.component.css']
 })
-export class ProductsComponent implements OnInit {
+export class ProductCategoriesComponent implements OnInit {
   @ViewChild('addEditForm', { static: false }) addEditForm: DxFormComponent;
 
   datasource$: Observable<DataSource>;
-  selectedItem: ProductModel;
+  selectedItem: TagModel;
 
-  itemType = 'Product';
+  itemType = 'Categories';
 
   public inProgress$ = new BehaviorSubject<boolean>(false)
   public isVisible$ = new BehaviorSubject<boolean>(false);
-  public isSeriesVisible$ = new BehaviorSubject<boolean>(false);
-  public isCategoriesVisible$ = new BehaviorSubject<boolean>(false);
 
-  public isSingleImageVisible$ = new BehaviorSubject<boolean>(false);
+  constructor(private service: ProductCategoriesService) {}
 
-  productTags: TagModel[] = [];
-  productCategories: TagModel[] = [];
-
-  series: any[] = [];
-
-  constructor(private service: ProductService,
-    private productTagService: ProductTagsService,
-    private seriesService: SeriesService,
-    private productCategoriesService: ProductCategoriesService
-  ) {}
-
-  async ngOnInit() {
+  ngOnInit() {
     this.datasource$ = this.service.streamAll().pipe(
       map(
         (items) =>
@@ -61,36 +44,19 @@ export class ProductsComponent implements OnInit {
           })
       )
     );
-
-    this.productTagService.streamAll().subscribe(tags =>{
-      this.productTags = tags;
-    });
-
-    this.productCategories = await this.productCategoriesService.getAll();
-
-    this.seriesService.streamAll().subscribe(series => {
-      this.series = series;
-    });
   }
 
-  showEditModal = ({ row: { data } }) => {
+  showEditModal = async ({ row: { data } }) => {
     this.selectedItem = (Object.assign({}, data));
 
     this.isVisible$.next(true);
+
   }
 
   showAddModal = () => {
-    this.selectedItem = {... new ProductModel()};
+    this.selectedItem = {... new TagModel()};
 
     this.isVisible$.next(true);
-  }
-
-  showSeriesModal = () => {
-    this.isSeriesVisible$.next(true);
-  }
-
-  showCategoriesModal = () => {
-    this.isCategoriesVisible$.next(true);
   }
 
   delete = ({ row: { data } }) => {
@@ -108,7 +74,7 @@ export class ProductsComponent implements OnInit {
     });
   }
 
-  onSave(item: ProductModel) {
+  onSave(item: TagModel) {
     if(this.addEditForm.instance.validate().isValid) {
       this.inProgress$.next(true);
       if(item.id) {
@@ -159,47 +125,5 @@ export class ProductsComponent implements OnInit {
     this.selectedItem = null;
     this.inProgress$.next(false);
     this.isVisible$.next(false);
-  }
-
-  onSeriesCancel() {
-    this.inProgress$.next(false);
-    this.isSeriesVisible$.next(false);
-  }
-
-  onCategoriesCancel() {
-    this.inProgress$.next(false);
-    this.isCategoriesVisible$.next(false);
-  }
-
-  onCustomItemCreating(args: DxTagBoxTypes.CustomItemCreatingEvent) {
-    if(args.text){
-      let productTag: TagModel = {... new TagModel()}
-      productTag.tag = args.text;
-      productTag.id = this.generateRandomId();
-
-      const isItemInDataSource = this.productTags.some((item) => item.tag === productTag.tag);
-
-      if (!isItemInDataSource) {
-        this.productTagService.update(productTag.id, productTag)
-      }
-
-      args.customItem = productTag;
-    }
-  }
-
-  private generateRandomId() {
-    return 'xxxxxxxxxxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-      var r = (Math.random() * 16) | 0,
-        v = c == 'x' ? r : (r & 0x3) | 0x8;
-      return v.toString(16);
-    });
-  }
-
-  showSingleImageModal = () => {
-    this.isSingleImageVisible$.next(true);
-  }
-
-  closeSingleImageModal = () => {
-    this.isSingleImageVisible$.next(false);
   }
 }

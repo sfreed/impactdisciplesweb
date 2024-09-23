@@ -10,6 +10,7 @@ import { BlogPostService } from 'impactdisciplescommon/src/services/blog-post.se
 import { BlogTagsService } from 'impactdisciplescommon/src/services/blog-tags.service';
 import { BehaviorSubject, map, Observable } from 'rxjs';
 import { confirm } from 'devextreme/ui/dialog';
+import { BlogCategoriesService } from 'impactdisciplescommon/src/services/utils/blog-categories.service';
 
 @Component({
   selector: 'app-blog-posts',
@@ -21,20 +22,20 @@ export class BlogPostsComponent implements OnInit {
 
   datasource$: Observable<DataSource>;
   selectedItem: BlogPostModel;
-
+  blogCategories: TagModel[] = [];
   itemType = 'Blog Post';
 
   public inProgress$ = new BehaviorSubject<boolean>(false)
   public isVisible$ = new BehaviorSubject<boolean>(false);
-
+  public isCategoriesVisible$ = new BehaviorSubject<boolean>(false);
   public isSingleImageVisible$ = new BehaviorSubject<boolean>(false);
   public isMultipleImageVisible$ = new BehaviorSubject<boolean>(false);
 
   blogTags: TagModel[] = [];
 
-  constructor(private service: BlogPostService, private blogTagService: BlogTagsService) {}
+  constructor(private service: BlogPostService, private blogTagService: BlogTagsService, private blogCategoriesService: BlogCategoriesService) {}
 
-  ngOnInit() {
+  async ngOnInit() {
     this.datasource$ = this.service.streamAll().pipe(
       map(
         (data) =>
@@ -52,6 +53,8 @@ export class BlogPostsComponent implements OnInit {
     this.blogTagService.streamAll().subscribe(tags => {
       this.blogTags = tags;
     });
+
+    this.blogCategories = await this.blogCategoriesService.getAll();
   }
 
   showEditModal = ({ row: { data } }) => {
@@ -62,6 +65,10 @@ export class BlogPostsComponent implements OnInit {
   showAddModal = () => {
     this.selectedItem = {... new BlogPostModel()};
     this.isVisible$.next(true);
+  }
+
+  showCategoriesModal = () => {
+    this.isCategoriesVisible$.next(true);
   }
 
   delete = ({ row: { data } }) => {
@@ -122,6 +129,11 @@ export class BlogPostsComponent implements OnInit {
         }
       })
     }
+  }
+
+  onCategoriesCancel() {
+    this.inProgress$.next(false);
+    this.isCategoriesVisible$.next(false);
   }
 
   onCancel() {

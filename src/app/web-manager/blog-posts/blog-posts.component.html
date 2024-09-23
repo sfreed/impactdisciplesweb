@@ -9,6 +9,17 @@
       location="after"
       widget="dxButton"
       [options]="{
+        hint: 'MANAGE CATEGORIES',
+        type: 'default',
+        text: 'MANAGE CATEGORIES',
+        stylingMode: 'contained',
+        onClick: showCategoriesModal
+      }">
+    </dxi-item>
+    <dxi-item
+      location="after"
+      widget="dxButton"
+      [options]="{
         hint: 'ADD ' + itemType | uppercase,
         type: 'default',
         text: 'ADD ' + itemType | uppercase,
@@ -35,7 +46,9 @@
   <dxi-column dataField="mainImage" [width]="120" cellTemplate="imageCellTemplate"></dxi-column>
   <dxi-column dataField="title"></dxi-column>
   <dxi-column dataField="date" [dataType]="'datetime'"></dxi-column>
-  <dxi-column dataField="subject"></dxi-column>
+  <dxi-column dataField="category">
+    <dxo-lookup [dataSource]="blogCategories" [displayExpr]="'tag'" [valueExpr]="'id'"></dxo-lookup>
+  </dxi-column>
   <dxi-column dataField="blogText" [visible]="false"></dxi-column>
   <dxi-column dataField="extraImages" [visible]="false"></dxi-column>
   <dxi-column dataField="tags"[visible]="false">
@@ -77,7 +90,11 @@
           labelLocation="left"
           [colCount]="2">
           <dxi-item dataField="date" [editorType]="'dxDateBox'" [isRequired]="true" [colSpan]="1"></dxi-item>
-          <dxi-item dataField="subject" [isRequired]="true" [colSpan]="2"></dxi-item>
+          <dxi-item dataField="category" [colSpan]="1">
+            <div *dxTemplate>
+              <dx-select-box [(value)]="selectedItem.category" [dataSource]="blogCategories" [displayExpr]="'tag'" [valueExpr]="'id'" [showClearButton]="true"></dx-select-box>
+            </div>
+          </dxi-item>
           <dxi-item dataField="title" [isRequired]="true" [colSpan]="2"></dxi-item>
           <dxi-item dataField="mainImage.name" [colSpan]="2" [label]="'Image Name'" [disabled]="true"></dxi-item>
         </dx-form>
@@ -207,6 +224,17 @@
     (imageSelectClosed)="closeSingleImageModal()">
   </app-image-uploader>
 </ng-container>
+
+<dx-popup
+  [showTitle]="true"
+  [dragEnabled]="false"
+  [visible]="isCategoriesVisible$ | async"
+  [width]="'20%'"
+  [height]="'60%'"
+  [showCloseButton]="true"
+  (onHiding)="onCategoriesCancel()">
+  <app-blog-categories (seriesSelectClosed)="onCategoriesCancel()"></app-blog-categories>
+</dx-popup>
 
 <ng-container *ngIf="isMultipleImageVisible$ | async">
   <app-image-uploader
