@@ -37,6 +37,9 @@
   <dxi-column dataField="date" [dataType]="'datetime'"></dxi-column>
   <dxi-column dataField="videoType" [visible]="false"></dxi-column>
   <dxi-column dataField="videoId" [visible]="false"></dxi-column>
+  <dxi-column dataField="tags" [visible]="false">
+    <dxo-lookup [dataSource]="podCastTags" [displayExpr]="'tag'" [valueExpr]="'id'"></dxo-lookup>
+  </dxi-column>
   <dxi-column type="buttons" caption="Actions" [allowReordering]="false">
     <dxi-button icon="edit" hint="EDIT" [onClick]="showEditModal"></dxi-button>
     <dxi-button icon="trash" hint="DELETE" [onClick]="delete"></dxi-button>
@@ -86,12 +89,14 @@
         <div class="row pt-2">
           <div class="col-12">
             <dx-tag-box
-              [dataSource]="blogTags"
+              [dataSource]="podCastTags"
               [(value)]="selectedItem.tags"
+              [displayExpr]="'tag'"
+              [valueExpr]="'id'"
               [acceptCustomValue]="true"
               [searchEnabled]="true"
               [hideSelectedItems]="true"
-              placeholder="Tag this Blog..."
+              placeholder="Tag this Pod Cast..."
               (onCustomItemCreating)="onCustomItemCreating($event)">
             </dx-tag-box>
           </div>

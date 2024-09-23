@@ -38,8 +38,8 @@
   <dxi-column dataField="subject"></dxi-column>
   <dxi-column dataField="blogText" [visible]="false"></dxi-column>
   <dxi-column dataField="extraImages" [visible]="false"></dxi-column>
-  <dxi-column dataField="tags">
-    <dxo-lookup [dataSource]="blogTags"></dxo-lookup>
+  <dxi-column dataField="tags"[visible]="false">
+    <dxo-lookup [dataSource]="blogTags" [displayExpr]="'tag'" [valueExpr]="'id'"></dxo-lookup>
   </dxi-column>
   <dxi-column type="buttons" caption="Actions" [allowReordering]="false">
     <dxi-button icon="edit" hint="EDIT" [onClick]="showEditModal"></dxi-button>
@@ -153,8 +153,9 @@
             <dx-tag-box
               [dataSource]="blogTags"
               [(value)]="selectedItem.tags"
+              [displayExpr]="'tag'"
+              [valueExpr]="'id'"
               [acceptCustomValue]="true"
-              [searchEnabled]="true"
               [hideSelectedItems]="true"
               placeholder="Tag this Blog..."
               (onCustomItemCreating)="onCustomItemCreating($event)">

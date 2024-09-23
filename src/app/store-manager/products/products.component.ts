@@ -1,3 +1,4 @@
+import { CategoriesService } from 'impactdisciplescommon/src/services/utils/categories.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { DxFormComponent } from 'devextreme-angular';
 import CustomStore from 'devextreme/data/custom_store';
@@ -28,16 +29,22 @@ export class ProductsComponent implements OnInit {
   public inProgress$ = new BehaviorSubject<boolean>(false)
   public isVisible$ = new BehaviorSubject<boolean>(false);
   public isSeriesVisible$ = new BehaviorSubject<boolean>(false);
+  public isCategoriesVisible$ = new BehaviorSubject<boolean>(false);
 
   public isSingleImageVisible$ = new BehaviorSubject<boolean>(false);
 
-  productTags: any[] = [];
+  productTags: TagModel[] = [];
+  productCategories: TagModel[] = [];
 
   series: any[] = [];
 
-  constructor(private service: ProductService, private productTagService: ProductTagsService, private seriesService: SeriesService) {}
+  constructor(private service: ProductService,
+    private productTagService: ProductTagsService,
+    private seriesService: SeriesService,
+    private categoriesService: CategoriesService
+  ) {}
 
-  ngOnInit() {
+  async ngOnInit() {
     this.datasource$ = this.service.streamAll().pipe(
       map(
         (items) =>
@@ -55,14 +62,14 @@ export class ProductsComponent implements OnInit {
       )
     );
 
-    this.productTagService.streamAll().subscribe(tags => {
-      tags.forEach(tag => this.productTags.push(tag.tag));
-      return tags;
+    this.productTagService.streamAll().subscribe(tags =>{
+      this.productTags = tags;
     });
 
+    this.productCategories = await this.categoriesService.getAll();
+
     this.seriesService.streamAll().subscribe(series => {
-      series.forEach(tag => this.series.push(tag.name));
-      return series;
+      this.series = series;
     });
   }
 
@@ -80,6 +87,10 @@ export class ProductsComponent implements OnInit {
 
   showSeriesModal = () => {
     this.isSeriesVisible$.next(true);
+  }
+
+  showCategoriesModal = () => {
+    this.isCategoriesVisible$.next(true);
   }
 
   delete = ({ row: { data } }) => {
@@ -155,21 +166,33 @@ export class ProductsComponent implements OnInit {
     this.isSeriesVisible$.next(false);
   }
 
+  onCategoriesCancel() {
+    this.inProgress$.next(false);
+    this.isCategoriesVisible$.next(false);
+  }
+
   onCustomItemCreating(args: DxTagBoxTypes.CustomItemCreatingEvent) {
     if(args.text){
-      let blogTag: TagModel = {... new TagModel()}
-      blogTag.tag = args.text;
+      let productTag: TagModel = {... new TagModel()}
+      productTag.tag = args.text;
+      productTag.id = this.generateRandomId();
 
-      const isItemInDataSource = this.productTags.some((item) => item === blogTag.tag);
+      const isItemInDataSource = this.productTags.some((item) => item.tag === productTag.tag);
+
       if (!isItemInDataSource) {
-
-        this.productTagService.add(blogTag).then(tag => {
-          this.productTags.unshift(tag.tag);
-        })
+        this.productTagService.update(productTag.id, productTag)
       }
 
-      args.customItem = blogTag.tag;
+      args.customItem = productTag;
     }
+  }
+
+  private generateRandomId() {
+    return 'xxxxxxxxxxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+      var r = (Math.random() * 16) | 0,
+        v = c == 'x' ? r : (r & 0x3) | 0x8;
+      return v.toString(16);
+    });
   }
 
   showSingleImageModal = () => {

@@ -30,7 +30,7 @@ export class BlogPostsComponent implements OnInit {
   public isSingleImageVisible$ = new BehaviorSubject<boolean>(false);
   public isMultipleImageVisible$ = new BehaviorSubject<boolean>(false);
 
-  blogTags: string[] = [];
+  blogTags: TagModel[] = [];
 
   constructor(private service: BlogPostService, private blogTagService: BlogTagsService) {}
 
@@ -50,8 +50,7 @@ export class BlogPostsComponent implements OnInit {
     )
 
     this.blogTagService.streamAll().subscribe(tags => {
-      tags.forEach(tag => this.blogTags.push(tag.tag));
-      return tags;
+      this.blogTags = tags;
     });
   }
 
@@ -136,17 +135,24 @@ export class BlogPostsComponent implements OnInit {
     if(args.text){
       let blogTag: TagModel = {... new TagModel()}
       blogTag.tag = args.text;
+      blogTag.id = this.generateRandomId();
 
-      const isItemInDataSource = this.blogTags.some((item) => item === blogTag.tag);
+      const isItemInDataSource = this.blogTags.some((item) => item.tag === blogTag.tag);
+
       if (!isItemInDataSource) {
-
-        this.blogTagService.add(blogTag).then(tag => {
-          this.blogTags.unshift(tag.tag);
-        })
+        this.blogTagService.update(blogTag.id, blogTag)
       }
 
-      args.customItem = blogTag.tag;
+      args.customItem = blogTag;
     }
+  }
+
+  private generateRandomId() {
+    return 'xxxxxxxxxxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+      var r = (Math.random() * 16) | 0,
+        v = c == 'x' ? r : (r & 0x3) | 0x8;
+      return v.toString(16);
+    });
   }
 
   showSingleImageModal = () => {

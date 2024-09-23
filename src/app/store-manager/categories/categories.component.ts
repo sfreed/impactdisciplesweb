@@ -1,33 +1,31 @@
+import { CategoryModel } from './../../../../impactdisciplescommon/src/models/utils/categories.model';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { SeriesModel } from 'impactdisciplescommon/src/models/utils/series.model';
-import { SeriesService } from 'impactdisciplescommon/src/services/utils/series.service';
 import { BehaviorSubject, map, Observable } from 'rxjs';
 import notify from 'devextreme/ui/notify';
 import { confirm } from 'devextreme/ui/dialog';
 import { DxFormComponent } from 'devextreme-angular';
 import CustomStore from 'devextreme/data/custom_store';
 import DataSource from 'devextreme/data/data_source';
+import { CategoriesService } from 'impactdisciplescommon/src/services/utils/categories.service';
+import { TagModel } from 'impactdisciplescommon/src/models/domain/tag.model';
 
 @Component({
-  selector: 'app-series',
-  templateUrl: './series.component.html',
-  styleUrls: ['./series.component.css']
+  selector: 'app-categories',
+  templateUrl: './categories.component.html',
+  styleUrls: ['./categories.component.css']
 })
-export class SeriesComponent implements OnInit {
+export class CategoriesComponent implements OnInit {
   @ViewChild('addEditForm', { static: false }) addEditForm: DxFormComponent;
 
   datasource$: Observable<DataSource>;
-  selectedItem: SeriesModel;
+  selectedItem: TagModel;
 
-  itemType = 'Series';
+  itemType = 'Categories';
 
   public inProgress$ = new BehaviorSubject<boolean>(false)
   public isVisible$ = new BehaviorSubject<boolean>(false);
-  public isSingleImageVisible$ = new BehaviorSubject<boolean>(false);
 
-  eventTags: any[] = [];
-
-  constructor(private service: SeriesService) {}
+  constructor(private service: CategoriesService) {}
 
   ngOnInit() {
     this.datasource$ = this.service.streamAll().pipe(
@@ -56,7 +54,7 @@ export class SeriesComponent implements OnInit {
   }
 
   showAddModal = () => {
-    this.selectedItem = {... new SeriesModel()};
+    this.selectedItem = {... new TagModel()};
 
     this.isVisible$.next(true);
   }
@@ -76,7 +74,7 @@ export class SeriesComponent implements OnInit {
     });
   }
 
-  onSave(item: SeriesModel) {
+  onSave(item: TagModel) {
     if(this.addEditForm.instance.validate().isValid) {
       this.inProgress$.next(true);
       if(item.id) {
@@ -127,13 +125,5 @@ export class SeriesComponent implements OnInit {
     this.selectedItem = null;
     this.inProgress$.next(false);
     this.isVisible$.next(false);
-  }
-
-  showSingleImageModal = () => {
-    this.isSingleImageVisible$.next(true);
-  }
-
-  closeSingleImageModal = () => {
-    this.isSingleImageVisible$.next(false);
   }
 }

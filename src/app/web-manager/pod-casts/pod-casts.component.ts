@@ -8,7 +8,7 @@ import { PodCastService } from 'impactdisciplescommon/src/services/pod-cast.serv
 import { BehaviorSubject, map, Observable } from 'rxjs';
 import { confirm } from 'devextreme/ui/dialog';
 import { Timestamp } from 'firebase/firestore';
-import { BlogTagsService } from 'impactdisciplescommon/src/services/blog-tags.service';
+import { PodCastTagsService } from 'impactdisciplescommon/src/services/pod-cast-tags.service';
 import { DxTagBoxTypes } from 'devextreme-angular/ui/tag-box';
 import { TagModel } from 'impactdisciplescommon/src/models/domain/tag.model';
 
@@ -30,11 +30,11 @@ export class PodCastsComponent implements OnInit{
 
   public isSingleImageVisible$ = new BehaviorSubject<boolean>(false);
 
-  blogTags: string[] = [];
+  podCastTags: TagModel[] = [];
 
-  constructor(private service: PodCastService, private blogTagService: BlogTagsService) {}
+  constructor(private service: PodCastService, private podCastTagService: PodCastTagsService) {}
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
       this.datasource$ = this.service.streamAll().pipe(
       map(
         (items) =>
@@ -52,10 +52,9 @@ export class PodCastsComponent implements OnInit{
       )
     );
 
-    this.blogTagService.streamAll().subscribe(tags => {
-      tags.forEach(tag => this.blogTags.push(tag.tag));
-      return tags;
-    });
+    this.podCastTagService.streamAll().subscribe(tags => {
+      this.podCastTags = tags;
+    })
   }
 
   showEditModal = ({ row: { data } }) => {
@@ -138,19 +137,26 @@ export class PodCastsComponent implements OnInit{
 
   onCustomItemCreating(args: DxTagBoxTypes.CustomItemCreatingEvent) {
     if(args.text){
-      let blogTag: TagModel = {... new TagModel()}
-      blogTag.tag = args.text;
+      let podCastTag: TagModel = {... new TagModel()}
+      podCastTag.tag = args.text;
+      podCastTag.id = this.generateRandomId();
 
-      const isItemInDataSource = this.blogTags.some((item) => item === blogTag.tag);
+      const isItemInDataSource = this.podCastTags.some((item) => item.tag === podCastTag.tag);
+
       if (!isItemInDataSource) {
-
-        this.blogTagService.add(blogTag).then(tag => {
-          this.blogTags.unshift(tag.tag);
-        })
+        this.podCastTagService.update(podCastTag.id, podCastTag)
       }
 
-      args.customItem = blogTag.tag;
+      args.customItem = podCastTag;
     }
+  }
+
+  private generateRandomId() {
+    return 'xxxxxxxxxxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+      var r = (Math.random() * 16) | 0,
+        v = c == 'x' ? r : (r & 0x3) | 0x8;
+      return v.toString(16);
+    });
   }
 
   showSingleImageModal = () => {

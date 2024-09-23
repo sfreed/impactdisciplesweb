@@ -14,6 +14,7 @@ import { AffilliateSaleModel } from 'impactdisciplescommon/src/models/utils/affi
 import { Timestamp } from 'firebase/firestore';
 import { AffilliatePaymentsService } from 'impactdisciplescommon/src/services/utils/affiliate-payment.service';
 import { AffilliatePaymentModel } from 'impactdisciplescommon/src/models/utils/affilliate-payment.model';
+import { TagModel } from 'impactdisciplescommon/src/models/domain/tag.model';
 
 @Component({
   selector: 'app-coupons',
@@ -31,7 +32,7 @@ export class CouponsComponent implements OnInit{
   public inProgress$ = new BehaviorSubject<boolean>(false)
   public isVisible$ = new BehaviorSubject<boolean>(false);
 
-  eventTags: any[] = [];
+  eventTags: TagModel[] = [];
   affilliateSales: Observable<AffilliateSaleModel[]>;
   affilliatePayments: Observable<AffilliatePaymentModel[]>;
 
@@ -61,7 +62,7 @@ export class CouponsComponent implements OnInit{
     );
 
     this.eventService.streamAll().subscribe(events => {
-      events.forEach(event => this.eventTags.push({id: event.id, name: event.eventName}));
+      events.forEach(event => this.eventTags.push({id: event.id, tag: event.eventName}));
       return events;
     });
   }

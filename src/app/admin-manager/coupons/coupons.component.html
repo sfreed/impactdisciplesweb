@@ -38,7 +38,7 @@
   <dxi-column dataField="percentOff" dataType="number"></dxi-column>
   <dxi-column dataField="dollarsOff" dataType="number" format="currency"></dxi-column>
   <dxi-column dataField="tags">
-    <dxo-lookup [dataSource]="eventTags" [allowClearing]="true" [displayExpr]="'name'" [valueExpr]="'id'"></dxo-lookup>
+    <dxo-lookup [dataSource]="eventTags" [allowClearing]="true" [displayExpr]="'tag'" [valueExpr]="'id'"></dxo-lookup>
   </dxi-column>
   <dxi-column type="buttons" caption="Actions" [allowReordering]="false">
     <dxi-button icon="edit" hint="EDIT" [onClick]="showEditModal"></dxi-button>
@@ -90,7 +90,7 @@
               <dx-tag-box
                 [dataSource]="eventTags"
                 [(value)]="selectedItem.tags"
-                [displayExpr]="'name'"
+                [displayExpr]="'tag'"
                 [valueExpr]="'id'"
                 [searchEnabled]="true"
                 [hideSelectedItems]="true"

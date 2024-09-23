@@ -9,6 +9,17 @@
       location="after"
       widget="dxButton"
       [options]="{
+        hint: 'MANAGE CATEGORIES',
+        type: 'default',
+        text: 'MANAGE CATEGORIES',
+        stylingMode: 'contained',
+        onClick: showCategoriesModal
+      }">
+    </dxi-item>
+    <dxi-item
+      location="after"
+      widget="dxButton"
+      [options]="{
         hint: 'MANAGE SERIES',
         type: 'default',
         text: 'MANAGE SERIES',
@@ -51,8 +62,11 @@
   <dxi-column dataField="series">
     <dxo-lookup [dataSource]="series"></dxo-lookup>
   </dxi-column>
+  <dxi-column dataField="category">
+    <dxo-lookup [dataSource]="productCategories" [displayExpr]="'tag'" [valueExpr]="'id'"></dxo-lookup>
+  </dxi-column>
   <dxi-column dataField="tags">
-    <dxo-lookup [dataSource]="productTags"></dxo-lookup>
+    <dxo-lookup [dataSource]="productTags" [displayExpr]="'tag'" [valueExpr]="'id'"></dxo-lookup>
   </dxi-column>
   <dxi-column type="buttons" caption="Actions" [allowReordering]="false">
     <dxi-button icon="edit" hint="EDIT" [onClick]="showEditModal"></dxi-button>
@@ -88,7 +102,12 @@
           [showColonAfterLabel]="false"
           labelLocation="left"
           [colCount]="2">
-          <dxi-item dataField="title" [colSpan]="2"></dxi-item>
+          <dxi-item dataField="title" [colSpan]="1"></dxi-item>
+          <dxi-item dataField="category" [colSpan]="1">
+            <div *dxTemplate>
+              <dx-select-box [(value)]="selectedItem.category" [dataSource]="productCategories" [displayExpr]="'tag'" [valueExpr]="'id'" [showClearButton]="true"></dx-select-box>
+            </div>
+          </dxi-item>
           <dxi-item dataField="series" [colSpan]="1">
             <div *dxTemplate>
               <dx-select-box [(value)]="selectedItem.series" [dataSource]="series" ></dx-select-box>
@@ -183,10 +202,12 @@
             <dx-tag-box
               [dataSource]="productTags"
               [(value)]="selectedItem.tags"
+              [displayExpr]="'tag'"
+              [valueExpr]="'id'"
               [acceptCustomValue]="true"
               [searchEnabled]="true"
               [hideSelectedItems]="true"
-              placeholder="Tag this Blog..."
+              placeholder="Tag this Product..."
               (onCustomItemCreating)="onCustomItemCreating($event)">
             </dx-tag-box>
           </div>
@@ -223,11 +244,22 @@
   [showTitle]="true"
   [dragEnabled]="false"
   [visible]="isSeriesVisible$ | async"
-  [width]="'70%'"
+  [width]="'40%'"
   [height]="'70%'"
   [showCloseButton]="true"
   (onHiding)="onSeriesCancel()">
   <app-series (seriesSelectClosed)="onSeriesCancel()"></app-series>
+</dx-popup>
+
+<dx-popup
+  [showTitle]="true"
+  [dragEnabled]="false"
+  [visible]="isCategoriesVisible$ | async"
+  [width]="'20%'"
+  [height]="'60%'"
+  [showCloseButton]="true"
+  (onHiding)="onCategoriesCancel()">
+  <app-categories (seriesSelectClosed)="onCategoriesCancel()"></app-categories>
 </dx-popup>
 
 <ng-container *ngIf="isSingleImageVisible$ | async">
