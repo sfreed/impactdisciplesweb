@@ -101,7 +101,8 @@
                     useMaskBehavior: true
                   }">
                 </dxi-item>
-                <dxi-item dataField="isSummit" [editorType]="'dxSwitch'" [editorOptions]="{ switchedOnText: 'Yes', switchedOffText: 'No' }" [label]="{ text: 'Is Annual Summit?' }" [colSpan]="2"></dxi-item>
+                <dxi-item dataField="isSummit" [editorType]="'dxSwitch'" [editorOptions]="{ switchedOnText: 'Yes', switchedOffText: 'No' }" [label]="{ text: 'Is Annual Summit?' }" [colSpan]="1"></dxi-item>
+                <dxi-item dataField="imageUrl.name" [label]="{ text: 'Image Name' }" [colSpan]="1" [disabled]="true"></dxi-item>
                 <dxi-item
                   dataField="costInDollars"
                   editorType="dxNumberBox"
@@ -204,6 +205,14 @@
       </dx-scroll-view>
       <div class="add-item-modal__button-group" style="bottom: 10px; right: 10px; position: fixed;">
         <dx-button
+          text="Upload Main Image"
+          width="250px"
+          stylingMode="contained"
+          type="normal"
+          [disabled]="inProgress$ | async"
+          (onClick)="showSingleImageModal()">
+        </dx-button>
+        <dx-button
           text="CANCEL"
           stylingMode="contained"
           type="normal"
@@ -224,3 +233,14 @@
 <app-location-modal></app-location-modal>
 
 <app-organization-modal></app-organization-modal>
+
+<ng-container *ngIf="isSingleImageVisible$ | async">
+  <app-image-uploader
+    [card]="selectedItem"
+    [isList]="false"
+    [field]="'imageUrl'"
+    [selectionMode]="'single'"
+    [imageSelectVisible]="isSingleImageVisible$ | async"
+    (imageSelectClosed)="closeSingleImageModal()">
+  </app-image-uploader>
+</ng-container>

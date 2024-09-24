@@ -37,6 +37,7 @@ export class EventsComponent implements OnInit, OnDestroy {
   public isLocationModalVisible$ = new BehaviorSubject<boolean>(false);
   public inProgress$ = new BehaviorSubject<boolean>(false);
   public isVisible$ = new BehaviorSubject<boolean>(false);
+  public isSingleImageVisible$ = new BehaviorSubject<boolean>(false);
 
   private ngUnsubscribe = new Subject<void>();
 
@@ -176,38 +177,11 @@ export class EventsComponent implements OnInit, OnDestroy {
   }
 
 
+  showSingleImageModal = () => {
+    this.isSingleImageVisible$.next(true);
+  }
 
-
-
-
-
-
-
-
-
-
-  // onRowUpdating(options) {
-  //   options.newData = Object.assign({}, options.oldData, options.newData);
-  // }
-
-  // isEditVisible: boolean = false;
-  // isAgendaVisible: boolean = false;
-  // isAttendeesListVisible: boolean = false;
-
-  // editEvent(e){
-  //   this.selectedEvent = e.row.data;
-  //   this.isEditVisible = true;
-  // }
-
-  // editAgenda(e){
-  //   this.selectedEvent = e.row.data;
-
-  //   console.log(e)
-  //   this.isAgendaVisible = true;
-  // }
-
-  // viewAttendees(e){
-  //   this.selectedEvent = e.row.data;
-  //   this.isAttendeesListVisible = true;
-  // }
+  closeSingleImageModal = () => {
+    this.isSingleImageVisible$.next(false);
+  }
 }
