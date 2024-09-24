@@ -177,7 +177,7 @@ export class EventAgendaComponent implements OnInit{
       colSpan:2,
       editorType: 'dxTextArea',
       dataField: 'description'
-    }], {
+    }, {
       label: {
         text: 'Room',
       },
@@ -189,7 +189,7 @@ export class EventAgendaComponent implements OnInit{
         displayExpr: 'name',
         valueExpr: 'id'
       },
-    };
+    }];
     form.repaint();
   }
 }
