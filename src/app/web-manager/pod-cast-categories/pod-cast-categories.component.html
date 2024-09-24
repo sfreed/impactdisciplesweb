@@ -2,16 +2,27 @@
   <dx-toolbar class="content-list__header py-2">
     <dxi-item location="before" locateInMenu="never">
       <div *dxTemplate>
-        <h2 class="content-block responsive-paddings underline">{{itemType}}s</h2>
+        <h2 class="content-block responsive-paddings underline">{{itemType}}</h2>
       </div>
     </dxi-item>
+    <dxi-item
+      location="after"
+      widget="dxButton"
+      [options]="{
+        hint: 'ADD ' + itemType | uppercase,
+        type: 'default',
+        text: 'ADD ' + itemType | uppercase,
+        stylingMode: 'contained',
+        onClick: showAddModal
+      }"
+    ></dxi-item>
   </dx-toolbar>
 </div>
 
 <dx-data-grid class="dx-card wide-card"
   #grid
   [dataSource]="datasource$ | async"
-  [height]="'75vh'"
+  [height]="'40vh'"
   [showBorders]="false"
   [showColumnLines]="true"
   [showColumnLines]="true"
@@ -22,37 +33,19 @@
   <dxo-scrolling mode="virtual"></dxo-scrolling>
   <dxo-filter-row [visible]="true"></dxo-filter-row>
 
-  <dxi-column dataField="dateProcessed" cellTemplate="dateProcessedTemplate" [caption]="'Date'"></dxi-column>
-  <dxi-column dataField="couponCode"></dxi-column>
-  <dxi-column dataField="firstName"></dxi-column>
-  <dxi-column dataField="lastName"></dxi-column>
-  <dxi-column dataField="email"></dxi-column>
-  <dxi-column dataField="paymentIntent.status" [caption]="'Status'"></dxi-column>
-  <dxi-column dataField="count" cellTemplate="itemCountTemplate"></dxi-column>
-  <dxi-column dataField="paymentIntent.amount" cellTemplate="amountTemplate" [caption]="'Amount'"></dxi-column>
+  <dxi-column dataField="tag"></dxi-column>
   <dxi-column type="buttons" caption="Actions" [allowReordering]="false">
     <dxi-button icon="edit" hint="EDIT" [onClick]="showEditModal"></dxi-button>
     <dxi-button icon="trash" hint="DELETE" [onClick]="delete"></dxi-button>
   </dxi-column>
-  <div *dxTemplate="let data of 'itemCountTemplate'">
-    {{data.data.cartItems.length}}
-  </div>
-
-  <div *dxTemplate="let data of 'amountTemplate'">
-    {{data.value / 100 | currency}}
-  </div>
-
-  <div *dxTemplate="let data of 'dateProcessedTemplate'">
-    {{data.value ? formatDate(data.value) : ''}}
-  </div>
 </dx-data-grid>
 
 <dx-popup
   [showTitle]="true"
   [dragEnabled]="false"
   [visible]="isVisible$ | async"
-  [width]="'60%'"
-  [height]="'90%'"
+  height="20%"
+  width="25%"
   [showCloseButton]="true"
   (onHiding)="onCancel()">
   <dxi-toolbar-item toolbar="top" location="center">
@@ -71,22 +64,7 @@
           [showColonAfterLabel]="false"
           labelLocation="left"
           [colCount]="2">
-          <dxi-item dataField="dateProcessed" [colSpan]="2"></dxi-item>
-          <dxi-item dataField="couponCode" [colSpan]="2"></dxi-item>
-          <dxi-item dataField="firstName" [colSpan]="2"></dxi-item>
-          <dxi-item dataField="lastName" [colSpan]="2"></dxi-item>
-          <dxi-item dataField="email" [colSpan]="2"></dxi-item>
-          <dxi-item dataField="paymentIntent.status" [label]="{text: 'Status'}"></dxi-item>
-          <dxi-item [colSpan]="2" [label]="{text: 'Item Count'}">
-            <div *dxTemplate>
-              <dx-number-box [value]="selectedItem.cartItems.length"></dx-number-box>
-            </div>
-          </dxi-item>
-          <dxi-item [colSpan]="2" [label]="{text: 'Total'}">
-            <div *dxTemplate>
-              <dx-number-box [value]="selectedItem.total" format="currency"></dx-number-box>
-            </div>
-          </dxi-item>
+          <dxi-item dataField="tag" [colSpan]="2"></dxi-item>
         </dx-form>
       </div>
       <div class="add-item-modal__button-group">

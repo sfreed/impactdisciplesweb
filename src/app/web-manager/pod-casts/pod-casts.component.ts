@@ -11,6 +11,7 @@ import { Timestamp } from 'firebase/firestore';
 import { PodCastTagsService } from 'impactdisciplescommon/src/services/pod-cast-tags.service';
 import { DxTagBoxTypes } from 'devextreme-angular/ui/tag-box';
 import { TagModel } from 'impactdisciplescommon/src/models/domain/tag.model';
+import { PodCastCategoriesService } from 'impactdisciplescommon/src/services/utils/pod-cast-categories.service';
 
 @Component({
   selector: 'app-pod-casts',
@@ -22,17 +23,17 @@ export class PodCastsComponent implements OnInit{
 
   datasource$: Observable<DataSource>;
   selectedItem: PodCastModel;
-
+  podCastCategories: TagModel[] = [];
   itemType = 'Pod Cast'
 
   public inProgress$ = new BehaviorSubject<boolean>(false)
   public isVisible$ = new BehaviorSubject<boolean>(false);
-
+  public isCategoriesVisible$ = new BehaviorSubject<boolean>(false);
   public isSingleImageVisible$ = new BehaviorSubject<boolean>(false);
 
   podCastTags: TagModel[] = [];
 
-  constructor(private service: PodCastService, private podCastTagService: PodCastTagsService) {}
+  constructor(private service: PodCastService, private podCastTagService: PodCastTagsService, private podCastCategoriesService: PodCastCategoriesService) {}
 
   async ngOnInit(): Promise<void> {
       this.datasource$ = this.service.streamAll().pipe(
@@ -55,6 +56,8 @@ export class PodCastsComponent implements OnInit{
     this.podCastTagService.streamAll().subscribe(tags => {
       this.podCastTags = tags;
     })
+
+    this.podCastCategories = await this.podCastCategoriesService.getAll();
   }
 
   showEditModal = ({ row: { data } }) => {
@@ -65,6 +68,10 @@ export class PodCastsComponent implements OnInit{
   showAddModal = () => {
     this.selectedItem = {... new PodCastModel()};
     this.isVisible$.next(true);
+  }
+
+  showCategoriesModal = () => {
+    this.isCategoriesVisible$.next(true);
   }
 
   delete = ({ row: { data } }) => {
@@ -133,6 +140,11 @@ export class PodCastsComponent implements OnInit{
     this.selectedItem = null;
     this.inProgress$.next(false);
     this.isVisible$.next(false);
+  }
+
+  onCategoriesCancel() {
+    this.inProgress$.next(false);
+    this.isCategoriesVisible$.next(false);
   }
 
   onCustomItemCreating(args: DxTagBoxTypes.CustomItemCreatingEvent) {

@@ -13,6 +13,7 @@ import { TestimonialsComponent } from './testimonials/testimonials.component';
 import { WebManagerComponent } from './web-manager.component';
 import { SharedModule } from '../shared/shared.module';
 import { BlogCategoriesComponent } from './blog-categories/blog-categories.component';
+import { PodCastCategoriesComponent } from './pod-cast-categories/pod-cast-categories.component';
 
 
 @NgModule({
@@ -41,7 +42,8 @@ import { BlogCategoriesComponent } from './blog-categories/blog-categories.compo
     BlogPostsComponent,
     PodCastsComponent,
     TestimonialsComponent,
-    BlogCategoriesComponent
+    BlogCategoriesComponent,
+    PodCastCategoriesComponent
   ],
   providers:[
     PhoneNumberMaskPipe

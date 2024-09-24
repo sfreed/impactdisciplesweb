@@ -1,38 +1,30 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { BehaviorSubject, map, Observable } from 'rxjs';
+import notify from 'devextreme/ui/notify';
+import { confirm } from 'devextreme/ui/dialog';
 import { DxFormComponent } from 'devextreme-angular';
 import CustomStore from 'devextreme/data/custom_store';
 import DataSource from 'devextreme/data/data_source';
-import notify from 'devextreme/ui/notify';
-import { confirm } from 'devextreme/ui/dialog';
-import { CheckoutForm } from 'impactdisciplescommon/src/models/utils/cart.model';
-import { ProductModel } from 'impactdisciplescommon/src/models/utils/product.model';
-import { SalesService } from 'impactdisciplescommon/src/services/utils/sales.service';
-import { Observable, BehaviorSubject, map } from 'rxjs';
-import { dateFromTimestamp } from 'impactdisciplescommon/src/utils/date-from-timestamp';
+import { TagModel } from 'impactdisciplescommon/src/models/domain/tag.model';
+import { PodCastCategoriesService } from 'impactdisciplescommon/src/services/utils/pod-cast-categories.service';
 
 @Component({
-  selector: 'app-sales',
-  templateUrl: './sales.component.html',
-  styleUrls: ['./sales.component.css']
+  selector: 'app-pod-cast-categories',
+  templateUrl: './pod-cast-categories.component.html',
+  styleUrls: ['./pod-cast-categories.component.css']
 })
-export class SalesComponent implements OnInit {
+export class PodCastCategoriesComponent implements OnInit {
   @ViewChild('addEditForm', { static: false }) addEditForm: DxFormComponent;
 
   datasource$: Observable<DataSource>;
-  selectedItem: CheckoutForm;
+  selectedItem: TagModel;
 
-  itemType = 'Sale';
+  itemType = 'Categories';
 
   public inProgress$ = new BehaviorSubject<boolean>(false)
   public isVisible$ = new BehaviorSubject<boolean>(false);
 
-  public isSingleImageVisible$ = new BehaviorSubject<boolean>(false);
-
-  productTags: any[] = [];
-
-  series: any[] = [];
-
-  constructor(private service: SalesService) {}
+  constructor(private service: PodCastCategoriesService) {}
 
   ngOnInit() {
     this.datasource$ = this.service.streamAll().pipe(
@@ -53,14 +45,15 @@ export class SalesComponent implements OnInit {
     );
   }
 
-  showEditModal = ({ row: { data } }) => {
+  showEditModal = async ({ row: { data } }) => {
     this.selectedItem = (Object.assign({}, data));
 
     this.isVisible$.next(true);
+
   }
 
   showAddModal = () => {
-    this.selectedItem = {... new ProductModel()};
+    this.selectedItem = {... new TagModel()};
 
     this.isVisible$.next(true);
   }
@@ -80,7 +73,7 @@ export class SalesComponent implements OnInit {
     });
   }
 
-  onSave(item: CheckoutForm) {
+  onSave(item: TagModel) {
     if(this.addEditForm.instance.validate().isValid) {
       this.inProgress$.next(true);
       if(item.id) {
@@ -131,10 +124,5 @@ export class SalesComponent implements OnInit {
     this.selectedItem = null;
     this.inProgress$.next(false);
     this.isVisible$.next(false);
-  }
-
-
-  formatDate(time: number){
-    return (dateFromTimestamp(time) as Date).toDateString();
   }
 }

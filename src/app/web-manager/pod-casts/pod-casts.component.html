@@ -9,6 +9,17 @@
       location="after"
       widget="dxButton"
       [options]="{
+        hint: 'MANAGE CATEGORIES',
+        type: 'default',
+        text: 'MANAGE CATEGORIES',
+        stylingMode: 'contained',
+        onClick: showCategoriesModal
+      }">
+    </dxi-item>
+    <dxi-item
+      location="after"
+      widget="dxButton"
+      [options]="{
         hint: 'ADD ' + itemType | uppercase,
         type: 'default',
         text: 'ADD ' + itemType | uppercase,
@@ -35,6 +46,9 @@
   <dxi-column dataField="thumbnail" [width]="120" cellTemplate="cellTemplate"></dxi-column>
   <dxi-column dataField="title"></dxi-column>
   <dxi-column dataField="date" [dataType]="'datetime'"></dxi-column>
+  <dxi-column dataField="category">
+    <dxo-lookup [dataSource]="podCastCategories" [displayExpr]="'tag'" [valueExpr]="'id'"></dxo-lookup>
+  </dxi-column>
   <dxi-column dataField="videoType" [visible]="false"></dxi-column>
   <dxi-column dataField="videoId" [visible]="false"></dxi-column>
   <dxi-column dataField="tags" [visible]="false">
@@ -70,8 +84,14 @@
     <div class="add-item-modal">
       <div class="add-item-modal__content" *ngIf="isVisible$ | async">
         <dx-form [colCount]="2" [(formData)]="selectedItem">
+          <dxi-item dataField="date" [editorType]="'dxDateBox'" [isRequired]="true" [colSpan]="1"></dxi-item>
+          <dxi-item dataField="category" [colSpan]="1">
+            <div *dxTemplate>
+              <dx-select-box [(value)]="selectedItem.category" [dataSource]="podCastCategories" [displayExpr]="'tag'" [valueExpr]="'id'" [showClearButton]="true"></dx-select-box>
+            </div>
+          </dxi-item>
           <dxi-item dataField="title" [colSpan]="2"></dxi-item>
-          <dxi-item dataField="thumbnail.name" [colSpan]="2" [label]="'Image Name'" [disabled]="true"></dxi-item>
+          <dxi-item dataField="thumbnail.name" [colSpan]="2" [label]="{text: 'Image Name'}" [disabled]="true"></dxi-item>
           <dxi-item dataField="videoType" [colSpan]="1">
             <div *dxTemplate>
               <dx-select-box
@@ -81,25 +101,21 @@
             </div>
           </dxi-item>
           <dxi-item dataField="videoId" [colSpan]="1"></dxi-item>
-          <dxi-item dataField="thumbnail.name" [colSpan]="2"></dxi-item>
+          <dxi-item [colSpan]="2" [label]="{text: 'Tags'}">
+            <div *dxTemplate>
+              <dx-tag-box
+                [dataSource]="podCastTags"
+                [(value)]="selectedItem.tags"
+                [displayExpr]="'tag'"
+                [acceptCustomValue]="true"
+                [searchEnabled]="true"
+                [hideSelectedItems]="true"
+                placeholder="Tag this Pod Cast..."
+                (onCustomItemCreating)="onCustomItemCreating($event)">
+              </dx-tag-box>
+            </div>
+          </dxi-item>
         </dx-form>
-        <div class="row pt-1">
-          <div class="col-12"><b>Tags</b></div>
-        </div>
-        <div class="row pt-2">
-          <div class="col-12">
-            <dx-tag-box
-              [dataSource]="podCastTags"
-              [(value)]="selectedItem.tags"
-              [displayExpr]="'tag'"
-              [acceptCustomValue]="true"
-              [searchEnabled]="true"
-              [hideSelectedItems]="true"
-              placeholder="Tag this Pod Cast..."
-              (onCustomItemCreating)="onCustomItemCreating($event)">
-            </dx-tag-box>
-          </div>
-        </div>
       </div>
       <div class="add-item-modal__button-group pb-2">
         <dx-button
@@ -138,3 +154,14 @@
     (imageSelectClosed)="closeSingleImageModal()">
   </app-image-uploader>
 </ng-container>
+
+<dx-popup
+  [showTitle]="true"
+  [dragEnabled]="false"
+  [visible]="isCategoriesVisible$ | async"
+  [width]="'30%'"
+  [height]="'60%'"
+  [showCloseButton]="true"
+  (onHiding)="onCategoriesCancel()">
+  <app-pod-cast-categories (seriesSelectClosed)="onCategoriesCancel()"></app-pod-cast-categories>
+</dx-popup>

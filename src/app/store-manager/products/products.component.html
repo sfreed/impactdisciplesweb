@@ -193,12 +193,7 @@
 
           </dxi-item>
           <dxi-item dataField="imageUrl.name" [colSpan]="2" [label]="{ text: 'Image Name' }" [disabled]="true"></dxi-item>
-        </dx-form>
-        <div class="row pt-1">
-          <div class="col-12"><b>Tags</b></div>
-        </div>
-        <div class="row pt-2">
-          <div class="col-12">
+          <dxi-item [colSpan]="2" [label]="{ text: 'Tags' }">
             <dx-tag-box
               [dataSource]="productTags"
               [(value)]="selectedItem.tags"
@@ -209,8 +204,8 @@
               placeholder="Tag this Product..."
               (onCustomItemCreating)="onCustomItemCreating($event)">
             </dx-tag-box>
-          </div>
-        </div>
+          </dxi-item>
+        </dx-form>
       </div>
       <div class="add-item-modal__button-group">
         <dx-button
