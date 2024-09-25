@@ -76,6 +76,23 @@ export class EventAgendaComponent implements OnInit{
     const that = this;
     const form = data.form;
     form.option().items = [{
+      dataField: 'startDate',
+      colSpan: 1,
+      editorType: 'dxDateBox',
+      editorOptions: {
+        width: '100%',
+        type: 'datetime'
+      },
+    }, {
+      name: 'endDate',
+      colSpan: 1,
+      dataField: 'endDate',
+      editorType: 'dxDateBox',
+      editorOptions: {
+        width: '100%',
+        type: 'datetime',
+      },
+    }, {
       label: {
         text: 'Create Course?',
       },
@@ -148,6 +165,23 @@ export class EventAgendaComponent implements OnInit{
     form.option().colCount = 2;
 
     form.option().items = [{
+      dataField: 'startDate',
+      colSpan: 1,
+      editorType: 'dxDateBox',
+      editorOptions: {
+        width: '100%',
+        type: 'datetime'
+      },
+    }, {
+      name: 'endDate',
+      colSpan: 1,
+      dataField: 'endDate',
+      editorType: 'dxDateBox',
+      editorOptions: {
+        width: '100%',
+        type: 'datetime',
+      },
+    }, {
       label: {
         text: 'Create Course?',
       },
