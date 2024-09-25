@@ -91,10 +91,10 @@
           <dxi-item itemType="tabbed">
             <dxi-tab title="Info">
               <dxi-item itemType="group" [colCount]="2" [colSpan]="1">
-              <dxi-item dataField="firstName" [colSpan]="1"></dxi-item>
-              <dxi-item dataField="lastName" [colSpan]="1"></dxi-item>
-              <dxi-item dataField="email" [colSpan]="1"></dxi-item>
-              <dxi-item [label]="{ text: 'Roles' }">
+              <dxi-item dataField="firstName" [colSpan]="1" [isRequired]="true"></dxi-item>
+              <dxi-item dataField="lastName" [colSpan]="1" [isRequired]="true"></dxi-item>
+              <dxi-item dataField="email" [colSpan]="1" [isRequired]="true"></dxi-item>
+              <dxi-item [label]="{ text: 'Roles' }" [isRequired]="true">
                 <div *dxTemplate>
                   <dx-select-box
                     [items]="roles"

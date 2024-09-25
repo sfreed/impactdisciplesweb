@@ -70,19 +70,21 @@
           [showColonAfterLabel]="false"
           labelLocation="left"
           [colCount]="4">
-          <dxi-item dataField="code" [colSpan]="2"></dxi-item>
+          <dxi-item dataField="code" [colSpan]="2" [isRequired]="true"></dxi-item>
           <dxi-item dataField="isActive" [colSpan]="1" [editorType]="'dxSwitch'" [editorOptions]="{ switchedOnText: 'Yes', switchedOffText: 'No' }"></dxi-item>
           <dxi-item dataField="isAffilliate" [colSpan]="1" [editorType]="'dxSwitch'" [editorOptions]="{ switchedOnText: 'Yes', switchedOffText: 'No' }"></dxi-item>
           <dxi-item dataField="affilliateName" [visible]="selectedItem.isAffilliate" [colSpan]="2"></dxi-item>
           <dxi-item dataField="affiliatePaypalAccount" [visible]="selectedItem.isAffilliate" [colSpan]="2"></dxi-item>
-          <dxi-item dataField="percentOff" [colSpan]="2">
+          <dxi-item dataField="percentOff" [colSpan]="2" [isRequired]="!selectedItem.dollarsOff">
             <div *dxTemplate>
-              <dx-number-box [(value)]="selectedItem.percentOff"></dx-number-box>
+              <dx-number-box [(value)]="selectedItem.percentOff">
+              </dx-number-box>
             </div>
           </dxi-item>
-          <dxi-item dataField="dollarsOff" [colSpan]="2">
+          <dxi-item dataField="dollarsOff" [colSpan]="2" [isRequired]="!selectedItem.percentOff">
             <div *dxTemplate>
-              <dx-number-box [(value)]="selectedItem.dollarsOff" [format]="'currency'"></dx-number-box>
+              <dx-number-box [(value)]="selectedItem.dollarsOff" [format]="'currency'">
+              </dx-number-box>
             </div>
           </dxi-item>
           <dxi-item [label]="{ text: 'Event Tags' }" [colSpan]="4">

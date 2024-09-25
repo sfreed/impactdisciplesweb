@@ -65,8 +65,8 @@
           [(formData)]="selectedItem"
           [showColonAfterLabel]="false"
           labelLocation="left">
-          <dxi-item dataField="name" [colSpan]="1"></dxi-item>
-          <dxi-item dataField="subject" [colSpan]="1"></dxi-item>
+          <dxi-item dataField="name" [colSpan]="1" [isRequired]="true"></dxi-item>
+          <dxi-item dataField="subject" [colSpan]="1" [isRequired]="true"></dxi-item>
         </dx-form>
         <dx-html-editor height="100%" [(value)]="selectedItem.html">
           <dxo-toolbar [multiline]="false">

@@ -5,7 +5,8 @@ import { UsersComponent } from './users/users.component';
 import { DxButtonModule, DxDataGridModule, DxFileUploaderModule, DxFormModule, DxHtmlEditorModule, DxListModule, DxLoadIndicatorModule,
          DxNumberBoxModule,
          DxPopupModule, DxSelectBoxModule, DxSwitchModule, DxTabsModule, DxTagBoxModule, DxTextBoxModule,
-         DxToolbarModule} from 'devextreme-angular';
+         DxToolbarModule,
+         DxValidatorModule} from 'devextreme-angular';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { CouponsComponent } from './coupons/coupons.component';
 import { WebConfigComponent } from './web-config/web-config.component';
@@ -36,6 +37,7 @@ import { EmailTemplatesComponent } from './email-templates/email-templates.compo
     DxTagBoxModule,
     DxTextBoxModule,
     DxToolbarModule,
+    DxValidatorModule,
     ImpactDisciplesModule,
     SharedModule
   ],

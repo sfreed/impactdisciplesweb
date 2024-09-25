@@ -213,4 +213,13 @@ export class CouponsComponent implements OnInit{
   formatDate(time: number){
     return (dateFromTimestamp(time) as Date).toDateString();
   }
+
+  validateCouponValue(e){
+    console.log(e)
+    if(!e.data.percentOff && !e.data.dollarsOff){
+      return false;
+    }
+
+    return true;
+  }
 }
