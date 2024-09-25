@@ -76,7 +76,12 @@
             labelLocation="left">
             <dxi-item itemType="tabbed">
               <dxi-tab title="Info" [colCount]="2">
-                <dxi-item dataField="eventName" [colSpan]="2" [label]="{ text: 'Event Name' }"></dxi-item>
+                <dxi-item dataField="eventName" [colSpan]="1" [label]="{ text: 'Event Name' }"></dxi-item>
+                <dxi-item [colSpan]="1" [label]="{ text: 'Email Template' }">
+                  <div *dxTemplate>
+                    <dx-select-box [(value)]="selectedItem.emailTemplate" [dataSource]="emailTemplates"></dx-select-box>
+                  </div>
+                </dxi-item>
                 <dxi-item
                   dataField="startDate"
                   editorType="dxDateBox"

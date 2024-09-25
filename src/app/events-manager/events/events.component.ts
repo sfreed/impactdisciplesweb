@@ -14,6 +14,7 @@ import { confirm } from 'devextreme/ui/dialog';
 import { Actions, ofActionSuccessful, Store } from '@ngxs/store';
 import { LocationSaved, ShowLocationModal } from 'src/app/shared/location-modal/location-modal.actions';
 import { OrganizationSaved, ShowOrganizationModal } from 'src/app/shared/organization-modal/organization-modal.actions';
+import { EMailTemplatesService } from 'impactdisciplescommon/src/services/admin/email-templates.service';
 
 @Component({
   selector: 'app-events',
@@ -28,10 +29,10 @@ export class EventsComponent implements OnInit, OnDestroy {
   organizations$: Observable<OrganizationModel[]>;
   locations$: Observable<LocationModel[]>;
   datasource$: Observable<DataSource>;
-  selectedItem: EventModel = {};
+  selectedItem: EventModel;
   itemType = 'Event';
   selectedLocation = [];
-
+  emailTemplates: string[] = []
 
   public isOrganizationModalVisible$ = new BehaviorSubject<boolean>(false);
   public isLocationModalVisible$ = new BehaviorSubject<boolean>(false);
@@ -41,9 +42,15 @@ export class EventsComponent implements OnInit, OnDestroy {
 
   private ngUnsubscribe = new Subject<void>();
 
-  constructor(private cd: ChangeDetectorRef, private store: Store, private actions$: Actions, public eventService: EventService, private organizationService: OrganizationService, private locationService: LocationService){}
+  constructor(private cd: ChangeDetectorRef,
+    private store: Store,
+    private actions$: Actions,
+    public eventService: EventService,
+    private organizationService: OrganizationService,
+    private locationService: LocationService,
+    private emailTemplateService: EMailTemplatesService){}
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.organizations$ = this.organizationService.streamAll();
     this.locations$ = this.locationService.streamAll();
     this.datasource$ = this.eventService.streamAll().pipe(
@@ -66,6 +73,12 @@ export class EventsComponent implements OnInit, OnDestroy {
     this.actions$.pipe(ofActionSuccessful(OrganizationSaved), takeUntil(this.ngUnsubscribe)).subscribe(({ organization }) => {
       const selectedOrganizationEvent = { itemData: organization };
       this.selectOrganization(selectedOrganizationEvent);
+    })
+
+    this.emailTemplates = await this.emailTemplateService.getAll().then(templates => {
+      let list = [];
+      templates.forEach(template => list.push(template.name))
+      return list;
     })
   }
 

@@ -21,8 +21,8 @@
 
   <dxo-scrolling mode="virtual"></dxo-scrolling>
   <dxo-filter-row [visible]="true"></dxo-filter-row>
-
-  <dxi-column dataField="dateProcessed" cellTemplate="dateProcessedTemplate" [caption]="'Date'"></dxi-column>
+  <dxi-column dataField="id"></dxi-column>
+  <dxi-column dataField="dateProcessed" cellTemplate="dateProcessedTemplate" [caption]="'Date'" [sortOrder]="1"></dxi-column>
   <dxi-column dataField="couponCode"></dxi-column>
   <dxi-column dataField="firstName"></dxi-column>
   <dxi-column dataField="lastName"></dxi-column>
