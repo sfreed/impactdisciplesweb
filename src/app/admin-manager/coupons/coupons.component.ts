@@ -5,7 +5,7 @@ import DataSource from 'devextreme/data/data_source';
 import notify from 'devextreme/ui/notify';
 import { CouponModel } from 'impactdisciplescommon/src/models/utils/coupon.model';
 import { CouponService } from 'impactdisciplescommon/src/services/utils/coupon.service';
-import { BehaviorSubject, Observable, map } from 'rxjs';
+import { BehaviorSubject, Observable, map, merge, toArray } from 'rxjs';
 import { confirm } from 'devextreme/ui/dialog';
 import { EventService } from 'impactdisciplescommon/src/services/event.service';
 import { AffilliateSalesService } from 'impactdisciplescommon/src/services/utils/affiliate-sales.service';
@@ -15,6 +15,7 @@ import { Timestamp } from 'firebase/firestore';
 import { AffilliatePaymentsService } from 'impactdisciplescommon/src/services/utils/affiliate-payment.service';
 import { AffilliatePaymentModel } from 'impactdisciplescommon/src/models/utils/affilliate-payment.model';
 import { TagModel } from 'impactdisciplescommon/src/models/domain/tag.model';
+import { ProductService } from 'impactdisciplescommon/src/services/utils/product.service';
 
 @Component({
   selector: 'app-coupons',
@@ -32,7 +33,7 @@ export class CouponsComponent implements OnInit{
   public inProgress$ = new BehaviorSubject<boolean>(false)
   public isVisible$ = new BehaviorSubject<boolean>(false);
 
-  eventTags: TagModel[] = [];
+  couponTags: TagModel[] = [];
   affilliateSales: Observable<AffilliateSaleModel[]>;
   affilliatePayments: Observable<AffilliatePaymentModel[]>;
 
@@ -40,6 +41,7 @@ export class CouponsComponent implements OnInit{
 
   constructor(private service: CouponService,
     private eventService: EventService,
+    private productService: ProductService,
     private affiliateSalesService: AffilliateSalesService,
     private affilliatePaymentService: AffilliatePaymentsService) {}
 
@@ -61,9 +63,13 @@ export class CouponsComponent implements OnInit{
       )
     );
 
-    this.eventService.streamAll().subscribe(events => {
-      events.forEach(event => this.eventTags.push({id: event.id, tag: event.eventName}));
-      return events;
+    let list = merge(
+      this.eventService.streamAll(),
+      this.productService.streamAll()
+    )
+
+    list.subscribe(items => {
+      items.forEach(item => this.couponTags.push({id: item.id, tag: item.title? item.title : item.eventName}));
     });
   }
 

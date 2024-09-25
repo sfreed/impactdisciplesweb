@@ -38,7 +38,7 @@
   <dxi-column dataField="percentOff" dataType="number"></dxi-column>
   <dxi-column dataField="dollarsOff" dataType="number" format="currency"></dxi-column>
   <dxi-column dataField="tags">
-    <dxo-lookup [dataSource]="eventTags" [allowClearing]="true" [displayExpr]="'tag'" [valueExpr]="'id'"></dxo-lookup>
+    <dxo-lookup [dataSource]="couponTags" [allowClearing]="true" [displayExpr]="'tag'" [valueExpr]="'id'"></dxo-lookup>
   </dxi-column>
   <dxi-column type="buttons" caption="Actions" [allowReordering]="false">
     <dxi-button icon="edit" hint="EDIT" [onClick]="showEditModal"></dxi-button>
@@ -91,10 +91,10 @@
               </dx-number-box>
             </div>
           </dxi-item>
-          <dxi-item [label]="{ text: 'Event Tags' }" [colSpan]="4">
+          <dxi-item [label]="{ text: 'Item Tags' }" [colSpan]="4">
             <div *dxTemplate>
               <dx-tag-box
-                [dataSource]="eventTags"
+                [dataSource]="couponTags"
                 [(value)]="selectedItem.tags"
                 [displayExpr]="'tag'"
                 [searchEnabled]="true"
