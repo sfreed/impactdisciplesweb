@@ -32,6 +32,7 @@
   <dxo-scrolling mode="virtual"></dxo-scrolling>
   <dxo-filter-row [visible]="true"></dxo-filter-row>
 
+  <dxi-column dataField="isActive" dataType="boolean" [width]="60" [caption]="'Active'"></dxi-column>
   <dxi-column dataField="startDate" [caption]="'From'" [dataType]="'datetime'"></dxi-column>
   <dxi-column dataField="endDate" [caption]="'To'" [dataType]="'datetime'"></dxi-column>
   <dxi-column dataField="costInDollars" [caption]="'Cost'" format="currency"></dxi-column>
@@ -63,6 +64,11 @@
       <p class="popup-title">
         {{ selectedItem?.id ? 'EDIT' : 'ADD' }} {{itemType | uppercase}}
       </p>
+    </div>
+  </dxi-toolbar-item>
+  <dxi-toolbar-item toolbar="top" location="after" *ngIf="isVisible$ | async">
+    <div *dxTemplate>
+      <dx-switch [(value)]="selectedItem.isActive" [switchedOnText]="'Live'" [switchedOffText]="'Hidden'" [width]="100"></dx-switch>
     </div>
   </dxi-toolbar-item>
   <div *dxTemplate="let data of 'content'">

@@ -67,6 +67,7 @@ export class PodCastsComponent implements OnInit{
 
   showAddModal = () => {
     this.selectedItem = {... new PodCastModel()};
+    this.selectedItem.date = Timestamp.now();
     this.isVisible$.next(true);
   }
 
@@ -90,9 +91,8 @@ export class PodCastsComponent implements OnInit{
   }
 
   onSave(item: PodCastModel) {
-    item.date = Timestamp.now();
-
     this.inProgress$.next(true);
+
     if(item.id) {
       this.service.update(item.id, item).then((item) => {
         if(item) {

@@ -43,6 +43,7 @@
   <dxo-scrolling mode="virtual"></dxo-scrolling>
   <dxo-filter-row [visible]="true"></dxo-filter-row>
 
+  <dxi-column dataField="isActive" dataType="boolean" [width]="60" [caption]="'Active'"></dxi-column>
   <dxi-column dataField="thumbnail" [width]="120" cellTemplate="cellTemplate"></dxi-column>
   <dxi-column dataField="title"></dxi-column>
   <dxi-column dataField="date" [dataType]="'datetime'"></dxi-column>
@@ -71,13 +72,17 @@
   [width]="'60%'"
   [height]="'60%'"
   [showCloseButton]="true"
-  (onHiding)="onCancel()"
->
-  <dxi-toolbar-item toolbar="top" location="center">
+  (onHiding)="onCancel()">
+  <dxi-toolbar-item toolbar="top" location="center" *ngIf="isVisible$ | async">
     <div *dxTemplate>
       <p class="popup-title">
         {{ selectedItem?.id ? 'EDIT' : 'ADD' }} {{itemType | uppercase}}
       </p>
+    </div>
+  </dxi-toolbar-item>
+  <dxi-toolbar-item toolbar="top" location="after">
+    <div *dxTemplate>
+      <dx-switch [(value)]="selectedItem.isActive" [switchedOnText]="'Live'" [switchedOffText]="'Hidden'" [width]="100"></dx-switch>
     </div>
   </dxi-toolbar-item>
   <div *dxTemplate="let data of 'content'">

@@ -32,6 +32,7 @@
   <dxo-paging [pageSize]="10"></dxo-paging>
   <dxo-scrolling mode="virtual"></dxo-scrolling>
 
+  <dxi-column dataField="isActive" dataType="boolean" [width]="60" [caption]="'Active'"></dxi-column>
   <dxi-column dataField="author"></dxi-column>
   <dxi-column dataField="date" [dataType]="'date'"></dxi-column>
   <dxi-column dataField="title"></dxi-column>
@@ -59,6 +60,11 @@
       <p class="popup-title">
         {{ selectedItem?.id ? 'EDIT' : 'ADD' }} {{itemType | uppercase}}
       </p>
+    </div>
+  </dxi-toolbar-item>
+  <dxi-toolbar-item toolbar="top" location="after" *ngIf="isVisible$ | async">
+    <div *dxTemplate>
+      <dx-switch [(value)]="selectedItem.isActive" [switchedOnText]="'Live'" [switchedOffText]="'Hidden'" [width]="100"></dx-switch>
     </div>
   </dxi-toolbar-item>
   <div *dxTemplate="let data of 'content'">

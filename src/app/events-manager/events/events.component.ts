@@ -179,7 +179,7 @@ export class EventsComponent implements OnInit, OnDestroy {
   }
 
   onCancel() {
-    this.selectedItem = {};
+    this.selectedItem = undefined;
     this.inProgress$.next(false);
     this.isVisible$.next(false);
   }

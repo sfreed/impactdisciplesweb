@@ -11,6 +11,7 @@ import { BlogTagsService } from 'impactdisciplescommon/src/services/blog-tags.se
 import { BehaviorSubject, map, Observable } from 'rxjs';
 import { confirm } from 'devextreme/ui/dialog';
 import { BlogCategoriesService } from 'impactdisciplescommon/src/services/utils/blog-categories.service';
+import { Timestamp } from 'firebase/firestore';
 
 @Component({
   selector: 'app-blog-posts',
@@ -64,6 +65,7 @@ export class BlogPostsComponent implements OnInit {
 
   showAddModal = () => {
     this.selectedItem = {... new BlogPostModel()};
+    this.selectedItem.date = Timestamp.now();
     this.isVisible$.next(true);
   }
 
@@ -88,6 +90,7 @@ export class BlogPostsComponent implements OnInit {
 
   onSave(item: BlogPostModel) {
     this.inProgress$.next(true);
+
     if(item.id) {
       this.service.update(item.id, item).then((item) => {
         if(item) {
