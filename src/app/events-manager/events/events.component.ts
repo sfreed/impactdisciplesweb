@@ -88,7 +88,7 @@ export class EventsComponent implements OnInit, OnDestroy {
   }
 
   showAddModal = () => {
-    this.selectedItem.isSummit = false;
+    this.selectedItem = {... new EventModel()};
     this.isVisible$.next(true);
   }
 

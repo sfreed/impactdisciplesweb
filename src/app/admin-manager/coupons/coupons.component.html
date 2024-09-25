@@ -33,8 +33,8 @@
   <dxo-scrolling mode="virtual"></dxo-scrolling>
   <dxo-filter-row [visible]="true"></dxo-filter-row>
 
+  <dxi-column dataField="isActive" dataType="boolean" [width]="60" [caption]="'Active'"></dxi-column>
   <dxi-column dataField="code"></dxi-column>
-  <dxi-column dataField="isActive" dataType="boolean"></dxi-column>
   <dxi-column dataField="percentOff" dataType="number"></dxi-column>
   <dxi-column dataField="dollarsOff" dataType="number" format="currency"></dxi-column>
   <dxi-column dataField="tags">
@@ -61,6 +61,11 @@
       </p>
     </div>
   </dxi-toolbar-item>
+  <dxi-toolbar-item toolbar="top" location="after" *ngIf="isVisible$ | async">
+    <div *dxTemplate>
+      <dx-switch [(value)]="selectedItem.isActive" [switchedOnText]="'Live'" [switchedOffText]="'Hidden'" [width]="100"></dx-switch>
+    </div>
+  </dxi-toolbar-item>
   <div *dxTemplate="let data of 'content'">
     <div class="add-item-modal">
       <div class="add-item-modal__content" *ngIf="isVisible$ | async">
@@ -71,8 +76,7 @@
           labelLocation="left"
           [colCount]="4">
           <dxi-item dataField="code" [colSpan]="2" [isRequired]="true"></dxi-item>
-          <dxi-item dataField="isActive" [colSpan]="1" [editorType]="'dxSwitch'" [editorOptions]="{ switchedOnText: 'Yes', switchedOffText: 'No' }"></dxi-item>
-          <dxi-item dataField="isAffilliate" [colSpan]="1" [editorType]="'dxSwitch'" [editorOptions]="{ switchedOnText: 'Yes', switchedOffText: 'No' }"></dxi-item>
+          <dxi-item dataField="isAffilliate" [colSpan]="2" [editorType]="'dxSwitch'" [editorOptions]="{ switchedOnText: 'Yes', switchedOffText: 'No' }"></dxi-item>
           <dxi-item dataField="affilliateName" [visible]="selectedItem.isAffilliate" [colSpan]="2"></dxi-item>
           <dxi-item dataField="affiliatePaypalAccount" [visible]="selectedItem.isAffilliate" [colSpan]="2"></dxi-item>
           <dxi-item dataField="percentOff" [colSpan]="2" [isRequired]="!selectedItem.dollarsOff">

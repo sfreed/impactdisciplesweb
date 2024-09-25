@@ -33,6 +33,7 @@
   <dxo-filter-row [visible]="true"></dxo-filter-row>
   <dxo-scrolling mode="virtual"></dxo-scrolling>
 
+  <dxi-column dataField="isActive" dataType="boolean" [width]="60" [caption]="'Active'"></dxi-column>
   <dxi-column dataField="photoUrl" [width]="100" [caption]="'Picture'" [allowFiltering]="false" [allowSorting]="false" cellTemplate="imageCellTemplate"></dxi-column>
   <dxi-column dataField="firstName" [caption]="'First'"></dxi-column>
   <dxi-column dataField="lastName" [caption]="'Last'"></dxi-column>
@@ -80,6 +81,11 @@
       <p class="popup-title">
         {{ selectedItem?.id ? 'EDIT' : 'ADD' }} {{itemType | uppercase}}
       </p>
+    </div>
+  </dxi-toolbar-item>
+  <dxi-toolbar-item toolbar="top" location="after" *ngIf="isVisible$ | async">
+    <div *dxTemplate>
+      <dx-switch [(value)]="selectedItem.isActive" [switchedOnText]="'Live'" [switchedOffText]="'Hidden'" [width]="100"></dx-switch>
     </div>
   </dxi-toolbar-item>
   <div *dxTemplate="let data of 'content'">
