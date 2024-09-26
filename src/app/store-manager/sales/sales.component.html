@@ -22,11 +22,12 @@
   <dxo-scrolling mode="virtual"></dxo-scrolling>
   <dxo-filter-row [visible]="true"></dxo-filter-row>
   <dxi-column dataField="id"></dxi-column>
-  <dxi-column dataField="dateProcessed" cellTemplate="dateProcessedTemplate" [caption]="'Date'" [sortOrder]="1"></dxi-column>
+  <dxi-column dataField="dateProcessed" [dataType]="'datetime'"></dxi-column>
   <dxi-column dataField="couponCode"></dxi-column>
   <dxi-column dataField="firstName"></dxi-column>
   <dxi-column dataField="lastName"></dxi-column>
   <dxi-column dataField="email"></dxi-column>
+  <dxi-column dataField="receipt"></dxi-column>
   <dxi-column dataField="paymentIntent.status" [caption]="'Status'"></dxi-column>
   <dxi-column dataField="count" cellTemplate="itemCountTemplate"></dxi-column>
   <dxi-column dataField="paymentIntent.amount" cellTemplate="amountTemplate" [caption]="'Amount'"></dxi-column>
@@ -40,10 +41,6 @@
 
   <div *dxTemplate="let data of 'amountTemplate'">
     {{data.value / 100 | currency}}
-  </div>
-
-  <div *dxTemplate="let data of 'dateProcessedTemplate'">
-    {{data.value ? formatDate(data.value) : ''}}
   </div>
 </dx-data-grid>
 

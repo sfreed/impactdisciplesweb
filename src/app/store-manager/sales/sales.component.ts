@@ -132,9 +132,4 @@ export class SalesComponent implements OnInit {
     this.inProgress$.next(false);
     this.isVisible$.next(false);
   }
-
-
-  formatDate(time: number){
-    return (dateFromTimestamp(time) as Date).toDateString();
-  }
 }
