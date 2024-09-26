@@ -8,7 +8,6 @@ import { CheckoutForm } from 'impactdisciplescommon/src/models/utils/cart.model'
 import { ProductModel } from 'impactdisciplescommon/src/models/utils/product.model';
 import { SalesService } from 'impactdisciplescommon/src/services/utils/sales.service';
 import { Observable, BehaviorSubject, map } from 'rxjs';
-import { dateFromTimestamp } from 'impactdisciplescommon/src/utils/date-from-timestamp';
 
 @Component({
   selector: 'app-sales',

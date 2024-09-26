@@ -21,27 +21,35 @@
 
   <dxo-scrolling mode="virtual"></dxo-scrolling>
   <dxo-filter-row [visible]="true"></dxo-filter-row>
-  <dxi-column dataField="id"></dxi-column>
+  <dxi-column dataField="id" [visible]="false"></dxi-column>
   <dxi-column dataField="dateProcessed" [dataType]="'datetime'"></dxi-column>
-  <dxi-column dataField="couponCode"></dxi-column>
   <dxi-column dataField="firstName"></dxi-column>
   <dxi-column dataField="lastName"></dxi-column>
   <dxi-column dataField="email"></dxi-column>
-  <dxi-column dataField="receipt"></dxi-column>
-  <dxi-column dataField="paymentIntent.status" [caption]="'Status'"></dxi-column>
+  <dxi-column dataField="receipt" cellTemplate="receiptTemplate"></dxi-column>
   <dxi-column dataField="count" cellTemplate="itemCountTemplate"></dxi-column>
-  <dxi-column dataField="paymentIntent.amount" cellTemplate="amountTemplate" [caption]="'Amount'"></dxi-column>
+  <dxi-column dataField="totalBeforeDiscount" [caption]="'Total'" format="currency"></dxi-column>
+  <dxi-column dataField="couponCode"></dxi-column>
+  <dxi-column dataField="paymentIntent.amount" cellTemplate="amountTemplate" [caption]="'Charged'"></dxi-column>
   <dxi-column type="buttons" caption="Actions" [allowReordering]="false">
     <dxi-button icon="edit" hint="EDIT" [onClick]="showEditModal"></dxi-button>
     <dxi-button icon="trash" hint="DELETE" [onClick]="delete"></dxi-button>
   </dxi-column>
+
+  <div *dxTemplate="let data of 'receiptTemplate'">
+    {{data.data?.paymentIntent?.id ? data.data.paymentIntent.id : data.data.paymentIntent }}
+  </div>
+
+
   <div *dxTemplate="let data of 'itemCountTemplate'">
     {{data.data.cartItems.length}}
   </div>
 
   <div *dxTemplate="let data of 'amountTemplate'">
-    {{data.value / 100 | currency}}
+    {{data.value > 0 ? (data.value / 100 | currency) : (0 | currency)}}
   </div>
+
+
 </dx-data-grid>
 
 <dx-popup
