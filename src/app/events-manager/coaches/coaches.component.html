@@ -100,10 +100,10 @@
             <dxi-item itemType="tabbed">
               <dxi-tab title="About">
                 <dxi-item itemType="group" caption="Coach" [colCount]="4" [colSpan]="1">
-                  <dxi-item dataField="firstName" [colSpan]="2"></dxi-item>
-                  <dxi-item dataField="lastName" [colSpan]="2"></dxi-item>
-                  <dxi-item dataField="title" [colSpan]="2"></dxi-item>
-                  <dxi-item dataField="organization" [colSpan]="2">
+                  <dxi-item dataField="firstName" [colSpan]="2" [isRequired]="true"></dxi-item>
+                  <dxi-item dataField="lastName" [colSpan]="2" [isRequired]="true"></dxi-item>
+                  <dxi-item dataField="title" [colSpan]="2"  [isRequired]="true"></dxi-item>
+                  <dxi-item dataField="organization" [colSpan]="2" [isRequired]="true">
                     <div *dxTemplate>
                       <dx-select-box [(value)]="selectedItem.organization" [dataSource]="organizations" [displayExpr]="'name'" [valueExpr]="'id'"></dx-select-box>
                     </div>

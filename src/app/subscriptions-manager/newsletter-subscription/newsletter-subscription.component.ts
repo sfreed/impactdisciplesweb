@@ -69,6 +69,7 @@ export class NewsletterSubscriptionComponent {
   onSave(item: NewsletterSubscriptionModel) {
     if(this.addEditForm.instance.validate().isValid) {
       this.inProgress$.next(true);
+
       if(item.id) {
         this.service.update(item.id, item).then((item) => {
           if(item) {

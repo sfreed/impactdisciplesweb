@@ -95,14 +95,14 @@
           labelLocation="left"
           [colCount]="2">
           <dxi-item dataField="date" [editorType]="'dxDateBox'" [isRequired]="true" [colSpan]="1"></dxi-item>
-          <dxi-item dataField="category" [colSpan]="1">
+          <dxi-item dataField="category" [colSpan]="1" [isRequired]="true">
             <div *dxTemplate>
               <dx-select-box [(value)]="selectedItem.category" [dataSource]="blogCategories" [displayExpr]="'tag'" [valueExpr]="'id'" [showClearButton]="true"></dx-select-box>
             </div>
           </dxi-item>
           <dxi-item dataField="title" [isRequired]="true" [colSpan]="2"></dxi-item>
           <dxi-item dataField="mainImage.name" [colSpan]="2" [label]="{text: 'Image Name'}" [disabled]="true"></dxi-item>
-          <dxi-item [colSpan]="2">
+          <dxi-item [colSpan]="2" [isRequired]="true">
             <div *dxTemplate>
               <dx-html-editor [height]="'400px'" [(value)]="selectedItem.blogText">
                 <dxo-toolbar [multiline]="false">

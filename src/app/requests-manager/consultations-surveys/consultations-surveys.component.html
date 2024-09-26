@@ -90,13 +90,13 @@
             labelLocation="left"
             [colCount]="1">
             <dxi-item itemType="group" [colCount]="4" [colSpan]="1">
-              <dxi-item dataField="firstName" [colSpan]="2"></dxi-item>
-              <dxi-item dataField="lastName" [colSpan]="2"></dxi-item>
-              <dxi-item dataField="email" [colSpan]="4"></dxi-item>
+              <dxi-item dataField="firstName" [colSpan]="2" [isRequired]="true"></dxi-item>
+              <dxi-item dataField="lastName" [colSpan]="2" [isRequired]="true"></dxi-item>
+              <dxi-item dataField="email" [colSpan]="4" [isRequired]="true"></dxi-item>
             </dxi-item>
             <dxi-item itemType="group" caption="Contact Information" [colCount]="6" [colSpan]="1">
-              <dxi-item dataField="phone.countryCode" [colSpan]="2" [label]="{text: 'Country Code'}"></dxi-item>
-              <dxi-item dataField="phone.number" [colSpan]="2" [label]="{text: 'Number'}" [editorOptions]="phoneEditorOptions"></dxi-item>
+              <dxi-item dataField="phone.countryCode" [colSpan]="2" [label]="{text: 'Country Code'}" [isRequired]="true"></dxi-item>
+              <dxi-item dataField="phone.number" [colSpan]="2" [label]="{text: 'Number'}" [editorOptions]="phoneEditorOptions" [isRequired]="true"></dxi-item>
               <dxi-item dataField="phone.type" [colSpan]="2" [label]="{text: 'Type'}">
                 <div *dxTemplate>
                   <dx-select-box [value]="'phone.type'" [dataSource]="phone_types"></dx-select-box>
@@ -104,16 +104,16 @@
               </dxi-item>
             </dxi-item>
             <dxi-item itemType="group" [colCount]="4" [colSpan]="1">
-              <dxi-item dataField="churchName" [colSpan]="2"></dxi-item>
-              <dxi-item dataField="country" [colSpan]="2"></dxi-item>
-              <dxi-item dataField="commitment" [colSpan]="2"></dxi-item>
-              <dxi-item dataField="readiness" [colSpan]="2"></dxi-item>
-              <dxi-item dataField="strategyDescription" [colSpan]="4" [editorType]="'dxTextArea'" [editorOptions]="{ height: 150 }"></dxi-item>
-              <dxi-item dataField="teamDescription" [colSpan]="4" [editorType]="'dxTextArea'" [editorOptions]="{ height: 150 }"></dxi-item>
-              <dxi-item dataField="communicationDescription" [colSpan]="4" [editorType]="'dxTextArea'" [editorOptions]="{ height: 150 }"></dxi-item>
-              <dxi-item dataField="resourceDescription" [colSpan]="4" [editorType]="'dxTextArea'" [editorOptions]="{ height: 150 }"></dxi-item>
-              <dxi-item dataField="resultsDescription" [colSpan]="4" [editorType]="'dxTextArea'" [editorOptions]="{ height: 150 }"></dxi-item>
-              <dxi-item dataField="supportDescription" [colSpan]="4" [editorType]="'dxTextArea'" [editorOptions]="{ height: 150 }"></dxi-item>
+              <dxi-item dataField="churchName" [colSpan]="2" [isRequired]="true"></dxi-item>
+              <dxi-item dataField="country" [colSpan]="2" [isRequired]="true"></dxi-item>
+              <dxi-item dataField="commitment" [colSpan]="2" [isRequired]="true"></dxi-item>
+              <dxi-item dataField="readiness" [colSpan]="2" [isRequired]="true"></dxi-item>
+              <dxi-item dataField="strategyDescription" [colSpan]="4" [editorType]="'dxTextArea'" [editorOptions]="{ height: 150 }" [isRequired]="true"></dxi-item>
+              <dxi-item dataField="teamDescription" [colSpan]="4" [editorType]="'dxTextArea'" [editorOptions]="{ height: 150 }" [isRequired]="true"></dxi-item>
+              <dxi-item dataField="communicationDescription" [colSpan]="4" [editorType]="'dxTextArea'" [editorOptions]="{ height: 150 }" [isRequired]="true"></dxi-item>
+              <dxi-item dataField="resourceDescription" [colSpan]="4" [editorType]="'dxTextArea'" [editorOptions]="{ height: 150 }" [isRequired]="true"></dxi-item>
+              <dxi-item dataField="resultsDescription" [colSpan]="4" [editorType]="'dxTextArea'" [editorOptions]="{ height: 150 }" [isRequired]="true"></dxi-item>
+              <dxi-item dataField="supportDescription" [colSpan]="4" [editorType]="'dxTextArea'" [editorOptions]="{ height: 150 }" [isRequired]="true"></dxi-item>
             </dxi-item>
           </dx-form>
         </div>

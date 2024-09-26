@@ -85,8 +85,8 @@
           [showColonAfterLabel]="false"
           labelLocation="left">
           <dxi-item itemType="group" [colCount]="1" [colSpan]="1">
-            <dxi-item dataField="name" [colSpan]="1"></dxi-item>
-            <dxi-item dataField="contactName" [colSpan]="1"></dxi-item>
+            <dxi-item dataField="name" [colSpan]="1" [isRequired]="true"></dxi-item>
+            <dxi-item dataField="contactName" [colSpan]="1" [isRequired]="true"></dxi-item>
           </dxi-item>
           <dxi-item itemType="group" caption="Address" [colCount]="6" [colSpan]="1">
             <dxi-item dataField="address.address1" [colSpan]="6" [label]="{ text: 'Address 1' }"></dxi-item>

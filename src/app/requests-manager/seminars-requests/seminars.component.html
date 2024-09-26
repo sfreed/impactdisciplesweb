@@ -125,7 +125,8 @@
               <dxi-item
                 dataField="requestedDate"
                 editorType="dxDateBox"
-                [label]="{ text: 'Date' }"
+                [label]="{ text: 'Date' }",
+                isRequired="true"
                 [editorOptions]="{
                   displayFormat: 'M/d/yyyy',
                   type: 'date',
@@ -136,6 +137,7 @@
                 dataField="requestedStartTime"
                 editorType="dxDateBox"
                 [label]="{ text: 'Start Time' }"
+                isRequired="true"
                 [editorOptions]="{
                   displayFormat: 'HH:mm',
                   type: 'time',
@@ -146,6 +148,7 @@
                 dataField="requestedEndTime"
                 editorType="dxDateBox"
                 [label]="{ text: 'End Time' }"
+                isRequired="true"
                 [editorOptions]="{
                   displayFormat: 'HH:mm',
                   type: 'time',
@@ -154,11 +157,11 @@
               </dxi-item>
             </dxi-item>
             <dxi-item itemType="group" caption="Address" [colCount]="6" [colSpan]="1">
-              <dxi-item dataField="preferredLocationName" [colSpan]="6" [label]="{text: 'Location Name'}"></dxi-item>
-              <dxi-item dataField="preferredLocation.address1" [colSpan]="6" [label]="{text: 'Address1'}"></dxi-item>
+              <dxi-item dataField="preferredLocationName" [colSpan]="6" [label]="{text: 'Location Name'}" [isRequired]="true"></dxi-item>
+              <dxi-item dataField="preferredLocation.address1" [colSpan]="6" [label]="{text: 'Address1'}" [isRequired]="true"></dxi-item>
               <dxi-item dataField="preferredLocation.address2" [colSpan]="6" [label]="{text: 'Address2'}"></dxi-item>
-              <dxi-item dataField="preferredLocation.city" [colSpan]="3" [label]="{text: 'City'}"></dxi-item>
-              <dxi-item dataField="preferredLocation.state" [colSpan]="2" [label]="{text: 'State'}">
+              <dxi-item dataField="preferredLocation.city" [colSpan]="3" [label]="{text: 'City'}" [isRequired]="true"></dxi-item>
+              <dxi-item dataField="preferredLocation.state" [colSpan]="2" [label]="{text: 'State'}" [isRequired]="true">
                 <div *dxTemplate>
                   <dx-select-box
                     [items]="states"
@@ -166,7 +169,7 @@
                   </dx-select-box>
                 </div>
               </dxi-item>
-              <dxi-item dataField="preferredLocation.zip" [colSpan]="1" [label]="{text: 'Zip'}"></dxi-item>
+              <dxi-item dataField="preferredLocation.zip" [colSpan]="1" [label]="{text: 'Zip'}" [isRequired]="true"></dxi-item>
             </dxi-item>
             <dxi-item itemType="group" caption="Contact Information" [colCount]="6" [colSpan]="1">
               <dxi-item dataField="eventCoordinator" [colSpan]="6" [label]="{text: 'Coordinator'}"></dxi-item>
@@ -187,7 +190,7 @@
               <dxi-item dataField="requestedTicketPrice" [colSpan]="2"></dxi-item>
               <dxi-item dataField="isLunchProvided" [colSpan]="2" [editorType]="'dxSwitch'" [editorOptions]="{ switchedOnText: 'Yes', switchedOffText: 'No' }"></dxi-item>
               <dxi-item dataField="isLunchIncluded" [colSpan]="4" [editorType]="'dxSwitch'" [editorOptions]="{ switchedOnText: 'Yes', switchedOffText: 'No' }"></dxi-item>
-              <dxi-item dataField="comments" [colSpan]="4" [editorType]="'dxTextArea'" [editorOptions]="{ height: 150 }"></dxi-item>
+              <dxi-item dataField="comments" [colSpan]="4" [editorType]="'dxTextArea'" [editorOptions]="{ height: 150 }" [isRequired]="true"></dxi-item>
             </dxi-item>
           </dx-form>
         </div>

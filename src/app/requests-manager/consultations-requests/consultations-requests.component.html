@@ -67,10 +67,10 @@
           [showColonAfterLabel]="false"
           labelLocation="left">
           <dxi-item itemType="group" [colCount]="4" [colSpan]="1">
-            <dxi-item dataField="firstName" [colSpan]="2"></dxi-item>
-            <dxi-item dataField="lastName" [colSpan]="2"></dxi-item>
-            <dxi-item dataField="email" [colSpan]="4"></dxi-item>
-            <dxi-item dataField="message" [colSpan]="4" [editorType]="'dxTextArea'" [editorOptions]="{ height: 150 }"></dxi-item>
+            <dxi-item dataField="firstName" [colSpan]="2" [isRequired]="true"></dxi-item>
+            <dxi-item dataField="lastName" [colSpan]="2" [isRequired]="true"></dxi-item>
+            <dxi-item dataField="email" [colSpan]="4" [isRequired]="true"></dxi-item>
+            <dxi-item dataField="message" [colSpan]="4" [editorType]="'dxTextArea'" [editorOptions]="{ height: 150 }" [isRequired]="true"></dxi-item>
           </dxi-item>
         </dx-form>
       </div>

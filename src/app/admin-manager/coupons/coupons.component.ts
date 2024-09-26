@@ -166,6 +166,7 @@ export class CouponsComponent implements OnInit{
   onSave(item: CouponModel) {
     if(this.addEditForm.instance.validate().isValid) {
       this.inProgress$.next(true);
+
       if(item.id) {
         this.service.update(item.id, item).then((item) => {
           if(item) {

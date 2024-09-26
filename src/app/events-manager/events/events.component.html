@@ -82,8 +82,8 @@
             labelLocation="left">
             <dxi-item itemType="tabbed">
               <dxi-tab title="Info" [colCount]="2">
-                <dxi-item dataField="eventName" [colSpan]="1" [label]="{ text: 'Event Name' }"></dxi-item>
-                <dxi-item [colSpan]="1" [label]="{ text: 'Email Template' }">
+                <dxi-item dataField="eventName" [colSpan]="1" [label]="{ text: 'Event Name' }" [isRequired]="true"></dxi-item>
+                <dxi-item [colSpan]="1" [label]="{ text: 'Email Template' }" [isRequired]="true">
                   <div *dxTemplate>
                     <dx-select-box [(value)]="selectedItem.emailTemplate" [dataSource]="emailTemplates"></dx-select-box>
                   </div>
@@ -93,6 +93,7 @@
                   editorType="dxDateBox"
                   [label]="{ text: 'Start Date' }"
                   [colSpan]="1"
+                  [isRequired]="true"
                   [editorOptions]="{
                     displayFormat: 'M/d/yyyy, HH:mm',
                     type: 'datetime',
@@ -105,6 +106,7 @@
                   editorType="dxDateBox"
                   [label]="{ text: 'End Date' }"
                   [colSpan]="1"
+                  [isRequired]="true"
                   [editorOptions]="{
                     displayFormat: 'M/d/yyyy, HH:mm',
                     type: 'datetime',
@@ -113,7 +115,6 @@
                   }">
                 </dxi-item>
                 <dxi-item dataField="isSummit" [editorType]="'dxSwitch'" [editorOptions]="{ switchedOnText: 'Yes', switchedOffText: 'No' }" [label]="{ text: 'Is Annual Summit?' }" [colSpan]="1"></dxi-item>
-                <dxi-item dataField="imageUrl.name" [label]="{ text: 'Image Name' }" [colSpan]="1" [disabled]="true"></dxi-item>
                 <dxi-item
                   dataField="costInDollars"
                   editorType="dxNumberBox"
@@ -123,7 +124,7 @@
                     min: 0
                   }">
                 </dxi-item>
-                <dxi-item dataField="location" [colSpan]="2" [label]="{ text: 'Location' }">
+                <dxi-item dataField="location" [colSpan]="1" [label]="{ text: 'Location' }" [isRequired]="true">
                   <div *dxTemplate>
                     <dx-drop-down-box
                       #locationDropbox
@@ -163,7 +164,7 @@
                     </dx-drop-down-box>
                   </div>
                 </dxi-item>
-                <dxi-item dataField="organization" [colSpan]="2" [label]="{ text: 'Organization' }">
+                <dxi-item dataField="organization" [colSpan]="1" [label]="{ text: 'Organization' }">
                   <div *dxTemplate>
                     <dx-drop-down-box
                       #organizationDropbox
@@ -202,6 +203,7 @@
                     </dx-drop-down-box>
                   </div>
                 </dxi-item>
+                <dxi-item dataField="imageUrl.name" [label]="{ text: 'Image Name' }" [colSpan]="2" [disabled]="true"></dxi-item>
                 <dxi-item dataField="description" [colSpan]="2" [editorType]="'dxTextArea'" [editorOptions]="{ height: 150 }" [label]="{ text: 'Web Description' }"></dxi-item>
               </dxi-tab>
               <dxi-tab title="Agenda">

@@ -64,7 +64,6 @@ export class RoomComponent implements OnInit {
     if(this.addEditForm.instance.validate().isValid) {
       this.inProgress$.next(true);
 
-
       if(item) {
         let i: number = this.trainingRooms.findIndex(room => room.id === item.id);
 

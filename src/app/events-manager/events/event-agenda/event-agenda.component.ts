@@ -125,6 +125,7 @@ export class EventAgendaComponent implements OnInit{
       colSpan: 2,
       editorType: 'dxSelectBox',
       dataField: 'course',
+      isRequired: true,
       editorOptions: {
         items: that.courses,
         displayExpr: 'title',
@@ -138,6 +139,7 @@ export class EventAgendaComponent implements OnInit{
       colSpan: 2,
       editorType: 'dxTagBox',
       dataField: 'coaches',
+      isRequired: true,
       editorOptions: {
         items: that.coaches,
         displayExpr: 'fullname',
@@ -202,6 +204,7 @@ export class EventAgendaComponent implements OnInit{
         text: 'Title',
       },
       colSpan:2,
+      isRequired: true,
       editorType: 'dxTextBox',
       dataField: 'text',
     }, {
@@ -209,6 +212,7 @@ export class EventAgendaComponent implements OnInit{
         text: 'Description',
       },
       colSpan:2,
+      isRequired: true,
       editorType: 'dxTextArea',
       dataField: 'description'
     }, {

@@ -68,15 +68,15 @@
           [showColonAfterLabel]="false"
           labelLocation="left">
           <dxi-item itemType="group" caption="Event" [colCount]="4">
-            <dxi-item dataField="firstName" [colSpan]="2"></dxi-item>
-            <dxi-item dataField="lastName" [colSpan]="2"></dxi-item>
-            <dxi-item dataField="email" [colSpan]="2"></dxi-item>
-            <dxi-item dataField="registrationDate" [colSpan]="2">
+            <dxi-item dataField="firstName" [colSpan]="2" [isRequired]="true"></dxi-item>
+            <dxi-item dataField="lastName" [colSpan]="2" [isRequired]="true"></dxi-item>
+            <dxi-item dataField="email" [colSpan]="2" [isRequired]="true"></dxi-item>
+            <dxi-item dataField="registrationDate" [colSpan]="2" [isRequired]="true">
               <div *dxTemplate>
                 <dx-date-box [(value)]="selectedItem.registrationDate"></dx-date-box>
               </div>
             </dxi-item>
-            <dxi-item dataField="receipt" [colSpan]="4"></dxi-item>
+            <dxi-item dataField="receipt" [colSpan]="4" [isRequired]="true"></dxi-item>
           </dxi-item>
         </dx-form>
       </div>

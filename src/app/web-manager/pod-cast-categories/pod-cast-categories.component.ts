@@ -76,6 +76,7 @@ export class PodCastCategoriesComponent implements OnInit {
   onSave(item: TagModel) {
     if(this.addEditForm.instance.validate().isValid) {
       this.inProgress$.next(true);
+
       if(item.id) {
         this.service.update(item.id, item).then((item) => {
           if(item) {

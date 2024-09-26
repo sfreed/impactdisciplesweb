@@ -89,49 +89,52 @@ export class BlogPostsComponent implements OnInit {
   }
 
   onSave(item: BlogPostModel) {
-    this.inProgress$.next(true);
+    if(this.addEditForm.instance.validate().isValid) {
+      this.inProgress$.next(true);
 
-    if(item.id) {
-      this.service.update(item.id, item).then((item) => {
-        if(item) {
-          notify({
-            message: this.itemType + ' Updated',
-            position: 'top',
-            width: 600,
-            type: 'success'
-          });
-          this.onCancel();
-        } else {
-          this.inProgress$.next(false);
-          notify({
-            message: 'Some Error Occured',
-            position: 'top',
-            width: 600,
-            type: 'success'
-          });
-        }
-      })
-    } else {
-      this.service.add(item).then((item) => {
-        if(item) {
-          notify({
-            message: this.itemType + ' Added',
-            position: 'top',
-            width: 600,
-            type: 'success'
-          });
-          this.onCancel();
-        } else {
-          this.inProgress$.next(false);
-          notify({
-            message: 'Some Error Occured',
-            position: 'top',
-            width: 600,
-            type: 'error'
-          });
-        }
-      })
+      if(item.id) {
+        this.service.update(item.id, item).then((item) => {
+          if(item) {
+            notify({
+              message: this.itemType + ' Updated',
+              position: 'top',
+              width: 600,
+              type: 'success'
+            });
+            this.onCancel();
+          } else {
+            this.inProgress$.next(false);
+            notify({
+              message: 'Some Error Occured',
+              position: 'top',
+              width: 600,
+              type: 'success'
+            });
+          }
+        })
+      } else {
+        this.service.add(item).then((item) => {
+          if(item) {
+            notify({
+              message: this.itemType + ' Added',
+              position: 'top',
+              width: 600,
+              type: 'success'
+            });
+            this.onCancel();
+          } else {
+            this.inProgress$.next(false);
+            notify({
+              message: 'Some Error Occured',
+              position: 'top',
+              width: 600,
+              type: 'error'
+            });
+          }
+        })
+      }
     }
+
   }
 
   onCategoriesCancel() {

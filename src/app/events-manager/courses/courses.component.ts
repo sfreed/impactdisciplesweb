@@ -72,6 +72,7 @@ export class CoursesComponent implements OnInit {
   onSave(item: CourseModel) {
     if(this.addEditForm.instance.validate().isValid) {
       this.inProgress$.next(true);
+
       if(item.id) {
         this.service.update(item.id, item).then((item) => {
           if(item) {

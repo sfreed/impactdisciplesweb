@@ -108,15 +108,15 @@
           [showColonAfterLabel]="false"
           labelLocation="left"
           [colCount]="2">
-          <dxi-item dataField="title" [colSpan]="1"></dxi-item>
-          <dxi-item dataField="category" [colSpan]="1">
+          <dxi-item dataField="title" [colSpan]="1" [isRequired]="true"></dxi-item>
+          <dxi-item dataField="category" [colSpan]="1" [isRequired]="true">
             <div *dxTemplate>
               <dx-select-box [(value)]="selectedItem.category" [dataSource]="productCategories" [displayExpr]="'tag'" [valueExpr]="'id'" [showClearButton]="true"></dx-select-box>
             </div>
           </dxi-item>
           <dxi-item dataField="series" [colSpan]="1">
             <div *dxTemplate>
-              <dx-select-box [(value)]="selectedItem.series" [dataSource]="series" ></dx-select-box>
+              <dx-select-box [(value)]="selectedItem.series" [dataSource]="series" [displayExpr]="'name'" [valueExpr]="'id'"></dx-select-box>
             </div>
           </dxi-item>
           <dxi-item
@@ -124,12 +124,13 @@
             editorType="dxNumberBox"
             [label]="{ text: 'Cost' }"
             [colSpan]="1"
+            [isRequired]="true"
             [editorOptions]="{
               format: { type: 'currency', currency: 'USD', precision: 2 },
               min: 0
             }">
           </dxi-item>
-          <dxi-item dataField="description" [colSpan]="2">
+          <dxi-item dataField="description" [colSpan]="2" [isRequired]="true">
             <div *dxTemplate>
               <dx-html-editor [height]="'300px'" [(value)]="selectedItem.description">
                 <dxo-toolbar [multiline]="false">

@@ -70,12 +70,12 @@
           [showColonAfterLabel]="false"
           labelLocation="left"
           [colCount]="3">
-          <dxi-item dataField="order" [colSpan]="1">
+          <dxi-item dataField="order" [colSpan]="1" [isRequired]="true">
             <div *dxTemplate>
               <dx-number-box [(value)]="selectedItem.order"></dx-number-box>
             </div>
           </dxi-item>
-          <dxi-item dataField="name" [colSpan]="2"></dxi-item>
+          <dxi-item dataField="name" [colSpan]="2" [isRequired]="true"></dxi-item>
           <dxi-item dataField="imageUrl.name" [colSpan]="3" [disabled]="true"></dxi-item>
         </dx-form>
       </div>

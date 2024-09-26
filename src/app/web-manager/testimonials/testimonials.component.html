@@ -71,10 +71,10 @@
     <div class="add-item-modal">
       <div class="add-item-modal__content" *ngIf="isVisible$ | async">
         <dx-form [colCount]="2" [(formData)]="selectedItem">
-          <dxi-item dataField="author" [colSpan]="2"></dxi-item>
+          <dxi-item dataField="author" [colSpan]="2" [isRequired]="true"></dxi-item>
           <dxi-item dataField="title" [colSpan]="2"></dxi-item>
-          <dxi-item dataField="text" [colSpan]="2" [editorType]="'dxTextArea'" [editorOptions]="{ height: 150 }"></dxi-item>
-          <dxi-item [label]="{ text: 'Type' }" [colSpan]="2">
+          <dxi-item dataField="text" [colSpan]="2" [editorType]="'dxTextArea'" [editorOptions]="{ height: 150 }" [isRequired]="true"></dxi-item>
+          <dxi-item [label]="{ text: 'Type' }" [colSpan]="2" [isRequired]="true">
             <div *dxTemplate>
               <dx-select-box
                 [items]="testimonials"

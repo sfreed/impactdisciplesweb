@@ -90,14 +90,14 @@
       <div class="add-item-modal__content" *ngIf="isVisible$ | async">
         <dx-form [colCount]="2" [(formData)]="selectedItem">
           <dxi-item dataField="date" [editorType]="'dxDateBox'" [isRequired]="true" [colSpan]="1"></dxi-item>
-          <dxi-item dataField="category" [colSpan]="1">
+          <dxi-item dataField="category" [colSpan]="1" [isRequired]="true">
             <div *dxTemplate>
               <dx-select-box [(value)]="selectedItem.category" [dataSource]="podCastCategories" [displayExpr]="'tag'" [valueExpr]="'id'" [showClearButton]="true"></dx-select-box>
             </div>
           </dxi-item>
-          <dxi-item dataField="title" [colSpan]="2"></dxi-item>
+          <dxi-item dataField="title" [colSpan]="2" [isRequired]="true"></dxi-item>
           <dxi-item dataField="thumbnail.name" [colSpan]="2" [label]="{text: 'Image Name'}" [disabled]="true"></dxi-item>
-          <dxi-item dataField="videoType" [colSpan]="1">
+          <dxi-item dataField="videoType" [colSpan]="1" [isRequired]="true">
             <div *dxTemplate>
               <dx-select-box
                 [items]="['Youtube', 'Apple', 'Vimeo']"
@@ -105,7 +105,7 @@
               </dx-select-box>
             </div>
           </dxi-item>
-          <dxi-item dataField="videoId" [colSpan]="1"></dxi-item>
+          <dxi-item dataField="videoId" [colSpan]="1" [isRequired]="true"></dxi-item>
           <dxi-item [colSpan]="2" [label]="{text: 'Tags'}">
             <div *dxTemplate>
               <dx-tag-box

@@ -134,6 +134,7 @@ export class EventsComponent implements OnInit, OnDestroy {
   onSave(item: EventModel) {
     if(this.addEditForm.instance.validate().isValid) {
       this.inProgress$.next(true);
+
       if(item.id) {
         this.eventService.update(item.id, item).then((item) => {
           if(item) {

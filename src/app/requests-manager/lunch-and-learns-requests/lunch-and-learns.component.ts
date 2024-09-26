@@ -105,6 +105,7 @@ export class LunchAndLearnsComponent implements OnInit{
   onSave(item: LunchAndLearnModel) {
     if(this.addEditForm.instance.validate().isValid) {
       this.inProgress$.next(true);
+
       if(item.id) {
         this.service.update(item.id, item).then((item) => {
           if(item) {

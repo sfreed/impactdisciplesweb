@@ -102,15 +102,16 @@
             [showColonAfterLabel]="false"
             labelLocation="left">
             <dxi-item itemType="group" [colCount]="2" [colSpan]="1">
-              <dxi-item dataField="firstName" [colSpan]="1"></dxi-item>
-              <dxi-item dataField="lastName" [colSpan]="1"></dxi-item>
-              <dxi-item dataField="email" [colSpan]="2"></dxi-item>
+              <dxi-item dataField="firstName" [colSpan]="1" [isRequired]="true"></dxi-item>
+              <dxi-item dataField="lastName" [colSpan]="1" [isRequired]="true"></dxi-item>
+              <dxi-item dataField="email" [colSpan]="2" [isRequired]="true"></dxi-item>
             </dxi-item>
             <dxi-item itemType="group" caption="Information" [colCount]="3" [colSpan]="1">
               <dxi-item
                 dataField="requestedDate"
                 editorType="dxDateBox"
-                [label]="{ text: 'Date' }"
+                [label]="{ text: 'Date' }",
+                isRequired="true",
                 [editorOptions]="{
                   displayFormat: 'M/d/yyyy',
                   type: 'date',
@@ -120,7 +121,8 @@
               <dxi-item
                 dataField="requestedStartTime"
                 editorType="dxDateBox"
-                [label]="{ text: 'Start Time' }"
+                [label]="{ text: 'Start Time' }",
+                isRequired="true",
                 [editorOptions]="{
                   displayFormat: 'HH:mm',
                   type: 'time',
@@ -130,7 +132,8 @@
               <dxi-item
                 dataField="requestedEndTime"
                 editorType="dxDateBox"
-                [label]="{ text: 'End Time' }"
+                [label]="{ text: 'End Time' }",
+                isRequired="true",
                 [editorOptions]="{
                   displayFormat: 'HH:mm',
                   type: 'time',
@@ -154,9 +157,9 @@
               <dxi-item dataField="locationAddress.zip" [colSpan]="1" [label]="{text: 'Zip'}"></dxi-item>
             </dxi-item>
             <dxi-item itemType="group" caption="Contact Information" [colCount]="6" [colSpan]="1">
-              <dxi-item dataField="coordinator" [colSpan]="6"></dxi-item>
-              <dxi-item dataField="coordinatorPhone.countryCode" [colSpan]="3" [label]="{text: 'Country Code'}"></dxi-item>
-              <dxi-item dataField="coordinatorPhone.number" [colSpan]="2" [label]="{text: 'Number'}" [editorOptions]="phoneEditorOptions"></dxi-item>
+              <dxi-item dataField="coordinator" [colSpan]="6" [isRequired]="true"></dxi-item>
+              <dxi-item dataField="coordinatorPhone.countryCode" [colSpan]="3" [label]="{text: 'Country Code'}" [isRequired]="true"></dxi-item>
+              <dxi-item dataField="coordinatorPhone.number" [colSpan]="2" [label]="{text: 'Number'}" [editorOptions]="phoneEditorOptions" [isRequired]="true"></dxi-item>
               <dxi-item dataField="coordinatorPhone.type" [colSpan]="1" [label]="{text: 'Type'}">
                 <div *dxTemplate>
                   <dx-select-box [(value)]="selectedItem.coordinatorPhone.type" [dataSource]="phone_types"></dx-select-box>

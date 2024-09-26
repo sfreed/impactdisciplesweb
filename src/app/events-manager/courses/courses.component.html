@@ -68,10 +68,10 @@
           [showColonAfterLabel]="false"
           labelLocation="left">
           <dxi-item itemType="group" [colCount]="2" [colSpan]="1">
-            <dxi-item dataField="title" [colSpan]="1"></dxi-item>
+            <dxi-item dataField="title" [colSpan]="1" [isRequired]="true"></dxi-item>
             <dxi-item dataField="length" [colSpan]="1"></dxi-item>
-            <dxi-item dataField="shortDescription" [colSpan]="2" [editorType]="'dxTextArea'" [editorOptions]="{ height: 100 }"></dxi-item>
-            <dxi-item dataField="longDescription" [colSpan]="2" [editorType]="'dxTextArea'" [editorOptions]="{ height: 200 }"></dxi-item>
+            <dxi-item dataField="shortDescription" [colSpan]="2" [editorType]="'dxTextArea'" [editorOptions]="{ height: 100 }" [isRequired]="true"></dxi-item>
+            <dxi-item dataField="longDescription" [colSpan]="2" [editorType]="'dxTextArea'" [editorOptions]="{ height: 200 }" [isRequired]="true"></dxi-item>
             <dxi-item dataField="resources" [colSpan]="1"></dxi-item>
           </dxi-item>
         </dx-form>

@@ -87,9 +87,9 @@
           [showColonAfterLabel]="false"
           labelLocation="left">
           <dxi-item itemType="group" [colCount]="2" [colSpan]="1">
-            <dxi-item dataField="name" [colSpan]="1"></dxi-item>
-            <dxi-item dataField="contactName" [colSpan]="1"></dxi-item>
-            <dxi-item dataField="organization" [colSpan]="1">
+            <dxi-item dataField="name" [colSpan]="1" [isRequired]="true"></dxi-item>
+            <dxi-item dataField="contactName" [colSpan]="1" [isRequired]="true"></dxi-item>
+            <dxi-item dataField="organization" [colSpan]="1" [isRequired]="true">
               <div *dxTemplate>
                 <dx-select-box [(value)]="selectedItem.organization" [dataSource]="organizations" [displayExpr]="'name'" [valueExpr]="'id'"></dx-select-box>
               </div>
