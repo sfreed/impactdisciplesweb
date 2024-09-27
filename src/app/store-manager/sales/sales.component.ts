@@ -8,6 +8,9 @@ import { CheckoutForm } from 'impactdisciplescommon/src/models/utils/cart.model'
 import { ProductModel } from 'impactdisciplescommon/src/models/utils/product.model';
 import { SalesService } from 'impactdisciplescommon/src/services/utils/sales.service';
 import { Observable, BehaviorSubject, map } from 'rxjs';
+import { EnumHelper } from 'impactdisciplescommon/src/utils/enum_helper';
+import { Timestamp } from 'firebase/firestore';
+import { dateFromTimestamp } from 'impactdisciplescommon/src/utils/date-from-timestamp';
 
 @Component({
   selector: 'app-sales',
@@ -31,6 +34,20 @@ export class SalesComponent implements OnInit {
 
   series: any[] = [];
 
+
+  phoneEditorOptions = {
+    mask: '(X00) 000-0000',
+    maskRules: {
+      X: /[02-9]/,
+    },
+    maskInvalidMessage: 'The phone must have a correct USA phone format',
+    valueChangeEvent: 'keyup',
+  };
+
+  public states: string[];
+
+  phone_types;
+
   constructor(private service: SalesService) {}
 
   ngOnInit() {
@@ -50,6 +67,9 @@ export class SalesComponent implements OnInit {
           })
       )
     );
+
+    this.phone_types = EnumHelper.getPhoneTypesAsArray();
+    this.states = EnumHelper.getStateRoleTypesAsArray();
   }
 
   showEditModal = ({ row: { data } }) => {
@@ -131,5 +151,36 @@ export class SalesComponent implements OnInit {
     this.selectedItem = null;
     this.inProgress$.next(false);
     this.isVisible$.next(false);
+  }
+
+  markAsShipped = (e) => {
+    e.row.data.processedStatus="SHIPPED";
+    e.row.data.dateProcessed = dateFromTimestamp(Timestamp.now() as Timestamp);
+
+    let isOrderComplete = true;
+
+    this.selectedItem.cartItems.forEach(item => {
+      if(item.processedStatus != 'SHIPPED'){
+        isOrderComplete = false;
+      }
+    })
+
+    if(isOrderComplete){
+      this.selectedItem.processedStatus = 'COMPLETE';
+      this.selectedItem.dateProcessed = Timestamp.now();
+    }
+
+    this.service.update(this.selectedItem.id, this.selectedItem).then(item => {
+      notify({
+        message: e.row.data.itemName + ' x ( ' + e.row.data.orderQuantity + ' ) marked as ' + e.row.data.processedStatus,
+        position: 'top',
+        width: 600,
+        type: 'success'
+      });
+    })
+  }
+
+  isShippedButtonVisible(e){
+    return e.row.data.processedStatus != 'SHIPPED';
   }
 }
