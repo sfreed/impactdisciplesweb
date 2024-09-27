@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import * as functions from "firebase-functions";
+import {defineSecret} from "firebase-functions/params";
 
-// eslint-disable-next-line max-len
-const stripe = require("stripe")("sk_test_51IP8IBC4Pv6WfeJrQEz7yFtaw4k22dNegkjr9ySOYt6AxnMoGQxLXyQYaD7wuQCcrmu39sS8tCfEGLnwdKlT10Cx00UqG7qkw9");
+const stripe = require("stripe")(defineSecret("STRIPE_SECRET_KEY"));
 
 const cors = require("cors")({
   origin: true,

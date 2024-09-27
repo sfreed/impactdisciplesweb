@@ -3,8 +3,8 @@
     "rules": "firestore.rules",
     "indexes": "firestore.indexes.json"
   },
-  "hosting": {
-    "site": "impactdisciples-admin",
+  "hosting": [{
+    "target": "production",
     "public": "dist/impactdisciplesadmin",
     "ignore": [
       "firebase.json",
@@ -17,7 +17,21 @@
         "destination": "/index.html"
       }
     ]
-  },
+  },{
+    "target": "development",
+    "public": "dist/impactdisciplesadmin",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }],
   "functions": [
     {
       "source": "functions",
