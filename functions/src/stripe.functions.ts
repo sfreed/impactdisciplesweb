@@ -1,46 +1,53 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import * as functions from "firebase-functions";
-import {defineSecret} from "firebase-functions/params";
 
-const stripe = require("stripe")(defineSecret("STRIPE_SECRET_KEY"));
+let stripe;
 
 const cors = require("cors")({
   origin: true,
 });
 
-exports.checkout = functions.https.onRequest((request, response) => {
-  return cors(request, response, async () => {
-    response.set("Access-Control-Allow-Credentials", "true");
-    response.set("Access-Control-Allow-Origin", "*");
+exports.checkout = functions
+  .runWith({secrets: ["STRIPE_SECRET_KEY"]})
+  .https.onRequest((request, response) => {
+    return cors(request, response, async () => {
+      stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
-    const paymentIntent = await stripe.paymentIntents.create({
-      amount: calculateOrderAmount(request.body),
-      currency: "usd",
-      automatic_payment_methods: {
-        enabled: true,
-      },
-    });
+      response.set("Access-Control-Allow-Credentials", "true");
+      response.set("Access-Control-Allow-Origin", "*");
 
-    response.send({
-      clientSecret: paymentIntent.client_secret,
-      paymentIntent: paymentIntent.id,
-    });
-  });
-});
+      const paymentIntent = await stripe.paymentIntents.create({
+        amount: calculateOrderAmount(request.body),
+        currency: "usd",
+        automatic_payment_methods: {
+          enabled: true,
+        },
+      });
 
-
-exports.cancel = functions.https.onRequest((request, response) => {
-  return cors(request, response, async () => {
-    response.set("Access-Control-Allow-Credentials", "true");
-    response.set("Access-Control-Allow-Origin", "*");
-
-    await stripe.paymentIntents.cancel(request.body.paymentIntent);
-
-    response.send({
-      id: request.body,
+      response.send({
+        clientSecret: paymentIntent.client_secret,
+        paymentIntent: paymentIntent.id,
+      });
     });
   });
-});
+
+
+exports.cancel = functions
+  .runWith({secrets: ["STRIPE_SECRET_KEY"]})
+  .https.onRequest((request, response) => {
+    return cors(request, response, async () => {
+      stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+
+      response.set("Access-Control-Allow-Credentials", "true");
+      response.set("Access-Control-Allow-Origin", "*");
+
+      await stripe.paymentIntents.cancel(request.body.paymentIntent);
+
+      response.send({
+        id: request.body,
+      });
+    });
+  });
 
 const calculateOrderAmount = (items) => {
   let total = 0;
