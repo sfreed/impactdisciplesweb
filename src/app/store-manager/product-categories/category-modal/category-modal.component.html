@@ -1,0 +1,45 @@
+<dx-popup
+  [showTitle]="true"
+  [dragEnabled]="false"
+  [visible]="isVisible$ | async"
+  height="20%"
+  width="25%"
+  [showCloseButton]="true"
+  (onHiding)="onCancel()">
+  <dxi-toolbar-item toolbar="top" location="center">
+    <div *dxTemplate>
+      <p class="popup-title">
+        {{ category?.id ? 'EDIT' : 'ADD' }} CATEGORY
+      </p>
+    </div>
+  </dxi-toolbar-item>
+  <div *dxTemplate="let data of 'content'">
+    <div class="add-item-modal">
+      <div class="add-item-modal__content" *ngIf="isVisible$ | async">
+        <dx-form
+          #addEditForm
+          [(formData)]="category"
+          [showColonAfterLabel]="false"
+          labelLocation="left"
+          [colCount]="2">
+          <dxi-item dataField="tag" [label]="{ text: 'Category Name' }" [colSpan]="2" [isRequired]="true"></dxi-item>
+        </dx-form>
+      </div>
+      <div class="add-item-modal__button-group">
+        <dx-button
+          text="CANCEL"
+          stylingMode="contained"
+          type="normal"
+          [disabled]="inProgress$ | async"
+          (onClick)="onCancel()">
+        </dx-button>
+        <app-indicator-button
+          [isInProgress]="inProgress$ | async"
+          [title]="'SAVE'"
+          [disabled]="inProgress$ | async"
+          (onClick)="onSave(category)">
+        </app-indicator-button>
+      </div>
+    </div>
+  </div>
+</dx-popup>

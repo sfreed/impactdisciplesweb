@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { DxFormComponent } from 'devextreme-angular';
+import { DxDropDownBoxComponent, DxFormComponent } from 'devextreme-angular';
 import CustomStore from 'devextreme/data/custom_store';
 import DataSource from 'devextreme/data/data_source';
 import notify from 'devextreme/ui/notify';
@@ -12,14 +12,22 @@ import { DxTagBoxTypes } from 'devextreme-angular/ui/tag-box';
 import { TagModel } from 'impactdisciplescommon/src/models/domain/tag.model';
 import { SeriesService } from 'impactdisciplescommon/src/services/utils/series.service';
 import { ProductCategoriesService } from 'impactdisciplescommon/src/services/utils/product-categories.service';
+import { SeriesModel } from 'impactdisciplescommon/src/models/utils/series.model';
+import { ShowProductCategoriesModal } from '../product-categories/product-categories-modal.actions';
+import { Store } from '@ngxs/store';
+import { ShowProductSeriesModal } from '../product-series/product-series-modal.actions';
+import { ShowSeriesModal } from '../product-series/series-modal/series-modal.actions';
+import { ShowCategoryModal } from '../product-categories/category-modal/category-modal.actions';
 
 @Component({
   selector: 'app-products',
   templateUrl: './products.component.html',
-  styleUrls: ['./products.component.css']
+  styleUrls: ['./products.component.scss']
 })
 export class ProductsComponent implements OnInit {
   @ViewChild('addEditForm', { static: false }) addEditForm: DxFormComponent;
+  @ViewChild('categoryDropbox', { static: false }) categoryDropbox: DxDropDownBoxComponent;
+  @ViewChild('seriesDropbox', { static: false }) seriesDropbox: DxDropDownBoxComponent;
 
   datasource$: Observable<DataSource>;
   selectedItem: ProductModel;
@@ -35,13 +43,17 @@ export class ProductsComponent implements OnInit {
 
   productTags: TagModel[] = [];
   productCategories: TagModel[] = [];
+  series: SeriesModel[] = [];
+  selectedCategory: TagModel;
+  selectedSeries: SeriesModel;
+  gridFilter: any = null;
 
-  series: any[] = [];
-
-  constructor(private service: ProductService,
+  constructor(
+    private service: ProductService,
     private productTagService: ProductTagsService,
     private seriesService: SeriesService,
-    private productCategoriesService: ProductCategoriesService
+    private productCategoriesService: ProductCategoriesService,
+    private store: Store
   ) {}
 
   async ngOnInit() {
@@ -66,11 +78,33 @@ export class ProductsComponent implements OnInit {
       this.productTags = tags;
     });
 
-    this.productCategories = await this.productCategoriesService.getAll();
+    this.productCategoriesService.streamAll().subscribe(productCategories => {
+      this.productCategories = productCategories;
+    });
 
     this.seriesService.streamAll().subscribe(series => {
       this.series = series;
     });
+  }
+
+  onCategoryFilterChanged(event: any) {
+    if(event.value) {
+      this.selectedSeries = null; 
+      this.selectedCategory = this.productCategories.find(category => category.id === event.value) || null;
+      this.gridFilter = ['category', '=', this.selectedCategory.id];
+    } else if(!event.value && !this.selectedSeries) {
+      this.gridFilter = null;
+    }
+  }
+
+  onSeriesFilterChanged(event: any) {
+    if(event.value) {
+      this.selectedCategory = null;
+      this.selectedSeries = this.series.find(series => series.id === event.value) || null; 
+      this.gridFilter = ['series', '=', this.selectedSeries.id];
+    } else if(!event.value && !this.selectedCategory) {
+      this.gridFilter = null;
+    }
   }
 
   showEditModal = ({ row: { data } }) => {
@@ -85,12 +119,34 @@ export class ProductsComponent implements OnInit {
     this.isVisible$.next(true);
   }
 
+  showProductSeriesModal = () => {
+    this.store.dispatch(new ShowProductSeriesModal());
+  }
+
+  showProductCategoriesModal = () => {
+    this.store.dispatch(new ShowProductCategoriesModal());
+  }
+
   showSeriesModal = () => {
-    this.isSeriesVisible$.next(true);
+    this.store.dispatch(new ShowSeriesModal());
   }
 
   showCategoriesModal = () => {
-    this.isCategoriesVisible$.next(true);
+    this.store.dispatch(new ShowCategoryModal());
+  }
+
+  selectCategory(event: any) {
+    if (event && event.itemData) {
+      this.selectedItem.category = event.itemData.id;
+      this.categoryDropbox.instance.close();
+    }
+  }
+
+  selectSeries(event: any) {
+    if (event && event.itemData) {
+      this.selectedItem.series = event.itemData.id;
+      this.seriesDropbox.instance.close();
+    }
   }
 
   delete = ({ row: { data } }) => {
@@ -160,16 +216,6 @@ export class ProductsComponent implements OnInit {
     this.selectedItem = null;
     this.inProgress$.next(false);
     this.isVisible$.next(false);
-  }
-
-  onSeriesCancel() {
-    this.inProgress$.next(false);
-    this.isSeriesVisible$.next(false);
-  }
-
-  onCategoriesCancel() {
-    this.inProgress$.next(false);
-    this.isCategoriesVisible$.next(false);
   }
 
   onCustomItemCreating(args: DxTagBoxTypes.CustomItemCreatingEvent) {
