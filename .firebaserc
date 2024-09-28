@@ -1,16 +1,17 @@
 {
-  "projects": {
-    "production": "impactdisciples-a82a8",
-    "development": "impactdisciplesdev"
-  },
+  "projects": {},
   "targets": {
     "impactdisciples-a82a8": {
       "hosting": {
-        "development": [
-          "impactdisciplesdev-admin"
-        ],
         "production": [
           "impactdisciples-admin"
+        ]
+      }
+    },
+    "impactdisciplesdev": {
+      "hosting": {
+        "development": [
+          "impactdisciplesdev-admin"
         ]
       }
     }

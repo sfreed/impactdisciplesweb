@@ -9,7 +9,7 @@ export const environment = {
     appId: "1:989008672868:web:d2ee543e60c5e927260771",
     measurementId: "G-1EEHPL0SRD"
   },
-  domain: 'https://impactdisciplesdev-admin.web.app/',
+  domain: 'http://localhost:4200/',
   session_expires: 30
 };
 
