@@ -75,22 +75,22 @@
           [showColonAfterLabel]="false"
           labelLocation="left"
           [colCount]="6">
-          <dxi-item dataField="dateProcessed" [colSpan]="3"></dxi-item>
+          <dxi-item dataField="dateProcessed" [colSpan]="3" [disabled]="true"></dxi-item>
           <dxi-item dataField="processedStatus" [colSpan]="3" [disabled]="true"></dxi-item>
 
-          <dxi-item dataField="firstName" [colSpan]="3"></dxi-item>
-          <dxi-item dataField="lastName" [colSpan]="3"></dxi-item>
+          <dxi-item dataField="firstName" [colSpan]="3" [disabled]="true"></dxi-item>
+          <dxi-item dataField="lastName" [colSpan]="3" [disabled]="true"></dxi-item>
 
-          <dxi-item dataField="email" [colSpan]="3"></dxi-item>
-          <dxi-item dataField="couponCode" [colSpan]="3"></dxi-item>
+          <dxi-item dataField="email" [colSpan]="3" [disabled]="true"></dxi-item>
+          <dxi-item dataField="couponCode" [colSpan]="3" [disabled]="true"></dxi-item>
 
-          <dxi-item dataField="paymentIntent.status" [label]="{text: 'Status'}" [colSpan]="2"></dxi-item>
-          <dxi-item [colSpan]="2" [label]="{text: 'Item Count'}">
+          <dxi-item dataField="paymentIntent.status" [label]="{text: 'Status'}" [colSpan]="2" [disabled]="true"></dxi-item>
+          <dxi-item [colSpan]="2" [label]="{text: 'Item Count'}" [disabled]="true">
             <div *dxTemplate>
               <dx-number-box [value]="selectedItem?.cartItems?.length"></dx-number-box>
             </div>
           </dxi-item>
-          <dxi-item [colSpan]="2" [label]="{text: 'Total'}">
+          <dxi-item [colSpan]="2" [label]="{text: 'Total'}" [disabled]="true">
             <div *dxTemplate>
               <dx-number-box [value]="selectedItem?.total" format="currency"></dx-number-box>
             </div>
