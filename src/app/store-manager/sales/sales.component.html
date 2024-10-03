@@ -76,7 +76,7 @@
           labelLocation="left"
           [colCount]="6">
           <dxi-item dataField="dateProcessed" [colSpan]="3"></dxi-item>
-          <dxi-item dataField="processedStatus" [colSpan]="3"></dxi-item>
+          <dxi-item dataField="processedStatus" [colSpan]="3" [disabled]="true"></dxi-item>
 
           <dxi-item dataField="firstName" [colSpan]="3"></dxi-item>
           <dxi-item dataField="lastName" [colSpan]="3"></dxi-item>
@@ -96,88 +96,105 @@
             </div>
           </dxi-item>
 
-          <dxi-item itemType="tabbed" [colSpan]="2">
-            <dxi-tab title="Billing Address">
-              <dxi-item itemType="group" caption="Address" [colCount]="6" [colSpan]="2">
-                <dxi-item dataField="billingAddress.address1" [colSpan]="6" [label]="{ text: 'Address1' }"></dxi-item>
-                <dxi-item dataField="billingAddress.address2" [colSpan]="6" [label]="{ text: 'Address2' }"></dxi-item>
-                <dxi-item dataField="billingAddress.city" [colSpan]="3" [label]="{ text: 'City' }"></dxi-item>
-                <dxi-item dataField="billingAddress.state" [colSpan]="2" [label]="{ text: 'State' }">
-                  <div *dxTemplate>
-                    <dx-select-box
-                      [items]="states"
-                      [(value)]="selectedItem.billingAddress.state">
-                    </dx-select-box>
-                  </div>
-                </dxi-item>
-                <dxi-item dataField="billingAddress.zip" [colSpan]="2" [label]="{ text: 'Zip' }"></dxi-item>
-                <dxi-item dataField="billingAddress.county" [colSpan]="3" [label]="{ text: 'County' }"></dxi-item>
-                <dxi-item dataField="billingAddress.country" [colSpan]="3" [label]="{ text: 'Country' }"></dxi-item>
+          <dxi-item itemType="tabbed" [colSpan]="6">
+            <dxi-tab title="Shipping / Billing Information">
+              <dxi-item itemType="tabbed" [colSpan]="6">
+                <dxi-tab title="Billing Address">
+                  <dxi-item itemType="group" caption="Address" [colCount]="6" [colSpan]="2">
+                    <dxi-item dataField="billingAddress.address1" [colSpan]="6" [label]="{ text: 'Address1' }"></dxi-item>
+                    <dxi-item dataField="billingAddress.address2" [colSpan]="6" [label]="{ text: 'Address2' }"></dxi-item>
+                    <dxi-item dataField="billingAddress.city" [colSpan]="3" [label]="{ text: 'City' }"></dxi-item>
+                    <dxi-item dataField="billingAddress.state" [colSpan]="2" [label]="{ text: 'State' }">
+                      <div *dxTemplate>
+                        <dx-select-box
+                          [items]="states"
+                          [(value)]="selectedItem.billingAddress.state">
+                        </dx-select-box>
+                      </div>
+                    </dxi-item>
+                    <dxi-item dataField="billingAddress.zip" [colSpan]="2" [label]="{ text: 'Zip' }"></dxi-item>
+                    <dxi-item dataField="billingAddress.county" [colSpan]="3" [label]="{ text: 'County' }"></dxi-item>
+                    <dxi-item dataField="billingAddress.country" [colSpan]="3" [label]="{ text: 'Country' }"></dxi-item>
+                  </dxi-item>
+                </dxi-tab>
+                <dxi-tab title="Shipping Address">
+                  <dxi-item itemType="group" caption="Address" [colCount]="6" [colSpan]="2">
+                    <dxi-item dataField="shippingAddress.address1" [colSpan]="6" [label]="{ text: 'Address1' }"></dxi-item>
+                    <dxi-item dataField="shippingAddress.address2" [colSpan]="6" [label]="{ text: 'Address2' }"></dxi-item>
+                    <dxi-item dataField="shippingAddress.city" [colSpan]="3" [label]="{ text: 'City' }"></dxi-item>
+                    <dxi-item dataField="shippingAddress.state" [colSpan]="2" [label]="{ text: 'State' }">
+                      <div *dxTemplate>
+                        <dx-select-box
+                          [items]="states"
+                          [(value)]="selectedItem.shippingAddress">
+                        </dx-select-box>
+                      </div>
+                    </dxi-item>
+                    <dxi-item dataField="shippingAddress.zip" [colSpan]="2" [label]="{ text: 'Zip' }"></dxi-item>
+                    <dxi-item dataField="shippingAddress.county" [colSpan]="3" [label]="{ text: 'County' }"></dxi-item>
+                    <dxi-item dataField="shippingAddress.country" [colSpan]="3" [label]="{ text: 'Country' }"></dxi-item>
+                  </dxi-item>
+                </dxi-tab>
+                <dxi-tab title="Contact">
+                  <dxi-item itemType="group" caption="Phone Number" [colCount]="6" [colSpan]="2">
+                    <dxi-item dataField="phone.countryCode" [colSpan]="2" [label]="{ text: 'Country Code' }"></dxi-item>
+                    <dxi-item dataField="phone.number" [colSpan]="2" [label]="{ text: 'Number' }" [editorOptions]="phoneEditorOptions"></dxi-item>
+                    <dxi-item [label]="{ text: 'Type' }" [colSpan]="2">
+                      <div *dxTemplate>
+                        <dx-select-box
+                          [items]="phone_types"
+                          [(value)]="selectedItem.phone.type">
+                        </dx-select-box>
+                      </div>
+                    </dxi-item>
+                  </dxi-item>
+                </dxi-tab>
               </dxi-item>
             </dxi-tab>
-            <dxi-tab title="Billing Address">
-              <dxi-item itemType="group" caption="Address" [colCount]="6" [colSpan]="2">
-                <dxi-item dataField="shippingAddress.address1" [colSpan]="6" [label]="{ text: 'Address1' }"></dxi-item>
-                <dxi-item dataField="shippingAddress.address2" [colSpan]="6" [label]="{ text: 'Address2' }"></dxi-item>
-                <dxi-item dataField="shippingAddress.city" [colSpan]="3" [label]="{ text: 'City' }"></dxi-item>
-                <dxi-item dataField="shippingAddress.state" [colSpan]="2" [label]="{ text: 'State' }">
-                  <div *dxTemplate>
-                    <dx-select-box
-                      [items]="states"
-                      [(value)]="selectedItem.shippingAddress">
-                    </dx-select-box>
-                  </div>
-                </dxi-item>
-                <dxi-item dataField="shippingAddress.zip" [colSpan]="2" [label]="{ text: 'Zip' }"></dxi-item>
-                <dxi-item dataField="shippingAddress.county" [colSpan]="3" [label]="{ text: 'County' }"></dxi-item>
-                <dxi-item dataField="shippingAddress.country" [colSpan]="3" [label]="{ text: 'Country' }"></dxi-item>
-              </dxi-item>
-            </dxi-tab>
-            <dxi-tab title="Contact">
-              <dxi-item itemType="group" caption="Phone Number" [colCount]="6" [colSpan]="2">
-                <dxi-item dataField="phone.countryCode" [colSpan]="2" [label]="{ text: 'Country Code' }"></dxi-item>
-                <dxi-item dataField="phone.number" [colSpan]="2" [label]="{ text: 'Number' }" [editorOptions]="phoneEditorOptions"></dxi-item>
-                <dxi-item [label]="{ text: 'Type' }" [colSpan]="2">
-                  <div *dxTemplate>
-                    <dx-select-box
-                      [items]="phone_types"
-                      [(value)]="selectedItem.phone.type">
-                    </dx-select-box>
-                  </div>
-                </dxi-item>
-              </dxi-item>
-            </dxi-tab>
-          </dxi-item>
-          <dxi-item [colSpan]="4">
-            <div *dxTemplate>
-              <dx-data-grid class="dx-card wide-card"
-                #grid
-                [dataSource]="selectedItem.cartItems"
-                [height]="'36vh'"
-                [showBorders]="false"
-                [showColumnLines]="true"
-                [showColumnLines]="true"
-                [showRowLines]="true"
-                [columnAutoWidth]="true">
+            <dxi-tab title="Sale Details">
+              <dxi-item [colSpan]="6">
+                <div *dxTemplate>
+                  <dx-data-grid class="dx-card wide-card"
+                    #grid
+                    [dataSource]="selectedItem.cartItems"
+                    [height]="'36vh'"
+                    [showBorders]="false"
+                    [showColumnLines]="true"
+                    [wordWrapEnabled]="true"
+                    [showColumnLines]="true"
+                    [showRowLines]="true"
+                    [columnAutoWidth]="true">
 
-                <dxo-scrolling mode="virtual"></dxo-scrolling>
-                <dxo-filter-row [visible]="true"></dxo-filter-row>
+                    <dxo-scrolling mode="virtual"></dxo-scrolling>
+                    <dxo-filter-row [visible]="true"></dxo-filter-row>
 
-                <dxi-column dataField="img" cellTemplate="imageCellTemplate"[caption]="''"></dxi-column>
-                <dxi-column dataField="itemName" [width]="200" [caption]="'Count'"></dxi-column>
-                <dxi-column dataField="orderQuantity" [dataType]="'number'" [caption]="'Count'"></dxi-column>
-                <dxi-column dataField="dateProcessed" [dataType]="'date'" [caption]="'Date'"></dxi-column>
-                <dxi-column dataField="processedStatus" [caption]="'Status'"></dxi-column>
+                    <dxi-column dataField="img" cellTemplate="imageCellTemplate" [caption]="''" [width]="120"></dxi-column>
+                    <dxi-column dataField="itemName" cellTemplate="descriptionCellTemplate" [caption]="'Description'"></dxi-column>
+                    <dxi-column dataField="orderQuantity" [dataType]="'number'" [caption]="'Count'" [width]="100"></dxi-column>
+                    <dxi-column dataField="dateProcessed" [dataType]="'date'" [caption]="'Date'" [width]="120"></dxi-column>
+                    <dxi-column dataField="processedStatus" [caption]="'Status'" [width]="150"></dxi-column>
 
-                <dxi-column type="buttons" [allowReordering]="false">
-                  <dxi-button icon="arrowright" hint="Mark As Shipped" [onClick]="markAsShipped" [visible]="isShippedButtonVisible"></dxi-button>
-                </dxi-column>
+                    <dxi-column type="buttons" [allowReordering]="false" [width]="50">
+                      <dxi-button icon="arrowright" hint="Mark As Shipped" [onClick]="markAsShipped" [visible]="isShippedButtonVisible"></dxi-button>
+                    </dxi-column>
 
-                <div *dxTemplate="let data of 'imageCellTemplate'">
-                  <img *ngIf="data?.value" width="100" [src]="data?.value?.url" [alt]="data?.value?.name"/>
+                    <div *dxTemplate="let data of 'imageCellTemplate'">
+                      <img *ngIf="data?.value" width="100" [src]="data?.value?.url" [alt]="data?.value?.name"/>
+                    </div>
+
+                    <div *dxTemplate="let data of 'descriptionCellTemplate'">
+                      <div>{{data.value}}</div>
+
+                      <div *ngIf="(data.data.attendees?.length) > 0">
+                        <span *ngFor="let attendee of data.data.attendees">
+                          {{attendee.email}}
+                        </span>
+                      </div>
+                    </div>
+                  </dx-data-grid>
                 </div>
-              </dx-data-grid>
-            </div>
+              </dxi-item>
+            </dxi-tab>
           </dxi-item>
         </dx-form>
       </div>
