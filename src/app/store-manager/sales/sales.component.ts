@@ -183,8 +183,4 @@ export class SalesComponent implements OnInit {
   isShippedButtonVisible(e){
     return e.row.data.isEvent == false || e.row.data.processedStatus != 'SHIPPED';
   }
-
-  view(e){
-    console.log(e)
-  }
 }
