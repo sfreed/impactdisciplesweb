@@ -107,84 +107,10 @@
             <div *dxTemplate>
               <div class="row">
                 <div class="col-7">
-                  <div class="content-block responsive-paddings">
-                    <dx-toolbar class="content-list__header py-2 px-2">
-                      <dxi-item location="before" locateInMenu="never">
-                        <div *dxTemplate>
-                          <h2 class="content-block responsive-paddings underline">Affilliate Sales</h2>
-                        </div>
-                      </dxi-item>
-                      <dxi-item
-                        location="after"
-                        widget="dxButton"
-                        [options]="{
-                          hint: 'PAY',
-                          type: 'default',
-                          text: 'PAY',
-                          stylingMode: 'contained',
-                          onClick: pay
-                        }">
-                      </dxi-item>
-                    </dx-toolbar>
-                  </div>
-                  <dx-data-grid class="dx-card wide-card"
-                    #grid
-                    [dataSource]="affilliateSales | async"
-                    [height]="'35vh'"
-                    [showBorders]="false"
-                    [showColumnLines]="true"
-                    [(selectedRowKeys)]="selectedRows"
-                    [showColumnLines]="true"
-                    [showRowLines]="true"
-                    [columnAutoWidth]="true">
-
-                    <dxo-selection mode="multiple"> </dxo-selection>
-                    <dxo-scrolling mode="virtual"></dxo-scrolling>
-                    <dxo-filter-row [visible]="true"></dxo-filter-row>
-
-                    <dxi-column dataField="date" dataType="date"></dxi-column>
-                    <dxi-column dataField="email"></dxi-column>
-                    <dxi-column dataField="totalBeforeDiscount" dataType="number" format="currency" [caption]="'Total'"></dxi-column>
-                    <dxi-column dataField="totalAfterDiscount" dataType="number" format="currency" [caption]="'Discounted Total'"></dxi-column>
-                    <dxi-column dataField="amountPayed" dataType="number" format="currency" [caption]="'Payed Amount'"></dxi-column>
-                    <dxi-column dataField="isPayed" dataType="boolean"></dxi-column>
-                    <dxo-summary>
-                      <dxi-total-item
-                        column="date"
-                        summaryType="count">
-                      </dxi-total-item>
-                      <dxi-total-item column="totalBeforeDiscount" summaryType="sum" valueFormat="currency"></dxi-total-item>
-                      <dxi-total-item column="totalAfterDiscount" summaryType="sum" valueFormat="currency"></dxi-total-item>
-                      <dxi-total-item column="payedAmount" summaryType="sum" valueFormat="currency"></dxi-total-item>
-                    </dxo-summary>
-                  </dx-data-grid>
+                  <app-affiliate-sales [selectedItem]="selectedItem"></app-affiliate-sales>
                 </div>
                 <div class="col-5">
-                  <h2 class="content-block responsive-paddings underline pb-1">Affilliate Payments</h2>
-                  <dx-data-grid class="dx-card wide-card"
-                    #grid
-                    [dataSource]="affilliatePayments | async"
-                    [height]="'35vh'"
-                    [showBorders]="false"
-                    [showColumnLines]="true"
-                    [showColumnLines]="true"
-                    [showRowLines]="true"
-                    [columnAutoWidth]="true"
-                    [columnHidingEnabled]="true">
-
-                    <dxo-scrolling mode="virtual"></dxo-scrolling>
-                    <dxo-filter-row [visible]="true"></dxo-filter-row>
-
-                    <dxi-column dataField="date" dataType="date"></dxi-column>
-                    <dxi-column dataField="receipt"></dxi-column>
-                    <dxi-column dataField="amountPayed" dataType="number" format="currency" [caption]="'Payed Amount'"></dxi-column>
-                    <dxi-column dataField="saleIdsPayed" [hidden]="true" ></dxi-column>
-                    <dxo-summary>
-                      <dxi-total-item column="date" summaryType="count">
-                      </dxi-total-item>
-                      <dxi-total-item column="amountPayed" summaryType="sum" valueFormat="currency"></dxi-total-item>
-                    </dxo-summary>
-                  </dx-data-grid>
+                  <app-affilliatte-payments></app-affilliatte-payments>
                 </div>
               </div>
             </div>

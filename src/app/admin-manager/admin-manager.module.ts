@@ -8,7 +8,6 @@ import { DxButtonModule, DxDataGridModule, DxFileUploaderModule, DxFormModule, D
          DxToolbarModule,
          DxValidatorModule} from 'devextreme-angular';
 import { NotificationsComponent } from './notifications/notifications.component';
-import { CouponsComponent } from './coupons/coupons.component';
 import { WebConfigComponent } from './web-config/web-config.component';
 import { ImpactFormsModule } from 'impactdisciplescommon/src/forms/forms.module';
 import { PhoneNumberMaskPipe } from 'impactdisciplescommon/src/pipes/phone-number.pipe';
@@ -43,7 +42,6 @@ import { EmailTemplatesComponent } from './email-templates/email-templates.compo
   ],
   declarations: [
     AdminManagerComponent,
-    CouponsComponent,
     LogMessagesComponent,
     NotificationsComponent,
     UsersComponent,

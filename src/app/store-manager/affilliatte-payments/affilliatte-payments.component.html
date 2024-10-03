@@ -1,0 +1,25 @@
+<h2 class="content-block responsive-paddings underline pb-1">Affilliate Payments</h2>
+<dx-data-grid class="dx-card wide-card"
+  #grid
+  [dataSource]="affilliatePayments | async"
+  [height]="'35vh'"
+  [showBorders]="false"
+  [showColumnLines]="true"
+  [showColumnLines]="true"
+  [showRowLines]="true"
+  [columnAutoWidth]="true"
+  [columnHidingEnabled]="true">
+
+  <dxo-scrolling mode="virtual"></dxo-scrolling>
+  <dxo-filter-row [visible]="true"></dxo-filter-row>
+
+  <dxi-column dataField="date" dataType="date"></dxi-column>
+  <dxi-column dataField="receipt"></dxi-column>
+  <dxi-column dataField="amountPayed" dataType="number" format="currency" [caption]="'Payed Amount'"></dxi-column>
+  <dxi-column dataField="saleIdsPayed" [hidden]="true" ></dxi-column>
+  <dxo-summary>
+    <dxi-total-item column="date" summaryType="count">
+    </dxi-total-item>
+    <dxi-total-item column="amountPayed" summaryType="sum" valueFormat="currency"></dxi-total-item>
+  </dxo-summary>
+</dx-data-grid>

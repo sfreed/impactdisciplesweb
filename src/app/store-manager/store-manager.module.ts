@@ -10,12 +10,18 @@ import { ProductCategoriesComponent } from './product-categories/product-categor
 import { CategoryModalComponent } from './product-categories/category-modal/category-modal.component';
 import { ProductSeriesComponent } from './product-series/product-series.component';
 import { SeriesModalComponent } from './product-series/series-modal/series-modal.component';
+import { CouponsComponent } from './coupons/coupons.component';
+import { AffiliateSalesComponent } from './affiliate-sales/affiliate-sales.component';
+import { AffilliattePaymentsComponent } from './affilliatte-payments/affilliatte-payments.component';
 
 @NgModule({
   declarations: [
     StoreManagerComponent,
     ProductsComponent,
     SalesComponent,
+    CouponsComponent,
+    AffiliateSalesComponent,
+    AffilliattePaymentsComponent,
     ProductCategoriesComponent,
     CategoryModalComponent,
     ProductSeriesComponent,

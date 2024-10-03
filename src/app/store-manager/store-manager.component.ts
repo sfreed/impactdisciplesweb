@@ -12,7 +12,8 @@ export class StoreManagerComponent {
 
   tabs: Tab[] = [
     { id: 0, text: 'Products', template: 'Products' },
-    { id: 1, text: 'Sales', template: 'Sales' }
+    { id: 1, text: 'Sales', template: 'Sales' },
+    { id: 3, text: 'Coupons', template: 'Coupons' },
   ];
 
   selectTab(e) {

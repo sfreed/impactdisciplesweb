@@ -11,12 +11,11 @@ export class AdminManagerComponent {
   selectedTab: string = 'Coupons';
 
   tabs: Tab[] = [
-    { id: 0, text: 'Coupons', template: 'Coupons' },
-    { id: 1, text: 'Logs', template: 'Logs' },
-    { id: 2, text: 'Notifications', template: 'Notifications' },
-    { id: 3, text: 'Users', template: 'Users' },
-    { id: 4, text: 'Web Config', template: 'Web Config' },
-    { id: 5, text: 'Email Templates', template: 'Email Templates' }
+    { id: 0, text: 'Logs', template: 'Logs' },
+    { id: 1, text: 'Notifications', template: 'Notifications' },
+    { id: 2, text: 'Users', template: 'Users' },
+    { id: 3, text: 'Web Config', template: 'Web Config' },
+    { id: 4, text: 'Email Templates', template: 'Email Templates' }
   ];
 
   selectTab(e) {
