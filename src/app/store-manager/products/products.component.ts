@@ -18,6 +18,8 @@ import { Store } from '@ngxs/store';
 import { ShowProductSeriesModal } from '../product-series/product-series-modal.actions';
 import { ShowSeriesModal } from '../product-series/series-modal/series-modal.actions';
 import { ShowCategoryModal } from '../product-categories/category-modal/category-modal.actions';
+import { UNIT_OF_MEASURE } from 'impactdisciplescommon/src/lists/unit_of_measure.enum';
+import { EnumHelper } from 'impactdisciplescommon/src/utils/enum_helper';
 
 @Component({
   selector: 'app-products',
@@ -47,6 +49,8 @@ export class ProductsComponent implements OnInit {
   selectedCategory: TagModel;
   selectedSeries: SeriesModel;
   gridFilter: any = null;
+
+  uoms: string[] = EnumHelper.getUOMTypesAsArray();
 
   constructor(
     private service: ProductService,
@@ -89,7 +93,7 @@ export class ProductsComponent implements OnInit {
 
   onCategoryFilterChanged(event: any) {
     if(event.value) {
-      this.selectedSeries = null; 
+      this.selectedSeries = null;
       this.selectedCategory = this.productCategories.find(category => category.id === event.value) || null;
       this.gridFilter = ['category', '=', this.selectedCategory.id];
     } else if(!event.value && !this.selectedSeries) {
@@ -100,7 +104,7 @@ export class ProductsComponent implements OnInit {
   onSeriesFilterChanged(event: any) {
     if(event.value) {
       this.selectedCategory = null;
-      this.selectedSeries = this.series.find(series => series.id === event.value) || null; 
+      this.selectedSeries = this.series.find(series => series.id === event.value) || null;
       this.gridFilter = ['series', '=', this.selectedSeries.id];
     } else if(!event.value && !this.selectedCategory) {
       this.gridFilter = null;
