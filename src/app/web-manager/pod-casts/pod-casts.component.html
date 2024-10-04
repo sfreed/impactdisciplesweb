@@ -27,6 +27,17 @@
         onClick: showAddModal
       }"
     ></dxi-item>
+    <dxi-item
+      location="after"
+      widget="dxButton"
+      [options]="{
+        hint: 'SYNC ' + itemType | uppercase,
+        type: 'default',
+        text: 'SYNC ' + itemType | uppercase,
+        stylingMode: 'contained',
+        onClick: syncPodcasts
+      }"
+    ></dxi-item>
   </dx-toolbar>
 </div>
 
