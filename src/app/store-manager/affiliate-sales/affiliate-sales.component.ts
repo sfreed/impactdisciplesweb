@@ -48,7 +48,7 @@ export class AffiliateSalesComponent implements OnInit {
         type: 'warning'
       });
     } else {
-      let sum: number = this.selectedRows.map(row => row.totalBeforeDiscount - row.totalAfterDiscount).reduce((a,b) => a + b, 0);
+      let sum: number = this.selectedRows.map(row => row.totalAfterDiscount * .1).reduce((a,b) => a + b, 0);
       let ids: string[] = this.selectedRows.map(row => row.id)
 
       await this.affilliatePaymentService.pay(this.selectedItem.affiliatePaypalAccount, sum).then(async response => {
@@ -66,7 +66,7 @@ export class AffiliateSalesComponent implements OnInit {
         this.selectedRows.forEach(async row => {
           row.isPayed = true;
           row.paymentReceipt = payment.id;
-          row.amountPayed = row.totalBeforeDiscount - row.totalAfterDiscount;
+          row.amountPayed = row.totalAfterDiscount * .1;
 
           await this.affiliateSalesService.update(row.id, row);
         })
