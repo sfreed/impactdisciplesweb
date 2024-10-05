@@ -5,3 +5,6 @@ exports.cancel = stripeApi.cancel;
 
 const notifications = require("./notifications.functions");
 exports.notifications = notifications.sendNotification;
+
+const shipping = require("./shipping.functions");
+exports.shipping = shipping.shipping;
