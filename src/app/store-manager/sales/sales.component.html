@@ -106,10 +106,11 @@
                     <dxi-item dataField="billingAddress.city" [colSpan]="3" [label]="{ text: 'City' }"></dxi-item>
                     <dxi-item dataField="billingAddress.state" [colSpan]="2" [label]="{ text: 'State' }">
                       <div *dxTemplate>
-                        <dx-select-box
+                        <dx-lookup
+                        [showCancelButton]="false"
                           [items]="states"
                           [(value)]="selectedItem.billingAddress.state">
-                        </dx-select-box>
+                        </dx-lookup>
                       </div>
                     </dxi-item>
                     <dxi-item dataField="billingAddress.zip" [colSpan]="2" [label]="{ text: 'Zip' }"></dxi-item>

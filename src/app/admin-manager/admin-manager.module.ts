@@ -4,6 +4,7 @@ import { LogMessagesComponent } from './log-messages/log-messages.component';
 import { UsersComponent } from './users/users.component';
 import { DxButtonModule, DxDataGridModule, DxFileUploaderModule, DxFormModule, DxHtmlEditorModule, DxListModule, DxLoadIndicatorModule,
          DxLoadPanelModule,
+         DxLookupModule,
          DxNumberBoxModule,
          DxPopupModule, DxSelectBoxModule, DxSwitchModule, DxTabsModule, DxTagBoxModule, DxTextBoxModule,
          DxToolbarModule,
@@ -28,6 +29,7 @@ import { EmailTemplatesComponent } from './email-templates/email-templates.compo
     DxFileUploaderModule,
     DxHtmlEditorModule,
     DxLoadPanelModule,
+    DxLookupModule,
     DxListModule,
     DxLoadIndicatorModule,
     DxNumberBoxModule,

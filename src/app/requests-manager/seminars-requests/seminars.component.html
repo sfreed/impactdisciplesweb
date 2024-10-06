@@ -163,10 +163,11 @@
               <dxi-item dataField="preferredLocation.city" [colSpan]="3" [label]="{text: 'City'}" [isRequired]="true"></dxi-item>
               <dxi-item dataField="preferredLocation.state" [colSpan]="2" [label]="{text: 'State'}" [isRequired]="true">
                 <div *dxTemplate>
-                  <dx-select-box
+                  <dx-lookup
+                    [showCancelButton]="false"
                     [items]="states"
                     [(value)]="selectedItem.preferredLocation.state">
-                  </dx-select-box>
+                  </dx-lookup>
                 </div>
               </dxi-item>
               <dxi-item dataField="preferredLocation.zip" [colSpan]="1" [label]="{text: 'Zip'}" [isRequired]="true"></dxi-item>

@@ -148,10 +148,11 @@
               <dxi-item dataField="locationAddress.city" [colSpan]="3" [label]="{text: 'City'}"></dxi-item>
               <dxi-item dataField="locationAddress.state" [colSpan]="2" [label]="{text: 'State'}">
                 <div *dxTemplate>
-                  <dx-select-box
+                  <dx-lookup
+                    [showCancelButton]="false"
                     [items]="states"
                     [(value)]="selectedItem.locationAddress.state">
-                  </dx-select-box>
+                  </dx-lookup>
                 </div>
               </dxi-item>
               <dxi-item dataField="locationAddress.zip" [colSpan]="1" [label]="{text: 'Zip'}"></dxi-item>

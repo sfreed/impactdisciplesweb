@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { StoreManagerComponent } from './store-manager.component';
-import { DxButtonModule, DxContextMenuModule, DxDataGridModule, DxDropDownBoxModule, DxFormModule, DxHtmlEditorModule, DxListModule, DxLoadIndicatorModule, DxNumberBoxModule, DxPopupModule, DxSelectBoxModule, DxSwitchModule, DxTabsModule, DxTagBoxModule, DxTextBoxModule, DxToolbarModule } from 'devextreme-angular';
+import { DxButtonModule, DxContextMenuModule, DxDataGridModule, DxDropDownBoxModule, DxFormModule, DxHtmlEditorModule, DxListModule, DxLoadIndicatorModule, DxLookupModule, DxNumberBoxModule, DxPopupModule, DxSelectBoxModule, DxSwitchModule, DxTabsModule, DxTagBoxModule, DxTextBoxModule, DxToolbarModule } from 'devextreme-angular';
 import { ProductsComponent } from './products/products.component';
 import { SalesComponent } from './sales/sales.component';
 import { SharedModule } from '../shared/shared.module';
@@ -35,6 +35,7 @@ import { AffilliattePaymentsComponent } from './affilliatte-payments/affilliatte
     DxFormModule,
     DxHtmlEditorModule,
     DxListModule,
+    DxLookupModule,
     DxNumberBoxModule,
     DxPopupModule,
     DxSelectBoxModule,
