@@ -120,7 +120,14 @@
                 </dxi-item>
                 <dxi-item dataField="address.zip" [colSpan]="2" [label]="{ text: 'Zip' }"></dxi-item>
                 <dxi-item dataField="address.county" [colSpan]="3" [label]="{ text: 'County' }"></dxi-item>
-                <dxi-item dataField="address.country" [colSpan]="3" [label]="{ text: 'Country' }"></dxi-item>
+                <dxi-item dataField="address.country" [colSpan]="3" [label]="{ text: 'Country' }">
+                  <div *dxTemplate>
+                    <dx-select-box
+                      [items]="countries"
+                      [(value)]="selectedItem.address.country">
+                    </dx-select-box>
+                  </div>
+                </dxi-item>
               </dxi-item>
             </dxi-tab>
             <dxi-tab title="Contact">

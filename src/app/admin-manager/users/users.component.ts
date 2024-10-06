@@ -39,10 +39,10 @@ export class UsersComponent implements OnInit {
   };
 
   public states: string[];
+  public countries: string[];
+  public roles: string[];
+  public phone_types: string[];
 
-  roles;
-  phone_types;
-address
   constructor(private service: AppUserService) {}
 
   ngOnInit(): void {
@@ -66,6 +66,7 @@ address
     this.roles = EnumHelper.getRoleTypesAsArray();
     this.phone_types = EnumHelper.getPhoneTypesAsArray();
     this.states = EnumHelper.getStateRoleTypesAsArray();
+    this.countries = EnumHelper.getCountryTypesAsArray();
 
   }
 
