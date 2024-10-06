@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { LogMessagesComponent } from './log-messages/log-messages.component';
 import { UsersComponent } from './users/users.component';
 import { DxButtonModule, DxDataGridModule, DxFileUploaderModule, DxFormModule, DxHtmlEditorModule, DxListModule, DxLoadIndicatorModule,
+         DxLoadPanelModule,
          DxNumberBoxModule,
          DxPopupModule, DxSelectBoxModule, DxSwitchModule, DxTabsModule, DxTagBoxModule, DxTextBoxModule,
          DxToolbarModule,
@@ -26,6 +27,7 @@ import { EmailTemplatesComponent } from './email-templates/email-templates.compo
     DxFormModule,
     DxFileUploaderModule,
     DxHtmlEditorModule,
+    DxLoadPanelModule,
     DxListModule,
     DxLoadIndicatorModule,
     DxNumberBoxModule,
