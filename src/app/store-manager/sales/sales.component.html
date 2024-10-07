@@ -30,8 +30,10 @@
   <dxi-column dataField="email"></dxi-column>
   <dxi-column dataField="receipt" cellTemplate="receiptTemplate"></dxi-column>
   <dxi-column dataField="count" cellTemplate="itemCountTemplate"></dxi-column>
-  <dxi-column dataField="totalBeforeDiscount" [caption]="'Total'" format="currency"></dxi-column>
   <dxi-column dataField="couponCode"></dxi-column>
+  <dxi-column dataField="totalBeforeDiscount" [caption]="'Total'" format="currency"></dxi-column>
+  <dxi-column dataField="estimatedTaxes" [caption]="'Taxes'" format="currency"></dxi-column>
+  <dxi-column dataField="shippingRate" [caption]="'Shipping'" format="currency"></dxi-column>
   <dxi-column dataField="paymentIntent.amount" cellTemplate="amountTemplate" [caption]="'Charged'"></dxi-column>
   <dxi-column type="buttons" caption="Actions" [allowReordering]="false">
     <dxi-button icon="edit" hint="EDIT" [onClick]="showEditModal"></dxi-button>
@@ -84,10 +86,20 @@
           <dxi-item dataField="email" [colSpan]="3" [disabled]="true"></dxi-item>
           <dxi-item dataField="couponCode" [colSpan]="3" [disabled]="true"></dxi-item>
 
-          <dxi-item dataField="paymentIntent.status" [label]="{text: 'Status'}" [colSpan]="2" [disabled]="true"></dxi-item>
-          <dxi-item [colSpan]="2" [label]="{text: 'Item Count'}" [disabled]="true">
+          <dxi-item dataField="paymentIntent.status" [label]="{text: 'Status'}" [colSpan]="3" [disabled]="true"></dxi-item>
+          <dxi-item [colSpan]="3" [label]="{text: 'Item Count'}" [disabled]="true">
             <div *dxTemplate>
               <dx-number-box [value]="selectedItem?.cartItems?.length"></dx-number-box>
+            </div>
+          </dxi-item>
+          <dxi-item [colSpan]="2" [label]="{text: 'Taxes'}" [disabled]="true">
+            <div *dxTemplate>
+              <dx-number-box [value]="selectedItem?.estimatedTaxes" format="currency"></dx-number-box>
+            </div>
+          </dxi-item>
+          <dxi-item [colSpan]="2" [label]="{text: 'Shipping'}" [disabled]="true">
+            <div *dxTemplate>
+              <dx-number-box [value]="selectedItem?.shippingRate" format="currency"></dx-number-box>
             </div>
           </dxi-item>
           <dxi-item [colSpan]="2" [label]="{text: 'Total'}" [disabled]="true">
