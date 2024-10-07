@@ -14,6 +14,7 @@ import { WebManagerComponent } from './web-manager.component';
 import { SharedModule } from '../shared/shared.module';
 import { BlogCategoriesComponent } from './blog-categories/blog-categories.component';
 import { PodCastCategoriesComponent } from './pod-cast-categories/pod-cast-categories.component';
+import { HttpClientModule, provideHttpClient } from '@angular/common/http';
 
 
 @NgModule({
@@ -35,7 +36,8 @@ import { PodCastCategoriesComponent } from './pod-cast-categories/pod-cast-categ
     DxTextBoxModule,
     DxToolbarModule,
     ImpactDisciplesModule,
-    SharedModule
+    SharedModule,
+
   ],
   declarations: [
     WebManagerComponent,
@@ -46,7 +48,8 @@ import { PodCastCategoriesComponent } from './pod-cast-categories/pod-cast-categ
     PodCastCategoriesComponent
   ],
   providers:[
-    PhoneNumberMaskPipe
+    PhoneNumberMaskPipe,
+    provideHttpClient()
   ]
 })
 export class WebManagerModule { }

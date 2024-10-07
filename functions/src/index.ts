@@ -11,3 +11,6 @@ exports.shipping = shipping.shipping;
 
 const importJSON = require("./import.functions");
 exports.importJson = importJSON.importJSON;
+
+const imageUploader = require("./fetchimage.functions");
+exports.uploadImageToStorage = imageUploader.uploadImageToStorage;

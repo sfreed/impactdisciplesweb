@@ -8,10 +8,12 @@ import { BlogPostModel } from 'impactdisciplescommon/src/models/domain/blog-post
 import { TagModel } from 'impactdisciplescommon/src/models/domain/tag.model';
 import { BlogPostService } from 'impactdisciplescommon/src/services/blog-post.service';
 import { BlogTagsService } from 'impactdisciplescommon/src/services/blog-tags.service';
-import { BehaviorSubject, map, Observable } from 'rxjs';
+import { BehaviorSubject, map, Observable, switchMap } from 'rxjs';
 import { confirm } from 'devextreme/ui/dialog';
 import { BlogCategoriesService } from 'impactdisciplescommon/src/services/utils/blog-categories.service';
 import { Timestamp } from 'firebase/firestore';
+import { HttpClient, HttpUrlEncodingCodec } from '@angular/common/http';
+import { ImageModel } from 'impactdisciplescommon/src/models/utils/image.model';
 
 @Component({
   selector: 'app-blog-posts',
@@ -34,7 +36,10 @@ export class BlogPostsComponent implements OnInit {
 
   blogTags: TagModel[] = [];
 
-  constructor(private service: BlogPostService, private blogTagService: BlogTagsService, private blogCategoriesService: BlogCategoriesService) {}
+  constructor(private service: BlogPostService,
+    private blogTagService: BlogTagsService,
+    private blogCategoriesService: BlogCategoriesService,
+    private http: HttpClient) {}
 
   async ngOnInit() {
     this.datasource$ = this.service.streamAll().pipe(
@@ -221,4 +226,38 @@ export class BlogPostsComponent implements OnInit {
 //       }
 //     })
 //   }
+
+  // getImage = async () => {
+  //   await this.service.getAll().then(async blogs => {
+  //     blogs.forEach(async blog => {
+
+  //       if(blog.extraImages && blog.extraImages.length > 0){
+  //         blog.extraImages.forEach(async image => {
+
+  //           let split = image.url.split("/")
+
+  //           let request = {... new ImageModel()};
+  //           request.url = image.url;
+  //           request.name = split[split.length-1];
+
+  //           const response = await fetch("https://us-central1-impactdisciplesdev.cloudfunctions.net/uploadImageToStorage", {
+  //             method: "POST",
+  //             headers: { "Content-Type": "application/json" },
+  //             body: JSON.stringify(request),
+  //           });
+
+  //           if (!response.ok) {
+  //             throw new Error('Failed to get Shipping Rates: ' + JSON.stringify(response));
+  //           }
+
+  //           const url = await response.json();
+  //           image.url = url.message;
+
+  //           await this.service.update(blog.id, blog).then(b => console.log(b));
+
+  //         })
+  //       }
+  //     })
+  //   })
+  // }
 }
