@@ -17,11 +17,12 @@ exports.checkout = functions
       response.set("Access-Control-Allow-Origin", "*");
 
       const paymentIntent = await stripe.paymentIntents.create({
-        amount: calculateOrderAmount(request.body),
+        amount: calculateOrderAmount(request.body.items),
         currency: "usd",
         automatic_payment_methods: {
           enabled: true,
         },
+        description: request.body.description,
       });
 
       response.send({
