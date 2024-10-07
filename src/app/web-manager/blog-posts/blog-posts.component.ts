@@ -188,4 +188,37 @@ export class BlogPostsComponent implements OnInit {
   closeMultipleImageModal = () => {
     this.isMultipleImageVisible$.next(false);
   }
+
+//   merge = async () =>{
+//     let blogs: any[] = await this.service.getAllTempBlogs();
+
+//     let images: any[] = await this.service.getAllTempBlogImages()
+
+//     blogs.forEach(blog => {
+//       let imagelist:any[] = images.filter(image => image.post_parent == blog.ID);
+
+// //Ifp7JL6OU4E0MVkH448e
+// //crC79CYOAJSlQn7yfMgP
+
+//       if(imagelist && imagelist.length > 0){
+//         blog.images = imagelist;
+
+//         let blogPost: BlogPostModel = {...new BlogPostModel()};
+//         blogPost.blogText = blog.post_content;
+//         blogPost.date =  Timestamp.fromDate(new Date(Date.parse(blog.post_date)));
+
+//         blog.images.forEach(image => {
+//           blogPost.extraImages.push({name:image.post_name, url: image.guid})
+//         });
+
+//         blogPost.isActive = true;
+//         blogPost.mainImage = {name: blog.images[0].post_name, url:  blog.images[0].guid};
+//         blogPost.title = blog.post_title;
+
+//         this.service.add(blogPost).then(blogPost => {
+//           console.log(blogPost)
+//         })
+//       }
+//     })
+//   }
 }

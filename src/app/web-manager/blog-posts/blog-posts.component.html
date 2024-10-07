@@ -45,11 +45,11 @@
 
   <dxi-column dataField="isActive" dataType="boolean" [width]="60" [caption]="'Active'"></dxi-column>
   <dxi-column dataField="mainImage" [width]="120" cellTemplate="imageCellTemplate"></dxi-column>
-  <dxi-column dataField="date" [dataType]="'datetime'"></dxi-column>
+  <dxi-column dataField="date" [dataType]="'date'" [width]="120" sortOrder="desc"></dxi-column>
+  <dxi-column dataField="title"></dxi-column>
   <dxi-column dataField="category">
     <dxo-lookup [dataSource]="blogCategories" [displayExpr]="'tag'" [valueExpr]="'id'"></dxo-lookup>
   </dxi-column>
-  <dxi-column dataField="blogText" [visible]="false"></dxi-column>
   <dxi-column dataField="extraImages" [visible]="false"></dxi-column>
   <dxi-column dataField="tags"[visible]="false">
     <dxo-lookup [dataSource]="blogTags" [displayExpr]="'tag'" [valueExpr]="'id'"></dxo-lookup>

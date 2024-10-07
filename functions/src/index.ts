@@ -8,3 +8,6 @@ exports.notifications = notifications.sendNotification;
 
 const shipping = require("./shipping.functions");
 exports.shipping = shipping.shipping;
+
+const importJSON = require("./import.functions");
+exports.importJson = importJSON.importJSON;
