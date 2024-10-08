@@ -2,6 +2,7 @@
 const stripeApi = require("./stripe.functions");
 exports.checkout = stripeApi.checkout;
 exports.cancel = stripeApi.cancel;
+exports.refund = stripeApi.refund;
 
 const notifications = require("./notifications.functions");
 exports.notifications = notifications.sendNotification;

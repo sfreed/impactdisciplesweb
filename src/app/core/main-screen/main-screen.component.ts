@@ -37,7 +37,6 @@ export class MainScreenComponent {
   constructor(public topNavService: TopNavService, private authService: AuthService, private router: Router){}
 
   tabClicked(e :any){
-    console.log(e)
     this.topNavService.navigate(e.itemData)
   }
 

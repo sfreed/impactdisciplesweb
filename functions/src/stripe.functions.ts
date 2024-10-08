@@ -50,6 +50,24 @@ exports.cancel = functions
     });
   });
 
+exports.refund = functions
+  .runWith({secrets: ["STRIPE_SECRET_KEY"]})
+  .https.onRequest((request, response) => {
+    return cors(request, response, async () => {
+      stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+
+      response.set("Access-Control-Allow-Credentials", "true");
+      response.set("Access-Control-Allow-Origin", "*");
+
+      const refund = await stripe.refunds.create({
+        payment_intent: request.body.paymentIntent,
+        amount: request.body.amount,
+      });
+
+      response.send(refund);
+    });
+  });
+
 const calculateOrderAmount = (items) => {
   let total = 0;
   items.forEach((item) => {

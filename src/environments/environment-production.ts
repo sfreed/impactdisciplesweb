@@ -10,7 +10,11 @@ export const environment = {
     measurementId: "G-KJL13HB8DV"
   },
   domain: 'https://impactdisciples-admin.web.app',
-  session_expires: 30
+  session_expires: 30,
+  stripeCancelURL: "https://us-central1-impactdisciples-a82a8.cloudfunctions.net/cancel",
+  stripeRefundURL: "https://us-central1-impactdisciples-a82a8.cloudfunctions.net/refund",
+  stripeTestKey: "pk_live_51IP8IBC4Pv6WfeJrsYMjRAmzFsA0L6kjBvQx8upqGHxuo3T0WI60u1isqXBz29SyfC27v3yB34sGUYu1pl7oU1Co00LY6lIrrW",
+  shippingUrl: "https://us-central1-impactdisciples-a82a8.cloudfunctions.net/shipping"
 };
 
 

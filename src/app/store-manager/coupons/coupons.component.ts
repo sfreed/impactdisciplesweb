@@ -149,7 +149,6 @@ export class CouponsComponent implements OnInit{
   }
 
   validateCouponValue(e){
-    console.log(e)
     if(!e.data.percentOff && !e.data.dollarsOff){
       return false;
     }

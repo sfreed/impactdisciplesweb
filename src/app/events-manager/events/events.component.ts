@@ -94,7 +94,6 @@ export class EventsComponent implements OnInit, OnDestroy {
 
   selectLocation(event: any) {
     if (event && event.itemData) {
-      console.log(this.locationDropbox.instance)
       this.selectedItem.location = event.itemData.id;
       this.locationDropbox.instance.close();
     }
@@ -102,7 +101,6 @@ export class EventsComponent implements OnInit, OnDestroy {
 
   selectOrganization(event: any) {
     if (event && event.itemData) {
-      console.log(this.organizationDropbox.instance)
       this.selectedItem.organization = event.itemData.id;
       this.organizationDropbox.instance.close();
     }
