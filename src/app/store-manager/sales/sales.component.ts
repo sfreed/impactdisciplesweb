@@ -200,8 +200,12 @@ export class SalesComponent implements OnInit {
 
   getItemShippingAmount(cartItem){
     if(!cartItem.data.isEvent){
-      let totalWeight: number = this.selectedItem.cartItems.filter(item => item.isEvent == false).map(item => item.weight).reduce((a,b) => a + b);
-
+      let totalWeight: number;
+      try{
+      totalWeight = this.selectedItem.cartItems.filter(item => item.isEvent == false).map(item => item.weight).reduce((a,b) => a + b);
+      } catch (err){
+        totalWeight = 0;
+      }
       return this.selectedItem.shippingRate * (cartItem.data.weight / totalWeight);
     } else {
       return 0;
@@ -209,9 +213,6 @@ export class SalesComponent implements OnInit {
   }
 
   getItemTotalAmount(cartItem){
-    if(cartItem.isEvent){
-
-    }
     let totalPrice = cartItem.data.price;
     let shippingAmount = cartItem.data.isEvent? 0 : this.getItemShippingAmount(cartItem);
     let taxAmount = this.getItemTaxableAmount(cartItem)

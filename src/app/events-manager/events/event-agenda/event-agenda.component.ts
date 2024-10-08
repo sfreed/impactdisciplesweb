@@ -40,7 +40,7 @@ export class EventAgendaComponent implements OnInit{
 
     this.coaches = await this.coachService.getAll();
 
-    this.rooms = (await this.locationService.getById(this.event.location)).trainingrooms;
+    this.rooms = (await this.locationService.getById(typeof this.event.location=='string'? this.event.location : this.event.location.id)).trainingrooms;
   }
 
   getCoachById = (id: string) => Query(this.coaches).filter(['id', '=', id]).toArray()[0];
