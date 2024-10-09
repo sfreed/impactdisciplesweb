@@ -1,0 +1,91 @@
+<div class="content-block responsive-paddings">
+  <dx-toolbar class="content-list__header py-2 px-2">
+    <dxi-item location="before" locateInMenu="never">
+      <div *dxTemplate>
+        <h2 class="content-block responsive-paddings underline">{{itemType}}s</h2>
+      </div>
+    </dxi-item>
+    <dxi-item
+      location="after"
+      widget="dxButton"
+      [options]="{
+        hint: 'ADD ' + itemType | uppercase,
+        type: 'default',
+        text: 'ADD ' + itemType | uppercase,
+        stylingMode: 'contained',
+        onClick: showAddModal
+      }"
+    ></dxi-item>
+  </dx-toolbar>
+</div>
+
+<dx-data-grid class="dx-card wide-card"
+  #grid
+  [dataSource]="datasource$ | async"
+  [height]="'50vh'"
+  [showBorders]="false"
+  [showColumnLines]="true"
+  [showColumnLines]="true"
+  [showRowLines]="true"
+  [(selectedRowKeys)]="selectedRows"
+  (onSelectionChanged)="selectRow($event)"
+  [focusedRowEnabled]="true"
+  [columnAutoWidth]="true">
+
+  <dxo-selection mode="multiple" ></dxo-selection>
+  <dxo-scrolling mode="virtual"></dxo-scrolling>
+  <dxo-filter-row [visible]="true"></dxo-filter-row>
+
+  <dxi-column dataField="question" [width]="'25%'"></dxi-column>
+  <dxi-column dataField="answer" [width]="'65%'"></dxi-column>
+  <dxi-column type="buttons" [width]="150" caption="Actions" [width]="100">
+    <dxi-button icon="edit" hint="EDIT" [onClick]="showEditModal"></dxi-button>
+    <dxi-button icon="trash" hint="DELETE" [onClick]="delete"></dxi-button>
+  </dxi-column>
+</dx-data-grid>
+
+<dx-popup
+  [showTitle]="true"
+  [dragEnabled]="false"
+  [visible]="isVisible$ | async"
+  [height]="'60vh'"
+  [width]="'60vw'"
+  [showCloseButton]="true"
+  (onHiding)="onCancel()">
+  <dxi-toolbar-item toolbar="top" location="center">
+    <div *dxTemplate>
+      <p class="popup-title">
+        {{ selectedItem?.id ? 'EDIT' : 'ADD' }} {{itemType | uppercase}}
+      </p>
+    </div>
+  </dxi-toolbar-item>
+  <div *dxTemplate="let data of 'content'">
+    <div class="add-item-modal">
+      <div class="add-item-modal__content" *ngIf="isVisible$ | async">
+        <dx-form
+          #addEditForm
+          [(formData)]="selectedItem"
+          [showColonAfterLabel]="false"
+          labelLocation="left">
+          <dxi-item dataField="question" [colSpan]="2" [isRequired]="true"></dxi-item>
+          <dxi-item dataField="answer" [colSpan]="8" [editorType]="'dxTextArea'" [editorOptions]="{ height: 150 }" [label]="{ text: 'Answer' }"></dxi-item>
+        </dx-form>
+      </div>
+      <div class="add-item-modal__button-group">
+        <dx-button
+          text="CANCEL"
+          stylingMode="contained"
+          type="normal"
+          [disabled]="inProgress$ | async"
+          (onClick)="onCancel()">
+        </dx-button>
+        <app-indicator-button
+          [isInProgress]="inProgress$ | async"
+          [title]="'SAVE'"
+          [disabled]="inProgress$ | async"
+          (onClick)="onSave(selectedItem)">
+        </app-indicator-button>
+      </div>
+    </div>
+  </div>
+</dx-popup>
