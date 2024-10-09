@@ -37,19 +37,9 @@
   <dxi-column dataField="lastName" [caption]="'Last Name'"></dxi-column>
   <dxi-column dataField="email" [caption]="'Email'"></dxi-column>
   <dxi-column dataField="uid" [caption]="'UID'" [visible]="false"></dxi-column>
-  <dxi-column dataField="customerId" [caption]="'Customer Id'"></dxi-column>
   <dxi-column dataField="role" [caption]="'Role'" [visible]="false">
     <dxo-lookup [dataSource]="roles"></dxo-lookup>
   </dxi-column>
-  <dxi-column dataField="address.address1" [caption]="'Address 1'" [visible]="false"></dxi-column>
-  <dxi-column dataField="address.address2" [caption]="'Address 2'" [visible]="false"></dxi-column>
-  <dxi-column dataField="address.city" [caption]="'City'" [visible]="false"></dxi-column>
-  <dxi-column dataField="address.state" [caption]="'State'" [visible]="false">
-    <dxo-lookup [dataSource]="states"></dxo-lookup>
-  </dxi-column>
-  <dxi-column dataField="address.zip" [caption]="'Zip'"[visible]="false"></dxi-column>
-  <dxi-column dataField="address.county" [caption]="'County'"[visible]="false"></dxi-column>
-  <dxi-column dataField="address.country" [caption]="'Country'"[visible]="false"></dxi-column>
   <dxi-column dataField="phone.countryCode" [caption]="'Country Code'"[visible]="false"></dxi-column>
   <dxi-column dataField="phone.number" [caption]="'Number'" cellTemplate="phoneNumberCellTemplate"></dxi-column>
   <dxi-column dataField="phone.type" [caption]="'Type'"[visible]="false"></dxi-column>
@@ -69,8 +59,8 @@
   [showTitle]="true"
   [dragEnabled]="false"
   [visible]="isVisible$ | async"
-  [width]="'60%'"
-  [height]="'65%'"
+  [width]="'65%'"
+  [height]="'90%'"
   [showCloseButton]="true"
   (onHiding)="onCancel()">
   <dxi-toolbar-item toolbar="top" location="center">
@@ -91,48 +81,19 @@
           <dxi-item itemType="tabbed">
             <dxi-tab title="Info">
               <dxi-item itemType="group" [colCount]="2" [colSpan]="1">
-              <dxi-item dataField="firstName" [colSpan]="1" [isRequired]="true"></dxi-item>
-              <dxi-item dataField="lastName" [colSpan]="1" [isRequired]="true"></dxi-item>
-              <dxi-item dataField="email" [colSpan]="1" [isRequired]="true"></dxi-item>
-              <dxi-item [label]="{ text: 'Roles' }" [isRequired]="true">
-                <div *dxTemplate>
-                  <dx-select-box
-                    [items]="roles"
-                    [(value)]="selectedItem.role">
-                  </dx-select-box>
-                </div>
-              </dxi-item>
-              <dxi-item dataField="customerId" [colSpan]="1"></dxi-item>
-            </dxi-item>
-            </dxi-tab>
-            <dxi-tab title="Address">
-              <dxi-item itemType="group" caption="Address" [colCount]="6" [colSpan]="2">
-                <dxi-item dataField="address.address1" [colSpan]="6" [label]="{ text: 'Address1' }"></dxi-item>
-                <dxi-item dataField="address.address2" [colSpan]="6" [label]="{ text: 'Address2' }"></dxi-item>
-                <dxi-item dataField="address.city" [colSpan]="3" [label]="{ text: 'City' }"></dxi-item>
-                <dxi-item dataField="address.state" [colSpan]="2" [label]="{ text: 'State' }">
+                <dxi-item dataField="firstName" [colSpan]="1" [isRequired]="true"></dxi-item>
+                <dxi-item dataField="lastName" [colSpan]="1" [isRequired]="true"></dxi-item>
+                <dxi-item dataField="email" [colSpan]="1" [isRequired]="true"></dxi-item>
+                <dxi-item [label]="{ text: 'Roles' }" [isRequired]="true">
                   <div *dxTemplate>
-                    <dx-lookup
-                      [showCancelButton]="false"
-                      [items]="states"
-                      [(value)]="selectedItem.address.state">
-                    </dx-lookup>
+                    <dx-select-box
+                      [items]="roles"
+                      [(value)]="selectedItem.role">
+                    </dx-select-box>
                   </div>
                 </dxi-item>
-                <dxi-item dataField="address.zip" [colSpan]="2" [label]="{ text: 'Zip' }"></dxi-item>
-                <dxi-item dataField="address.county" [colSpan]="3" [label]="{ text: 'County' }"></dxi-item>
-                <dxi-item dataField="address.country" [colSpan]="3" [label]="{ text: 'Country' }">
-                  <div *dxTemplate>
-                    <dx-lookup
-                      [showCancelButton]="false"
-                      [items]="countries"
-                      [(value)]="selectedItem.address.country">
-                    </dx-lookup>
-                  </div>
-                </dxi-item>
+                <dxi-item dataField="firebaseUID" [colSpan]="1" [disabled]="true"></dxi-item>
               </dxi-item>
-            </dxi-tab>
-            <dxi-tab title="Contact">
               <dxi-item itemType="group" caption="Phone Number" [colCount]="6" [colSpan]="2">
                 <dxi-item dataField="phone.countryCode" [colSpan]="2" [label]="{ text: 'Country Code' }"></dxi-item>
                 <dxi-item dataField="phone.number" [colSpan]="2" [label]="{ text: 'Number' }" [editorOptions]="phoneEditorOptions"></dxi-item>
@@ -142,6 +103,56 @@
                       [items]="phone_types"
                       [(value)]="selectedItem.phone.type">
                     </dx-select-box>
+                  </div>
+                </dxi-item>
+              </dxi-item>
+            </dxi-tab>
+            <dxi-tab title="Addresses">
+              <dxi-item itemType="group" caption="Shipping Address" [colCount]="6" [colSpan]="2">
+                <dxi-item dataField="shippingAddress.address1" [colSpan]="6" [label]="{ text: 'Address1' }"></dxi-item>
+                <dxi-item dataField="shippingAddress.address2" [colSpan]="6" [label]="{ text: 'Address2' }"></dxi-item>
+                <dxi-item dataField="shippingAddress.city" [colSpan]="3" [label]="{ text: 'City' }"></dxi-item>
+                <dxi-item dataField="shippingAddress.state" [colSpan]="2" [label]="{ text: 'State' }">
+                  <div *dxTemplate>
+                    <dx-lookup
+                      [showCancelButton]="false"
+                      [items]="states"
+                      [(value)]="selectedItem.shippingAddress.state">
+                    </dx-lookup>
+                  </div>
+                </dxi-item>
+                <dxi-item dataField="shippingAddress.zip" [colSpan]="2" [label]="{ text: 'Zip' }"></dxi-item>
+                <dxi-item dataField="shippingAddress.country" [colSpan]="3" [label]="{ text: 'Country' }">
+                  <div *dxTemplate>
+                    <dx-lookup
+                      [showCancelButton]="false"
+                      [items]="countries"
+                      [(value)]="selectedItem.shippingAddress.country">
+                    </dx-lookup>
+                  </div>
+                </dxi-item>
+              </dxi-item>
+              <dxi-item itemType="group" caption="Billing Address" [colCount]="6" [colSpan]="2">
+                <dxi-item dataField="billingAddress.address1" [colSpan]="6" [label]="{ text: 'Address1' }"></dxi-item>
+                <dxi-item dataField="billingAddress.address2" [colSpan]="6" [label]="{ text: 'Address2' }"></dxi-item>
+                <dxi-item dataField="billingAddress.city" [colSpan]="3" [label]="{ text: 'City' }"></dxi-item>
+                <dxi-item dataField="billingAddress.state" [colSpan]="2" [label]="{ text: 'State' }">
+                  <div *dxTemplate>
+                    <dx-lookup
+                      [showCancelButton]="false"
+                      [items]="states"
+                      [(value)]="selectedItem.billingAddress.state">
+                    </dx-lookup>
+                  </div>
+                </dxi-item>
+                <dxi-item dataField="billingAddress.zip" [colSpan]="2" [label]="{ text: 'Zip' }"></dxi-item>
+                <dxi-item dataField="billingAddress.country" [colSpan]="3" [label]="{ text: 'Country' }">
+                  <div *dxTemplate>
+                    <dx-lookup
+                      [showCancelButton]="false"
+                      [items]="countries"
+                      [(value)]="selectedItem.billingAddress.country">
+                    </dx-lookup>
                   </div>
                 </dxi-item>
               </dxi-item>

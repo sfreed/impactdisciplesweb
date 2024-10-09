@@ -120,15 +120,12 @@
   </div>
 </dx-data-grid>
 
-
-
-
 <dx-popup
   [showTitle]="true"
   [dragEnabled]="false"
   [visible]="isVisible$ | async"
-
-  [height]="'80%'"
+  [width]="'75%'"
+  [height]="'90%'"
   [showCloseButton]="true"
   (onHiding)="onCancel()">
   <dxi-toolbar-item toolbar="top" location="center">

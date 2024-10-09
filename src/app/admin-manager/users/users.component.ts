@@ -67,7 +67,6 @@ export class UsersComponent implements OnInit {
     this.phone_types = EnumHelper.getPhoneTypesAsArray();
     this.states = EnumHelper.getStateRoleTypesAsArray();
     this.countries = EnumHelper.getCountryTypesAsArray();
-
   }
 
   showEditModal = ({ row: { data } }) => {
@@ -77,15 +76,21 @@ export class UsersComponent implements OnInit {
       this.selectedItem.phone = {... new Phone()};
     }
 
-    if(!this.selectedItem.address){
-      this.selectedItem.address = {... new Address()};
+    if(!this.selectedItem.shippingAddress){
+      this.selectedItem.shippingAddress = {... new Address()};
     }
+
+    if(!this.selectedItem.billingAddress){
+      this.selectedItem.billingAddress = {... new Address()};
+    }
+
     this.isVisible$.next(true);
   }
 
   showAddModal = () => {
     this.selectedItem = {... new AppUser()};
-    this.selectedItem.address = {... new Address()}
+    this.selectedItem.shippingAddress = {... new Address()};
+    this.selectedItem.billingAddress = {... new Address()};
     this.selectedItem.phone = {... new Phone()};
 
     this.isVisible$.next(true);

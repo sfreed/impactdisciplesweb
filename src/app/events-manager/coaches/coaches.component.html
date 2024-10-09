@@ -42,12 +42,6 @@
     <dxo-lookup [dataSource]="organizations" displayExpr="name" valueExpr="id" [allowClearing]="true"></dxo-lookup>
   </dxi-column>
   <dxi-column dataField="bio" [caption]="'Biography'" [visible]="false"></dxi-column>
-  <dxi-column dataField="address.address1" [caption]="'Address 1'" [visible]="false"></dxi-column>
-  <dxi-column dataField="address.address2" [caption]="'Address 2'" [visible]="false"></dxi-column>
-  <dxi-column dataField="address.city" [caption]="'City'" [visible]="false"></dxi-column>
-  <dxi-column dataField="address.state" [caption]="'State'" [visible]="false"></dxi-column>
-  <dxi-column dataField="address.zip" [caption]="'Zip Code'" [visible]="false"></dxi-column>
-  <dxi-column dataField="address.country" [caption]="'Country'" [visible]="false"></dxi-column>
   <dxi-column dataField="phone.countryCode" [caption]="'Country Code'" [visible]="false"></dxi-column>
   <dxi-column dataField="phone.number" [caption]="'Number'" [editorOptions]="{ mask: '(000) 000-0000' }" cellTemplate="phoneNumberCellTemplate" [visible]="false"></dxi-column>
   <dxi-column dataField="phone.type" [caption]="'Type'" [visible]="false">
@@ -109,12 +103,29 @@
                     </div>
                   </dxi-item>
                 </dxi-item>
-                <dxi-item itemType="group" caption="Address" [colCount]="6" [colSpan]="1">
-                  <dxi-item dataField="address.address1" [colSpan]="6" [label]="{ text: 'Address 1' }"></dxi-item>
-                  <dxi-item dataField="address.address2" [colSpan]="6" [label]="{ text: 'Address 2' }"></dxi-item>
-                  <dxi-item dataField="address.city" [colSpan]="3"  [label]="{ text: 'City' }"></dxi-item>
-                  <dxi-item dataField="address.state" [colSpan]="2" [label]="{ text: 'State' }"></dxi-item>
-                  <dxi-item dataField="address.zip" [colSpan]="1" [label]="{ text: 'Zip' }"></dxi-item>
+                <dxi-item itemType="group" caption="Shipping Address" [colCount]="6" [colSpan]="1">
+                  <dxi-item dataField="shippingAddress.address1" [colSpan]="6" [label]="{ text: 'Address 1' }"></dxi-item>
+                  <dxi-item dataField="shippingAddress.address2" [colSpan]="6" [label]="{ text: 'Address 2' }"></dxi-item>
+                  <dxi-item dataField="shippingAddress.city" [colSpan]="3"  [label]="{ text: 'City' }"></dxi-item>
+                  <dxi-item dataField="shippingAddress.state" [colSpan]="2" [label]="{ text: 'State' }">
+                    <div *dxTemplate>
+                      <dx-lookup
+                        [showCancelButton]="false"
+                        [items]="states"
+                        [(value)]="selectedItem.shippingAddress.state">
+                      </dx-lookup>
+                    </div>
+                  </dxi-item>
+                  <dxi-item dataField="shippingAddress.zip" [colSpan]="1" [label]="{ text: 'Zip' }"></dxi-item>
+                  <dxi-item dataField="shippingAddress.country" [colSpan]="3" [label]="{ text: 'Country' }">
+                    <div *dxTemplate>
+                      <dx-lookup
+                        [showCancelButton]="false"
+                        [items]="countries"
+                        [(value)]="selectedItem.shippingAddress.country">
+                      </dx-lookup>
+                    </div>
+                  </dxi-item>
                 </dxi-item>
                 <dxi-item itemType="group" caption="Phone" [colCount]="4" [colSpan]="1">
                   <dxi-item dataField="phone.countryCode" [colSpan]="1"  [label]="{ text: 'Country Code' }"></dxi-item>

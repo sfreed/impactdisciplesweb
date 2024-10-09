@@ -88,8 +88,8 @@
   [showTitle]="true"
   [dragEnabled]="false"
   [visible]="isVisible$ | async"
-  [width]="'60%'"
-  [height]="'80%'"
+  [width]="'75%'"
+  [height]="'90%'"
   [showCloseButton]="true"
   (onHiding)="onCancel()">
   <dxi-toolbar-item toolbar="top" location="center">
@@ -125,7 +125,7 @@
               <dxi-item
                 dataField="requestedDate"
                 editorType="dxDateBox"
-                [label]="{ text: 'Date' }",
+                [label]="{ text: 'Date' }"
                 isRequired="true"
                 [editorOptions]="{
                   displayFormat: 'M/d/yyyy',

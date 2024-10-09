@@ -63,8 +63,8 @@
   [showTitle]="true"
   [dragEnabled]="false"
   [visible]="isVisible$ | async"
-  [width]="'70%'"
-  [height]="'92%'"
+  [width]="'75%'"
+  [height]="'95%'"
   [showCloseButton]="true"
   (onHiding)="onCancel()">
   <dxi-toolbar-item toolbar="top" location="center">
@@ -148,7 +148,6 @@
                       </div>
                     </dxi-item>
                     <dxi-item dataField="billingAddress.zip" [colSpan]="2" [label]="{ text: 'Zip' }"></dxi-item>
-                    <dxi-item dataField="billingAddress.county" [colSpan]="3" [label]="{ text: 'County' }"></dxi-item>
                     <dxi-item dataField="billingAddress.country" [colSpan]="3" [label]="{ text: 'Country' }"></dxi-item>
                   </dxi-item>
                 </dxi-tab>
@@ -166,7 +165,6 @@
                       </div>
                     </dxi-item>
                     <dxi-item dataField="shippingAddress.zip" [colSpan]="2" [label]="{ text: 'Zip' }"></dxi-item>
-                    <dxi-item dataField="shippingAddress.county" [colSpan]="3" [label]="{ text: 'County' }"></dxi-item>
                     <dxi-item dataField="shippingAddress.country" [colSpan]="3" [label]="{ text: 'Country' }"></dxi-item>
                   </dxi-item>
                 </dxi-tab>

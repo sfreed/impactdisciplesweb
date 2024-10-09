@@ -81,8 +81,8 @@
   [showTitle]="true"
   [dragEnabled]="false"
   [visible]="isVisible$ | async"
-  [width]="'60%'"
-  [height]="'80%'"
+  [width]="'75%'"
+  [height]="'90%'"
   [showCloseButton]="true"
   (onHiding)="onCancel()">
   <dxi-toolbar-item toolbar="top" location="center">
@@ -110,8 +110,8 @@
               <dxi-item
                 dataField="requestedDate"
                 editorType="dxDateBox"
-                [label]="{ text: 'Date' }",
-                isRequired="true",
+                [label]="{ text: 'Date' }"
+                isRequired="true"
                 [editorOptions]="{
                   displayFormat: 'M/d/yyyy',
                   type: 'date',
@@ -121,8 +121,8 @@
               <dxi-item
                 dataField="requestedStartTime"
                 editorType="dxDateBox"
-                [label]="{ text: 'Start Time' }",
-                isRequired="true",
+                [label]="{ text: 'Start Time' }"
+                isRequired="true"
                 [editorOptions]="{
                   displayFormat: 'HH:mm',
                   type: 'time',
@@ -132,8 +132,8 @@
               <dxi-item
                 dataField="requestedEndTime"
                 editorType="dxDateBox"
-                [label]="{ text: 'End Time' }",
-                isRequired="true",
+                [label]="{ text: 'End Time' }"
+                isRequired="true"
                 [editorOptions]="{
                   displayFormat: 'HH:mm',
                   type: 'time',

@@ -16,19 +16,32 @@ exports.checkout = functions
       response.set("Access-Control-Allow-Credentials", "true");
       response.set("Access-Control-Allow-Origin", "*");
 
-      const paymentIntent = await stripe.paymentIntents.create({
-        amount: calculateOrderAmount(request.body.items),
-        currency: "usd",
-        automatic_payment_methods: {
-          enabled: true,
-        },
-        description: request.body.description,
-      });
+      let total = 0;
 
-      response.send({
-        clientSecret: paymentIntent.client_secret,
-        paymentIntent: paymentIntent.id,
-      });
+      try {
+        request.body.items.forEach((item) => {
+          total += item.amount;
+        });
+        const paymentIntent = await stripe.paymentIntents.create({
+          amount: total,
+          currency: "usd",
+          automatic_payment_methods: {
+            enabled: true,
+          },
+          description: request.body.description,
+        });
+
+        response.send({
+          clientSecret: paymentIntent.client_secret,
+          paymentIntent: paymentIntent.id,
+        });
+      } catch (err) {
+        response.send({
+          code: 400,
+          body: request.body,
+          error: err,
+        });
+      }
     });
   });
 
@@ -42,11 +55,19 @@ exports.cancel = functions
       response.set("Access-Control-Allow-Credentials", "true");
       response.set("Access-Control-Allow-Origin", "*");
 
-      await stripe.paymentIntents.cancel(request.body.paymentIntent);
+      try {
+        await stripe.paymentIntents.cancel(request.body.paymentIntent);
 
-      response.send({
-        id: request.body,
-      });
+        response.send({
+          id: request.body,
+        });
+      } catch (err) {
+        response.send({
+          code: 400,
+          body: request.body,
+          error: err,
+        });
+      }
     });
   });
 
@@ -59,19 +80,19 @@ exports.refund = functions
       response.set("Access-Control-Allow-Credentials", "true");
       response.set("Access-Control-Allow-Origin", "*");
 
-      const refund = await stripe.refunds.create({
-        payment_intent: request.body.paymentIntent,
-        amount: request.body.amount,
-      });
+      try {
+        const refund = await stripe.refunds.create({
+          payment_intent: request.body.paymentIntent,
+          amount: request.body.amount,
+        });
 
-      response.send(refund);
+        response.send(refund);
+      } catch (err) {
+        response.send({
+          code: 400,
+          body: request.body,
+          error: err,
+        });
+      }
     });
   });
-
-const calculateOrderAmount = (items) => {
-  let total = 0;
-  items.forEach((item) => {
-    total += item.amount;
-  });
-  return total;
-};

@@ -33,7 +33,8 @@ export class CoachesComponent implements OnInit{
   public isSingleImageVisible$ = new BehaviorSubject<boolean>(false);
 
   organizations: OrganizationModel[];
-
+  public states: string[];
+  public countries: string[];
   phone_types: PHONE_TYPES[];
 
   constructor(public service: CoachService, private organizationService: OrganizationService){}
@@ -59,6 +60,8 @@ export class CoachesComponent implements OnInit{
     this.organizations = await this.organizationService.getAll();
 
     this.phone_types = EnumHelper.getPhoneTypesAsArray();
+    this.states = EnumHelper.getStateRoleTypesAsArray();
+    this.countries = EnumHelper.getCountryTypesAsArray();
   }
 
   showEditModal = ({ row: { data } }) => {
@@ -68,15 +71,16 @@ export class CoachesComponent implements OnInit{
       this.selectedItem.phone = {... new Phone()};
     }
 
-    if(!this.selectedItem.address){
-      this.selectedItem.address = {... new Address()};
+    if(!this.selectedItem.shippingAddress){
+      this.selectedItem.shippingAddress = {... new Address()};
     }
+
     this.isVisible$.next(true);
   }
 
   showAddModal = () => {
     this.selectedItem = {... new CoachModel()};
-    this.selectedItem.address = {... new Address()}
+    this.selectedItem.shippingAddress = {... new Address()}
     this.selectedItem.phone = {... new Phone()};
 
     this.isVisible$.next(true);
