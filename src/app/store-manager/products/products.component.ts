@@ -42,6 +42,7 @@ export class ProductsComponent implements OnInit {
   public isCategoriesVisible$ = new BehaviorSubject<boolean>(false);
 
   public isSingleImageVisible$ = new BehaviorSubject<boolean>(false);
+  public isEBookVisible$ = new BehaviorSubject<boolean>(false);
 
   productTags: TagModel[] = [];
   productCategories: TagModel[] = [];
@@ -252,5 +253,13 @@ export class ProductsComponent implements OnInit {
 
   closeSingleImageModal = () => {
     this.isSingleImageVisible$.next(false);
+  }
+
+  showEBookModal = () => {
+    this.isEBookVisible$.next(true);
+  }
+
+  closeEBookModal = () => {
+    this.isEBookVisible$.next(false);
   }
 }
