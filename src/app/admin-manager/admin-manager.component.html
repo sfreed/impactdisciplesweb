@@ -12,6 +12,10 @@
   <app-users></app-users>
 </ng-template>
 
+<ng-template [ngIf]="selectedTab == 'Customers'">
+  <app-customers></app-customers>
+</ng-template>
+
 <ng-template [ngIf]="selectedTab == 'Web Config'">
   <app-web-config></app-web-config>
 </ng-template>

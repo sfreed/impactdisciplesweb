@@ -17,6 +17,7 @@ import { ImpactDisciplesModule } from 'impactdisciplescommon/src/impactdisciples
 import { AdminManagerComponent } from './admin-manager.component';
 import { SharedModule } from '../shared/shared.module';
 import { EmailTemplatesComponent } from './email-templates/email-templates.component';
+import { CustomersComponent } from './customers/customers.component';
 
 
 @NgModule({
@@ -49,6 +50,7 @@ import { EmailTemplatesComponent } from './email-templates/email-templates.compo
     LogMessagesComponent,
     NotificationsComponent,
     UsersComponent,
+    CustomersComponent,
     WebConfigComponent,
     EmailTemplatesComponent
   ],
