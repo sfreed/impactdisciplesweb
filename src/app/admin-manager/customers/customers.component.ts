@@ -271,6 +271,6 @@ export class CustomersComponent implements OnInit {
   }
 
   getEventDate(cell){
-    return (dateFromTimestamp(this.events.find(event => event.id == cell.data.eventId).startDate) as Date).toDateString()
+    return (dateFromTimestamp(this.events.find(event => event.id == cell.data.eventId).startDate) as Date).toLocaleDateString();
   }
 }
