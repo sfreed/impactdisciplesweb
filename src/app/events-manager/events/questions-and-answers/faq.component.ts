@@ -142,18 +142,6 @@ export class FAQComponent implements OnInit {
   }
 
   selectRow(e){
-    if(!this.event.faqList){
-      this.event.faqList = [];
-    }
-
-    if(e.currentSelectedRowKeys.length > 0){
-      this.event.faqList.push({...e.selectedRowsData[0]});
-    }
-
-    if(e.currentDeselectedRowKeys.length > 0){
-      let removed = this.event.faqList.findIndex(faq => { return faq[0].id == e.currentDeselectedRowKeys[0] });
-
-      this.event.faqList.splice(removed, 1)
-    }
+    this.event.faqList = e.selectedRowsData;
   }
 }
