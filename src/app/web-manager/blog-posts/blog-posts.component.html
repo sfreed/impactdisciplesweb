@@ -47,6 +47,13 @@
     <dxo-lookup [dataSource]="blogCategories" [displayExpr]="'tag'" [valueExpr]="'id'"></dxo-lookup>
   </dxi-column>
   <dxi-column dataField="extraImages" [visible]="false"></dxi-column>
+  <dxi-column
+    dataField="isActive"
+    dataType="boolean"
+    [caption]="'Live'"
+    cellTemplate="isActiveCellTemplate"
+    [width]="120"
+  ></dxi-column>
   <dxi-column dataField="tags"[visible]="false">
     <dxo-lookup [dataSource]="blogTags" [displayExpr]="'tag'" [valueExpr]="'id'"></dxo-lookup>
   </dxi-column>
@@ -54,6 +61,12 @@
     <dxi-button icon="edit" hint="EDIT" [onClick]="showEditModal"></dxi-button>
     <dxi-button icon="trash" hint="DELETE" [onClick]="delete"></dxi-button>
   </dxi-column>
+
+  <div *dxTemplate="let cell of 'isActiveCellTemplate'">
+    <span class="active-template" [style.background-color]="cell.data.isActive ? '#29d029' : 'red'">
+      {{ cell.data.isActive ? 'LIVE' : 'INACTIVE' }}
+    </span>
+  </div>
 
   <div *dxTemplate="let data of 'imageCellTemplate'">
     <img *ngIf="data?.value" width="100" [src]="data?.value?.url" [alt]="data?.value?.name"/>

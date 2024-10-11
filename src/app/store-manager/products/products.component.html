@@ -76,7 +76,8 @@
   <dxi-column dataField="weight" [width]="80" dataType="number"></dxi-column>
   <dxi-column dataField="uom">
     <dxo-lookup [dataSource]="uoms"></dxo-lookup>
-  </dxi-column>  <dxi-column dataField="series" [visible]="selectedSeries">
+  </dxi-column>
+  <dxi-column dataField="series" [visible]="selectedSeries">
     <dxo-lookup [dataSource]="series" [displayExpr]="'name'" [valueExpr]="'id'"></dxo-lookup>
   </dxi-column>
   <dxi-column dataField="category" [visible]="selectedCategory">

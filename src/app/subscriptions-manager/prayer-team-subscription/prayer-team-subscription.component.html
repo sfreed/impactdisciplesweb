@@ -43,6 +43,7 @@
   <dxi-column dataField="firstName" sortOrder="asc"></dxi-column>
   <dxi-column dataField="lastName"></dxi-column>
   <dxi-column dataField="email"></dxi-column>
+  <dxi-column dataField="date" [dataType]="'datetime'" [sortOrder]="'desc'"></dxi-column>
   <dxi-column type="buttons" caption="Actions" [allowReordering]="false">
     <dxi-button icon="edit" hint="EDIT" [onClick]="showEditModal"></dxi-button>
     <dxi-button icon="trash" hint="DELETE" [onClick]="delete"></dxi-button>

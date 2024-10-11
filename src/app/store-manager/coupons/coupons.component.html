@@ -46,10 +46,23 @@
   <dxi-column dataField="tags">
     <dxo-lookup [dataSource]="couponTags" [allowClearing]="true" [displayExpr]="'tag'" [valueExpr]="'id'"></dxo-lookup>
   </dxi-column>
+  <dxi-column
+    dataField="isActive"
+    dataType="boolean"
+    [caption]="'Live'"
+    cellTemplate="isActiveCellTemplate"
+    [width]="120"
+  ></dxi-column>
   <dxi-column type="buttons" caption="Actions" [allowReordering]="false">
     <dxi-button icon="edit" hint="EDIT" [onClick]="showEditModal"></dxi-button>
     <dxi-button icon="trash" hint="DELETE" [onClick]="delete"></dxi-button>
   </dxi-column>
+
+  <div *dxTemplate="let cell of 'isActiveCellTemplate'">
+    <span class="active-template" [style.background-color]="cell.data.isActive ? '#29d029' : 'red'">
+      {{ cell.data.isActive ? 'LIVE' : 'INACTIVE' }}
+    </span>
+  </div>
 </dx-data-grid>
 
 <dx-popup

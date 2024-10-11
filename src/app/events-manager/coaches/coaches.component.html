@@ -53,6 +53,13 @@
   <dxi-column dataField="phone.type" [caption]="'Type'" [visible]="false">
     <dxo-lookup [dataSource]="phone_types" [allowClearing]="true"></dxo-lookup>
   </dxi-column>
+  <dxi-column
+    dataField="isActive"
+    dataType="boolean"
+    [caption]="'Live'"
+    cellTemplate="isActiveCellTemplate"
+    [width]="120"
+  ></dxi-column>
   <dxi-column type="buttons" [width]="150" caption="Actions">
     <dxi-button icon="edit" hint="EDIT" [onClick]="showEditModal"></dxi-button>
     <dxi-button icon="trash" hint="DELETE" [onClick]="delete"></dxi-button>
@@ -65,6 +72,12 @@
   </div>
   <div *dxTemplate="let cell of 'imageCellTemplate'">
     <img  width="100" [src]="cell.data?.photoUrl?.url" alt="Picture of {{ cell.data.firstName }} {{ cell.data.lastName }}"/>
+  </div>
+
+  <div *dxTemplate="let cell of 'isActiveCellTemplate'">
+    <span class="active-template" [style.background-color]="cell.data.isActive ? '#29d029' : 'red'">
+      {{ cell.data.isActive ? 'LIVE' : 'INACTIVE' }}
+    </span>
   </div>
 </dx-data-grid>
 
