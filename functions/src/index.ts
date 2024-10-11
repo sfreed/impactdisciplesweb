@@ -15,3 +15,6 @@ exports.importJson = importJSON.importJSON;
 
 const imageUploader = require("./fetchimage.functions");
 exports.uploadImageToStorage = imageUploader.uploadImageToStorage;
+
+const subscriptions = require("./subscriptions.functions");
+exports.subscriptions = subscriptions.subscriptions;

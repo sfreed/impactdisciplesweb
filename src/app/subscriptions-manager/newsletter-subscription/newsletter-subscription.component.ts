@@ -143,11 +143,15 @@ export class NewsletterSubscriptionComponent {
   }
 
   sendConfirmationEmail(){
-    let subject = 'Thank you for Subscribing to the Impact Disciples Newletter! ';
+    let subject = 'Thank you for Subscribing to the Impact Disciples Newletter!';
     let text = '<div>Dear ' + this.selectedItem.firstName + '.</div><br><br>'
     text += '<div>Your email address was successfully added to our Newletter Subsciption List! (' + this.selectedItem.email +')</div><br><br>'
     text += '<div>Please accept this free <a href="' + this.freeEbookUrl +'" download>EBook</a> as a small token of our appreciation.</div><br><br>'
     text +='<div>God Bless! - Impact Disciples Ministry</div>'
+
+    text += "<br><br><br><div>If you believe you received this confirmation by mistake, please click " +
+      "<b><a href='https://us-central1-impactdisciplesdev.cloudfunctions.net/subscriptions?email="+ this.selectedItem.email +
+      "&list=newsletter_subscriptions'>here</a></b> to remove your address.</div>"
 
     this.emailService.sendHtmlEmail(this.selectedItem.email, subject, text);
   }
@@ -159,18 +163,15 @@ export class NewsletterSubscriptionComponent {
 
       this.service.getAll().then(subscribers => {
         subscribers.forEach(subscriber => {
-          let form = {};
-          form['firstName'] = subscriber.firstName;
-          form['lastName'] = subscriber.lastName;
-          form['email'] = subscriber.email;
-          form['date'] = subscriber;
-
           html = this.newsletter.html
           html = html.replace('{{Recipient First Name}}', subscriber.firstName);
           html = html.replace('{{Recipient Last Name}}', subscriber.lastName);
           html = html.replace('{{Sender First Name}}', user.firstName);
           html = html.replace('{{Sender Last Name}}', user.lastName);
           html = html.replace('{{Date}}', (dateFromTimestamp(this.newsletter.date) as Date).toLocaleString());
+          html += "<br><br><br><div>If you believe you received this email by mistake, please click " +
+            "<b><a href='https://us-central1-impactdisciplesdev.cloudfunctions.net/subscriptions?email="+ subscriber.email +
+            "&list=newsletter_subscriptions'>here</a></b> to remove your address.</div>"
           this.newsletter.html = html;
 
           this.emailService.sendHtmlEmail(subscriber.email, this.newsletter.subject, this.newsletter.html);

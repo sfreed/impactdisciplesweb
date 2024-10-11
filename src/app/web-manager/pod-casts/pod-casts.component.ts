@@ -93,29 +93,32 @@ export class PodCastsComponent implements OnInit{
   }
 
   syncPodcasts = () => {
-    this.service.getVideoInfo().then(vids => {
-        vids.forEach(async video => {
-          let podCast: PodCastModel = await this.service.getById(video.id);
+    confirm('<i>Are you sure you want to syncronize these records?</i>', 'Confirm').then((dialogResult) => {
+      if (dialogResult) {
+        this.service.getVideoInfo().then(vids => {
+          vids.forEach(async video => {
+            let podCast: PodCastModel = await this.service.getById(video.id);
 
-          if(!podCast){
-            podCast = {... new PodCastModel()}
-          }
+            if(!podCast){
+              podCast = {... new PodCastModel()}
+            }
 
-          podCast.id = video.id;
-          podCast.date = video.snippet.publishedAt;
-          podCast.isActive = true;
-          podCast.thumbnail = {};
-          podCast.thumbnail.name = video.snippet.title;
-          podCast.thumbnail.url = video.snippet.thumbnails.default.url;
-          podCast.title = video.snippet.title;
-          podCast.videoId = video.contentDetails.videoId;
-          podCast.videoType = "Youtube";
-          podCast.description = video.snippet.description;
+            podCast.id = video.id;
+            podCast.date = video.snippet.publishedAt;
+            podCast.isActive = true;
+            podCast.thumbnail = {};
+            podCast.thumbnail.name = video.snippet.title;
+            podCast.thumbnail.url = video.snippet.thumbnails.default.url;
+            podCast.title = video.snippet.title;
+            podCast.videoId = video.contentDetails.videoId;
+            podCast.videoType = "Youtube";
+            podCast.description = video.snippet.description;
 
-          await this.service.update(podCast.id, podCast);
-
-        })
-    })
+            await this.service.update(podCast.id, podCast);
+          })
+      })
+      }
+    });
   }
 
   onSave(item: PodCastModel) {

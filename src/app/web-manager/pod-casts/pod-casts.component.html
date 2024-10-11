@@ -57,7 +57,7 @@
   <dxi-column dataField="isActive" dataType="boolean" [width]="60" [caption]="'Active'"></dxi-column>
   <dxi-column dataField="thumbnail" [width]="120" cellTemplate="cellTemplate"></dxi-column>
   <dxi-column dataField="title"></dxi-column>
-  <dxi-column dataField="date" [dataType]="'datetime'"></dxi-column>
+  <dxi-column dataField="date" [dataType]="'datetime'" [sortOrder]="'desc'"></dxi-column>
   <dxi-column dataField="category">
     <dxo-lookup [dataSource]="podCastCategories" [displayExpr]="'tag'" [valueExpr]="'id'"></dxo-lookup>
   </dxi-column>

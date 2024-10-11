@@ -145,6 +145,10 @@ export class PrayerTeamSubscriptionComponent {
     text += 'Your email address was successfully added to our Prayer Team List! (' + this.selectedItem.email +')\n\n'
     text +='God Bless! - Impact Disciples Ministry'
 
+    text += "<br><br><br><div>If you believe you received this confirmation by mistake, please click " +
+      "<b><a href='https://us-central1-impactdisciplesdev.cloudfunctions.net/subscriptions?email="+ this.selectedItem.email +
+      "&list=prayer_team_subscriptions'>here</a></b> to remove your address.</div>"
+
     this.emailService.sendTextEmail(this.selectedItem.email, subject, text);
   }
 
@@ -167,6 +171,10 @@ export class PrayerTeamSubscriptionComponent {
           html = html.replace('{{Sender First Name}}', user.firstName);
           html = html.replace('{{Sender Last Name}}', user.lastName);
           html = html.replace('{{Date}}', (dateFromTimestamp(this.prayer.date) as Date).toLocaleString());
+          html += "<br><br><br><div>If you believe you received this email by mistake, please click " +
+            "<b><a href='https://us-central1-impactdisciplesdev.cloudfunctions.net/subscriptions?email="+ subscriber.email +
+            "&list=prayer_team_subscriptions'>here</a></b> to remove your address.</div>"
+
           this.prayer.html = html;
 
           this.emailService.sendHtmlEmail(subscriber.email, this.prayer.subject, this.prayer.html);
