@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LogMessagesComponent } from './log-messages/log-messages.component';
 import { UsersComponent } from './users/users.component';
-import { DxButtonModule, DxDataGridModule, DxFileUploaderModule, DxFormModule, DxHtmlEditorModule, DxListModule, DxLoadIndicatorModule,
+import { DxButtonModule, DxContextMenuModule, DxDataGridModule, DxFileUploaderModule, DxFormModule, DxHtmlEditorModule, DxListModule, DxLoadIndicatorModule,
          DxLoadPanelModule,
          DxLookupModule,
          DxNumberBoxModule,
@@ -24,6 +24,7 @@ import { CustomersComponent } from './customers/customers.component';
   imports: [
     CommonModule,
     ImpactFormsModule,
+    DxContextMenuModule,
     DxDataGridModule,
     DxButtonModule,
     DxFormModule,

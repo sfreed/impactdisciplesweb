@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DxButtonModule, DxDataGridModule, DxDateBoxModule, DxFileUploaderModule, DxFormModule, DxHtmlEditorModule, DxLoadIndicatorModule, DxPopupModule,
+import { DxButtonModule, DxContextMenuModule, DxDataGridModule, DxDateBoxModule, DxFileUploaderModule, DxFormModule, DxHtmlEditorModule, DxLoadIndicatorModule, DxPopupModule,
          DxSelectBoxModule,
          DxSwitchModule, DxTabsModule, DxTagBoxModule, DxTextBoxModule,
          DxToolbarModule} from 'devextreme-angular';
@@ -22,6 +22,7 @@ import { HttpClientModule, provideHttpClient } from '@angular/common/http';
     CommonModule,
     ImpactFormsModule,
     DxDataGridModule,
+    DxContextMenuModule,
     DxButtonModule,
     DxDateBoxModule,
     DxFormModule,

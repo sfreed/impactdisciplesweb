@@ -5,17 +5,23 @@
         <h2 class="content-block responsive-paddings underline">{{itemType}}s</h2>
       </div>
     </dxi-item>
-    <dxi-item
-      location="after"
-      widget="dxButton"
-      [options]="{
-        hint: 'ADD ' + itemType | uppercase,
-        type: 'default',
-        text: 'ADD ' + itemType | uppercase,
-        stylingMode: 'contained',
-        onClick: showAddModal
-      }"
-    ></dxi-item>
+    <dxi-item location="after">
+      <div *dxTemplate>
+        <dx-button class="icon-button manage-button" hint="MANAGE EVENTS">
+          <div *dxTemplate="let data of 'content'">
+            <div class="d-flex">
+              <i class="dx-icon-preferences"></i>
+            </div>
+            <dx-context-menu
+              target=".manage-button"
+              showEvent="dxclick"
+              [position]="{ my: { x: 'center', y: 'top' }, at: 'left bottom' }">
+              <dxi-item text="New" icon="add" [onClick]="showAddModal"></dxi-item>
+            </dx-context-menu>
+          </div>
+        </dx-button>
+      </div>
+    </dxi-item>
   </dx-toolbar>
 </div>
 

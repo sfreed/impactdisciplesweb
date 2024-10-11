@@ -33,19 +33,6 @@
         ></dx-select-box>
       </div>
     </dxi-item>
-
-    <dxi-item
-      location="after"
-      widget="dxButton"
-      [options]="{
-        hint: 'ADD ' + itemType | uppercase,
-        type: 'default',
-        text: 'ADD ' + itemType | uppercase,
-        stylingMode: 'contained',
-        onClick: showAddModal
-      }">
-    </dxi-item>
-
     <dxi-item location="after">
       <div *dxTemplate>
         <dx-button class="icon-button manage-button" hint="MANAGE PRODUCTS">
@@ -57,6 +44,7 @@
               target=".manage-button"
               showEvent="dxclick"
               [position]="{ my: { x: 'center', y: 'top' }, at: 'left bottom' }">
+              <dxi-item text="New" icon="add" [onClick]="showAddModal"></dxi-item>
               <dxi-item text="Categories" icon="smalliconslayout" [onClick]="showProductCategoriesModal"></dxi-item>
               <dxi-item text="Series" icon="contentlayout" [onClick]="showProductSeriesModal"></dxi-item>
             </dx-context-menu>

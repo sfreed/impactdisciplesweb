@@ -1,17 +1,18 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { 
-  DxButtonModule, 
-  DxDataGridModule, 
-  DxFileUploaderModule, 
-  DxFormModule, 
-  DxHtmlEditorModule, 
-  DxLoadIndicatorModule, 
+import {
+  DxButtonModule,
+  DxContextMenuModule,
+  DxDataGridModule,
+  DxFileUploaderModule,
+  DxFormModule,
+  DxHtmlEditorModule,
+  DxLoadIndicatorModule,
   DxPopupModule,
-  DxSwitchModule, 
-  DxTabsModule, 
-  DxTextBoxModule, 
-  DxToolbarModule 
+  DxSwitchModule,
+  DxTabsModule,
+  DxTextBoxModule,
+  DxToolbarModule
 } from 'devextreme-angular';
 import { NewsletterSubscriptionComponent } from './newsletter-subscription/newsletter-subscription.component';
 import { PrayerTeamSubscriptionComponent } from './prayer-team-subscription/prayer-team-subscription.component';
@@ -26,6 +27,7 @@ import { SharedModule } from "../shared/shared.module";
   imports: [
     CommonModule,
     ImpactFormsModule,
+    DxContextMenuModule,
     DxDataGridModule,
     DxButtonModule,
     DxFormModule,
