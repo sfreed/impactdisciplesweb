@@ -1,12 +1,19 @@
+import { ToastrService } from 'ngx-toastr';
+import { Timestamp } from 'firebase/firestore';
 import { Component, ViewChild } from '@angular/core';
 import ArrayStore from 'devextreme/data/array_store';
 import DataSource from 'devextreme/data/data_source';
 import notify from 'devextreme/ui/notify';
 import { PrayerTeamSubscriptionModel } from 'impactdisciplescommon/src/models/domain/prayer-team-subscription.model';
 import { PrayerTeamSubscriptionService } from 'impactdisciplescommon/src/services/prayer-team-subscription.service';
-import { BehaviorSubject, Observable, map } from 'rxjs';
+import { BehaviorSubject, Observable, map, take } from 'rxjs';
 import { confirm } from 'devextreme/ui/dialog';
 import { DxFormComponent } from 'devextreme-angular';
+import { PrayerModel } from 'impactdisciplescommon/src/models/domain/prayer.model';
+import { EMailService } from 'impactdisciplescommon/src/services/admin/email.service';
+import { AuthService } from 'impactdisciplescommon/src/services/utils/auth.service';
+import { dateFromTimestamp } from 'impactdisciplescommon/src/utils/date-from-timestamp';
+import { PrayerService } from 'impactdisciplescommon/src/services/prayer.service';
 
 @Component({
   selector: 'app-prayer-team-subscription',
@@ -21,10 +28,19 @@ export class PrayerTeamSubscriptionComponent {
 
   itemType = 'Prayer Team Subscription';
 
-  public inProgress$ = new BehaviorSubject<boolean>(false)
-  public isVisible$ = new BehaviorSubject<boolean>(false);
+  emailVals: string[] = ['Recipient First Name', 'Recipient Last Name', 'Sender First Name', 'Sender Last Name', 'Date'];
 
-  constructor(private service: PrayerTeamSubscriptionService) {}
+  public inProgress$ = new BehaviorSubject<boolean>(false)
+  public isEditVisible$ = new BehaviorSubject<boolean>(false);
+  public isPrayerVisible$ = new BehaviorSubject<boolean>(false);
+
+  prayer: PrayerModel;
+
+  constructor(private service: PrayerTeamSubscriptionService,
+    private emailService: EMailService,
+    private authService: AuthService,
+    private prayerService: PrayerService,
+    private toastrService: ToastrService) {}
 
    ngOnInit() {
     this.datasource$ = this.service.streamAll().pipe(
@@ -44,11 +60,17 @@ export class PrayerTeamSubscriptionComponent {
 
   showEditModal = ({ row: { data } }) => {
     this.selectedItem = (Object.assign({}, data));
-    this.isVisible$.next(true);
+    this.isEditVisible$.next(true);
+  }
+
+  showPrayerModal = () => {
+    this.prayer = {... new PrayerModel()};
+    this.prayer.date = Timestamp.now();
+    this.isPrayerVisible$.next(true);
   }
 
   showAddModal = () => {
-    this.isVisible$.next(true);
+    this.isEditVisible$.next(true);
   }
 
   delete = ({ row: { data } }) => {
@@ -99,6 +121,9 @@ export class PrayerTeamSubscriptionComponent {
               width: 600,
               type: 'success'
             });
+
+            this.sendConfirmationEmail();
+
             this.onCancel();
           } else {
             this.inProgress$.next(false);
@@ -114,9 +139,56 @@ export class PrayerTeamSubscriptionComponent {
     }
   }
 
+  sendConfirmationEmail(){
+    let subject = 'Thank you for Joining our Prayer Team! ';
+    let text = 'Dear ' + this.selectedItem.firstName + '.\n\n'
+    text += 'Your email address was successfully added to our Prayer Team List! (' + this.selectedItem.email +')\n\n'
+    text +='God Bless! - Impact Disciples Ministry'
+
+    this.emailService.sendTextEmail(this.selectedItem.email, subject, text);
+  }
+
+  sendPrayer(){
+    this.authService.getUser().pipe(take(1)).subscribe(user => {
+      this.prayer.sender = user.firstName + ' ' + user.lastName
+      let html='';
+
+      this.service.getAll().then(subscribers => {
+        subscribers.forEach(subscriber => {
+          let form = {};
+          form['firstName'] = subscriber.firstName;
+          form['lastName'] = subscriber.lastName;
+          form['email'] = subscriber.email;
+          form['date'] = subscriber;
+
+          html = this.prayer.html
+          html = html.replace('{{Recipient First Name}}', subscriber.firstName);
+          html = html.replace('{{Recipient Last Name}}', subscriber.lastName);
+          html = html.replace('{{Sender First Name}}', user.firstName);
+          html = html.replace('{{Sender Last Name}}', user.lastName);
+          html = html.replace('{{Date}}', (dateFromTimestamp(this.prayer.date) as Date).toLocaleString());
+          this.prayer.html = html;
+
+          this.emailService.sendHtmlEmail(subscriber.email, this.prayer.subject, this.prayer.html);
+        })
+      }).then(() => {
+        this.prayerService.add(this.prayer).then(prayer => {
+          this.toastrService.success('Prayer Sent Successfully!');
+          this.isPrayerVisible$.next(false);
+        })
+      })
+    })
+  }
+
   onCancel() {
     this.selectedItem = null;
     this.inProgress$.next(false);
-    this.isVisible$.next(false);
+    this.isEditVisible$.next(false);
+  }
+
+  onPrayerCancel() {
+    this.prayer = null;
+    this.inProgress$.next(false);
+    this.isPrayerVisible$.next(false);
   }
 }

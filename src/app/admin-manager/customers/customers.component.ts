@@ -5,7 +5,6 @@ import CustomStore from 'devextreme/data/custom_store';
 import DataSource from 'devextreme/data/data_source';
 import notify from 'devextreme/ui/notify';
 import { AppUser } from 'impactdisciplescommon/src/models/admin/appuser.model';
-import { AppUserService } from 'impactdisciplescommon/src/services/admin/user.service';
 import { BehaviorSubject, Observable, map } from 'rxjs';
 import { confirm } from 'devextreme/ui/dialog';
 import { EnumHelper } from 'impactdisciplescommon/src/utils/enum_helper';
@@ -50,7 +49,7 @@ export class CustomersComponent implements OnInit {
   public locations: LocationModel[];
   public organizations: OrganizationModel[];
 
-  itemType = 'Customers';
+  itemType = 'Customer';
 
   phoneEditorOptions = {
     mask: '(X00) 000-0000',
