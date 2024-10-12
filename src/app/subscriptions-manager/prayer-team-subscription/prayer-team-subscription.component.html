@@ -7,6 +7,20 @@
     </dxi-item>
     <dxi-item location="after">
       <div *dxTemplate>
+        <dx-select-box
+          [dataSource]="emailLists"
+          [value]="selectedList?.id"
+          [valueExpr]="'id'"
+          [displayExpr]="'name'"
+          [placeholder]="'Filter by List...'"
+          [showClearButton]="true"
+          [width]="250"
+          (onValueChanged)="onListFilterChanged($event)"
+        ></dx-select-box>
+      </div>
+    </dxi-item>
+    <dxi-item location="after">
+      <div *dxTemplate>
         <dx-button class="icon-button manage-button" hint="MANAGE SUBSCRIPTIONS">
           <div *dxTemplate="let data of 'content'">
             <div class="d-flex">
@@ -18,6 +32,8 @@
               [position]="{ my: { x: 'center', y: 'top' }, at: 'left bottom' }">
               <dxi-item text="New" icon="add" [onClick]="showAddModal"></dxi-item>
               <dxi-item text="Send Prayer Request" icon="contentlayout" [onClick]="showPrayerModal"></dxi-item>
+              <dxi-item text="Create Subscriber List" icon="contentlayout" [onClick]="showListModal"></dxi-item>
+              <dxi-item  *ngIf="this.selectedList" text="Save List" icon="save" [onClick]="onListSave"></dxi-item>
             </dx-context-menu>
           </div>
         </dx-button>
@@ -35,9 +51,11 @@
   [showRowLines]="true"
   [focusedRowEnabled]="true"
   [columnAutoWidth]="true"
-  [columnAutoWidth]="true"
+  [(selectedRowKeys)]="selectedRows"
+  (onSelectionChanged)="selectRow($event)"
   (onRowDblClick)="showEditModal($event)">
 
+  <dxo-selection mode="multiple" ></dxo-selection>
   <dxo-scrolling mode="virtual"></dxo-scrolling>
   <dxo-filter-row [visible]="true"></dxo-filter-row>
 
@@ -190,6 +208,51 @@
           [title]="'SEND'"
           [disabled]="inProgress$ | async"
           (onClick)="sendPrayer()">
+        </app-indicator-button>
+      </div>
+    </div>
+  </div>
+</dx-popup>
+
+<dx-popup
+  [showTitle]="true"
+  [dragEnabled]="false"
+  [visible]="isListVisible$ | async"
+  height="40%"
+  width="60%"
+  [showCloseButton]="true"
+  (onHiding)="onCancel()">
+  <dxi-toolbar-item toolbar="top" location="center">
+    <div *dxTemplate>
+      <p class="popup-title">
+        {{ selectedItem?.id ? 'EDIT' : 'ADD' }} {{ 'Email List' | uppercase}}
+      </p>
+    </div>
+  </dxi-toolbar-item>
+  <div *dxTemplate="let data of 'content'">
+    <div class="add-item-modal">
+      <div class="add-item-modal__content" *ngIf="isListVisible$ | async">
+        <dx-form
+          #addEditForm
+          [(formData)]="selectedList"
+          [showColonAfterLabel]="false"
+          labelLocation="left">
+          <dxi-item dataField="name" [isRequired]="true"></dxi-item>
+        </dx-form>
+      </div>
+      <div class="add-item-modal__button-group">
+        <dx-button
+          text="CANCEL"
+          stylingMode="contained"
+          type="normal"
+          [disabled]="inProgress$ | async"
+          (onClick)="onListCancel()">
+        </dx-button>
+        <app-indicator-button
+          [isInProgress]="inProgress$ | async"
+          [title]="'SAVE'"
+          [disabled]="inProgress$ | async"
+          (onClick)="onListSave()">
         </app-indicator-button>
       </div>
     </div>

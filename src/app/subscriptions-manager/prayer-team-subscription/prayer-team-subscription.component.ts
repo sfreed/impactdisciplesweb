@@ -14,6 +14,8 @@ import { EMailService } from 'impactdisciplescommon/src/services/admin/email.ser
 import { AuthService } from 'impactdisciplescommon/src/services/utils/auth.service';
 import { dateFromTimestamp } from 'impactdisciplescommon/src/utils/date-from-timestamp';
 import { PrayerService } from 'impactdisciplescommon/src/services/prayer.service';
+import { EmailList } from 'impactdisciplescommon/src/models/utils/email-list.model';
+import { EmailListService } from 'impactdisciplescommon/src/services/email-list.service';
 
 @Component({
   selector: 'app-prayer-team-subscription',
@@ -24,7 +26,12 @@ export class PrayerTeamSubscriptionComponent {
   @ViewChild('addEditForm', { static: false }) addEditForm: DxFormComponent;
 
   datasource$: Observable<DataSource>;
-  selectedItem :PrayerTeamSubscriptionModel
+  selectedItem: PrayerTeamSubscriptionModel
+  selectedRows: string[] = [];
+  selectedSubscribers: PrayerTeamSubscriptionModel[] = [];
+
+  selectedList: EmailList;
+  emailLists: EmailList[];
 
   itemType = 'Prayer Team Subscription';
 
@@ -32,6 +39,7 @@ export class PrayerTeamSubscriptionComponent {
 
   public inProgress$ = new BehaviorSubject<boolean>(false)
   public isEditVisible$ = new BehaviorSubject<boolean>(false);
+  public isListVisible$ = new BehaviorSubject<boolean>(false);
   public isPrayerVisible$ = new BehaviorSubject<boolean>(false);
 
   prayer: PrayerModel;
@@ -40,9 +48,10 @@ export class PrayerTeamSubscriptionComponent {
     private emailService: EMailService,
     private authService: AuthService,
     private prayerService: PrayerService,
-    private toastrService: ToastrService) {}
+    private toastrService: ToastrService,
+    private emailListService: EmailListService) {}
 
-   ngOnInit() {
+   async ngOnInit() {
     this.datasource$ = this.service.streamAll().pipe(
       map(
         (data) =>
@@ -56,6 +65,9 @@ export class PrayerTeamSubscriptionComponent {
         })
       )
     )
+
+        this.emailLists = await this.emailListService.getAllByValue('type', 'prayer');
+
   }
 
   showEditModal = (e) => {
@@ -71,6 +83,25 @@ export class PrayerTeamSubscriptionComponent {
 
   showAddModal = () => {
     this.isEditVisible$.next(true);
+  }
+
+  showListModal = () => {
+    this.selectedList = {... new EmailList()};
+    this.isListVisible$.next(true);
+  }
+
+  onListFilterChanged(event: any) {
+    if(event.value) {
+      this.selectedRows = [];
+
+      this.selectedList = this.emailLists.find(list => list.id === event.value) || null;
+
+      this.selectedList.list.forEach(item => {
+        this.selectedRows.push(item.id)
+      })
+    } else if(!event.value) {
+      this.selectedRows = [];
+    }
   }
 
   delete = ({ row: { data } }) => {
@@ -139,6 +170,56 @@ export class PrayerTeamSubscriptionComponent {
     }
   }
 
+  onListSave = () => {
+    this.inProgress$.next(true);
+    this.selectedList.list = this.selectedSubscribers;
+    this.selectedList.type = 'prayer';
+
+    if(this.selectedList.id) {
+      this.emailListService.update(this.selectedList.id, this.selectedList).then((item) => {
+        if(item) {
+          notify({
+            message: 'List Updated',
+            position: 'top',
+            width: 600,
+            type: 'success'
+          });
+          this.onListCancel();
+        } else {
+          this.inProgress$.next(false);
+          notify({
+            message: 'Some Error Occured',
+            position: 'top',
+            width: 600,
+            type: 'success'
+          });
+        }
+      })
+    } else {
+      this.emailListService.add(this.selectedList).then((item) => {
+        if(item) {
+          notify({
+            message: 'List Added',
+            position: 'top',
+            width: 600,
+            type: 'success'
+          });
+
+          this.emailLists.push(item);
+          this.onListCancel();
+        } else {
+          this.inProgress$.next(false);
+          notify({
+            message: 'Some Error Occured',
+            position: 'top',
+            width: 600,
+            type: 'error'
+          });
+        }
+      })
+    }
+  }
+
   sendConfirmationEmail(){
     let subject = 'Thank you for Joining our Prayer Team! ';
     let text = 'Dear ' + this.selectedItem.firstName + '.\n\n'
@@ -157,7 +238,14 @@ export class PrayerTeamSubscriptionComponent {
       this.prayer.sender = user.firstName + ' ' + user.lastName
       let html='';
 
-      this.service.getAll().then(subscribers => {
+      let list: Promise<PrayerTeamSubscriptionModel[]>
+      if(this.selectedList){
+        list = Promise.resolve(this.selectedList.list);
+      } else {
+        list = this.service.getAll();
+      }
+
+      list.then(subscribers => {
         subscribers.forEach(subscriber => {
           let form = {};
           form['firstName'] = subscriber.firstName;
@@ -198,5 +286,14 @@ export class PrayerTeamSubscriptionComponent {
     this.prayer = null;
     this.inProgress$.next(false);
     this.isPrayerVisible$.next(false);
+  }
+
+  onListCancel() {
+    this.inProgress$.next(false);
+    this.isListVisible$.next(false);
+  }
+
+  selectRow(e){
+    this.selectedSubscribers = e.selectedRowsData;
   }
 }

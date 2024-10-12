@@ -14,6 +14,8 @@ import { AuthService } from 'impactdisciplescommon/src/services/utils/auth.servi
 import { ToastrService } from 'ngx-toastr';
 import { NewsletterModel } from 'impactdisciplescommon/src/models/domain/newsletter.model';
 import { NewsletterService } from 'impactdisciplescommon/src/services/newletter.service';
+import { EmailList } from 'impactdisciplescommon/src/models/utils/email-list.model';
+import { EmailListService } from 'impactdisciplescommon/src/services/email-list.service';
 
 @Component({
   selector: 'app-newsletter-subscription',
@@ -25,6 +27,10 @@ export class NewsletterSubscriptionComponent {
 
   datasource$: Observable<DataSource>;
   selectedItem: NewsletterSubscriptionModel;
+  selectedRows: string[] = [];
+  selectedSubscribers: NewsletterSubscriptionModel[] = [];
+  selectedList: EmailList;
+  emailLists: EmailList[];
 
   newsletter: NewsletterModel;
 
@@ -36,16 +42,20 @@ export class NewsletterSubscriptionComponent {
 
   public inProgress$ = new BehaviorSubject<boolean>(false)
   public isVisible$ = new BehaviorSubject<boolean>(false);
+  public isListVisible$ = new BehaviorSubject<boolean>(false);
   public isPrayerVisible$ = new BehaviorSubject<boolean>(false);
+
+  gridFilter: any = null;
 
   constructor(private service: NewsletterSubscriptionService,
     private emailService: EMailService,
     private authService: AuthService,
     private newsletterService: NewsletterService,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
+    private emailListService: EmailListService
   ) {}
 
-  ngOnInit() {
+  async ngOnInit() {
     this.datasource$ = this.service.streamAll().pipe(
       map(
         (data) =>
@@ -59,6 +69,7 @@ export class NewsletterSubscriptionComponent {
         })
       )
     )
+    this.emailLists = await this.emailListService.getAllByValue('type', 'newsletter');
   }
 
   showEditModal = (e) => {
@@ -74,6 +85,27 @@ export class NewsletterSubscriptionComponent {
 
   showAddModal = () => {
     this.isVisible$.next(true);
+
+    this.selectedList = {... new EmailList()};
+  }
+
+  showListModal = () => {
+    this.selectedList = {... new EmailList()};
+    this.isListVisible$.next(true);
+  }
+
+  onListFilterChanged(event: any) {
+    if(event.value) {
+      this.selectedRows = [];
+
+      this.selectedList = this.emailLists.find(list => list.id === event.value) || null;
+
+      this.selectedList.list.forEach(item => {
+        this.selectedRows.push(item.id)
+      })
+    } else if(!event.value) {
+      this.selectedRows = [];
+    }
   }
 
   delete = ({ row: { data } }) => {
@@ -142,6 +174,57 @@ export class NewsletterSubscriptionComponent {
     }
   }
 
+  onListSave = () => {
+    this.inProgress$.next(true);
+    this.selectedList.list = this.selectedSubscribers;
+    this.selectedList.type = 'newsletter';
+
+    if(this.selectedList.id) {
+      this.emailListService.update(this.selectedList.id, this.selectedList).then((item) => {
+        if(item) {
+          notify({
+            message: 'List Updated',
+            position: 'top',
+            width: 600,
+            type: 'success'
+          });
+          this.onListCancel();
+        } else {
+          this.inProgress$.next(false);
+          notify({
+            message: 'Some Error Occured',
+            position: 'top',
+            width: 600,
+            type: 'success'
+          });
+        }
+      })
+    } else {
+      this.emailListService.add(this.selectedList).then((item) => {
+        if(item) {
+          notify({
+            message: 'List Added',
+            position: 'top',
+            width: 600,
+            type: 'success'
+          });
+
+          this.emailLists.push(item);
+          this.onListCancel();
+        } else {
+          this.inProgress$.next(false);
+          notify({
+            message: 'Some Error Occured',
+            position: 'top',
+            width: 600,
+            type: 'error'
+          });
+        }
+      })
+    }
+  }
+
+
   sendConfirmationEmail(){
     let subject = 'Thank you for Subscribing to the Impact Disciples Newletter!';
     let text = '<div>Dear ' + this.selectedItem.firstName + '.</div><br><br>'
@@ -161,7 +244,15 @@ export class NewsletterSubscriptionComponent {
       this.newsletter.sender = user.firstName + ' ' + user.lastName
       let html='';
 
-      this.service.getAll().then(subscribers => {
+      let list: Promise<NewsletterSubscriptionModel[]>
+      if(this.selectedList){
+        list = Promise.resolve(this.selectedList.list);
+      } else {
+        list = this.service.getAll();
+      }
+
+      list.then(subscribers => {
+        console.log(subscribers)
         subscribers.forEach(subscriber => {
           html = this.newsletter.html
           html = html.replace('{{Recipient First Name}}', subscriber.firstName);
@@ -178,7 +269,7 @@ export class NewsletterSubscriptionComponent {
         })
       }).then(() => {
         this.newsletterService.add(this.newsletter).then(newsletter => {
-          this.toastrService.success('Newsletter Sent Successfully!');
+          this.toastrService.success('Newsletter ("' + newsletter.subject + '") Sent Successfully!');
           this.isPrayerVisible$.next(false);
         })
       })
@@ -195,5 +286,14 @@ export class NewsletterSubscriptionComponent {
     this.newsletter = null;
     this.inProgress$.next(false);
     this.isPrayerVisible$.next(false);
+  }
+
+  onListCancel() {
+    this.inProgress$.next(false);
+    this.isListVisible$.next(false);
+  }
+
+  selectRow(e){
+    this.selectedSubscribers = e.selectedRowsData;
   }
 }
