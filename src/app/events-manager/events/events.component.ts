@@ -82,8 +82,8 @@ export class EventsComponent implements OnInit, OnDestroy {
     })
   }
 
-  showEditModal = ({ row: { data } }) => {
-    this.selectedItem = data
+  showEditModal = (e) => {
+    this.selectedItem = (Object.assign({}, e.data));
     this.isVisible$.next(true);
   }
 

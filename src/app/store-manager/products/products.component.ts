@@ -112,8 +112,8 @@ export class ProductsComponent implements OnInit {
     }
   }
 
-  showEditModal = ({ row: { data } }) => {
-    this.selectedItem = (Object.assign({}, data));
+  showEditModal = (e) => {
+    this.selectedItem = (Object.assign({}, e.data));
 
     this.isVisible$.next(true);
   }

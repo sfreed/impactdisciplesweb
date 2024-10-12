@@ -63,8 +63,8 @@ export class CouponsComponent implements OnInit{
     });
   }
 
-  showEditModal = async ({ row: { data } }) => {
-    this.selectedItem = (Object.assign({}, data));
+  showEditModal = (e) => {
+    this.selectedItem = (Object.assign({}, e.data));
 
     this.isVisible$.next(true);
   }

@@ -16,7 +16,7 @@ import { ShowSeriesModal } from './series-modal/series-modal.actions';
 })
 export class ProductSeriesComponent implements OnInit, OnDestroy {
   datasource$: Observable<DataSource>;
-  
+
   public isVisible$ = new BehaviorSubject<boolean>(false);
 
   private ngUnsubscribe = new Subject<void>();
@@ -45,8 +45,8 @@ export class ProductSeriesComponent implements OnInit, OnDestroy {
     );
   }
 
-  showEditModal = ({ row: { data } }) => {
-    this.store.dispatch(new ShowSeriesModal(data));
+  showEditModal = (e) => {
+    this.store.dispatch(new ShowSeriesModal(e.data));
   }
 
   showAddModal = () => {

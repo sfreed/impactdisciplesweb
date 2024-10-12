@@ -34,7 +34,8 @@
   [showColumnLines]="true"
   [showRowLines]="true"
   [focusedRowEnabled]="true"
-  [columnAutoWidth]="true">
+  [columnAutoWidth]="true"
+  (onRowDblClick)="showEditModal($event)">
 
   <dxo-filter-row [visible]="true"></dxo-filter-row>
   <dxo-scrolling mode="virtual"></dxo-scrolling>
@@ -54,7 +55,6 @@
     <dxo-lookup [dataSource]="phone_types" [allowClearing]="true"></dxo-lookup>
   </dxi-column>
   <dxi-column type="buttons" [width]="150" caption="Actions">
-    <dxi-button icon="edit" hint="EDIT" [onClick]="showEditModal"></dxi-button>
     <dxi-button icon="trash" hint="DELETE" [onClick]="delete"></dxi-button>
   </dxi-column>
 

@@ -17,7 +17,8 @@
   [showColumnLines]="true"
   [showRowLines]="true"
   [focusedRowEnabled]="true"
-  [columnAutoWidth]="true">
+  [columnAutoWidth]="true"
+  (onRowDblClick)="showEditModal($event)">
 
   <dxo-scrolling mode="virtual"></dxo-scrolling>
   <dxo-filter-row [visible]="true"></dxo-filter-row>
@@ -37,7 +38,6 @@
   <dxi-column dataField="paymentIntent.amount" cellTemplate="amountDollarTemplate" [caption]="'Charged'"></dxi-column>
   <dxi-column dataField="refundAmount" cellTemplate="amountOtherTemplate" [caption]="'Refunded'"></dxi-column>
   <dxi-column type="buttons" caption="Actions" [allowReordering]="false">
-    <dxi-button icon="edit" hint="EDIT" [onClick]="showEditModal"></dxi-button>
     <dxi-button icon="trash" hint="DELETE" [onClick]="delete"></dxi-button>
   </dxi-column>
 

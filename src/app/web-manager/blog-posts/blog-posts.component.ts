@@ -63,8 +63,8 @@ export class BlogPostsComponent implements OnInit {
     this.blogCategories = await this.blogCategoriesService.getAll();
   }
 
-  showEditModal = ({ row: { data } }) => {
-    this.selectedItem = (Object.assign({}, data));
+  showEditModal = (e) => {
+    this.selectedItem = (Object.assign({}, e.data));
     this.isVisible$.next(true);
   }
 

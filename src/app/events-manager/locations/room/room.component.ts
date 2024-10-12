@@ -27,14 +27,12 @@ export class RoomComponent implements OnInit {
     if(!this.trainingRooms){
       this.trainingRooms = [];
     }
-
   }
 
-  showEditModal = async ({ row: { data } }) => {
-    this.selectedItem = (Object.assign({}, data));
+  showEditModal = (e) => {
+    this.selectedItem = (Object.assign({}, e.data));
 
     this.isVisible$.next(true);
-
   }
 
   showAddModal = () => {

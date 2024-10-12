@@ -52,8 +52,8 @@ export class TestimonialsComponent implements OnInit{
     this.testimonials = EnumHelper.getTestimonialTypesAsArray();
   }
 
-  showEditModal = ({ row: { data } }) => {
-    this.selectedItem = (Object.assign({}, data));
+  showEditModal = (e) => {
+    this.selectedItem = (Object.assign({}, e.data));
     this.isVisible$.next(true);
   }
 

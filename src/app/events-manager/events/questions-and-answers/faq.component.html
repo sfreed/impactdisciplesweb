@@ -30,7 +30,8 @@
   [(selectedRowKeys)]="selectedRows"
   (onSelectionChanged)="selectRow($event)"
   [focusedRowEnabled]="true"
-  [columnAutoWidth]="true">
+  [columnAutoWidth]="true"
+  (onRowDblClick)="showEditModal($event)">
 
   <dxo-selection mode="multiple" ></dxo-selection>
   <dxo-scrolling mode="virtual"></dxo-scrolling>
@@ -39,7 +40,6 @@
   <dxi-column dataField="question" [width]="'25%'" [sortOrder]="'asc'"></dxi-column>
   <dxi-column dataField="answer" [width]="'65%'"></dxi-column>
   <dxi-column type="buttons" [width]="150" caption="Actions" [width]="100">
-    <dxi-button icon="edit" hint="EDIT" [onClick]="showEditModal"></dxi-button>
     <dxi-button icon="trash" hint="DELETE" [onClick]="delete"></dxi-button>
   </dxi-column>
 </dx-data-grid>

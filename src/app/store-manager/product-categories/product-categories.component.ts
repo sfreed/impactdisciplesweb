@@ -48,8 +48,8 @@ export class ProductCategoriesComponent implements OnInit, OnDestroy {
     );
   }
 
-  showEditModal = ({ row: { data } }) => {
-    this.store.dispatch(new ShowCategoryModal(data));
+  showEditModal = (e) => {
+    this.store.dispatch(new ShowCategoryModal(e.data));
   }
 
   showAddModal = () => {

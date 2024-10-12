@@ -60,8 +60,8 @@ export class ConsultationsSurveysComponent implements OnInit {
     this.phone_types = EnumHelper.getPhoneTypesAsArray();
   }
 
-  showEditModal = ({ row: { data } }) => {
-    this.selectedItem = (Object.assign({}, data));
+  showEditModal = (e) => {
+    this.selectedItem = (Object.assign({}, e.data));
 
     if(!this.selectedItem.phone){
       this.selectedItem.phone = {... new Phone()};

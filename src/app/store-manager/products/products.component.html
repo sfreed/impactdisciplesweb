@@ -65,7 +65,8 @@
   [showRowLines]="true"
   [focusedRowEnabled]="true"
   [filterValue]="gridFilter"
-  [columnAutoWidth]="true">
+  [columnAutoWidth]="true"
+  (onRowDblClick)="showEditModal($event)">
 
   <dxo-scrolling mode="virtual"></dxo-scrolling>
   <dxo-filter-row [visible]="true"></dxo-filter-row>
@@ -88,7 +89,6 @@
     <dxo-lookup [dataSource]="productTags" [displayExpr]="'tag'" [valueExpr]="'id'"></dxo-lookup>
   </dxi-column>
   <dxi-column type="buttons" caption="Actions" [allowReordering]="false">
-    <dxi-button icon="edit" hint="EDIT" [onClick]="showEditModal"></dxi-button>
     <dxi-button icon="trash" hint="DELETE" [onClick]="delete"></dxi-button>
   </dxi-column>
 

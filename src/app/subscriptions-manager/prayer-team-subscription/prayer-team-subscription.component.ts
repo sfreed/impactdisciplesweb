@@ -58,8 +58,8 @@ export class PrayerTeamSubscriptionComponent {
     )
   }
 
-  showEditModal = ({ row: { data } }) => {
-    this.selectedItem = (Object.assign({}, data));
+  showEditModal = (e) => {
+    this.selectedItem = (Object.assign({}, e.data));
     this.isEditVisible$.next(true);
   }
 

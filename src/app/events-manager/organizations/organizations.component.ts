@@ -64,8 +64,8 @@ export class OrganizationsComponent implements OnInit {
     this.states = EnumHelper.getStateRoleTypesAsArray();
   }
 
-  showEditModal = ({ row: { data } }) => {
-    this.selectedItem = (Object.assign({}, data));
+  showEditModal = (e) => {
+    this.selectedItem = (Object.assign({}, e.data));
 
     if(!this.selectedItem.phone){
       this.selectedItem.phone = {... new Phone()};

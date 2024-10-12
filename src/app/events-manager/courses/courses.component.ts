@@ -45,8 +45,8 @@ export class CoursesComponent implements OnInit {
     );
   }
 
-  showEditModal = ({ row: { data } }) => {
-    this.selectedItem = data
+  showEditModal = (e) => {
+    this.selectedItem = (Object.assign({}, e.data));
     this.isVisible$.next(true);
   }
 
