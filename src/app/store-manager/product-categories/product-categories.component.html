@@ -31,8 +31,8 @@
             ></dxi-item>
           </dx-toolbar>
         </div>
-        
-        <dx-data-grid 
+
+        <dx-data-grid
           #grid
           class="dx-card wide-card"
           [dataSource]="datasource$ | async"
@@ -43,11 +43,11 @@
           [showRowLines]="true"
           [focusedRowEnabled]="true"
           [columnAutoWidth]="true">
-        
+
           <dxo-scrolling mode="virtual"></dxo-scrolling>
           <dxo-filter-row [visible]="true"></dxo-filter-row>
-        
-          <dxi-column dataField="tag"></dxi-column>
+
+          <dxi-column dataField="tag" [sortOrder]="'asc'"></dxi-column>
           <dxi-column type="buttons" caption="Actions" [allowReordering]="false">
             <dxi-button icon="edit" hint="EDIT" [onClick]="showEditModal"></dxi-button>
             <dxi-button icon="trash" hint="DELETE" [onClick]="delete"></dxi-button>

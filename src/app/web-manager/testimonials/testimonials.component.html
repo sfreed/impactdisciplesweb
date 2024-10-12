@@ -38,21 +38,14 @@
   <dxo-paging [pageSize]="10"></dxo-paging>
   <dxo-scrolling mode="virtual"></dxo-scrolling>
 
-  <dxi-column dataField="isActive" dataType="boolean" [width]="60" [caption]="'Active'"></dxi-column>
+  <dxi-column dataField="isActive" dataType="boolean" [caption]="'Live'" cellTemplate="isActiveCellTemplate" [width]="120"></dxi-column>
   <dxi-column dataField="author"></dxi-column>
-  <dxi-column dataField="date" [dataType]="'date'"></dxi-column>
+  <dxi-column dataField="date" [dataType]="'date'" [sortOrder]="'desc'"></dxi-column>
   <dxi-column dataField="title"></dxi-column>
   <dxi-column dataField="text" [visible]="false"></dxi-column>
   <dxi-column dataField="type" [caption]="'Testimonial Type'">
     <dxo-lookup [dataSource]="testimonials"></dxo-lookup>
   </dxi-column>
-  <dxi-column
-    dataField="isActive"
-    dataType="boolean"
-    [caption]="'Live'"
-    cellTemplate="isActiveCellTemplate"
-    [width]="120"
-  ></dxi-column>
   <dxi-column type="buttons" caption="Actions" [allowReordering]="false">
     <dxi-button icon="edit" hint="EDIT" [onClick]="showEditModal"></dxi-button>
     <dxi-button icon="trash" hint="DELETE" [onClick]="delete"></dxi-button>

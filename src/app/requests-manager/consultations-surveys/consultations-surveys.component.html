@@ -39,8 +39,9 @@
   <dxo-scrolling mode="virtual"></dxo-scrolling>
   <dxo-filter-row [visible]="true"></dxo-filter-row>
 
-  <dxi-column dataField="firstName"></dxi-column>
+  <dxi-column dataField="date" [dataType]="'date'" [visible]="true" [sortOrder]="'desc'"></dxi-column>
   <dxi-column dataField="lastName"></dxi-column>
+  <dxi-column dataField="firstName"></dxi-column>
   <dxi-column dataField="email"></dxi-column>
   <dxi-column dataField="phone.countryCode" [caption]="'Country Code'" [visible]="false"></dxi-column>
   <dxi-column dataField="phone.number" [caption]="'Number'" cellTemplate="phoneNumberCellTemplate"></dxi-column>
@@ -57,7 +58,6 @@
   <dxi-column dataField="resourceDescription" [visible]="false"></dxi-column>
   <dxi-column dataField="resultsDescription" [visible]="false"></dxi-column>
   <dxi-column dataField="supportDescription" [visible]="false"></dxi-column>
-  <dxi-column dataField="date" [dataType]="'date'" [visible]="false"></dxi-column>
   <dxi-column type="buttons" caption="Actions" [allowReordering]="false">
     <dxi-button icon="edit" hint="EDIT" [onClick]="showEditModal"></dxi-button>
     <dxi-button icon="trash" hint="DELETE" [onClick]="delete"></dxi-button>

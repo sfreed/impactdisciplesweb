@@ -36,7 +36,7 @@
   <dxo-scrolling mode="virtual"></dxo-scrolling>
   <dxo-filter-row [visible]="true"></dxo-filter-row>
 
-  <dxi-column dataField="question" [width]="'25%'"></dxi-column>
+  <dxi-column dataField="question" [width]="'25%'" [sortOrder]="'asc'"></dxi-column>
   <dxi-column dataField="answer" [width]="'65%'"></dxi-column>
   <dxi-column type="buttons" [width]="150" caption="Actions" [width]="100">
     <dxi-button icon="edit" hint="EDIT" [onClick]="showEditModal"></dxi-button>

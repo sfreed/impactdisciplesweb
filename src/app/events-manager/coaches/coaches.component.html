@@ -39,10 +39,10 @@
   <dxo-filter-row [visible]="true"></dxo-filter-row>
   <dxo-scrolling mode="virtual"></dxo-scrolling>
 
-  <dxi-column dataField="isActive" dataType="boolean" [width]="60" [caption]="'Active'"></dxi-column>
+  <dxi-column dataField="isActive" dataType="boolean" [caption]="'Live'" cellTemplate="isActiveCellTemplate" [width]="120"></dxi-column>
   <dxi-column dataField="photoUrl" [width]="100" [caption]="'Picture'" [allowFiltering]="false" [allowSorting]="false" cellTemplate="imageCellTemplate"></dxi-column>
+  <dxi-column dataField="lastName" [caption]="'Last'" [sortOrder]="'asc'"></dxi-column>
   <dxi-column dataField="firstName" [caption]="'First'"></dxi-column>
-  <dxi-column dataField="lastName" [caption]="'Last'"></dxi-column>
   <dxi-column dataField="title" [caption]="'Title'"></dxi-column>
   <dxi-column dataField="organization" [caption]="'Organization'">
     <dxo-lookup [dataSource]="organizations" displayExpr="name" valueExpr="id" [allowClearing]="true"></dxo-lookup>
@@ -53,13 +53,6 @@
   <dxi-column dataField="phone.type" [caption]="'Type'" [visible]="false">
     <dxo-lookup [dataSource]="phone_types" [allowClearing]="true"></dxo-lookup>
   </dxi-column>
-  <dxi-column
-    dataField="isActive"
-    dataType="boolean"
-    [caption]="'Live'"
-    cellTemplate="isActiveCellTemplate"
-    [width]="120"
-  ></dxi-column>
   <dxi-column type="buttons" [width]="150" caption="Actions">
     <dxi-button icon="edit" hint="EDIT" [onClick]="showEditModal"></dxi-button>
     <dxi-button icon="trash" hint="DELETE" [onClick]="delete"></dxi-button>

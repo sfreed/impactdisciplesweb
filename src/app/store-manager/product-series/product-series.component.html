@@ -46,7 +46,7 @@
           <dxo-filter-row [visible]="true"></dxo-filter-row>
 
           <dxi-column dataField="imageUrl" cellTemplate="imageCellTemplate"></dxi-column>
-          <dxi-column dataField="order" dataType="number"></dxi-column>
+          <dxi-column dataField="order" dataType="number" [sortOrder]="'asc'"></dxi-column>
           <dxi-column dataField="name"></dxi-column>
           <dxi-column type="buttons" caption="Actions" [allowReordering]="false">
             <dxi-button icon="edit" hint="EDIT" [onClick]="showEditModal"></dxi-button>
@@ -57,7 +57,7 @@
             <img *ngIf="data?.value" width="100" [src]="data?.value?.url" [alt]="data?.value?.name"/>
           </div>
         </dx-data-grid>
-      
+
       </div>
     </div>
   </div>

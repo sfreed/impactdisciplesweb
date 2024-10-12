@@ -40,22 +40,15 @@
   <dxo-scrolling mode="virtual"></dxo-scrolling>
   <dxo-filter-row [visible]="true"></dxo-filter-row>
 
-  <dxi-column dataField="isActive" dataType="boolean" [width]="60" [caption]="'Active'"></dxi-column>
+  <dxi-column dataField="isActive" dataType="boolean" [caption]="'Live'" cellTemplate="isActiveCellTemplate" [width]="120"></dxi-column>
   <dxi-column dataField="thumbnail" [width]="120" cellTemplate="cellTemplate"></dxi-column>
-  <dxi-column dataField="title"></dxi-column>
   <dxi-column dataField="date" [dataType]="'datetime'" [sortOrder]="'desc'"></dxi-column>
+  <dxi-column dataField="title"></dxi-column>
   <dxi-column dataField="category">
     <dxo-lookup [dataSource]="podCastCategories" [displayExpr]="'tag'" [valueExpr]="'id'"></dxo-lookup>
   </dxi-column>
   <dxi-column dataField="videoType" [visible]="false"></dxi-column>
   <dxi-column dataField="videoId" [visible]="false"></dxi-column>
-  <dxi-column
-    dataField="isActive"
-    dataType="boolean"
-    [caption]="'Live'"
-    cellTemplate="isActiveCellTemplate"
-    [width]="120"
-  ></dxi-column>
   <dxi-column dataField="tags" [visible]="false">
     <dxo-lookup [dataSource]="podCastTags" [displayExpr]="'tag'" [valueExpr]="'id'"></dxo-lookup>
   </dxi-column>

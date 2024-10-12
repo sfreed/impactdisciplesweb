@@ -37,7 +37,7 @@
 
   <dxo-scrolling mode="virtual"></dxo-scrolling>
 
-  <dxi-column dataField="name"></dxi-column>
+  <dxi-column dataField="name" [sortOrder]="'asc'"></dxi-column>
   <dxi-column dataField="capacity" [dataType]="'number'"></dxi-column>
   <dxi-column type="buttons" caption="Actions" [allowReordering]="false">
     <dxi-button icon="edit" hint="EDIT" [onClick]="showEditModal"></dxi-button>

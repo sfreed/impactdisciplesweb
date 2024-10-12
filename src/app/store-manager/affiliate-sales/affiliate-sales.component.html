@@ -33,7 +33,7 @@
   <dxo-scrolling mode="virtual"></dxo-scrolling>
   <dxo-filter-row [visible]="true"></dxo-filter-row>
 
-  <dxi-column dataField="date" dataType="date"></dxi-column>
+  <dxi-column dataField="date" dataType="date" [sortOrder]="'asc'"></dxi-column>
   <dxi-column dataField="email"></dxi-column>
   <dxi-column dataField="totalBeforeDiscount" dataType="number" format="currency" [caption]="'Total'"></dxi-column>
   <dxi-column dataField="totalAfterDiscount" dataType="number" format="currency" [caption]="'Discounted Total'"></dxi-column>

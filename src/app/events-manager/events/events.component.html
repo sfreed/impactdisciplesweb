@@ -38,8 +38,8 @@
   <dxo-scrolling mode="virtual"></dxo-scrolling>
   <dxo-filter-row [visible]="true"></dxo-filter-row>
 
-  <dxi-column dataField="isActive" dataType="boolean" [width]="60" [caption]="'Active'"></dxi-column>
-  <dxi-column dataField="startDate" [caption]="'From'" [dataType]="'datetime'"></dxi-column>
+  <dxi-column dataField="isActive" dataType="boolean" [caption]="'Live'" cellTemplate="isActiveCellTemplate" [width]="120"></dxi-column>
+  <dxi-column dataField="startDate" [caption]="'From'" [dataType]="'datetime'" [sortOrder]="'desc'"></dxi-column>
   <dxi-column dataField="endDate" [caption]="'To'" [dataType]="'datetime'"></dxi-column>
   <dxi-column dataField="costInDollars" [caption]="'Cost'" format="currency"></dxi-column>
   <dxi-column dataField="isSummit" [caption]="'Summit?'"></dxi-column>
@@ -55,6 +55,12 @@
     <dxi-button icon="edit" hint="EVENT DETAILS" [onClick]="showEditModal"></dxi-button>
     <dxi-button icon="trash" hint="DELETE" [onClick]="delete"></dxi-button>
   </dxi-column>
+
+  <div *dxTemplate="let cell of 'isActiveCellTemplate'">
+    <span class="active-template" [style.background-color]="cell.data.isActive ? '#29d029' : 'red'">
+      {{ cell.data.isActive ? 'LIVE' : 'INACTIVE' }}
+    </span>
+  </div>
 </dx-data-grid>
 
 <dx-popup

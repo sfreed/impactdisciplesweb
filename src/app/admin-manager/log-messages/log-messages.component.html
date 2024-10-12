@@ -22,7 +22,7 @@
   <dxo-scrolling mode="virtual"></dxo-scrolling>
   <dxo-filter-row [visible]="true"></dxo-filter-row>
 
-  <dxi-column dataField="date" dataType="datetime" format="MM/dd/yyy"></dxi-column>
+  <dxi-column dataField="date" dataType="datetime" [sortIndex]="'desc'"></dxi-column>
   <dxi-column dataField="type"></dxi-column>
   <dxi-column dataField="error_code"></dxi-column>
   <dxi-column dataField="message"></dxi-column>

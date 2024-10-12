@@ -9,6 +9,7 @@ import DataSource from 'devextreme/data/data_source';
 import CustomStore from 'devextreme/data/custom_store';
 import { Timestamp } from 'firebase/firestore';
 import { dateFromTimestamp } from 'impactdisciplescommon/src/utils/date-from-timestamp';
+import { TaxRate } from 'impactdisciplescommon/src/models/utils/tax-rate.model';
 
 @Component({
   selector: 'app-web-config',
@@ -34,7 +35,7 @@ export class WebConfigComponent implements OnInit{
 
   constructor(private service: WebConfigService,
     private toastr:ToastrService,
-    private fileImportService: FileImportService,
+    private fileImportService: FileImportService<TaxRate>,
     private taxRateService: TaxRateService) {}
 
   async ngOnInit() {
@@ -82,7 +83,7 @@ export class WebConfigComponent implements OnInit{
   async importTaxForm(){
     this.loadingVisible = true;
 
-    await this.fileImportService.importRatesFiles(this.files).then(async rates => {
+    await this.fileImportService.importFiles(this.files).then(async rates => {
       let promises = [];
       rates.forEach(async rate => {
         promises.push(this.taxRateService.add(rate));
