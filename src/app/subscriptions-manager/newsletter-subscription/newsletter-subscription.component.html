@@ -33,7 +33,7 @@
               <dxi-item text="New" icon="add" [onClick]="showAddModal"></dxi-item>
               <dxi-item text="Send Newsletter" icon="email" [onClick]="showNewletterModal"></dxi-item>
               <dxi-item text="Create Subscriber List" icon="contentlayout" [onClick]="showListModal"></dxi-item>
-              <dxi-item  *ngIf="this.selectedList.name" text="Save List" icon="save" [onClick]="onListSave"></dxi-item>
+              <dxi-item  *ngIf="this.selectedList?.name" text="Save List" icon="save" [onClick]="onListSave"></dxi-item>
             </dx-context-menu>
           </div>
         </dx-button>
