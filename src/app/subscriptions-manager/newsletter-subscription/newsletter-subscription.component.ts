@@ -104,6 +104,7 @@ export class NewsletterSubscriptionComponent {
         this.selectedRows.push(item.id)
       })
     } else if(!event.value) {
+      this.selectedList = {... new EmailList()};
       this.selectedRows = [];
     }
   }

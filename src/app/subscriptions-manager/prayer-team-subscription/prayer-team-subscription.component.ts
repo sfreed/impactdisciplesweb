@@ -101,6 +101,7 @@ export class PrayerTeamSubscriptionComponent {
       })
     } else if(!event.value) {
       this.selectedRows = [];
+      this.selectedList = null;
     }
   }
 
