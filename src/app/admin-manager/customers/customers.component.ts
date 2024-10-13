@@ -162,7 +162,13 @@ export class CustomersComponent implements OnInit {
       )
     );
 
-    this.emailLists = await this.emailListService.getAllByValue('type', 'customer');
+    this.emailLists = await this.emailListService.getAllByValue('type', 'customer').then(list => {
+      if (list){
+        return list;
+      } else {
+        return [];
+      }
+    });
 
     this.phone_types = EnumHelper.getPhoneTypesAsArray();
     this.states = EnumHelper.getStateRoleTypesAsArray();
