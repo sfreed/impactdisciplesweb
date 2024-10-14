@@ -129,10 +129,24 @@
                 <dxi-item dataField="isSummit" [editorType]="'dxSwitch'" [editorOptions]="{ switchedOnText: 'Yes', switchedOffText: 'No' }" [label]="{ text: 'Is Annual Summit?' }" [colSpan]="selectedItem.isSummit? 2 : 4"></dxi-item>
                 <dxi-item *ngIf="selectedItem.isSummit" dataField="videoId" [label]="{ text: 'Promo Video Id?' }" [colSpan]="2"></dxi-item>
                 <dxi-item
+                  dataField="checkIn"
+                  editorType="dxDateBox"
+                  [label]="{ text: 'Check-In Time' }"
+                  [colSpan]="2"
+                  [isRequired]="true"
+                  [editorOptions]="{
+                    displayFormat: 'HH:mm',
+                    type: 'time',
+                    dateSerializationFormat: 'HH:mm',
+                    useMaskBehavior: true,
+                    interval: 15
+                  }">
+                </dxi-item>
+                <dxi-item
                   dataField="costInDollars"
                   editorType="dxNumberBox"
                   [label]="{ text: 'Cost' }"
-                  [colSpan]="4"
+                  [colSpan]="2"
                   [editorOptions]="{
                     format: { type: 'currency', currency: 'USD', precision: 2 },
                     min: 0
