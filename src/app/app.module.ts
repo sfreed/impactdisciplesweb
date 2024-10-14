@@ -17,6 +17,7 @@ import { WebManagerModule } from './web-manager/web-manager.module';
 import { NgxsModule } from '@ngxs/store';
 import { SharedModule } from './shared/shared.module';
 import { StoreManagerModule } from './store-manager/store-manager.module';
+import { PageManagerModule } from './page-manager/page-manager.module';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { StoreManagerModule } from './store-manager/store-manager.module';
     WebManagerModule,
     CoreModule,
     EventsManagerModule,
+    PageManagerModule,
     ImpactDisciplesModule,
     SharedModule
 
