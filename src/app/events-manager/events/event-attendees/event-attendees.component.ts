@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { DxFormComponent } from 'devextreme-angular';
+import { DxDataGridComponent, DxFormComponent } from 'devextreme-angular';
 import CustomStore from 'devextreme/data/custom_store';
 import DataSource from 'devextreme/data/data_source';
 import { EventRegistrationModel } from 'impactdisciplescommon/src/models/domain/event-registration.model';
@@ -17,6 +17,9 @@ import { EmailListService } from 'impactdisciplescommon/src/services/email-list.
 import { ToastrService } from 'ngx-toastr';
 import { dateFromTimestamp } from 'impactdisciplescommon/src/utils/date-from-timestamp';
 import { AuthService } from 'impactdisciplescommon/src/services/utils/auth.service';
+import { environment } from 'src/environments/environment';
+import { exportDataGrid } from 'devextreme/pdf_exporter';
+import jsPDF from 'jspdf';
 
 @Component({
   selector: 'app-event-attendees',
@@ -27,6 +30,7 @@ export class EventAttendeesComponent implements OnInit{
   @Input('event') event: EventModel;
 
   @ViewChild('addEditForm', { static: false }) addEditForm: DxFormComponent;
+  @ViewChild('attendeeGrid', { static: false }) attendeeGrid: DxDataGridComponent;
 
   datasource$: Observable<DataSource>;
   selectedItem: EventRegistrationModel;
@@ -257,7 +261,7 @@ export class EventAttendeesComponent implements OnInit{
           html = html.replace('{{Sender Last Name}}', user.lastName);
           html = html.replace('{{Date}}', (dateFromTimestamp(this.email.date) as Date).toLocaleString());
           html += "<br><br><br><div>If you believe you received this email by mistake, please click " +
-            "<b><a href='https://us-central1-impactdisciplesdev.cloudfunctions.net/subscriptions?email="+ subscriber.email +
+            "<b><a href='" + environment.unsubscribeUrl + "?email="+ subscriber.email +
             "&list=newsletter_subscriptions'>here</a></b> to remove your address.</div>"
           this.email.html = html;
 
@@ -291,5 +295,21 @@ export class EventAttendeesComponent implements OnInit{
 
   selectRow(e){
     this.selectedCustomers = e.selectedRowsData;
+  }
+
+  exportGrids = () => {
+    const context = this;
+    const doc = new jsPDF();
+
+    exportDataGrid({
+      selectedRowsOnly: true,
+      jsPDFDocument: doc,
+      component: context.attendeeGrid.instance,
+      topLeft: { x: 7, y: 5 },
+      columnWidths: [20, 50, 50, 50],
+
+    }).then(() => {
+        doc.save('attendee_list.pdf');
+    });
   }
 }

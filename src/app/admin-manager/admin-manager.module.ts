@@ -2,11 +2,11 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LogMessagesComponent } from './log-messages/log-messages.component';
 import { UsersComponent } from './users/users.component';
-import { DxButtonModule, DxContextMenuModule, DxDataGridModule, DxFileUploaderModule, DxFormModule, DxHtmlEditorModule, DxListModule, DxLoadIndicatorModule,
+import { DxButtonModule, DxCheckBoxModule, DxContextMenuModule, DxDataGridModule, DxFileUploaderModule, DxFormModule, DxHtmlEditorModule, DxListModule, DxLoadIndicatorModule,
          DxLoadPanelModule,
          DxLookupModule,
          DxNumberBoxModule,
-         DxPopupModule, DxSelectBoxModule, DxSwitchModule, DxTabsModule, DxTagBoxModule, DxTextBoxModule,
+         DxPopupModule, DxSelectBoxModule, DxSwitchModule, DxTabsModule, DxTagBoxModule, DxTextAreaModule, DxTextBoxModule,
          DxToolbarModule,
          DxValidatorModule} from 'devextreme-angular';
 import { NotificationsComponent } from './notifications/notifications.component';
@@ -24,6 +24,7 @@ import { CustomersComponent } from './customers/customers.component';
   imports: [
     CommonModule,
     ImpactFormsModule,
+    DxCheckBoxModule,
     DxContextMenuModule,
     DxDataGridModule,
     DxButtonModule,
@@ -41,6 +42,7 @@ import { CustomersComponent } from './customers/customers.component';
     DxTabsModule,
     DxTagBoxModule,
     DxTextBoxModule,
+    DxTextAreaModule,
     DxToolbarModule,
     DxValidatorModule,
     ImpactDisciplesModule,

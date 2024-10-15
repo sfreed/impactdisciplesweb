@@ -149,6 +149,64 @@ export class SalesComponent implements OnInit {
     }
   }
 
+  getShippingLabel = async (e) =>{
+    if(!e.row.data?.shippingLabel){
+      let data = { 'shipId': e.row.data.shippingRateId.rateId};
+
+      let request = await fetch(environment.shippingLabelUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      })
+
+      let response = await request.json();
+
+      if(response.code == 400){
+        console.log(response);
+
+        notify({
+          message: response.error.message,
+          position: 'top',
+          width: 600,
+          type: 'error'
+        });
+
+        e.row.data.shippingLabel = response;
+      } else {
+        e.row.data.shippingLabel = response;
+
+        await this.service.update(e.row.data.id, e.row.data).then(sale => {
+          this.downloadShippingLabel(sale.shippingLabel.labelDownload.pdf)
+        })
+      }
+    } else {
+      if(e.row.data.shippingLabel?.code){
+        notify({
+          message: e.row.data.shippingLabel.error.message,
+          position: 'top',
+          width: 600,
+          type: 'error'
+        });
+      } else {
+        this.downloadShippingLabel(e.row.data.shippingLabel.labelDownload.pdf)
+      }
+    }
+  }
+
+  downloadShippingLabel(pdf){
+    const link = document.createElement('a');
+    link.setAttribute('target', '_blank');
+    link.setAttribute('href', pdf);
+    link.setAttribute('download', `products.csv`);
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+  }
+
+  isShippingButtonVisible(e){
+    return e.row.data?.shippingRate > 0;
+  }
+
   onCancel() {
     this.selectedItem = null;
     this.inProgress$.next(false);

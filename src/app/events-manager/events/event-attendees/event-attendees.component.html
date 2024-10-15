@@ -33,6 +33,7 @@
               <dxi-item text="New" icon="add" [onClick]="showAddModal"></dxi-item>
               <dxi-item text="Send Email" icon="email" [onClick]="showEmailModal"></dxi-item>
               <dxi-item text="Create Email List" icon="contentlayout" [onClick]="showListModal"></dxi-item>
+              <dxi-item text="Export Attendee List" icon="exportpdf" [onClick]="exportGrids"></dxi-item>
               <dxi-item  *ngIf="this.selectedList?.name" text="Save List" icon="save" [onClick]="onListSave"></dxi-item>
             </dx-context-menu>
           </div>
@@ -43,7 +44,7 @@
 </div>
 
 <dx-data-grid class="dx-card wide-card"
-  #grid
+  #attendeeGrid
   [dataSource]="datasource$ | async"
   [height]="'50vh'"
   [showBorders]="false"

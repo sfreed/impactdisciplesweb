@@ -1,11 +1,9 @@
-import { LocationService } from './../../../../impactdisciplescommon/src/services/location.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { DxFormComponent } from 'devextreme-angular';
+import { DxDataGridComponent, DxFormComponent } from 'devextreme-angular';
 import CustomStore from 'devextreme/data/custom_store';
 import DataSource from 'devextreme/data/data_source';
 import notify from 'devextreme/ui/notify';
-import { AppUser } from 'impactdisciplescommon/src/models/admin/appuser.model';
-import { BehaviorSubject, Observable, map, take } from 'rxjs';
+import { BehaviorSubject, Observable, map, of, take } from 'rxjs';
 import { confirm } from 'devextreme/ui/dialog';
 import { EnumHelper } from 'impactdisciplescommon/src/utils/enum_helper';
 import { Address } from 'impactdisciplescommon/src/models/domain/utils/address.model';
@@ -30,6 +28,12 @@ import { EmailListService } from 'impactdisciplescommon/src/services/email-list.
 import { EMailService } from 'impactdisciplescommon/src/services/admin/email.service';
 import { ToastrService } from 'ngx-toastr';
 import { CustomerEmailService } from 'impactdisciplescommon/src/services/admin/customer-email.service';
+import { environment } from 'src/environments/environment';
+import { CustomerNoteModel } from 'impactdisciplescommon/src/models/domain/utils/customer-note.model';
+import { AppUser } from 'impactdisciplescommon/src/models/admin/appuser.model';
+import { LocationService } from 'impactdisciplescommon/src/services/location.service';
+import { exportDataGrid } from 'devextreme/pdf_exporter';
+import jsPDF from 'jspdf';
 
 @Component({
   selector: 'app-customers',
@@ -38,6 +42,7 @@ import { CustomerEmailService } from 'impactdisciplescommon/src/services/admin/c
 })
 export class CustomersComponent implements OnInit {
   @ViewChild('addEditForm', { static: false }) addEditForm: DxFormComponent;
+  @ViewChild('customerGrid', { static: false }) customerGrid: DxDataGridComponent;
 
   datasource$: Observable<DataSource>;
   salesDatasource$: Observable<DataSource>;
@@ -50,6 +55,7 @@ export class CustomersComponent implements OnInit {
   public isListVisible$ = new BehaviorSubject<boolean>(false);
   public isEmailVisible$ = new BehaviorSubject<boolean>(false);
 
+  user: AppUser
   selectedItem: CustomerModel;
   selectedPurchase: CheckoutForm;
   selectedEvent: EventModel;
@@ -93,40 +99,9 @@ export class CustomersComponent implements OnInit {
   ) {}
 
   async ngOnInit(): Promise<void> {
-
-    this.authService.getUser().subscribe(user => {
-      this.selectedItem = user;
-
-      if(!this.selectedItem.shippingAddress){
-        this.selectedItem.shippingAddress = {... new Address()}
-      }
-
-      if(!this.selectedItem.billingAddress){
-        this.selectedItem.billingAddress = {... new Address()}
-      }
-
-      if(!this.selectedItem.phone){
-        this.selectedItem.phone = {... new Phone()}
-      }
-    });
+    this.user = await this.authService.getUserAsPromise() as AppUser;
 
     this.datasource$ = this.service.streamAll().pipe(
-      map(
-        (items) =>
-          new DataSource({
-            reshapeOnPush: true,
-            pushAggregationTimeout: 100,
-            store: new CustomStore({
-              key: 'id',
-              loadMode: 'raw',
-              load: function (loadOptions: any) {
-                return items;
-              },
-            })
-          })
-      )
-    );
-    this.salesDatasource$ = this.salesService.streamAllByValue("email", this.selectedItem.email).pipe(
       map(
         (items) =>
           new DataSource({
@@ -144,23 +119,6 @@ export class CustomersComponent implements OnInit {
     );
 
     this.events = await this.eventService.getAll();
-
-    this.eventsRegistrantsDatasource$ = this.eventRegistrationService.streamAllByValue("email", this.selectedItem.email).pipe(
-      map(
-        (items) =>
-          new DataSource({
-            reshapeOnPush: true,
-            pushAggregationTimeout: 100,
-            store: new CustomStore({
-              key: 'id',
-              loadMode: 'raw',
-              load: function (loadOptions: any) {
-                return items;
-              }
-            })
-          })
-      )
-    );
 
     this.emailLists = await this.emailListService.getAllByValue('type', 'customer').then(list => {
       if (list){
@@ -205,14 +163,86 @@ export class CustomersComponent implements OnInit {
       this.selectedItem.billingAddress = {... new Address()};
     }
 
+    if(!this.selectedItem.notes){
+      this.selectedItem.notes = [];
+    }
+
+    this.salesDatasource$ = this.salesService.streamAllByValue("email", this.selectedItem.email).pipe(
+      map(
+        (items) =>
+          new DataSource({
+            reshapeOnPush: true,
+            pushAggregationTimeout: 100,
+            store: new CustomStore({
+              key: 'id',
+              loadMode: 'raw',
+              load: function (loadOptions: any) {
+                return items;
+              }
+            })
+          })
+      )
+    );
+
+    this.eventsRegistrantsDatasource$ = this.eventRegistrationService.streamAllByValue("email", this.selectedItem.email).pipe(
+      map(
+        (items) =>
+          new DataSource({
+            reshapeOnPush: true,
+            pushAggregationTimeout: 100,
+            store: new CustomStore({
+              key: 'id',
+              loadMode: 'raw',
+              load: function (loadOptions: any) {
+                return items;
+              }
+            })
+          })
+      )
+    );
+
     this.isVisible$.next(true);
   }
 
   showAddModal = () => {
-    this.selectedItem = {... new AppUser()};
+    this.selectedItem = {... new CustomerModel()};
     this.selectedItem.shippingAddress = {... new Address()};
     this.selectedItem.billingAddress = {... new Address()};
     this.selectedItem.phone = {... new Phone()};
+
+    this.salesDatasource$ = of([]).pipe(
+      map(
+        (items) =>
+          new DataSource({
+            reshapeOnPush: true,
+            pushAggregationTimeout: 100,
+            store: new CustomStore({
+              key: 'id',
+              loadMode: 'raw',
+              load: function (loadOptions: any) {
+                return items;
+              }
+            })
+          })
+      )
+    );
+
+    this.eventsRegistrantsDatasource$ = of([]).pipe(
+      map(
+        (items) =>
+          new DataSource({
+            reshapeOnPush: true,
+            pushAggregationTimeout: 100,
+            store: new CustomStore({
+              key: 'id',
+              loadMode: 'raw',
+              load: function (loadOptions: any) {
+                return items;
+              }
+            })
+          })
+      )
+    );
 
     this.isVisible$.next(true);
   }
@@ -404,7 +434,7 @@ export class CustomersComponent implements OnInit {
           html = html.replace('{{Sender Last Name}}', user.lastName);
           html = html.replace('{{Date}}', (dateFromTimestamp(this.email.date) as Date).toLocaleString());
           html += "<br><br><br><div>If you believe you received this email by mistake, please click " +
-            "<b><a href='https://us-central1-impactdisciplesdev.cloudfunctions.net/subscriptions?email="+ subscriber.email +
+            "<b><a href='" + environment.unsubscribeUrl + "?email="+ subscriber.email +
             "&list=newsletter_subscriptions'>here</a></b> to remove your address.</div>"
           this.email.html = html;
 
@@ -423,7 +453,78 @@ export class CustomersComponent implements OnInit {
     return (dateFromTimestamp(this.events.find(event => event.id == cell.data.eventId).startDate) as Date).toLocaleDateString();
   }
 
+  getDate(item){
+    return (dateFromTimestamp(item) as Date).toLocaleDateString();
+  }
+
   selectRow(e){
     this.selectedCustomers = e.selectedRowsData;
+  }
+
+  addCustomerNote(){
+    this.authService.getUser().pipe(take(1)).subscribe(user => {
+      let note: CustomerNoteModel = {... new CustomerNoteModel()};
+      note.date = Timestamp.now();
+      note.addedBy = user.firstName + " " + user.lastName;
+      note.private = false;
+      note.id = this.generateRandomId();
+      this.selectedItem.notes.push(note);
+    })
+  }
+
+  deleteNote(index: number){
+    confirm('<i>Are you sure you want to delete this note?</i>', 'Confirm').then((dialogResult) => {
+      if (dialogResult) {
+        this.selectedItem.notes.splice(index, 1);
+
+        this.service.update(this.selectedItem.id, this.selectedItem).then((item) => {
+          if(item) {
+            notify({
+              message: this.itemType + ' Updated',
+              position: 'top',
+              width: 600,
+              type: 'success'
+            });
+          }
+        })
+      }
+    })
+  }
+
+  saveNote(){
+    this.service.update(this.selectedItem.id, this.selectedItem).then((item) => {
+      if(item) {
+        notify({
+          message: this.itemType + ' Updated',
+          position: 'top',
+          width: 600,
+          type: 'success'
+        });
+      }
+    })
+  }
+
+  exportGrids = () => {
+    const context = this;
+    const doc = new jsPDF();
+
+    exportDataGrid({
+      selectedRowsOnly: true,
+      jsPDFDocument: doc,
+      component: context.customerGrid.instance,
+      topLeft: { x: 7, y: 5 },
+      columnWidths: [20, 50, 50, 50],
+
+    }).then(() => {
+        doc.save('customer_list.pdf');
+    });
+  }
+
+  private generateRandomId() {
+    return 'xxxxxxxx'.replace(/[xy]/g, function (c) {
+      var r = (Math.random() * 16) | 0,
+        v = c == 'x' ? r : (r & 0x3) | 0x8;
+      return v.toString(16);
+    });
   }
 }

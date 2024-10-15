@@ -6,7 +6,7 @@ import { NewsletterSubscriptionService } from 'impactdisciplescommon/src/service
 import { BehaviorSubject, Observable, map, take } from 'rxjs';
 import notify from 'devextreme/ui/notify';
 import { confirm } from 'devextreme/ui/dialog';
-import { DxFormComponent } from 'devextreme-angular';
+import { DxDataGridComponent, DxFormComponent } from 'devextreme-angular';
 import { Timestamp } from 'firebase/firestore';
 import { dateFromTimestamp } from 'impactdisciplescommon/src/utils/date-from-timestamp';
 import { EMailService } from 'impactdisciplescommon/src/services/admin/email.service';
@@ -16,6 +16,9 @@ import { NewsletterModel } from 'impactdisciplescommon/src/models/domain/newslet
 import { NewsletterService } from 'impactdisciplescommon/src/services/newletter.service';
 import { EmailList } from 'impactdisciplescommon/src/models/utils/email-list.model';
 import { EmailListService } from 'impactdisciplescommon/src/services/email-list.service';
+import { environment } from 'src/environments/environment';
+import { exportDataGrid } from 'devextreme/pdf_exporter';
+import jsPDF from 'jspdf';
 
 @Component({
   selector: 'app-newsletter-subscription',
@@ -24,6 +27,7 @@ import { EmailListService } from 'impactdisciplescommon/src/services/email-list.
 })
 export class NewsletterSubscriptionComponent {
   @ViewChild('addEditForm', { static: false }) addEditForm: DxFormComponent;
+  @ViewChild('subscriptionGrid', { static: false }) subscriptionGrid: DxDataGridComponent;
 
   datasource$: Observable<DataSource>;
   selectedItem: NewsletterSubscriptionModel;
@@ -38,7 +42,7 @@ export class NewsletterSubscriptionComponent {
 
   emailVals: string[] = ['Recipient First Name', 'Recipient Last Name', 'Sender First Name', 'Sender Last Name', 'Date'];
 
-  freeEbookUrl = 'https://firebasestorage.googleapis.com/v0/b/impactdisciples-a82a8.appspot.com/o/EBooks%2FM-7-Journal.pdf?alt=media&token=50e3282f-6fa1-46aa-ad3a-a486e4024af1';
+  freeEbookUrl = environment.freeEbookUrl;
 
   public inProgress$ = new BehaviorSubject<boolean>(false)
   public isVisible$ = new BehaviorSubject<boolean>(false);
@@ -240,7 +244,7 @@ export class NewsletterSubscriptionComponent {
     text +='<div>God Bless! - Impact Disciples Ministry</div>'
 
     text += "<br><br><br><div>If you believe you received this confirmation by mistake, please click " +
-      "<b><a href='https://us-central1-impactdisciplesdev.cloudfunctions.net/subscriptions?email="+ this.selectedItem.email +
+      "<b><a href='" + environment.unsubscribeUrl + "?email="+ this.selectedItem.email +
       "&list=newsletter_subscriptions'>here</a></b> to remove your address.</div>"
 
     this.emailService.sendHtmlEmail(this.selectedItem.email, subject, text);
@@ -268,7 +272,7 @@ export class NewsletterSubscriptionComponent {
           html = html.replace('{{Sender Last Name}}', user.lastName);
           html = html.replace('{{Date}}', (dateFromTimestamp(this.newsletter.date) as Date).toLocaleString());
           html += "<br><br><br><div>If you believe you received this email by mistake, please click " +
-            "<b><a href='https://us-central1-impactdisciplesdev.cloudfunctions.net/subscriptions?email="+ subscriber.email +
+            "<b><a href='" + environment.unsubscribeUrl + "?email="+ subscriber.email +
             "&list=newsletter_subscriptions'>here</a></b> to remove your address.</div>"
           this.newsletter.html = html;
 
@@ -302,5 +306,21 @@ export class NewsletterSubscriptionComponent {
 
   selectRow(e){
     this.selectedSubscribers = e.selectedRowsData;
+  }
+
+  exportGrids = () => {
+    const context = this;
+    const doc = new jsPDF();
+
+    exportDataGrid({
+      selectedRowsOnly: true,
+      jsPDFDocument: doc,
+      component: context.subscriptionGrid.instance,
+      topLeft: { x: 7, y: 5 },
+      columnWidths: [20, 50, 50, 50],
+
+    }).then(() => {
+        doc.save('Newsletter_subscribers.pdf');
+    });
   }
 }
