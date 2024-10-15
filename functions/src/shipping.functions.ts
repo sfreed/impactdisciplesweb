@@ -19,7 +19,13 @@ exports.get_shipping_rates = functions
       shipengine.getRatesWithShipmentDetails(requestBody).then((result) => {
         response.send(result);
       }).catch((err) => {
-        throw new functions.https.HttpsError("internal", err);
+        console.log(JSON.stringify(err));
+
+        response.send({
+          code: 400,
+          body: request.body,
+          error: err,
+        });
       });
     });
   });
@@ -47,7 +53,13 @@ exports.get_shipping_label = functions
       shipengine.createLabelFromRate(params).then((result) => {
         response.send(result);
       }).catch((err) => {
-        throw new functions.https.HttpsError("internal", err);
+        console.log(JSON.stringify(err));
+
+        response.send({
+          code: 400,
+          body: request.body,
+          error: err,
+        });
       });
     });
   });

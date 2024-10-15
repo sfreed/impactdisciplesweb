@@ -150,56 +150,57 @@ export class SalesComponent implements OnInit {
   }
 
   getShippingLabel = async (e) =>{
-    if(e.row.data?.shippingRateId?.rateId){
-      if(!e.row.data?.shippingLabel){
-        let request = { 'shipId': e.row.data.shippingRateId.rateId};
+    if(!e.row.data?.shippingLabel){
+      let data = { 'shipId': e.row.data.shippingRateId.rateId};
 
-        return await fetch(environment.shippingLabelUrl, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(request)
-        })
-        .then(response => {
-          response.json().then(async result => {
-            if(result.code == 'invalid_status'){
-              notify({
-                message: 'There was an error trying to ge tthe Shipping Label: ' + result.mesage,
-                position: 'top',
-                width: 600,
-                type: 'error'
-              });
-            } else {
-              e.row.data.shippingLabel = result;
+      let request = await fetch(environment.shippingLabelUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      })
 
-              await this.service.update(e.row.data.id, e.row.data).then(data => {
-                const link = document.createElement('a');
-                link.setAttribute('target', '_blank');
-                link.setAttribute('href', data.shippingLabel.labelDownload.pdf);
-                link.setAttribute('download', `products.csv`);
-                document.body.appendChild(link);
-                link.click();
-                link.remove();
-              })
-            }
-          })
-        })
+      let response = await request.json();
+
+      if(response.code == 400){
+        console.log(response);
+
+        notify({
+          message: response.error.message,
+          position: 'top',
+          width: 600,
+          type: 'error'
+        });
+
+        e.row.data.shippingLabel = response;
       } else {
-        const link = document.createElement('a');
-        link.setAttribute('target', '_blank');
-        link.setAttribute('href', e.row.data.shippingLabel.labelDownload.pdf);
-        link.setAttribute('download', `products.csv`);
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
+        e.row.data.shippingLabel = response;
+
+        await this.service.update(e.row.data.id, e.row.data).then(sale => {
+          this.downloadShippingLabel(sale.shippingLabel.labelDownload.pdf)
+        })
       }
     } else {
-      notify({
-        message: 'A Shipping Rate was not needed for this Sale',
-        position: 'top',
-        width: 600,
-        type: 'error'
-      });
+      if(e.row.data.shippingLabel?.code){
+        notify({
+          message: e.row.data.shippingLabel.error.message,
+          position: 'top',
+          width: 600,
+          type: 'error'
+        });
+      } else {
+        this.downloadShippingLabel(e.row.data.shippingLabel.labelDownload.pdf)
+      }
     }
+  }
+
+  downloadShippingLabel(pdf){
+    const link = document.createElement('a');
+    link.setAttribute('target', '_blank');
+    link.setAttribute('href', pdf);
+    link.setAttribute('download', `products.csv`);
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
   }
 
   isShippingButtonVisible(e){
