@@ -16,6 +16,7 @@ import { NewsletterModel } from 'impactdisciplescommon/src/models/domain/newslet
 import { NewsletterService } from 'impactdisciplescommon/src/services/newletter.service';
 import { EmailList } from 'impactdisciplescommon/src/models/utils/email-list.model';
 import { EmailListService } from 'impactdisciplescommon/src/services/email-list.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-newsletter-subscription',
@@ -38,7 +39,7 @@ export class NewsletterSubscriptionComponent {
 
   emailVals: string[] = ['Recipient First Name', 'Recipient Last Name', 'Sender First Name', 'Sender Last Name', 'Date'];
 
-  freeEbookUrl = 'https://firebasestorage.googleapis.com/v0/b/impactdisciples-a82a8.appspot.com/o/EBooks%2FM-7-Journal.pdf?alt=media&token=50e3282f-6fa1-46aa-ad3a-a486e4024af1';
+  freeEbookUrl = environment.freeEbookUrl;
 
   public inProgress$ = new BehaviorSubject<boolean>(false)
   public isVisible$ = new BehaviorSubject<boolean>(false);
@@ -240,7 +241,7 @@ export class NewsletterSubscriptionComponent {
     text +='<div>God Bless! - Impact Disciples Ministry</div>'
 
     text += "<br><br><br><div>If you believe you received this confirmation by mistake, please click " +
-      "<b><a href='https://us-central1-impactdisciplesdev.cloudfunctions.net/subscriptions?email="+ this.selectedItem.email +
+      "<b><a href='" + environment.unsubscribeUrl + "?email="+ this.selectedItem.email +
       "&list=newsletter_subscriptions'>here</a></b> to remove your address.</div>"
 
     this.emailService.sendHtmlEmail(this.selectedItem.email, subject, text);
@@ -268,7 +269,7 @@ export class NewsletterSubscriptionComponent {
           html = html.replace('{{Sender Last Name}}', user.lastName);
           html = html.replace('{{Date}}', (dateFromTimestamp(this.newsletter.date) as Date).toLocaleString());
           html += "<br><br><br><div>If you believe you received this email by mistake, please click " +
-            "<b><a href='https://us-central1-impactdisciplesdev.cloudfunctions.net/subscriptions?email="+ subscriber.email +
+            "<b><a href='" + environment.unsubscribeUrl + "?email="+ subscriber.email +
             "&list=newsletter_subscriptions'>here</a></b> to remove your address.</div>"
           this.newsletter.html = html;
 

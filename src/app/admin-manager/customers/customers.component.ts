@@ -30,6 +30,7 @@ import { EmailListService } from 'impactdisciplescommon/src/services/email-list.
 import { EMailService } from 'impactdisciplescommon/src/services/admin/email.service';
 import { ToastrService } from 'ngx-toastr';
 import { CustomerEmailService } from 'impactdisciplescommon/src/services/admin/customer-email.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-customers',
@@ -404,7 +405,7 @@ export class CustomersComponent implements OnInit {
           html = html.replace('{{Sender Last Name}}', user.lastName);
           html = html.replace('{{Date}}', (dateFromTimestamp(this.email.date) as Date).toLocaleString());
           html += "<br><br><br><div>If you believe you received this email by mistake, please click " +
-            "<b><a href='https://us-central1-impactdisciplesdev.cloudfunctions.net/subscriptions?email="+ subscriber.email +
+            "<b><a href='" + environment.unsubscribeUrl + "?email="+ subscriber.email +
             "&list=newsletter_subscriptions'>here</a></b> to remove your address.</div>"
           this.email.html = html;
 

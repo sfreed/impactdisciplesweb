@@ -7,7 +7,7 @@ const cors = require("cors")({
   origin: true,
 });
 
-exports.checkout = functions
+exports.create_payment_intent = functions
   .runWith({secrets: ["STRIPE_SECRET_KEY"]})
   .https.onRequest((request, response) => {
     return cors(request, response, async () => {
@@ -46,7 +46,7 @@ exports.checkout = functions
   });
 
 
-exports.cancel = functions
+exports.cancel_payment_intent = functions
   .runWith({secrets: ["STRIPE_SECRET_KEY"]})
   .https.onRequest((request, response) => {
     return cors(request, response, async () => {
@@ -71,7 +71,7 @@ exports.cancel = functions
     });
   });
 
-exports.refund = functions
+exports.refund_payment = functions
   .runWith({secrets: ["STRIPE_SECRET_KEY"]})
   .https.onRequest((request, response) => {
     return cors(request, response, async () => {

@@ -16,6 +16,7 @@ import { dateFromTimestamp } from 'impactdisciplescommon/src/utils/date-from-tim
 import { PrayerService } from 'impactdisciplescommon/src/services/prayer.service';
 import { EmailList } from 'impactdisciplescommon/src/models/utils/email-list.model';
 import { EmailListService } from 'impactdisciplescommon/src/services/email-list.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-prayer-team-subscription',
@@ -233,7 +234,7 @@ export class PrayerTeamSubscriptionComponent {
     text +='God Bless! - Impact Disciples Ministry'
 
     text += "<br><br><br><div>If you believe you received this confirmation by mistake, please click " +
-      "<b><a href='https://us-central1-impactdisciplesdev.cloudfunctions.net/subscriptions?email="+ this.selectedItem.email +
+      "<b><a href='" + environment.unsubscribeUrl + "?email="+ this.selectedItem.email +
       "&list=prayer_team_subscriptions'>here</a></b> to remove your address.</div>"
 
     this.emailService.sendTextEmail(this.selectedItem.email, subject, text);
@@ -266,7 +267,7 @@ export class PrayerTeamSubscriptionComponent {
           html = html.replace('{{Sender Last Name}}', user.lastName);
           html = html.replace('{{Date}}', (dateFromTimestamp(this.prayer.date) as Date).toLocaleString());
           html += "<br><br><br><div>If you believe you received this email by mistake, please click " +
-            "<b><a href='https://us-central1-impactdisciplesdev.cloudfunctions.net/subscriptions?email="+ subscriber.email +
+            "<b><a href='" + environment.unsubscribeUrl + "?email="+ subscriber.email +
             "&list=prayer_team_subscriptions'>here</a></b> to remove your address.</div>"
 
           this.prayer.html = html;

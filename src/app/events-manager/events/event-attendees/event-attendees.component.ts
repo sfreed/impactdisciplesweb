@@ -17,6 +17,7 @@ import { EmailListService } from 'impactdisciplescommon/src/services/email-list.
 import { ToastrService } from 'ngx-toastr';
 import { dateFromTimestamp } from 'impactdisciplescommon/src/utils/date-from-timestamp';
 import { AuthService } from 'impactdisciplescommon/src/services/utils/auth.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-event-attendees',
@@ -257,7 +258,7 @@ export class EventAttendeesComponent implements OnInit{
           html = html.replace('{{Sender Last Name}}', user.lastName);
           html = html.replace('{{Date}}', (dateFromTimestamp(this.email.date) as Date).toLocaleString());
           html += "<br><br><br><div>If you believe you received this email by mistake, please click " +
-            "<b><a href='https://us-central1-impactdisciplesdev.cloudfunctions.net/subscriptions?email="+ subscriber.email +
+            "<b><a href='" + environment.unsubscribeUrl + "?email="+ subscriber.email +
             "&list=newsletter_subscriptions'>here</a></b> to remove your address.</div>"
           this.email.html = html;
 

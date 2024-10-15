@@ -4,7 +4,7 @@ import * as functions from "firebase-functions";
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const cors = require("cors")({origin: true});
 
-exports.subscriptions = functions
+exports.unsubscribe_from_email_list = functions
   .https.onRequest((request, response) => {
     return cors(request, response, async () => {
       const db = admin.firestore();
@@ -15,11 +15,7 @@ exports.subscriptions = functions
       try {
         const email = request.query.email;
         const list = request.query.list;
-
-        console.log("deleting + "+ email + " from " + list);
-
         const collection = db.collection(list as string);
-
         const docRef = collection.where("email", "==", email);
 
         docRef.get().then((docs) => {

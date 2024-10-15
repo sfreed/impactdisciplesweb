@@ -5,7 +5,7 @@ const ShipEngine = require("shipengine");
 
 const cors = require("cors")({origin: true});
 
-exports.shipping = functions
+exports.get_shipping_rates = functions
   .runWith({secrets: ["SHIP_ENGINE_API_KEY"]})
   .https.onRequest((request, response) => {
     return cors(request, response, async () => {
@@ -18,11 +18,13 @@ exports.shipping = functions
 
       shipengine.getRatesWithShipmentDetails(requestBody).then((result) => {
         response.send(result);
+      }).catch((err) => {
+        throw new functions.https.HttpsError("internal", err);
       });
     });
   });
 
-exports.label = functions
+exports.get_shipping_label = functions
   .runWith({secrets: ["SHIP_ENGINE_API_KEY"]})
   .https.onRequest((request, response) => {
     return cors(request, response, async () => {
