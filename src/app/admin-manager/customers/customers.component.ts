@@ -4,8 +4,7 @@ import { DxFormComponent } from 'devextreme-angular';
 import CustomStore from 'devextreme/data/custom_store';
 import DataSource from 'devextreme/data/data_source';
 import notify from 'devextreme/ui/notify';
-import { AppUser } from 'impactdisciplescommon/src/models/admin/appuser.model';
-import { BehaviorSubject, Observable, map, take } from 'rxjs';
+import { BehaviorSubject, Observable, map, of, take } from 'rxjs';
 import { confirm } from 'devextreme/ui/dialog';
 import { EnumHelper } from 'impactdisciplescommon/src/utils/enum_helper';
 import { Address } from 'impactdisciplescommon/src/models/domain/utils/address.model';
@@ -31,6 +30,8 @@ import { EMailService } from 'impactdisciplescommon/src/services/admin/email.ser
 import { ToastrService } from 'ngx-toastr';
 import { CustomerEmailService } from 'impactdisciplescommon/src/services/admin/customer-email.service';
 import { environment } from 'src/environments/environment';
+import { CustomerNoteModel } from 'impactdisciplescommon/src/models/domain/utils/customer-note.model';
+import { AppUser } from 'impactdisciplescommon/src/models/admin/appuser.model';
 
 @Component({
   selector: 'app-customers',
@@ -51,6 +52,7 @@ export class CustomersComponent implements OnInit {
   public isListVisible$ = new BehaviorSubject<boolean>(false);
   public isEmailVisible$ = new BehaviorSubject<boolean>(false);
 
+  user: AppUser
   selectedItem: CustomerModel;
   selectedPurchase: CheckoutForm;
   selectedEvent: EventModel;
@@ -94,22 +96,9 @@ export class CustomersComponent implements OnInit {
   ) {}
 
   async ngOnInit(): Promise<void> {
+    this.user = await this.authService.getUserAsPromise() as AppUser;
 
-    this.authService.getUser().subscribe(user => {
-      this.selectedItem = user;
-
-      if(!this.selectedItem.shippingAddress){
-        this.selectedItem.shippingAddress = {... new Address()}
-      }
-
-      if(!this.selectedItem.billingAddress){
-        this.selectedItem.billingAddress = {... new Address()}
-      }
-
-      if(!this.selectedItem.phone){
-        this.selectedItem.phone = {... new Phone()}
-      }
-    });
+    console.log(this.user)
 
     this.datasource$ = this.service.streamAll().pipe(
       map(
@@ -127,41 +116,8 @@ export class CustomersComponent implements OnInit {
           })
       )
     );
-    this.salesDatasource$ = this.salesService.streamAllByValue("email", this.selectedItem.email).pipe(
-      map(
-        (items) =>
-          new DataSource({
-            reshapeOnPush: true,
-            pushAggregationTimeout: 100,
-            store: new CustomStore({
-              key: 'id',
-              loadMode: 'raw',
-              load: function (loadOptions: any) {
-                return items;
-              }
-            })
-          })
-      )
-    );
 
     this.events = await this.eventService.getAll();
-
-    this.eventsRegistrantsDatasource$ = this.eventRegistrationService.streamAllByValue("email", this.selectedItem.email).pipe(
-      map(
-        (items) =>
-          new DataSource({
-            reshapeOnPush: true,
-            pushAggregationTimeout: 100,
-            store: new CustomStore({
-              key: 'id',
-              loadMode: 'raw',
-              load: function (loadOptions: any) {
-                return items;
-              }
-            })
-          })
-      )
-    );
 
     this.emailLists = await this.emailListService.getAllByValue('type', 'customer').then(list => {
       if (list){
@@ -206,14 +162,86 @@ export class CustomersComponent implements OnInit {
       this.selectedItem.billingAddress = {... new Address()};
     }
 
+    if(!this.selectedItem.notes){
+      this.selectedItem.notes = [];
+    }
+
+    this.salesDatasource$ = this.salesService.streamAllByValue("email", this.selectedItem.email).pipe(
+      map(
+        (items) =>
+          new DataSource({
+            reshapeOnPush: true,
+            pushAggregationTimeout: 100,
+            store: new CustomStore({
+              key: 'id',
+              loadMode: 'raw',
+              load: function (loadOptions: any) {
+                return items;
+              }
+            })
+          })
+      )
+    );
+
+    this.eventsRegistrantsDatasource$ = this.eventRegistrationService.streamAllByValue("email", this.selectedItem.email).pipe(
+      map(
+        (items) =>
+          new DataSource({
+            reshapeOnPush: true,
+            pushAggregationTimeout: 100,
+            store: new CustomStore({
+              key: 'id',
+              loadMode: 'raw',
+              load: function (loadOptions: any) {
+                return items;
+              }
+            })
+          })
+      )
+    );
+
     this.isVisible$.next(true);
   }
 
   showAddModal = () => {
-    this.selectedItem = {... new AppUser()};
+    this.selectedItem = {... new CustomerModel()};
     this.selectedItem.shippingAddress = {... new Address()};
     this.selectedItem.billingAddress = {... new Address()};
     this.selectedItem.phone = {... new Phone()};
+
+    this.salesDatasource$ = of([]).pipe(
+      map(
+        (items) =>
+          new DataSource({
+            reshapeOnPush: true,
+            pushAggregationTimeout: 100,
+            store: new CustomStore({
+              key: 'id',
+              loadMode: 'raw',
+              load: function (loadOptions: any) {
+                return items;
+              }
+            })
+          })
+      )
+    );
+
+    this.eventsRegistrantsDatasource$ = of([]).pipe(
+      map(
+        (items) =>
+          new DataSource({
+            reshapeOnPush: true,
+            pushAggregationTimeout: 100,
+            store: new CustomStore({
+              key: 'id',
+              loadMode: 'raw',
+              load: function (loadOptions: any) {
+                return items;
+              }
+            })
+          })
+      )
+    );
 
     this.isVisible$.next(true);
   }
@@ -424,7 +452,62 @@ export class CustomersComponent implements OnInit {
     return (dateFromTimestamp(this.events.find(event => event.id == cell.data.eventId).startDate) as Date).toLocaleDateString();
   }
 
+  getDate(item){
+    return (dateFromTimestamp(item) as Date).toLocaleDateString();
+  }
+
   selectRow(e){
     this.selectedCustomers = e.selectedRowsData;
+  }
+
+  addCustomerNote(){
+    this.authService.getUser().pipe(take(1)).subscribe(user => {
+      let note: CustomerNoteModel = {... new CustomerNoteModel()};
+      note.date = Timestamp.now();
+      note.addedBy = user.firstName + " " + user.lastName;
+      note.private = false;
+      note.id = this.generateRandomId();
+      this.selectedItem.notes.push(note);
+    })
+  }
+
+  deleteNote(index: number){
+    confirm('<i>Are you sure you want to delete this note?</i>', 'Confirm').then((dialogResult) => {
+      if (dialogResult) {
+        this.selectedItem.notes.splice(index, 1);
+
+        this.service.update(this.selectedItem.id, this.selectedItem).then((item) => {
+          if(item) {
+            notify({
+              message: this.itemType + ' Updated',
+              position: 'top',
+              width: 600,
+              type: 'success'
+            });
+          }
+        })
+      }
+    })
+  }
+
+  saveNote(){
+    this.service.update(this.selectedItem.id, this.selectedItem).then((item) => {
+      if(item) {
+        notify({
+          message: this.itemType + ' Updated',
+          position: 'top',
+          width: 600,
+          type: 'success'
+        });
+      }
+    })
+  }
+
+  private generateRandomId() {
+    return 'xxxxxxxx'.replace(/[xy]/g, function (c) {
+      var r = (Math.random() * 16) | 0,
+        v = c == 'x' ? r : (r & 0x3) | 0x8;
+      return v.toString(16);
+    });
   }
 }
