@@ -1,4 +1,3 @@
-import { LocationService } from './../../../../impactdisciplescommon/src/services/location.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { DxFormComponent } from 'devextreme-angular';
 import CustomStore from 'devextreme/data/custom_store';
@@ -32,6 +31,8 @@ import { CustomerEmailService } from 'impactdisciplescommon/src/services/admin/c
 import { environment } from 'src/environments/environment';
 import { CustomerNoteModel } from 'impactdisciplescommon/src/models/domain/utils/customer-note.model';
 import { AppUser } from 'impactdisciplescommon/src/models/admin/appuser.model';
+import { Role } from 'impactdisciplescommon/src/lists/roles.enum';
+import { LocationService } from 'impactdisciplescommon/src/services/location.service';
 
 @Component({
   selector: 'app-customers',
@@ -98,8 +99,6 @@ export class CustomersComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     this.user = await this.authService.getUserAsPromise() as AppUser;
 
-    console.log(this.user)
-
     this.datasource$ = this.service.streamAll().pipe(
       map(
         (items) =>
@@ -111,7 +110,7 @@ export class CustomersComponent implements OnInit {
               loadMode: 'raw',
               load: function (loadOptions: any) {
                 return items;
-              },
+              }
             })
           })
       )
