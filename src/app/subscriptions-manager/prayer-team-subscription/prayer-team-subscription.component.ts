@@ -8,7 +8,7 @@ import { PrayerTeamSubscriptionModel } from 'impactdisciplescommon/src/models/do
 import { PrayerTeamSubscriptionService } from 'impactdisciplescommon/src/services/prayer-team-subscription.service';
 import { BehaviorSubject, Observable, map, take } from 'rxjs';
 import { confirm } from 'devextreme/ui/dialog';
-import { DxFormComponent } from 'devextreme-angular';
+import { DxDataGridComponent, DxFormComponent } from 'devextreme-angular';
 import { PrayerModel } from 'impactdisciplescommon/src/models/domain/prayer.model';
 import { EMailService } from 'impactdisciplescommon/src/services/admin/email.service';
 import { AuthService } from 'impactdisciplescommon/src/services/utils/auth.service';
@@ -17,6 +17,8 @@ import { PrayerService } from 'impactdisciplescommon/src/services/prayer.service
 import { EmailList } from 'impactdisciplescommon/src/models/utils/email-list.model';
 import { EmailListService } from 'impactdisciplescommon/src/services/email-list.service';
 import { environment } from 'src/environments/environment';
+import { exportDataGrid } from 'devextreme/pdf_exporter';
+import jsPDF from 'jspdf';
 
 @Component({
   selector: 'app-prayer-team-subscription',
@@ -25,6 +27,7 @@ import { environment } from 'src/environments/environment';
 })
 export class PrayerTeamSubscriptionComponent {
   @ViewChild('addEditForm', { static: false }) addEditForm: DxFormComponent;
+  @ViewChild('prayerTeamGrid', { static: false }) prayerTeamGrid: DxDataGridComponent;
 
   datasource$: Observable<DataSource>;
   selectedItem: PrayerTeamSubscriptionModel
@@ -302,5 +305,21 @@ export class PrayerTeamSubscriptionComponent {
 
   selectRow(e){
     this.selectedSubscribers = e.selectedRowsData;
+  }
+
+  exportGrids = () => {
+    const context = this;
+    const doc = new jsPDF();
+
+    exportDataGrid({
+      selectedRowsOnly: true,
+      jsPDFDocument: doc,
+      component: context.prayerTeamGrid.instance,
+      topLeft: { x: 7, y: 5 },
+      columnWidths: [20, 50, 50, 50],
+
+    }).then(() => {
+        doc.save('Prayer_team_subscribers.pdf');
+    });
   }
 }

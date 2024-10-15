@@ -32,7 +32,8 @@
               [position]="{ my: { x: 'center', y: 'top' }, at: 'left bottom' }">
               <dxi-item text="New" icon="add" [onClick]="showAddModal"></dxi-item>
               <dxi-item text="Send Prayer Request" icon="contentlayout" [onClick]="showPrayerModal"></dxi-item>
-              <dxi-item text="Create Subscriber List" icon="contentlayout" [onClick]="showListModal"></dxi-item>
+              <dxi-item text="Create Prayer List" icon="contentlayout" [onClick]="showListModal"></dxi-item>
+              <dxi-item text="Export Prayer List" icon="exportpdf" [onClick]="exportGrids"></dxi-item>
               <dxi-item  *ngIf="this.selectedList?.name" text="Save List" icon="save" [onClick]="onListSave"></dxi-item>
             </dx-context-menu>
           </div>
@@ -43,7 +44,7 @@
 </div>
 
 <dx-data-grid class="dx-card wide-card"
-  #grid
+  #prayerTeamGrid
   [dataSource]="datasource$ | async"
   [height]="'75vh'"
   [showBorders]="false"

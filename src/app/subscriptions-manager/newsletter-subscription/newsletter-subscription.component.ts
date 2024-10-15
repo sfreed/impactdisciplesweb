@@ -6,7 +6,7 @@ import { NewsletterSubscriptionService } from 'impactdisciplescommon/src/service
 import { BehaviorSubject, Observable, map, take } from 'rxjs';
 import notify from 'devextreme/ui/notify';
 import { confirm } from 'devextreme/ui/dialog';
-import { DxFormComponent } from 'devextreme-angular';
+import { DxDataGridComponent, DxFormComponent } from 'devextreme-angular';
 import { Timestamp } from 'firebase/firestore';
 import { dateFromTimestamp } from 'impactdisciplescommon/src/utils/date-from-timestamp';
 import { EMailService } from 'impactdisciplescommon/src/services/admin/email.service';
@@ -17,6 +17,8 @@ import { NewsletterService } from 'impactdisciplescommon/src/services/newletter.
 import { EmailList } from 'impactdisciplescommon/src/models/utils/email-list.model';
 import { EmailListService } from 'impactdisciplescommon/src/services/email-list.service';
 import { environment } from 'src/environments/environment';
+import { exportDataGrid } from 'devextreme/pdf_exporter';
+import jsPDF from 'jspdf';
 
 @Component({
   selector: 'app-newsletter-subscription',
@@ -25,6 +27,7 @@ import { environment } from 'src/environments/environment';
 })
 export class NewsletterSubscriptionComponent {
   @ViewChild('addEditForm', { static: false }) addEditForm: DxFormComponent;
+  @ViewChild('subscriptionGrid', { static: false }) subscriptionGrid: DxDataGridComponent;
 
   datasource$: Observable<DataSource>;
   selectedItem: NewsletterSubscriptionModel;
@@ -303,5 +306,21 @@ export class NewsletterSubscriptionComponent {
 
   selectRow(e){
     this.selectedSubscribers = e.selectedRowsData;
+  }
+
+  exportGrids = () => {
+    const context = this;
+    const doc = new jsPDF();
+
+    exportDataGrid({
+      selectedRowsOnly: true,
+      jsPDFDocument: doc,
+      component: context.subscriptionGrid.instance,
+      topLeft: { x: 7, y: 5 },
+      columnWidths: [20, 50, 50, 50],
+
+    }).then(() => {
+        doc.save('Newsletter_subscribers.pdf');
+    });
   }
 }

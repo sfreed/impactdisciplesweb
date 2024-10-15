@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { DxFormComponent } from 'devextreme-angular';
+import { DxDataGridComponent, DxFormComponent } from 'devextreme-angular';
 import CustomStore from 'devextreme/data/custom_store';
 import DataSource from 'devextreme/data/data_source';
 import notify from 'devextreme/ui/notify';
@@ -31,8 +31,9 @@ import { CustomerEmailService } from 'impactdisciplescommon/src/services/admin/c
 import { environment } from 'src/environments/environment';
 import { CustomerNoteModel } from 'impactdisciplescommon/src/models/domain/utils/customer-note.model';
 import { AppUser } from 'impactdisciplescommon/src/models/admin/appuser.model';
-import { Role } from 'impactdisciplescommon/src/lists/roles.enum';
 import { LocationService } from 'impactdisciplescommon/src/services/location.service';
+import { exportDataGrid } from 'devextreme/pdf_exporter';
+import jsPDF from 'jspdf';
 
 @Component({
   selector: 'app-customers',
@@ -41,6 +42,7 @@ import { LocationService } from 'impactdisciplescommon/src/services/location.ser
 })
 export class CustomersComponent implements OnInit {
   @ViewChild('addEditForm', { static: false }) addEditForm: DxFormComponent;
+  @ViewChild('customerGrid', { static: false }) customerGrid: DxDataGridComponent;
 
   datasource$: Observable<DataSource>;
   salesDatasource$: Observable<DataSource>;
@@ -500,6 +502,22 @@ export class CustomersComponent implements OnInit {
         });
       }
     })
+  }
+
+  exportGrids = () => {
+    const context = this;
+    const doc = new jsPDF();
+
+    exportDataGrid({
+      selectedRowsOnly: true,
+      jsPDFDocument: doc,
+      component: context.customerGrid.instance,
+      topLeft: { x: 7, y: 5 },
+      columnWidths: [20, 50, 50, 50],
+
+    }).then(() => {
+        doc.save('customer_list.pdf');
+    });
   }
 
   private generateRandomId() {

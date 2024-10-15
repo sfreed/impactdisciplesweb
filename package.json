@@ -34,6 +34,7 @@
     "devextreme-angular": "23.2.6",
     "devextreme-schematics": "^1.6.9",
     "firebase": "^10.12.2",
+    "jspdf": "^2.5.2",
     "ngx-cookie-service": "^16.1.0",
     "ngx-stripe": "^16.4.0",
     "ngx-toastr": "^19.0.0",
