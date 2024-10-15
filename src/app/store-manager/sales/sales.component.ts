@@ -149,6 +149,63 @@ export class SalesComponent implements OnInit {
     }
   }
 
+  getShippingLabel = async (e) =>{
+    if(e.row.data?.shippingRateId?.rateId){
+      if(!e.row.data?.shippingLabel){
+        let request = { 'shipId': e.row.data.shippingRateId.rateId};
+
+        return await fetch(environment.shippingLabelUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(request)
+        })
+        .then(response => {
+          response.json().then(async result => {
+            if(result.code == 'invalid_status'){
+              notify({
+                message: 'There was an error trying to ge tthe Shipping Label: ' + result.mesage,
+                position: 'top',
+                width: 600,
+                type: 'error'
+              });
+            } else {
+              e.row.data.shippingLabel = result;
+
+              await this.service.update(e.row.data.id, e.row.data).then(data => {
+                const link = document.createElement('a');
+                link.setAttribute('target', '_blank');
+                link.setAttribute('href', data.shippingLabel.labelDownload.pdf);
+                link.setAttribute('download', `products.csv`);
+                document.body.appendChild(link);
+                link.click();
+                link.remove();
+              })
+            }
+          })
+        })
+      } else {
+        const link = document.createElement('a');
+        link.setAttribute('target', '_blank');
+        link.setAttribute('href', e.row.data.shippingLabel.labelDownload.pdf);
+        link.setAttribute('download', `products.csv`);
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+      }
+    } else {
+      notify({
+        message: 'A Shipping Rate was not needed for this Sale',
+        position: 'top',
+        width: 600,
+        type: 'error'
+      });
+    }
+  }
+
+  isShippingButtonVisible(e){
+    return e.row.data?.shippingRate > 0;
+  }
+
   onCancel() {
     this.selectedItem = null;
     this.inProgress$.next(false);
