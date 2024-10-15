@@ -14,6 +14,7 @@ import { AdminManagerComponent } from './admin-manager/admin-manager.component';
 import { EventsManagerComponent } from './events-manager/events-manager.component';
 import { DashboardComponent } from './core/dashboard/dashboard.component';
 import { StoreManagerComponent } from './store-manager/store-manager.component';
+import { PageManagerComponent } from './page-manager/page-manager.component';
 
 const routes: Routes = [
   {
@@ -49,6 +50,11 @@ const routes: Routes = [
       {
         path: 'web-manager',
         component: WebManagerComponent,
+        canActivate: [ AuthGuardService ]
+      },
+      {
+        path: 'page-manager',
+        component: PageManagerComponent,
         canActivate: [ AuthGuardService ]
       },
       {

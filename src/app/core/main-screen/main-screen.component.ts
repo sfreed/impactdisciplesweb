@@ -19,6 +19,7 @@ export class MainScreenComponent {
     { id: 5, text: "SUBSCRIPTIONS MANAGER", icon: "message", path: "subscriptions-manager" },
     { id: 6, text: "WEB MANAGER", icon: "toolbox", path: "web-manager" }
   ]
+
   isDrawerOpen: boolean = false;
   buttonOptions: any = {
       icon: "menu",
