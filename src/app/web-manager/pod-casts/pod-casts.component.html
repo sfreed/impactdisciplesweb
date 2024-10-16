@@ -76,14 +76,14 @@
   [height]="'60%'"
   [showCloseButton]="true"
   (onHiding)="onCancel()">
-  <dxi-toolbar-item toolbar="top" location="center" *ngIf="isVisible$ | async">
+  <dxi-toolbar-item toolbar="top" location="center">
     <div *dxTemplate>
       <p class="popup-title">
         {{ selectedItem?.id ? 'EDIT' : 'ADD' }} {{itemType | uppercase}}
       </p>
     </div>
   </dxi-toolbar-item>
-  <dxi-toolbar-item toolbar="top" location="after">
+  <dxi-toolbar-item toolbar="top" location="after" *ngIf="isVisible$ | async">
     <div *dxTemplate>
       <dx-switch [(value)]="selectedItem.isActive" [switchedOnText]="'Live'" [switchedOffText]="'Hidden'" [width]="100"></dx-switch>
     </div>

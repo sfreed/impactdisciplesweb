@@ -143,7 +143,7 @@ export class CustomersComponent implements OnInit {
         this.selectedRows.push(item.id)
       })
     } else if(!event.value) {
-      this.selectedList = null;
+      this.selectedList = {... new EmailList()};
       this.selectedRows = [];
     }
   }
@@ -372,7 +372,6 @@ export class CustomersComponent implements OnInit {
   }
 
   onCancel() {
-    this.selectedItem = null;
     this.inProgress$.next(false);
     this.isVisible$.next(false);
   }
