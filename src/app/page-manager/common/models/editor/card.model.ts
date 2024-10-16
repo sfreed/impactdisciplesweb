@@ -3,7 +3,6 @@ import { Tag } from "../store/products.model";
 
 export class Card extends BaseModel{
   type: string = 'Card';
-  dbId: string;
   name: string;
   rows: CardRow[] = [];
   card_color: string =  '#ffffff';
@@ -15,8 +14,7 @@ export class Card extends BaseModel{
 
 }
 
-export class CardComponent {
-  dbId?: string;
+export class CardComponent extends BaseModel{
   name?: string;
   overlay_image?: boolean = false;
   card_type?: string;

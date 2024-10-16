@@ -1,76 +1,108 @@
-import { Component, NgZone, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, ViewChild } from '@angular/core';
 import CustomStore from 'devextreme/data/custom_store';
 import { Page } from '../common/models/editor/page.model';
 import { PageService } from '../common/services/page.service';
+import { BehaviorSubject, map, Observable } from 'rxjs';
+import DataSource from 'devextreme/data/data_source';
+import { DxDataGridComponent } from 'devextreme-angular';
+import notify from 'devextreme/ui/notify';
+import { confirm } from 'devextreme/ui/dialog';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-page-administration',
   templateUrl: './page-administration.component.html'
 })
-export class PageAdministrationComponent implements OnInit {
-  breadCrumbItems: Array<{}>;
+export class PageAdministrationComponent {
+  @ViewChild("pageTable") pageTable: DxDataGridComponent;
 
-  dataSource: any = {};
+  datasource$: Observable<DataSource>;
 
-  currentPage: Page;
+  page: Page;
 
-  constructor(public pageService: PageService,
-    public ngZone: NgZone,
-    public router: Router,) {
-    this.dataSource = new CustomStore({
-      key: "dbId",
-      loadMode: "raw",
-      load: function (loadOptions: any) {
-        return pageService.getAll();
-      },
-      update: function(key: any, value:any) {
-        return pageService.update(key, value);
-      },
-      remove: function (key: any) {
-        return pageService.delete(key);
-      },
-    });
+  public editPageVisible$ = new BehaviorSubject<boolean>(false);
+  public previewPageVisible$ = new BehaviorSubject<boolean>(false);
+
+  constructor(public service: PageService,
+    public toasterService: ToastrService
+  ) {
+      this.datasource$ = this.service.streamAll().pipe(
+        map(
+          (items) =>
+            new DataSource({
+              reshapeOnPush: true,
+              pushAggregationTimeout: 100,
+              store: new CustomStore({
+                key: 'id',
+                loadMode: 'raw',
+                load: function (loadOptions: any) {
+                  return items;
+                }
+              })
+            })
+        )
+      );
   }
 
-  ngOnInit(): void {
-    this.breadCrumbItems = [{ label: 'Admin' }, { label: 'Page Administration', active: true }];
+  saveChanges = () => {
+    if(this.page.id){
+      this.service.update(this.page.id, this.page).then(page =>{
+        this.toasterService.success('Page Updated Successfully')
+        this.onEditCancel()
+      });
+    } else {
+      this.service.add(this.page).then(page =>{
+        this.toasterService.success('Page Created Successfully')
+        this.onEditCancel()
+      });
+    }
   }
 
-  onRowUpdating(options) {
-    options.newData = Object.assign(options.oldData, options.newData);
-  }
-
-  displayPagePreview(event: any){
-    this.router.navigate(['/pages/page-viewer', event.row.data.dbId, 'preview']);
-  }
-
-  displayPageEdit(event: any){
-    this.router.navigate(['/pages/page-maker', event.row.data.dbId, 'edit']);
-  }
-
-  onToolbarPreparing(e) {
-    e.toolbarOptions.items.unshift({
-      location: 'after',
-      widget: 'dxButton',
-      options: {
-          icon: 'plus',
-          onClick: this.addPage.bind(this)
+  delete = ({ row: { data } }) => {
+    confirm('<i>Are you sure you want to delete this page?</i>', 'Confirm').then((dialogResult) => {
+      if (dialogResult) {
+        this.service.delete(data.id).then(() => {
+          notify({
+            message: 'Page Deleted',
+            position: 'top',
+            width: 600,
+            type: 'success'
+          });
+        })
       }
     });
   }
+  displayPageAdd = () => {
+    this.page = {...new Page()};
 
-  addPage(event){
-    this.ngZone.run(() => {
-      this.router.navigate(['/pages/page-maker']);
-    });
+    this.editPageVisible$.next(true);
   }
 
-  getScreenHeight(): number{
-    return window.innerHeight*.7;
+  displayPageEdit = (e) => {
+    this.page = e.row.data;
+
+    this.editPageVisible$.next(true);
   }
 
-  getWindowWidth(): number{
-    return window.innerWidth*.85;
+  onEditCancel() {
+    this.editPageVisible$.next(false);
+  }
+
+  displayPagePreview = (e) => {
+    this.page = e.row.data;
+
+    this.previewPageVisible$.next(true);
+  }
+
+  onPreviewCancel() {
+    this.previewPageVisible$.next(false);
+  }
+
+  displayPageEditPreview = (e) => {
+    this.previewPageVisible$.next(true);
+  }
+
+  onEditPreviewCancel() {
+    this.previewPageVisible$.next(false);
   }
 }

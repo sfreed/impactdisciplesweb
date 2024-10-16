@@ -3,6 +3,7 @@ import {
   Component,
   ComponentFactoryResolver,
   ComponentRef,
+  Input,
   OnDestroy,
   OnInit,
   ViewChild,
@@ -26,13 +27,12 @@ export class PageViewerComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('carddiv', { read: ViewContainerRef })
   private vcr: ViewContainerRef;
 
-  breadCrumbItems: Array<{}>;
+  @Input('page') page: Page;
 
-  mode = 'preview';
+  @Input('mode') mode: string;
 
   index: number = 0;
   componentsReferences = [];
-  currentPage: Page = { ...new Page() };
 
   $routeSubsciption: Subscription;
 
@@ -40,13 +40,10 @@ export class PageViewerComponent implements OnInit, AfterViewInit, OnDestroy {
     private CFR: ComponentFactoryResolver,
     private pageService: PageService,
     private route: ActivatedRoute,
-    private authService: AuthService,
   ) {}
 
   ngOnInit(): void {
-    this.breadCrumbItems = [{ label: 'Admin' }, { label: 'Page Administration', path: '/pages/page-administration' }];
 
-    this.mode = this.route.snapshot.paramMap.get('view') == '' ? 'display' : this.route.snapshot.paramMap.get('view');
   }
 
   ngAfterViewInit(): void {
@@ -56,19 +53,12 @@ export class PageViewerComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.pageService.getById(queryParams['id']).then(
           (p) => {
-            this.currentPage = p;
+            this.page = p;
 
-            if (this.mode == 'preview') {
-              this.breadCrumbItems.push({
-                label: 'View ' + this.currentPage.name,
-                active: true
-              });
-            }
-
-            if (this.currentPage && this.currentPage.cards) {
+            if (this.page && this.page.cards) {
               this.vcr.createComponent(CardSpacerComponent);
 
-              this.currentPage.cards.forEach((card) => {
+              this.page.cards.forEach((card) => {
                 if (card.type == 'Form') {
                   let component: any = FormViewerComponent;
 

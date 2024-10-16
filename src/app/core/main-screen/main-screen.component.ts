@@ -17,7 +17,8 @@ export class MainScreenComponent {
     { id: 3, text: "REQUESTS MANAGER", icon: "belloutline", path: "requests-manager" },
     { id: 4, text: "STORE MANAGER", icon: "user", path: "store-manager" },
     { id: 5, text: "SUBSCRIPTIONS MANAGER", icon: "message", path: "subscriptions-manager" },
-    { id: 6, text: "WEB MANAGER", icon: "toolbox", path: "web-manager" }
+    { id: 6, text: "WEB MANAGER", icon: "toolbox", path: "web-manager" },
+    { id: 6, text: "PAGE MANAGER", icon: "toolbox", path: "page-manager" }
   ]
 
   isDrawerOpen: boolean = false;

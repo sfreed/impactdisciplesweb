@@ -1,4 +1,4 @@
-import { Component, NgZone, OnInit } from '@angular/core';
+import { Component, Input, NgZone, OnInit } from '@angular/core';
 import CustomStore from 'devextreme/data/custom_store';
 import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs/operators';
@@ -8,21 +8,18 @@ import { FormService } from '../../common/services/forms.service';
 import { PageService } from '../../common/services/page.service';
 
 @Component({
-  selector: 'app-page-wizard',
+  selector: 'app-page-maker',
   templateUrl: './page-maker.component.html'
 })
 export class PageMakerComponent implements OnInit {
-  loading: Promise<any> = new Promise((resolve) => resolve(false));
 
-  breadCrumbItems: Array<{}>;
+  @Input('page') page: Page;
 
-  mode:string = 'edit';
+  @Input('mode') mode: string;
 
   dataSource: any = {};
 
   formSource: any = {};
-
-  currentPage: Page;
 
   imageSelectVisible = false;
   confirmPageSaveVisible = false;
@@ -62,34 +59,27 @@ export class PageMakerComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.breadCrumbItems = [{ label: 'Admin'},{ label: 'Page Administration', path:"/pages/page-administration" }];
 
     this.route.params.pipe(take(1)).subscribe(queryParams => {
       if(queryParams['id'] != null){
         this.pageService.getById(queryParams['id']).then(p => {
-          this.currentPage = p;
-          this.currentPage.dbId = queryParams['id'];
+          this.page = p;
+          this.page.dbId = queryParams['id'];
           this.mode = 'edit';
-
-          this.breadCrumbItems.push({ label: 'Edit ' + this.currentPage.name, active: true })
-        },err => console.error('Error in Page Maker Admin', err));
+        });
       } else {
         this.mode = 'new';
-
-        this.breadCrumbItems.push({ label: 'Create New Page', active: true })
-
-        this.currentPage = { ...new Page()};
+        this.page = { ...new Page()};
       }
     },err => console.error('Error in Page Maker Admin', err));
 
-    this.loading = new Promise((resolve) => resolve(true));
   }
 
   addCard(card){
-    this.currentPage.cards.push(card);
+    this.page.cards.push(card);
   }
   addForm(form) {
-    this.currentPage.cards.push(form);
+    this.page.cards.push(form);
   }
 
   returnToPageAdministrator(){
@@ -138,10 +128,10 @@ export class PageMakerComponent implements OnInit {
   }
 
   saveChanges(){
-    if(this.currentPage.dbId){
-      this.pageService.update(this.currentPage.dbId, this.currentPage);
+    if(this.page.dbId){
+      this.pageService.update(this.page.dbId, this.page);
     } else {
-      this.pageService.add(this.currentPage);
+      this.pageService.add(this.page);
     }
 
 
@@ -165,10 +155,10 @@ export class PageMakerComponent implements OnInit {
 
   onReorder(e) {
     var visibleRows = e.component.getVisibleRows(),
-        toIndex = this.currentPage.cards.indexOf(visibleRows[e.toIndex].data),
-        fromIndex = this.currentPage.cards.indexOf(e.itemData);
+        toIndex = this.page.cards.indexOf(visibleRows[e.toIndex].data),
+        fromIndex = this.page.cards.indexOf(e.itemData);
 
-    this.currentPage.cards.splice(fromIndex, 1);
-    this.currentPage.cards.splice(toIndex, 0, e.itemData);
+    this.page.cards.splice(fromIndex, 1);
+    this.page.cards.splice(toIndex, 0, e.itemData);
   }
 }

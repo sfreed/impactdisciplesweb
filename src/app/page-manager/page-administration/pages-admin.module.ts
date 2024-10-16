@@ -5,7 +5,7 @@ import { PageMakerComponent } from './page-maker/page-maker.component';
 import { PageViewerComponent } from './page-viewer/page-viewer.component';
 import { PageHeaderViewComponent } from './page/header-view/header-view.component';
 import { FormsModule } from '@angular/forms';
-import { DxButtonModule, DxColorBoxModule, DxDataGridModule, DxPopupModule, DxSelectBoxModule, DxTextBoxModule } from 'devextreme-angular';
+import { DxButtonModule, DxColorBoxModule, DxContextMenuModule, DxDataGridModule, DxPopupModule, DxScrollViewModule, DxSelectBoxModule, DxTextBoxModule, DxToolbarModule } from 'devextreme-angular';
 import { PageRouting } from './page-routing.module';
 import { CardsAdminModule } from '../card-administration/cards-admin.module';
 import { ContentModule } from '../common/content/content.module';
@@ -26,6 +26,9 @@ import { ContentModule } from '../common/content/content.module';
     DxDataGridModule,
     DxButtonModule,
     DxSelectBoxModule,
+    DxScrollViewModule,
+    DxToolbarModule,
+    DxContextMenuModule,
     DxPopupModule,
     DxTextBoxModule,
     DxColorBoxModule

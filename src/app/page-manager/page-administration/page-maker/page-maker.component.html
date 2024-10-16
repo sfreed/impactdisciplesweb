@@ -1,24 +1,23 @@
 <div class="container-fluid">
-  <ng-template [ngIf] = "loading | async">
-    <ng-template [ngIf] = "currentPage != null">
+    <ng-template [ngIf] = "page != null">
       <div class="card">
         <div class="card-body">
           <div class="form">
             <div class="dx-field">
               <div class="dx-field-label"><h3>Name</h3></div>
               <div class="dx-field-value">
-                <dx-text-box [(ngModel)]="currentPage.name"></dx-text-box>
+                <dx-text-box [(ngModel)]="page.name"></dx-text-box>
               </div>
             </div>
             <div class="dx-field">
               <div class="dx-field-label"><h3>Extend Session Timeout (hrs)</h3></div>
               <div class="dx-field-value">
-                <dx-text-box [(ngModel)]="currentPage.session_expiration"></dx-text-box>
+                <dx-text-box [(ngModel)]="page.session_expiration"></dx-text-box>
               </div>
             </div>
 
             <hr color="#091D45" width="100%"/>
-            <app-page-header-view [page]="currentPage"></app-page-header-view>
+            <app-page-header-view [page]="page"></app-page-header-view>
             <hr color="#091D45" width="100%"/>
 
             <div class="dx-fieldset">
@@ -50,7 +49,7 @@
               <div style="width:90%; margin: 0 auto">
                 <dx-data-grid
                   id="gridContainer"
-                  [dataSource]="currentPage.cards"
+                  [dataSource]="page.cards"
                   [columns]="['name', 'id']"
                   [showBorders]="true">
                   <dxo-row-dragging
@@ -115,21 +114,20 @@
       </ng-container>
       <ng-container *ngIf="imageSelectVisible">
         <app-card-image-uploader
-          [card]="currentPage"
+          [card]="page"
           [field]="editedField"
           imageSelectVisible]="imageSelectVisible"
           (imageSelectClosed)="imageSelectClosed($event)">
         </app-card-image-uploader>
       </ng-container>
       <app-card-text-editor
-        [card]="currentPage"
+        [card]="page"
         [field]="editedField"
         [textEditorVisible]="textEditorVisible"
         (textEditorClosed)="closeEditorWindow()"
         [htmlContent]="htmlContent">
       </app-card-text-editor>
     </ng-template>
-  </ng-template>
 </div>
 
 

@@ -1,5 +1,4 @@
-import { Component, NgZone, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, ViewChild } from '@angular/core';
 import { DxDataGridComponent } from 'devextreme-angular';
 import CustomStore from 'devextreme/data/custom_store';
 import { ToastrService } from 'ngx-toastr';
@@ -7,139 +6,157 @@ import { Page } from '../common/models/editor/page.model';
 import { CardService } from '../common/services/card.service';
 import { PageService } from '../common/services/page.service';
 import { Card } from '../common/models/editor/card.model';
+import notify from 'devextreme/ui/notify';
+import { confirm } from 'devextreme/ui/dialog';
+import DataSource from 'devextreme/data/data_source';
+import { BehaviorSubject, map, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-card-manager',
   templateUrl: './card-administration.component.html'
 })
-export class CardAdministrationComponent implements OnInit {
+export class CardAdministrationComponent {
   @ViewChild("cardTable") cardTable: DxDataGridComponent;
 
-  breadCrumbItems: Array<{}>;
+  datasource$: Observable<DataSource>;
 
-  dataSource: any = {};
+  card: Card;
 
-  currentCard: Card;
+  public editCardVisible$ = new BehaviorSubject<boolean>(false);
+  public previewCardVisible$ = new BehaviorSubject<boolean>(false);
 
-  addCardVisible = false;
-
-  confirmPublishCardVisible = false;
-
-  copyCardVisible = false;
-
-  newname: string;
-
-  constructor(public cardService: CardService,
+  constructor(public service: CardService,
     public pageService: PageService,
-    public ngZone: NgZone,
-    public router: Router,
-    public toster: ToastrService){
-    this.dataSource = new CustomStore({
-      key: "dbId",
-      loadMode: "raw",
-      load: function (loadOptions: any) {
-        return cardService.getAll();
-      },
-      update: function(key: any, value: Card) {
-        return cardService.update(key, value);
-      },
-      remove: function (id: any) {
-        return cardService.delete(id);
-      },
-    });
+    public toasterService: ToastrService){
+    this.datasource$ = this.service.streamAll().pipe(
+      map(
+        (items) =>
+          new DataSource({
+            reshapeOnPush: true,
+            pushAggregationTimeout: 100,
+            store: new CustomStore({
+              key: 'id',
+              loadMode: 'raw',
+              load: function (loadOptions: any) {
+                return items;
+              }
+            })
+          })
+      )
+    );
   }
 
-  ngOnInit() {
-    this.breadCrumbItems = [{ label: 'Admin' }, { label: 'Card Administration', active: true }];
-  }
-
-  onRowUpdating(options) {
-    options.newData = Object.assign(options.oldData, options.newData);
-  }
-
-  displayPublishcardWarning(e){
-    this.currentCard = e.row.data;
-    this.confirmPublishCardVisible = true;
-  }
-
-  closePublishcardWarning(){
-    this.confirmPublishCardVisible = false;
-  }
-
-  publishCard(e){
-    let pagesToUpdate: Page[] = [];
-    new Promise((resolve, reject) => {
-      this.pageService.getAll().then(async pages => {
-        await pages.forEach(async page => {
-          await page.cards.forEach(card => {
-            if(card && card.dbId == this.currentCard.dbId) {
-              Object.assign(card, this.currentCard)
-              pagesToUpdate.push(page);
-            }
-          });
-        });
-        resolve(pagesToUpdate);
-      },err => console.error('Error in Card Admin', err))
-    }).then( p => {
-      pagesToUpdate.forEach(page => {
-        this.pageService.update(page.dbId, page);
+  saveChanges = () => {
+    if(this.card.id){
+      this.service.update(this.card.id, this.card).then(card =>{
+        this.toasterService.success('Card Updated Successfully')
+        this.onEditCancel()
       });
-    }).then(()=>{
-      this.toster.success('Card successfully published!');
-      this.closePublishcardWarning();
-    }).catch((error) => {
-      console.error('Error in Card Admin.', error);
-      this.closePublishcardWarning();
-    });;
+    } else {
+      this.service.add(this.card).then(card =>{
+        this.toasterService.success('Card Created Successfully')
+        this.onEditCancel()
+      });
+    }
   }
 
-  displayCardPreview(event: any){
-    this.router.navigate(['/cards/card-viewer', event.row.data.dbId, 'preview']);
-  }
+  publishCard = (e) => {
+    this.card = e.row.data;
 
-  displayCardEdit(event: any){
-    this.router.navigate(['/cards/card-maker', event.row.data.dbId, 'edit']);
-  }
+    confirm('<i>Are you sure you want to publish this card?</i>', 'Confirm').then((dialogResult) => {
+      if (dialogResult) {
+        this.pageService.getAll().then(async pages => {
+          let pagesToUpdate: Page[] = [];
 
-  displayCardAdd = () => {
-    this.addCardVisible = true;
-  }
+          pages.forEach(async page => {
+            page.cards.forEach(card => {
+              if(card && card.dbId == this.card.id) {
+                Object.assign(card, this.card)
+                pagesToUpdate.push(page);
+              }
+            });
+          });
 
-  onToolbarPreparing(e) {
-    e.toolbarOptions.items.unshift({
-      location: 'after',
-      widget: 'dxButton',
-      options: {
-          icon: 'plus',
-          onClick: this.addCard.bind(this)
+          return pagesToUpdate
+        }).then(pagesToUpdate => {
+          pagesToUpdate.forEach(async page => {
+            await this.pageService.update(page.dbId, page);
+          });
+        }).then(() => {
+          notify({
+            message: 'Card Published Successfully',
+            position: 'top',
+            width: 600,
+            type: 'success'
+          });
+        })
       }
     });
   }
 
-  addCard(){
-    this.ngZone.run(() => {
-      this.router.navigate(['/cards/card-maker']);
+  copyCard = (e) => {
+    this.card = e.row.data;
+
+    confirm('<i>Are you sure you want to copy this card?</i>', 'Confirm').then((dialogResult) => {
+      let newCard = {...this.card};
+
+      if (dialogResult) {
+        newCard.name = 'Copy of ' + e.row.data.name;
+        newCard.id = "";
+        this.service.add(newCard).then(() => {
+          this.cardTable.instance.refresh();
+        });
+      }
+    })
+  }
+
+  delete = ({ row: { data } }) => {
+    confirm('<i>Are you sure you want to delete this card?</i>', 'Confirm').then((dialogResult) => {
+      if (dialogResult) {
+        this.service.delete(data.id).then(() => {
+          notify({
+            message: 'Card Deleted',
+            position: 'top',
+            width: 600,
+            type: 'success'
+          });
+        })
+      }
     });
   }
 
-  displayCopyCard(e) {
-    this.currentCard = e.row.data;
-    this.copyCardVisible = true;
+  displayCardAdd = () => {
+    this.card = {...new Card()};
+
+    this.editCardVisible$.next(true);
   }
 
-  closeDisplayCopyCard() {
-    this.copyCardVisible = false;
+  displayCardEdit = (e) => {
+    this.card = e.row.data;
+
+    this.editCardVisible$.next(true);
   }
 
-  copyCard() {
-    this.closeDisplayCopyCard();
-    this.currentCard.name = this.newname;
-    this.currentCard.dbId = "";
-    this.cardService.add(this.currentCard);
-    this.cardTable.instance.refresh();
+  onEditCancel() {
+    this.editCardVisible$.next(false);
   }
 
-  getScreenHeight(): number{
-    return window.innerHeight*.7;
+  displayCardPreview = (e) => {
+    this.card = e.row.data;
+
+    this.previewCardVisible$.next(true);
   }
+
+  onPreviewCancel() {
+    this.previewCardVisible$.next(false);
+  }
+
+  displayCardEditPreview = (e) => {
+    this.previewCardVisible$.next(true);
+  }
+
+  onEditPreviewCancel() {
+    this.previewCardVisible$.next(false);
+  }
+
 }
