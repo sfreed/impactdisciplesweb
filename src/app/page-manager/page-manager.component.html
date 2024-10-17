@@ -1,11 +1,11 @@
 <dx-tabs #apiTabs [dataSource]="tabs" [(selectedIndex)]="selectedIndex" (onItemClick)="selectTab($event)" ></dx-tabs>
 
-<ng-template [ngIf]="selectedTab == 'Cards'">
-  <app-card-manager></app-card-manager>
-</ng-template>
-
 <ng-template [ngIf]="selectedTab == 'Pages'">
   <app-page-administration></app-page-administration>
+</ng-template>
+
+<ng-template [ngIf]="selectedTab == 'Cards'">
+  <app-card-manager></app-card-manager>
 </ng-template>
 
 <ng-template [ngIf]="selectedTab == 'Forms'">

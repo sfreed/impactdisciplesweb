@@ -1,7 +1,5 @@
-import { Component, Input, NgZone, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import CustomStore from 'devextreme/data/custom_store';
-import { ActivatedRoute, Router } from '@angular/router';
-import { take } from 'rxjs/operators';
 import { Page } from '../../common/models/editor/page.model';
 import { CardService } from '../../common/services/card.service';
 import { FormService } from '../../common/services/forms.service';
@@ -11,7 +9,7 @@ import { PageService } from '../../common/services/page.service';
   selector: 'app-page-maker',
   templateUrl: './page-maker.component.html'
 })
-export class PageMakerComponent implements OnInit {
+export class PageMakerComponent {
 
   @Input('page') page: Page;
 
@@ -22,8 +20,6 @@ export class PageMakerComponent implements OnInit {
   formSource: any = {};
 
   imageSelectVisible = false;
-  confirmPageSaveVisible = false;
-  confirmPageCancelVisible = false
 
   textEditorVisible = false;
 
@@ -35,10 +31,7 @@ export class PageMakerComponent implements OnInit {
 
   constructor(public pageService: PageService,
     public cardService: CardService,
-    public formService: FormService,
-    private route: ActivatedRoute,
-    public ngZone: NgZone,
-    public router: Router,) {
+    public formService: FormService) {
     this.onReorder = this.onReorder.bind(this);
 
     this.dataSource = new CustomStore({
@@ -58,34 +51,12 @@ export class PageMakerComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-
-    this.route.params.pipe(take(1)).subscribe(queryParams => {
-      if(queryParams['id'] != null){
-        this.pageService.getById(queryParams['id']).then(p => {
-          this.page = p;
-          this.page.dbId = queryParams['id'];
-          this.mode = 'edit';
-        });
-      } else {
-        this.mode = 'new';
-        this.page = { ...new Page()};
-      }
-    },err => console.error('Error in Page Maker Admin', err));
-
-  }
-
   addCard(card){
     this.page.cards.push(card);
   }
+
   addForm(form) {
     this.page.cards.push(form);
-  }
-
-  returnToPageAdministrator(){
-    this.ngZone.run(() => {
-      this.router.navigate(['/pages/page-administration']);
-    });
   }
 
   displayPageEditor (fieldname, page: Page) {
@@ -119,13 +90,7 @@ export class PageMakerComponent implements OnInit {
     this.imageSelectVisible = event;
   }
 
-  showSavePopup(){
-    this.confirmPageSaveVisible = true;
-  }
 
-  showCancelPopup(){
-    this.confirmPageCancelVisible = true;
-  }
 
   saveChanges(){
     if(this.page.dbId){
@@ -133,25 +98,11 @@ export class PageMakerComponent implements OnInit {
     } else {
       this.pageService.add(this.page);
     }
-
-
-    this.returnToPageAdministrator();
-
-    this.closeSaveChanges();
   }
 
-  closeSaveChanges(){
-    this.confirmPageSaveVisible = false;
-  }
 
-  cancelChanges(){
-    this.closeCancelChanges();
-    this.returnToPageAdministrator();
-  }
 
-  closeCancelChanges(){
-    this.confirmPageCancelVisible = false;
-  }
+
 
   onReorder(e) {
     var visibleRows = e.component.getVisibleRows(),

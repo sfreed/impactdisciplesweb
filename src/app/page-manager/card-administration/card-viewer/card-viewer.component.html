@@ -1,6 +1,6 @@
 <div class="container-fluid" id="card-display-container">
   <div id="script_anchor"></div>
-    <ng-template [ngIf]="card.card_section == 'Card' || card.card_section == '' || card.card_section == null">
+    <ng-template [ngIf]="!card.card_section || card.card_section == 'Card'">
       <div class="card" id="card-display" [style.background-color]="card.card_color">
         <div class="card-body">
           <app-card-header-view [view]="mode" [card]="card"></app-card-header-view>

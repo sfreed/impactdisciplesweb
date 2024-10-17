@@ -1,57 +1,50 @@
 <div class="container-fluid">
-    <ng-template [ngIf] = "loading | async">
-      <ng-template [ngIf]="currentForm != null">
-        <ng-template [ngIf]="mode=='edit'">
-          <div class="card">
-            <div class="card-body">
-              <div class="form">
-                <div class="dx-field">
-                  <div class="dx-field-label"><h3>Name</h3></div>
-                  <div class="dx-field-value">
-                    <dx-text-box style="float:left; width: 80%;"[(ngModel)]="currentForm.name"></dx-text-box>
-                    <dx-button style="float: right" name="angulareditor" location="after" (onClick)="preview()">Preview</dx-button>
-                  </div>
-                </div>
-                <hr color="#091D45" width="100%"/>
-                <app-form-header-view [view]="mode" [form]="currentForm"></app-form-header-view>
-                <app-form-body-view [form]="currentForm" [view]="mode"></app-form-body-view>
-              </div>
+  <ng-template [ngIf]="mode=='edit'">
+    <div class="card">
+      <div class="card-body">
+        <div class="form">
+          <div class="dx-field">
+            <div class="dx-field-label"><h3>Name</h3></div>
+            <div class="dx-field-value">
+              <dx-text-box style="float:left; width: 80%;"[(ngModel)]="form.name"></dx-text-box>
+              <dx-button style="float: right" name="angulareditor" location="after" (onClick)="preview()">Preview</dx-button>
             </div>
           </div>
-          <div class="row d-flex justify-content-end card-maker-buttons">
-            <button class="btn btn-primary mr-3" (click)="showSavePopup()">Save</button>
-            <button class="btn btn-primary" (click)="showCancelPopup()">Cancel</button>
-          </div>
-        </ng-template>
+          <hr color="#091D45" width="100%"/>
+          <app-form-header-view [view]="mode" [form]="form"></app-form-header-view>
+          <app-form-body-view [form]="form" [view]="mode"></app-form-body-view>
+        </div>
+      </div>
+    </div>
+    <div class="row d-flex justify-content-end card-maker-buttons">
+      <button class="btn btn-primary mr-3" (click)="showSavePopup()">Save</button>
+      <button class="btn btn-primary" (click)="showCancelPopup()">Cancel</button>
+    </div>
+  </ng-template>
 
+  <ng-template [ngIf]="mode=='preview'">
+    <dx-button style="float: right" name="angulareditor" location="after" (onClick)="preview()">Preview</dx-button>
 
-        <ng-template [ngIf]="mode=='preview'">
-          <dx-button style="float: right" name="angulareditor" location="after" (onClick)="preview()">Preview</dx-button>
-
-          <ng-template [ngIf]="currentForm.form_section == 'Card' || currentForm.form_section == '' || currentForm.form_section == null">
-            <div class="card" id="card-display" [style.background-color]="currentForm.form_color">
-              <div class="card-body">
-                <app-form-header-view [view]="mode" [form]="currentForm"></app-form-header-view>
-                <app-form-body-view [form]="currentForm" [view]="mode"></app-form-body-view>
-              </div>
-            </div>
-          </ng-template>
-
-          <ng-template [ngIf]="currentForm.form_section == 'Section'">
-            <div class="card" id="section-display"  [style.background-color]="currentForm.form_color">
-              <div class="section-body">
-                <app-form-header-view [view]="mode" [form]="currentForm"></app-form-header-view>
-                <app-form-body-view [form]="currentForm" [view]="mode"></app-form-body-view>
-              </div>
-            </div>
-          </ng-template>
-
-
-
-        </ng-template>
-      </ng-template>
+    <ng-template [ngIf]="form.form_section == 'Card' || form.form_section == '' || form.form_section == null">
+      <div class="card" id="card-display" [style.background-color]="form.form_color">
+        <div class="card-body">
+          <app-form-header-view [view]="mode" [form]="form"></app-form-header-view>
+          <app-form-body-view [form]="form" [view]="mode"></app-form-body-view>
+        </div>
+      </div>
     </ng-template>
+
+    <ng-template [ngIf]="form.form_section == 'Section'">
+      <div class="card" id="section-display"  [style.background-color]="form.form_color">
+        <div class="section-body">
+          <app-form-header-view [view]="mode" [form]="form"></app-form-header-view>
+          <app-form-body-view [form]="form" [view]="mode"></app-form-body-view>
+        </div>
+      </div>
+    </ng-template>
+  </ng-template>
   </div>
+
   <ng-container *ngIf="confirmPageSaveVisible">
     <dx-popup
       [width]="300"

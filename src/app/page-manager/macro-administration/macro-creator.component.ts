@@ -1,95 +1,90 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { DxDataGridComponent } from 'devextreme-angular';
+import { Component } from '@angular/core';
 import CustomStore from 'devextreme/data/custom_store';
 import { TextEditorMacro } from '../common/models/editor/text-editor-macro.model';
 import { MacroService } from '../common/services/macro.service';
+import DataSource from 'devextreme/data/data_source';
+import { BehaviorSubject, map, Observable } from 'rxjs';
+import notify from 'devextreme/ui/notify';
+import { confirm } from 'devextreme/ui/dialog';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-macro-creator',
   templateUrl: './macro-creator.component.html',
   styleUrls: ['./macro-creator.component.scss']
 })
-export class MacroCreatorComponent implements OnInit {
-  @ViewChild('macros') macrosList: DxDataGridComponent;
-  breadCrumbItems: Array<{}>;
-  dataSource: any = {};
-  macroEditVisible: boolean = false;
+export class MacroCreatorComponent {
+  datasource$: Observable<DataSource>;
 
-  editedMacro: TextEditorMacro = {... new TextEditorMacro()};
+  public editMacroVisible$ = new BehaviorSubject<boolean>(false);
+
+  macro: TextEditorMacro = {... new TextEditorMacro()};
 
   mode: string = 'edit'
 
-  constructor(macroService: MacroService) {
-    this.dataSource = new CustomStore({
-      key: "dbId",
-      loadMode: "raw",
-      load: function (loadOptions: any) {
-        return macroService.getAll();
-      },
-      byKey: function(key: string){
-        return macroService.getById(key)
-      },
-      insert: function(value: TextEditorMacro){
-        return macroService.add(value);
-      },
-      update: function(key: any, value:any) {
-        return macroService.update(key, value);
-      },
-      remove: function (key: any) {
-        return macroService.delete(key);
-      },
-    });
+  constructor(private service: MacroService,
+    private toasterService: ToastrService,
+  ) {
+    this.datasource$ = this.service.streamAll().pipe(
+      map(
+        (items) =>
+          new DataSource({
+            reshapeOnPush: true,
+            pushAggregationTimeout: 100,
+            store: new CustomStore({
+              key: 'id',
+              loadMode: 'raw',
+              load: function (loadOptions: any) {
+                return items;
+              }
+            })
+          })
+      )
+    );
   }
 
-  ngOnInit(): void {
-  }
-
-  onRowUpdating(options) {
-    options.newData = Object.assign(options.oldData, options.newData);
-  }
-
-  onToolbarPreparing(e) {
-    e.toolbarOptions.items.unshift({
-      location: 'after',
-      widget: 'dxButton',
-      options: {
-          icon: 'plus',
-          onClick: this.displayAddPage.bind(this)
-      }
-    });
-  }
-
-  displayEditPage(e){
-    this.mode = 'edit';
-    this.editedMacro = e.row.data;
-    this.macroEditVisible = true;
-  }
-
-  displayAddPage(e){
-    this.mode = "add";
-    this.editedMacro = {...new TextEditorMacro()}
-    this.macroEditVisible = true;
-  }
-
-  closePopup(){
-    this.macroEditVisible = false;
-  }
-
-  saveMacro(){
-    this.macroEditVisible = false;
-
-    if(this.mode == 'edit'){
-      this.dataSource.update(this.editedMacro.dbId, this.editedMacro).then(() => this.macrosList.instance.getDataSource().reload()).catch((error) => {
-        console.error('Error in Macro Creator Admin.', error);
+  saveChanges = () => {
+    if(this.macro.id){
+      this.service.update(this.macro.id, this.macro).then(macro =>{
+        this.toasterService.success('Macro Updated Successfully')
+        this.onEditCancel()
       });
     } else {
-      this.dataSource.insert(this.editedMacro).then(() => this.macrosList.instance.getDataSource().reload()).catch((error) => {
-        console.error('Error in Macro Creator Admin.', error);
+      this.service.add(this.macro).then(macro =>{
+        this.toasterService.success('Macro Created Successfully')
+        this.onEditCancel()
       });
     }
   }
 
-  getScreenHeight(): number{
-    return window.innerHeight*.65;
+  delete = ({ row: { data } }) => {
+    confirm('<i>Are you sure you want to delete this card?</i>', 'Confirm').then((dialogResult) => {
+      if (dialogResult) {
+        this.service.delete(data.id).then(() => {
+          notify({
+            message: 'Card Deleted',
+            position: 'top',
+            width: 600,
+            type: 'success'
+          });
+        })
+      }
+    });
+  }
+
+  displayMacroAdd = () => {
+    this.macro = {...new TextEditorMacro()};
+
+    this.editMacroVisible$.next(true);
+  }
+
+  displayMacroEdit = (e) => {
+    this.macro = e.row.data;
+
+    this.editMacroVisible$.next(true);
+  }
+
+  onEditCancel() {
+    this.editMacroVisible$.next(false);
   }
 }

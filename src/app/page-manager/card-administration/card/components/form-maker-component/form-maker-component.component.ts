@@ -93,7 +93,7 @@ export class FormMakerComponentComponent implements OnInit {
       this.formsService
         .add(form)
         .then((form) => {
-          this.component.form.submitted_form_id = form.dbId;
+          this.component.form.submitted_form_id = form.id;
           this.viewConfig = false;
         })
         .catch((error) => {

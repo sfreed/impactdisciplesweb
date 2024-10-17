@@ -1,7 +1,7 @@
 <dx-toolbar class="content-list__header py-2 px-2 px-2">
   <dxi-item location="after">
     <div *dxTemplate>
-      <dx-button class="icon-button manage-button" hint="MANAGE PRODUCTS">
+      <dx-button class="icon-button manage-button" hint="MANAGE PAGES">
         <div *dxTemplate="let data of 'content'">
           <div class="d-flex">
             <i class="dx-icon-preferences"></i>
@@ -23,7 +23,7 @@
   id="gridContainer"
   [dataSource]="datasource$ | async"
   [height]="'75vh'"
-  [showBorders]="false"
+  [showBorders]="true"
   [showColumnLines]="true"
   [showColumnLines]="true"
   [showRowLines]="true"
@@ -31,10 +31,6 @@
   [columnAutoWidth]="true">
   <dxo-load-panel [enabled]="true"></dxo-load-panel>
   <dxo-scrolling mode="virtual"></dxo-scrolling>
-  <dxo-search-panel [visible]="true" [width]="240" placeholder="Search..."></dxo-search-panel>
-  <dxo-load-panel [enabled]="true"></dxo-load-panel>
-  <dxo-scrolling mode="virtual"></dxo-scrolling>
-  <dxo-sorting mode="multiple"></dxo-sorting>
 
   <dxi-column dataField="name"></dxi-column>
   <dxi-column dataField="id"></dxi-column>
@@ -86,13 +82,13 @@
     [height]="'100%'"
     [width]="'100%'"
     [showTitle]="true"
-    title="Card Previewer"
+    title="Page Previewer"
     [dragEnabled]="false"
     [hideOnOutsideClick]="true"
     [visible]="previewPageVisible$ | async"
     (onHiding)="onPreviewCancel()">
     <dx-scroll-view [height]="'87%'">
-      <app-page-viewer [page]="page" [mode]="'preview'"></app-page-viewer>
+      <app-page-viewer [page]="page" [mode]="'display'"></app-page-viewer>
     </dx-scroll-view>
     <div class="add-item-modal__button-group pt-1">
       <dx-button

@@ -4,7 +4,6 @@ import { CardComponentUrl } from "./card.model";
 
 export class Form extends BaseModel{
   type: string = 'Form';
-  dbId: string;
   name: string;
   rows: FormRow[] = [];
   form_color: string =  '#ffffff';

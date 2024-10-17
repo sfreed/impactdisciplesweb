@@ -8,7 +8,6 @@ import { MenuItem } from "../common/models/editor/menu.model";
 import { Page } from "../common/models/editor/page.model";
 import { MenuService } from "../common/services/menu.service";
 import { PageService } from "../common/services/page.service";
-import { AGENT_TYPE } from "../common/lists/agent-type.enum";
 
 
 @Component({
@@ -129,10 +128,6 @@ export class MenuAdministrationComponent implements OnInit {
     ];
 
     for (const value in Role) {
-      this.roles.push(value);
-    }
-
-    for (const value in AGENT_TYPE) {
       this.roles.push(value);
     }
 

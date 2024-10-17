@@ -1,6 +1,6 @@
 export class TextEditorMacroPadding {
-    left: string;
-    top: string;
-    right: string;
-    bottom: string;
+    left: number;
+    top: number;
+    right: number;
+    bottom: number;
 }

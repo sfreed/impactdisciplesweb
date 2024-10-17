@@ -7,26 +7,8 @@
             (onRowUpdating)="onRowUpdating($event)">
             <dxo-load-panel [enabled]="true"></dxo-load-panel>
             <dxo-scrolling mode="virtual"></dxo-scrolling>
-            <dxo-editing mode="popup"
-                [allowAdding]="true"
-                [allowUpdating]="true"
-                [allowDeleting]="true"
-                [useIcons]="true">
-                <dxo-popup title="Splash Information"
-                    [showTitle]="true"
-                    [width]="700"
-                    [height]="getScreenHeight()">
-                </dxo-popup>
-                <dxo-form>
-                    <dxi-item itemType="group" [colCount]="2" [colSpan]="2">
-                        <dxi-item dataField="title"></dxi-item>
-                        <dxi-item dataField="card_id"></dxi-item>
-                        <dxi-item dataField="field"></dxi-item>
-                        <dxi-item dataField="value"></dxi-item>
-                    </dxi-item>
-                </dxo-form>
-            </dxo-editing>
             <dxi-column dataField="title"></dxi-column>
+
             <dxi-column dataField="field">
                 <dxo-lookup [dataSource]="fieldSource" [allowClearing]="false" [displayExpr]="'name'" [valueExpr]="'value'"></dxo-lookup>
             </dxi-column>

@@ -24,8 +24,7 @@ export class PageAdministrationComponent {
   public previewPageVisible$ = new BehaviorSubject<boolean>(false);
 
   constructor(public service: PageService,
-    public toasterService: ToastrService
-  ) {
+    public toasterService: ToastrService) {
       this.datasource$ = this.service.streamAll().pipe(
         map(
           (items) =>
@@ -72,6 +71,7 @@ export class PageAdministrationComponent {
       }
     });
   }
+
   displayPageAdd = () => {
     this.page = {...new Page()};
 

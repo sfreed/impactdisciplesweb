@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule} from '@angular/common';
 import { MacroCreatorComponent } from './macro-creator.component';
-import { DxButtonModule, DxDataGridModule, DxNumberBoxModule, DxPopupModule, DxSelectBoxModule, DxTextBoxModule } from 'devextreme-angular';
+import { DxButtonModule, DxColorBoxModule, DxContextMenuModule, DxDataGridModule, DxNumberBoxModule, DxPopupModule, DxSelectBoxModule, DxTextBoxModule, DxToolbarModule } from 'devextreme-angular';
 import { FormsModule } from '@angular/forms';
 import { MacroRouting } from './macro-routing.module';
 
@@ -15,8 +15,11 @@ import { MacroRouting } from './macro-routing.module';
     CommonModule,
     FormsModule,
     DxDataGridModule,
+    DxColorBoxModule,
     DxPopupModule,
     DxTextBoxModule,
+    DxToolbarModule,
+    DxContextMenuModule,
     DxSelectBoxModule,
     DxNumberBoxModule,
     DxButtonModule

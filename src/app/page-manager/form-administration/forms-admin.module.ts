@@ -4,7 +4,7 @@ import { FormAdministrationComponent } from './form-administration.component';
 import { FormMakerComponent } from './form-maker/form-maker.component';
 import { FormResultsComponent } from './form-results/form-results.component';
 import { FormViewerComponent } from './form-viewer/form-viewer.component';
-import { DxButtonModule, DxCheckBoxModule, DxColorBoxModule, DxDataGridModule, DxDateBoxModule, DxNumberBoxModule, DxPopupModule, DxRadioGroupModule, DxScrollViewModule, DxSelectBoxModule, DxSortableModule, DxSwitchModule, DxTagBoxModule, DxTextAreaModule, DxTextBoxModule, DxTooltipModule, DxValidatorModule } from 'devextreme-angular';
+import { DxButtonModule, DxCheckBoxModule, DxColorBoxModule, DxContextMenuModule, DxDataGridModule, DxDateBoxModule, DxNumberBoxModule, DxPopupModule, DxRadioGroupModule, DxScrollViewModule, DxSelectBoxModule, DxSortableModule, DxSwitchModule, DxTagBoxModule, DxTextAreaModule, DxTextBoxModule, DxToolbarModule, DxTooltipModule, DxValidatorModule } from 'devextreme-angular';
 import { FormBodyViewComponent } from './form/body-view/body-view.component';
 import { FormHeaderViewComponent } from './form/header-view/header-view.component';
 import { FormsModule } from '@angular/forms';
@@ -42,6 +42,8 @@ import { SafePipesModule } from '../common/pipes/safe-pipes.modult';
     DxDataGridModule,
     DxPopupModule,
     DxTextBoxModule,
+    DxToolbarModule,
+    DxContextMenuModule,
     DxNumberBoxModule,
     DxSelectBoxModule,
     DxButtonModule,

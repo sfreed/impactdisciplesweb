@@ -78,7 +78,7 @@ export class FormBodyViewComponent implements OnInit {
   }
 
   saveForm(e) {
-    this.formToSubmit.dbId = this.form.dbId;
+    this.formToSubmit.dbId = this.form.id;
     // this.formToSubmit.submitted_by_display_name = this.authService.authDao.currentAgent$.getValue()?.p_agent_name;
     // this.formToSubmit.submitted_by_email = this.authService.authDao.currentAgent$.getValue()?.p_email;
     this.formToSubmit.submitted_date = new Date().toUTCString();

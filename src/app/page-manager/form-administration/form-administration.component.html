@@ -1,40 +1,127 @@
-<div class="container-fluid">
-    <div id="data-grid-demo">
-        <dx-data-grid id="gridContainer" [dataSource]="dataSource" [showBorders]="true" [renderAsync]="true" (onRowUpdating)="onRowUpdating($event)" (onToolbarPreparing)="onToolbarPreparing($event)">
-
-            <dxo-search-panel [visible]="true" [width]="240" placeholder="Search..."></dxo-search-panel>
-            <dxo-load-panel [enabled]="true"></dxo-load-panel>
-            <dxo-scrolling mode="virtual"></dxo-scrolling>
-            <dxo-editing mode="popup" [allowUpdating]="true" [allowDeleting]="true" [useIcons]="true">
-                <dxo-popup title="Form Information" [showTitle]="true" [width]="700" [height]="getScreenHeight()">
-                </dxo-popup>
-            </dxo-editing>
-            <dxo-sorting mode="multiple"></dxo-sorting>
-            <dxi-column type="buttons" [width]="110" [fixed]="true">
-                <dxi-button hint="Preview" icon="search" [visible]="true" [onClick]="displayFormPreview.bind(this)">
-                </dxi-button>
-                <dxi-button name="edit" [onClick]="displayFormEdit.bind(this)"></dxi-button>
-                <dxi-button name="delete"></dxi-button>
-            </dxi-column>
-            <dxi-column dataField="name"></dxi-column>
-            <dxi-column dataField="dbId"></dxi-column>
-            <dxi-column type="buttons" [caption]="'Results'" [width]="75">
-                <dxi-button hint="View Results" icon="box" [visible]="true" [onClick]="viewFormResults.bind(this)">
-                </dxi-button>
-            </dxi-column>
-        </dx-data-grid>
+<dx-toolbar class="content-list__header py-2 px-2 px-2">
+  <dxi-item location="after">
+    <div *dxTemplate>
+      <dx-button class="icon-button manage-button" hint="MANAGE CARDS">
+        <div *dxTemplate="let data of 'content'">
+          <div class="d-flex">
+            <i class="dx-icon-preferences"></i>
+          </div>
+          <dx-context-menu
+            target=".manage-button"
+            showEvent="dxclick"
+            [position]="{ my: { x: 'center', y: 'top' }, at: 'left bottom' }">
+            <dxi-item text="New" icon="add" [onClick]="displayFormAdd"></dxi-item>
+          </dx-context-menu>
+        </div>
+      </dx-button>
     </div>
+  </dxi-item>
+</dx-toolbar>
 
-    <ng-container *ngIf="confirePublishFormVisible">
-        <dx-popup [width]="300" [height]="250" [showTitle]="true" title="Publish Form Changes?" [dragEnabled]="false" [hideOnOutsideClick]="true" [(visible)]="confirePublishFormVisible">
-            <p>Publishing this form will push all your changes into production. Are you sure you want to do this?</p>
-            <div class="row d-flex mt-5 justify-content-around" style="margin: 0 auto;">
-                <div class="col-lg-6 text-center">
-                  <dx-button width="100" stylingMode="contained" text="Save" type="default" (onClick)="publishForm($event)"></dx-button>
-                </div>
-                <div class="col-lg-6 text-center">
-                  <dx-button width="100" stylingMode="contained" text="Cancel" type="default" (onClick)="closePublishFormWarning()"></dx-button>
-                </div>
-              </div>
-        </dx-popup>
-    </ng-container>
+<dx-data-grid
+  #cardTable
+  id="gridContainer"
+  [dataSource]="datasource$ | async"
+  [height]="'75vh'"
+  [showBorders]="true"
+  [showColumnLines]="true"
+  [showColumnLines]="true"
+  [showRowLines]="true"
+  [focusedRowEnabled]="true"
+  [columnAutoWidth]="true">
+  <dxo-load-panel [enabled]="true"></dxo-load-panel>
+  <dxo-scrolling mode="virtual"></dxo-scrolling>
+
+  <dxi-column dataField="name"></dxi-column>
+  <dxi-column dataField="dbId"></dxi-column>
+  <dxi-column type="buttons" [caption]="'Results'" [width]="75">
+    <dxi-button hint="Preview" icon="search" [onClick]="displayFormPreview"></dxi-button>
+    <dxi-button hint="Edit" icon="edit" [onClick]="displayFormEdit"></dxi-button>
+    <dxi-button hint="Delete" icon="trash" [onClick]="delete"></dxi-button>
+    <dxi-button hint="View Results" icon="box" [visible]="true" [onClick]="viewFormResults"></dxi-button>
+  </dxi-column>
+</dx-data-grid>
+
+<ng-container *ngIf="editFormVisible$ | async">
+  <dx-popup
+    [height]="'100%'"
+    [width]="'100%'"
+    [showTitle]="true"
+    title="Form Maker"
+    [dragEnabled]="false"
+    [hideOnOutsideClick]="true"
+    [visible]="editFormVisible$ | async"
+    (onHiding)="onEditCancel()">
+    <dx-scroll-view [height]="'87%'">
+      <app-form-maker [form]="form" [mode]="'edit'"></app-form-maker>
+    </dx-scroll-view>
+    <div class="add-item-modal__button-group pd-1">
+      <dx-button
+        text="PREVIEW"
+        stylingMode="contained"
+        type="normal"
+        (onClick)="displayFormEditPreview($event)">
+      </dx-button>
+      <dx-button
+        text="CANCEL"
+        stylingMode="contained"
+        type="normal"
+        (onClick)="onEditCancel()">
+      </dx-button>
+      <dx-button
+        text="SAVE"
+        stylingMode="contained"
+        type="normal"
+        (onClick)="saveChanges()">
+      </dx-button>
+    </div>
+  </dx-popup>
+</ng-container>
+
+<ng-container *ngIf="previewFormVisible$ | async">
+  <dx-popup
+    [height]="'100%'"
+    [width]="'100%'"
+    [showTitle]="true"
+    title="Card Previewer"
+    [dragEnabled]="false"
+    [hideOnOutsideClick]="true"
+    [visible]="previewFormVisible$ | async"
+    (onHiding)="onPreviewCancel()">
+    <dx-scroll-view [height]="'87%'">
+      <app-form-viewer [form]="form" [mode]="'edit'"></app-form-viewer>
+    </dx-scroll-view>
+    <div class="add-item-modal__button-group pt-1">
+      <dx-button
+        text="CANCEL"
+        stylingMode="contained"
+        type="normal"
+        (onClick)="onPreviewCancel()">
+      </dx-button>
+    </div>
+  </dx-popup>
+</ng-container>
+
+<ng-container *ngIf="resultsFormVisible$ | async">
+  <dx-popup
+    [height]="'100%'"
+    [width]="'100%'"
+    [showTitle]="true"
+    title="Card Previewer"
+    [dragEnabled]="false"
+    [hideOnOutsideClick]="true"
+    [visible]="resultsFormVisible$ | async"
+    (onHiding)="onPreviewCancel()">
+    <dx-scroll-view [height]="'87%'">
+      <app-form-results [form]="form"></app-form-results>
+    </dx-scroll-view>
+    <div class="add-item-modal__button-group pt-1">
+      <dx-button
+        text="CANCEL"
+        stylingMode="contained"
+        type="normal"
+        (onClick)="onPreviewCancel()">
+      </dx-button>
+    </div>
+  </dx-popup>
+</ng-container>

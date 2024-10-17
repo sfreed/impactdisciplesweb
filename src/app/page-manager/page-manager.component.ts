@@ -8,15 +8,14 @@ import { Tab } from 'impactdisciplescommon/src/models/utils/tab.model';
 })
 export class PageManagerComponent {
   selectedIndex: number = 0;
-  selectedTab: string = 'Cards';
+  selectedTab: string = 'Pages';
 
   tabs: Tab[] = [
-    { id: 0, text: 'Cards', template: 'Cards' },
-    { id: 1, text: 'Components', template: 'Components' },
-    { id: 2, text: 'Forms', template: 'Forms' },
-    { id: 3, text: 'Macros', template: 'Macros' },
-    { id: 4, text: 'Menu', template: 'Menu' },
-    { id: 5, text: 'Pages', template: 'Pages' },
+    { id: 1, text: 'Pages', template: 'Pages' },
+    { id: 2, text: 'Cards', template: 'Cards' },
+    { id: 3, text: 'Forms', template: 'Forms' },
+    { id: 4, text: 'Macros', template: 'Macros' },
+    { id: 5, text: 'Menu', template: 'Menu' },
     { id: 6, text: 'Splash Screens', template: 'Splash Screens' }
   ];
 
