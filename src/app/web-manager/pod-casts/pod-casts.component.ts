@@ -26,8 +26,8 @@ export class PodCastsComponent implements OnInit{
   podCastCategories: TagModel[] = [];
   itemType = 'Pod Cast'
 
-  public inProgress$ = new BehaviorSubject<boolean>(false)
-  public isVisible$ = new BehaviorSubject<boolean>(false);
+  public inProgress$ = new BehaviorSubject<boolean>(false);
+  public isEditVisible$ = new BehaviorSubject<boolean>(false);
   public isCategoriesVisible$ = new BehaviorSubject<boolean>(false);
   public isSingleImageVisible$ = new BehaviorSubject<boolean>(false);
 
@@ -66,13 +66,13 @@ export class PodCastsComponent implements OnInit{
 
   showEditModal = (e) => {
     this.selectedItem = (Object.assign({}, e.data));
-    this.isVisible$.next(true);
+    this.isEditVisible$.next(true);
   }
 
   showAddModal = () => {
     this.selectedItem = {... new PodCastModel()};
     this.selectedItem.date = Timestamp.now();
-    this.isVisible$.next(true);
+    this.isEditVisible$.next(true);
   }
 
   showCategoriesModal = () => {
@@ -97,6 +97,8 @@ export class PodCastsComponent implements OnInit{
   syncPodcasts = () => {
     confirm('<i>Are you sure you want to syncronize these records?</i>', 'Confirm').then((dialogResult) => {
       if (dialogResult) {
+        this.inProgress$.next(true);
+
         this.service.getVideoInfo().then(vids => {
           vids.forEach(async video => {
             let podCast: PodCastModel = await this.service.getById(video.id);
@@ -116,7 +118,15 @@ export class PodCastsComponent implements OnInit{
             podCast.videoType = "Youtube";
             podCast.description = video.snippet.description;
 
-            await this.service.update(podCast.id, podCast);
+            await this.service.update(podCast.id, podCast).then(() => {
+              notify({
+                message: 'Podcasts Synced up with Youtube',
+                position: 'top',
+                width: 600,
+                type: 'success'
+              });
+              this.inProgress$.next(false);
+            });
           })
       })
       }
@@ -174,7 +184,7 @@ export class PodCastsComponent implements OnInit{
   onCancel() {
     this.selectedItem = null;
     this.inProgress$.next(false);
-    this.isVisible$.next(false);
+    this.isEditVisible$.next(false);
   }
 
   onCategoriesCancel() {
