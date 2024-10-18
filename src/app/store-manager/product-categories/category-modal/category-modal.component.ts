@@ -4,7 +4,7 @@ import { ShowCategoryModal } from './category-modal.actions';
 import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
 import { DxFormComponent } from 'devextreme-angular';
 import { TagModel } from 'impactdisciplescommon/src/models/domain/tag.model';
-import { ProductCategoriesService } from 'impactdisciplescommon/src/services/utils/product-categories.service';
+import { ProductCategoriesService } from 'impactdisciplescommon/src/services/data/product-categories.service';
 import notify from 'devextreme/ui/notify';
 
 @Component({
@@ -14,7 +14,7 @@ import notify from 'devextreme/ui/notify';
 })
 export class CategoryModalComponent implements OnInit, OnDestroy {
   @ViewChild('addEditForm', { static: false }) addEditForm: DxFormComponent;
-  
+
   public category: TagModel = {};
 
   public inProgress$ = new BehaviorSubject<boolean>(false);

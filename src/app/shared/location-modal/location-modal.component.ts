@@ -3,12 +3,12 @@ import { Actions, ofActionSuccessful, Store } from '@ngxs/store';
 import { LocationModel } from 'impactdisciplescommon/src/models/domain/location.model';
 import { BehaviorSubject, Observable, Subject, takeUntil } from 'rxjs';
 import { LocationSaved, ShowLocationModal } from './location-modal.actions';
-import { LocationService } from 'impactdisciplescommon/src/services/location.service';
 import notify from 'devextreme/ui/notify';
 import { PHONE_TYPES } from 'impactdisciplescommon/src/lists/phone_types.enum';
 import { EnumHelper } from 'impactdisciplescommon/src/utils/enum_helper';
 import { OrganizationModel } from 'impactdisciplescommon/src/models/domain/organization.model';
-import { OrganizationService } from 'impactdisciplescommon/src/services/organization.service';
+import { OrganizationService } from 'impactdisciplescommon/src/services/data/organization.service';
+import { LocationService } from 'impactdisciplescommon/src/services/data/location.service';
 
 @Component({
   selector: 'app-location-modal',

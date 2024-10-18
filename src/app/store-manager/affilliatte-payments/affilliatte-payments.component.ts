@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Timestamp } from 'firebase/firestore';
 import { AffilliatePaymentModel } from 'impactdisciplescommon/src/models/utils/affilliate-payment.model';
 import { CouponModel } from 'impactdisciplescommon/src/models/utils/coupon.model';
-import { AffilliatePaymentsService } from 'impactdisciplescommon/src/services/utils/affiliate-payment.service';
+import { AffilliatePaymentsService } from 'impactdisciplescommon/src/services/data/affiliate-payment.service';
 import { dateFromTimestamp } from 'impactdisciplescommon/src/utils/date-from-timestamp';
 import { map, Observable } from 'rxjs';
 

@@ -1,10 +1,10 @@
 import { ToastrService } from 'ngx-toastr';
 import { Component, OnInit } from '@angular/core';
 import { WebConfigModel } from 'impactdisciplescommon/src/models/utils/web-config.model';
-import { WebConfigService } from 'impactdisciplescommon/src/services/utils/web-config.service';
+import { WebConfigService } from 'impactdisciplescommon/src/services/data/web-config.service';
 import { BehaviorSubject, map, Observable } from 'rxjs';
 import { FileImportService } from 'impactdisciplescommon/src/services/utils/file-import.service';
-import { TaxRateService } from 'impactdisciplescommon/src/services/utils/tax-rate.service';
+import { TaxRateService } from 'impactdisciplescommon/src/services/data/tax-rate.service';
 import DataSource from 'devextreme/data/data_source';
 import CustomStore from 'devextreme/data/custom_store';
 import { Timestamp } from 'firebase/firestore';

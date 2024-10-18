@@ -6,7 +6,7 @@ import notify from 'devextreme/ui/notify';
 import { confirm } from 'devextreme/ui/dialog';
 import { PHONE_TYPES } from 'impactdisciplescommon/src/lists/phone_types.enum';
 import { ConsultationSurveyModel } from 'impactdisciplescommon/src/models/domain/consultation-survey.model';
-import { ConsultationSurveyService } from 'impactdisciplescommon/src/services/consultation-survey.service';
+import { ConsultationSurveyService } from 'impactdisciplescommon/src/services/data/consultation-survey.service';
 import { EnumHelper } from 'impactdisciplescommon/src/utils/enum_helper';
 import { BehaviorSubject, Observable, map } from 'rxjs';
 import { Phone } from 'impactdisciplescommon/src/models/domain/utils/phone.model';

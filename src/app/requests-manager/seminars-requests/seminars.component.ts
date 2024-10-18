@@ -4,15 +4,15 @@ import CustomStore from 'devextreme/data/custom_store';
 import DataSource from 'devextreme/data/data_source';
 import { PHONE_TYPES } from 'impactdisciplescommon/src/lists/phone_types.enum';
 import { SeminarModel } from 'impactdisciplescommon/src/models/domain/seminar.model';
-import { SeminarService } from 'impactdisciplescommon/src/services/seminar.service';
 import { EnumHelper } from 'impactdisciplescommon/src/utils/enum_helper';
 import { BehaviorSubject, Observable, map } from 'rxjs';
 import notify from 'devextreme/ui/notify';
 import { confirm } from 'devextreme/ui/dialog';
 import { Phone } from 'impactdisciplescommon/src/models/domain/utils/phone.model';
 import { Address } from 'impactdisciplescommon/src/models/domain/utils/address.model';
-import { CoachService } from 'impactdisciplescommon/src/services/coach.service';
 import { CoachModel } from 'impactdisciplescommon/src/models/domain/coach.model';
+import { CoachService } from 'impactdisciplescommon/src/services/data/coach.service';
+import { SeminarService } from 'impactdisciplescommon/src/services/data/seminar.service';
 
 @Component({
   selector: 'app-seminars',

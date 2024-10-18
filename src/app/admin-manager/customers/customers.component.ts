@@ -8,14 +8,12 @@ import { confirm } from 'devextreme/ui/dialog';
 import { EnumHelper } from 'impactdisciplescommon/src/utils/enum_helper';
 import { Address } from 'impactdisciplescommon/src/models/domain/utils/address.model';
 import { Phone } from 'impactdisciplescommon/src/models/domain/utils/phone.model';
-import { CustomerService } from 'impactdisciplescommon/src/services/admin/customer.service';
+import { CustomerService } from 'impactdisciplescommon/src/services/data/customer.service';
 import { CustomerModel } from 'impactdisciplescommon/src/models/domain/utils/customer.model';
-import { SalesService } from 'impactdisciplescommon/src/services/utils/sales.service';
-import { EventService } from 'impactdisciplescommon/src/services/event.service';
-import { EventRegistrationService } from 'impactdisciplescommon/src/services/event-registration.service';
+import { SalesService } from 'impactdisciplescommon/src/services/data/sales.service';
 import { EventModel } from 'impactdisciplescommon/src/models/domain/event.model';
 import { EventRegistrationModel } from 'impactdisciplescommon/src/models/domain/event-registration.model';
-import { OrganizationService } from 'impactdisciplescommon/src/services/organization.service';
+import { OrganizationService } from 'impactdisciplescommon/src/services/data/organization.service';
 import { OrganizationModel } from 'impactdisciplescommon/src/models/domain/organization.model';
 import { LocationModel } from 'impactdisciplescommon/src/models/domain/location.model';
 import { CheckoutForm } from 'impactdisciplescommon/src/models/utils/cart.model';
@@ -24,16 +22,18 @@ import { AuthService } from 'impactdisciplescommon/src/services/utils/auth.servi
 import { EmailList } from 'impactdisciplescommon/src/models/utils/email-list.model';
 import { Timestamp } from 'firebase/firestore';
 import { CustomerEmailModel } from 'impactdisciplescommon/src/models/domain/customer-email.model';
-import { EmailListService } from 'impactdisciplescommon/src/services/email-list.service';
-import { EMailService } from 'impactdisciplescommon/src/services/admin/email.service';
+import { EMailService } from 'impactdisciplescommon/src/services/data/email.service';
 import { ToastrService } from 'ngx-toastr';
-import { CustomerEmailService } from 'impactdisciplescommon/src/services/admin/customer-email.service';
+import { CustomerEmailService } from 'impactdisciplescommon/src/services/data/customer-email.service';
 import { environment } from 'src/environments/environment';
 import { CustomerNoteModel } from 'impactdisciplescommon/src/models/domain/utils/customer-note.model';
 import { AppUser } from 'impactdisciplescommon/src/models/admin/appuser.model';
-import { LocationService } from 'impactdisciplescommon/src/services/location.service';
 import { exportDataGrid } from 'devextreme/pdf_exporter';
 import jsPDF from 'jspdf';
+import { EmailListService } from 'impactdisciplescommon/src/services/data/email-list.service';
+import { EventRegistrationService } from 'impactdisciplescommon/src/services/data/event-registration.service';
+import { EventService } from 'impactdisciplescommon/src/services/data/event.service';
+import { LocationService } from 'impactdisciplescommon/src/services/data/location.service';
 
 @Component({
   selector: 'app-customers',
@@ -143,7 +143,7 @@ export class CustomersComponent implements OnInit {
         this.selectedRows.push(item.id)
       })
     } else if(!event.value) {
-      this.selectedList = null;
+      this.selectedList = {... new EmailList()};
       this.selectedRows = [];
     }
   }
@@ -372,7 +372,6 @@ export class CustomersComponent implements OnInit {
   }
 
   onCancel() {
-    this.selectedItem = null;
     this.inProgress$.next(false);
     this.isVisible$.next(false);
   }

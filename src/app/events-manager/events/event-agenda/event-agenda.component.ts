@@ -4,11 +4,11 @@ import Query from 'devextreme/data/query';
 import { DxSchedulerTypes } from 'devextreme-angular/ui/scheduler';
 import { EventModel } from 'impactdisciplescommon/src/models/domain/event.model';
 import { CourseModel } from 'impactdisciplescommon/src/models/domain/course.model';
-import { CourseService } from 'impactdisciplescommon/src/services/course.service';
-import { CoachService } from 'impactdisciplescommon/src/services/coach.service';
 import { CoachModel } from 'impactdisciplescommon/src/models/domain/coach.model';
 import { TrainingRoomModel } from 'impactdisciplescommon/src/models/domain/training-room.model';
-import { LocationService } from 'impactdisciplescommon/src/services/location.service';
+import { CoachService } from 'impactdisciplescommon/src/services/data/coach.service';
+import { CourseService } from 'impactdisciplescommon/src/services/data/course.service';
+import { LocationService } from 'impactdisciplescommon/src/services/data/location.service';
 
 @Component({
   selector: 'app-event-agenda',

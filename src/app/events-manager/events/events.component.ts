@@ -1,9 +1,7 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { DxDataGridComponent, DxDropDownBoxComponent, DxFormComponent } from 'devextreme-angular';
+import { DxDropDownBoxComponent, DxFormComponent } from 'devextreme-angular';
 import { EventModel } from 'impactdisciplescommon/src/models/domain/event.model';
-import { EventService } from 'impactdisciplescommon/src/services/event.service';
-import { OrganizationService } from 'impactdisciplescommon/src/services/organization.service';
-import { LocationService } from 'impactdisciplescommon/src/services/location.service';
+import { OrganizationService } from 'impactdisciplescommon/src/services/data/organization.service';
 import { OrganizationModel } from 'impactdisciplescommon/src/models/domain/organization.model';
 import { LocationModel } from 'impactdisciplescommon/src/models/domain/location.model';
 import { BehaviorSubject, map, Observable, Subject, takeUntil } from 'rxjs';
@@ -14,7 +12,9 @@ import { confirm } from 'devextreme/ui/dialog';
 import { Actions, ofActionSuccessful, Store } from '@ngxs/store';
 import { LocationSaved, ShowLocationModal } from 'src/app/shared/location-modal/location-modal.actions';
 import { OrganizationSaved, ShowOrganizationModal } from 'src/app/shared/organization-modal/organization-modal.actions';
-import { EMailTemplatesService } from 'impactdisciplescommon/src/services/admin/email-templates.service';
+import { EMailTemplatesService } from 'impactdisciplescommon/src/services/data/email-templates.service';
+import { EventService } from 'impactdisciplescommon/src/services/data/event.service';
+import { LocationService } from 'impactdisciplescommon/src/services/data/location.service';
 
 @Component({
   selector: 'app-events',

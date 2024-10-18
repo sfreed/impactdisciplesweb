@@ -6,8 +6,8 @@ import { EventModel } from 'impactdisciplescommon/src/models/domain/event.model'
 import { FAQModel } from 'impactdisciplescommon/src/models/utils/faq.model';
 import { BehaviorSubject, map, Observable } from 'rxjs';
 import { DxFormComponent } from 'devextreme-angular';
-import { FAQService } from 'impactdisciplescommon/src/services/faq.service';
 import CustomStore from 'devextreme/data/custom_store';
+import { FAQService } from 'impactdisciplescommon/src/services/data/faq.service';
 
 @Component({
   selector: 'app-faq',

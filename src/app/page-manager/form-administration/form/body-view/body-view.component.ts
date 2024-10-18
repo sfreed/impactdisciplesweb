@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { AuthService } from 'impactdisciplescommon/src/services/utils/auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { input_type_values } from 'src/app/page-manager/common/lists/card-fields.list';
 import { Form, FormInputs, FormRow } from 'src/app/page-manager/common/models/editor/form.model';
@@ -26,7 +25,7 @@ export class FormBodyViewComponent implements OnInit {
 
   formToSubmit: any = {};
 
-  constructor(private authService: AuthService, private formsService: FormService, public toster: ToastrService) {}
+  constructor(private formsService: FormService, public toster: ToastrService) {}
 
   toggleHelp() {
     this.helpVisible = !this.helpVisible;

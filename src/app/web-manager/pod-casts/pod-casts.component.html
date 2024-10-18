@@ -43,7 +43,7 @@
 
   <dxi-column dataField="isActive" dataType="boolean" [caption]="'Live'" cellTemplate="isActiveCellTemplate" [width]="120"></dxi-column>
   <dxi-column dataField="thumbnail" [width]="120" cellTemplate="cellTemplate"></dxi-column>
-  <dxi-column dataField="date" [dataType]="'datetime'" [sortOrder]="'desc'"></dxi-column>
+  <dxi-column dataField="date" [dataType]="'date'" [sortOrder]="'desc'"></dxi-column>
   <dxi-column dataField="title"></dxi-column>
   <dxi-column dataField="category">
     <dxo-lookup [dataSource]="podCastCategories" [displayExpr]="'tag'" [valueExpr]="'id'"></dxo-lookup>
@@ -71,26 +71,26 @@
 <dx-popup
   [showTitle]="true"
   [dragEnabled]="false"
-  [visible]="isVisible$ | async"
+  [visible]="isEditVisible$ | async"
   [width]="'60%'"
   [height]="'60%'"
   [showCloseButton]="true"
   (onHiding)="onCancel()">
-  <dxi-toolbar-item toolbar="top" location="center" *ngIf="isVisible$ | async">
+  <dxi-toolbar-item toolbar="top" location="center">
     <div *dxTemplate>
       <p class="popup-title">
         {{ selectedItem?.id ? 'EDIT' : 'ADD' }} {{itemType | uppercase}}
       </p>
     </div>
   </dxi-toolbar-item>
-  <dxi-toolbar-item toolbar="top" location="after">
+  <dxi-toolbar-item toolbar="top" location="after" *ngIf="isEditVisible$ | async">
     <div *dxTemplate>
       <dx-switch [(value)]="selectedItem.isActive" [switchedOnText]="'Live'" [switchedOffText]="'Hidden'" [width]="100"></dx-switch>
     </div>
   </dxi-toolbar-item>
   <div *dxTemplate="let data of 'content'">
     <div class="add-item-modal">
-      <div class="add-item-modal__content" *ngIf="isVisible$ | async">
+      <div class="add-item-modal__content" *ngIf="isEditVisible$ | async">
         <dx-form [colCount]="2" [(formData)]="selectedItem">
           <dxi-item dataField="date" [editorType]="'dxDateBox'" [isRequired]="true" [colSpan]="1"></dxi-item>
           <dxi-item dataField="category" [colSpan]="1" [isRequired]="true">
@@ -173,3 +173,15 @@
   (onHiding)="onCategoriesCancel()">
   <app-pod-cast-categories (seriesSelectClosed)="onCategoriesCancel()"></app-pod-cast-categories>
 </dx-popup>
+
+<dx-load-panel
+    #loadPanel
+    shadingColor="rgba(0,0,0,0.4)"
+    [position]="{ of: '#upload' }"
+    [visible]="inProgress$ | async"
+    [message] = "'Please do not leave or refresh this page until complete!'"
+    [showIndicator]="true"
+    [showPane]="true"
+    [shading]="true"
+    [hideOnOutsideClick]="false">
+</dx-load-panel>

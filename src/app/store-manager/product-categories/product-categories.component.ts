@@ -7,7 +7,7 @@ import { DxFormComponent } from 'devextreme-angular';
 import CustomStore from 'devextreme/data/custom_store';
 import DataSource from 'devextreme/data/data_source';
 import { TagModel } from 'impactdisciplescommon/src/models/domain/tag.model';
-import { ProductCategoriesService } from 'impactdisciplescommon/src/services/utils/product-categories.service';
+import { ProductCategoriesService } from 'impactdisciplescommon/src/services/data/product-categories.service';
 import { Actions, ofActionDispatched, Store } from '@ngxs/store';
 import { ShowCategoryModal } from './category-modal/category-modal.actions';
 import { ShowProductCategoriesModal } from './product-categories-modal.actions';

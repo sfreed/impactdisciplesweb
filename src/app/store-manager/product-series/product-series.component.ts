@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Actions, ofActionDispatched, Store } from '@ngxs/store';
 import CustomStore from 'devextreme/data/custom_store';
 import DataSource from 'devextreme/data/data_source';
-import { SeriesService } from 'impactdisciplescommon/src/services/utils/series.service';
+import { SeriesService } from 'impactdisciplescommon/src/services/data/series.service';
 import { BehaviorSubject, map, Observable, Subject, takeUntil } from 'rxjs';
 import { ShowProductSeriesModal } from './product-series-modal.actions';
 import notify from 'devextreme/ui/notify';

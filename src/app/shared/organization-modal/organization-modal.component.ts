@@ -5,8 +5,8 @@ import notify from 'devextreme/ui/notify';
 import { PHONE_TYPES } from 'impactdisciplescommon/src/lists/phone_types.enum';
 import { EnumHelper } from 'impactdisciplescommon/src/utils/enum_helper';
 import { OrganizationModel } from 'impactdisciplescommon/src/models/domain/organization.model';
-import { OrganizationService } from 'impactdisciplescommon/src/services/organization.service';
 import { OrganizationSaved, ShowOrganizationModal } from './organization-modal.actions';
+import { OrganizationService } from 'impactdisciplescommon/src/services/data/organization.service';
 
 @Component({
   selector: 'app-organization-modal',

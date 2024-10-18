@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import CustomStore from 'devextreme/data/custom_store';
 import DataSource from 'devextreme/data/data_source';
 import { LogMessage } from 'impactdisciplescommon/src/models/utils/log-message.model';
-import { LoggerService } from 'impactdisciplescommon/src/services/utils/logger.service';
+import { LoggerService } from 'impactdisciplescommon/src/services/data/logger.service';
 import { Observable, map } from 'rxjs';
 
 @Component({

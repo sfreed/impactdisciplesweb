@@ -4,8 +4,8 @@ import { Timestamp } from 'firebase/firestore';
 import { AffilliatePaymentModel } from 'impactdisciplescommon/src/models/utils/affilliate-payment.model';
 import { AffilliateSaleModel } from 'impactdisciplescommon/src/models/utils/affilliate-sale.model';
 import { CouponModel } from 'impactdisciplescommon/src/models/utils/coupon.model';
-import { AffilliatePaymentsService } from 'impactdisciplescommon/src/services/utils/affiliate-payment.service';
-import { AffilliateSalesService } from 'impactdisciplescommon/src/services/utils/affiliate-sales.service';
+import { AffilliatePaymentsService } from 'impactdisciplescommon/src/services/data/affiliate-payment.service';
+import { AffilliateSalesService } from 'impactdisciplescommon/src/services/data/affiliate-sales.service';
 import { dateFromTimestamp } from 'impactdisciplescommon/src/utils/date-from-timestamp';
 import { map, Observable } from 'rxjs';
 

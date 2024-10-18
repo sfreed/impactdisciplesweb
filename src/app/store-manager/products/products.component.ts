@@ -6,12 +6,11 @@ import notify from 'devextreme/ui/notify';
 import { Observable, BehaviorSubject, map } from 'rxjs';
 import { confirm } from 'devextreme/ui/dialog';
 import { ProductModel } from 'impactdisciplescommon/src/models/utils/product.model';
-import { ProductService } from 'impactdisciplescommon/src/services/utils/product.service';
-import { ProductTagsService } from 'impactdisciplescommon/src/services/product-tags.service';
+import { ProductService } from 'impactdisciplescommon/src/services/data/product.service';
 import { DxTagBoxTypes } from 'devextreme-angular/ui/tag-box';
 import { TagModel } from 'impactdisciplescommon/src/models/domain/tag.model';
-import { SeriesService } from 'impactdisciplescommon/src/services/utils/series.service';
-import { ProductCategoriesService } from 'impactdisciplescommon/src/services/utils/product-categories.service';
+import { SeriesService } from 'impactdisciplescommon/src/services/data/series.service';
+import { ProductCategoriesService } from 'impactdisciplescommon/src/services/data/product-categories.service';
 import { SeriesModel } from 'impactdisciplescommon/src/models/utils/series.model';
 import { ShowProductCategoriesModal } from '../product-categories/product-categories-modal.actions';
 import { Store } from '@ngxs/store';
@@ -20,6 +19,7 @@ import { ShowSeriesModal } from '../product-series/series-modal/series-modal.act
 import { ShowCategoryModal } from '../product-categories/category-modal/category-modal.actions';
 import { UNIT_OF_MEASURE } from 'impactdisciplescommon/src/lists/unit_of_measure.enum';
 import { EnumHelper } from 'impactdisciplescommon/src/utils/enum_helper';
+import { ProductTagsService } from 'impactdisciplescommon/src/services/data/product-tags.service';
 
 @Component({
   selector: 'app-products',

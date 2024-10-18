@@ -3,10 +3,10 @@ import { DxFormComponent } from 'devextreme-angular';
 import CustomStore from 'devextreme/data/custom_store';
 import DataSource from 'devextreme/data/data_source';
 import { ConsultationRequestModel } from 'impactdisciplescommon/src/models/domain/consultation-request.model';
-import { ConsultationRequestService } from 'impactdisciplescommon/src/services/consultation-request.service';
 import { BehaviorSubject, map, Observable } from 'rxjs';
 import { confirm } from 'devextreme/ui/dialog';
 import notify from 'devextreme/ui/notify';
+import { ConsultationRequestService } from 'impactdisciplescommon/src/services/data/consultation-request.service';
 
 @Component({
   selector: 'app-consultations-requests',

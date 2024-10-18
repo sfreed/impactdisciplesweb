@@ -3,7 +3,6 @@ import CustomStore from 'devextreme/data/custom_store';
 import DataSource from 'devextreme/data/data_source';
 import { PHONE_TYPES } from 'impactdisciplescommon/src/lists/phone_types.enum';
 import { LunchAndLearnModel } from 'impactdisciplescommon/src/models/domain/lunch-and-learn.model';
-import { LunchAndLearnService } from 'impactdisciplescommon/src/services/lunch-and-learn.service';
 import { EnumHelper } from 'impactdisciplescommon/src/utils/enum_helper';
 import { BehaviorSubject, Observable, map } from 'rxjs';
 import { confirm } from 'devextreme/ui/dialog';
@@ -11,6 +10,7 @@ import notify from 'devextreme/ui/notify';
 import { DxFormComponent } from 'devextreme-angular';
 import { Phone } from 'impactdisciplescommon/src/models/domain/utils/phone.model';
 import { Address } from 'impactdisciplescommon/src/models/domain/utils/address.model';
+import { LunchAndLearnService } from 'impactdisciplescommon/src/services/data/lunch-and-learn.service';
 
 @Component({
   selector: 'app-lunch-and-learns',
