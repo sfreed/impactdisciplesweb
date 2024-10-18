@@ -19,3 +19,6 @@ exports.uploadImageToStorage = imageUploader.uploadImageToStorage;
 
 const subscriptions = require("./subscriptions.functions");
 exports.unsubscribe_from_email_list = subscriptions.unsubscribe_from_email_list;
+
+const youtube = require("./youtube.functions");
+exports.get_youtube_keys = youtube.get_youtube_keys;
