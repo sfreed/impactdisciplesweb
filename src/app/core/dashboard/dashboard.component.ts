@@ -17,7 +17,6 @@ export class DashboardComponent implements OnInit{
     const currentDate = new Date();
 
     await this.eventService.queryAllByValue('startDate', WhereFilterOperandKeys.moreOrEqual, currentDate).then(events => {
-
       events.forEach(event => {
         let eventData: EventData = new EventData();
         eventData.arg = event.eventName;
@@ -25,7 +24,6 @@ export class DashboardComponent implements OnInit{
             eventData.val = registrations.length;
             this.eventsList.push(eventData);
         })
-
       })
     })
   }
