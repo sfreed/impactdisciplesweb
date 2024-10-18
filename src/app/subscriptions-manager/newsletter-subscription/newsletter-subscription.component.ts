@@ -2,23 +2,23 @@ import { Component, ViewChild } from '@angular/core';
 import ArrayStore from 'devextreme/data/array_store';
 import DataSource from 'devextreme/data/data_source';
 import { NewsletterSubscriptionModel } from 'impactdisciplescommon/src/models/domain/newsletter-subscription.model';
-import { NewsletterSubscriptionService } from 'impactdisciplescommon/src/services/newsletter-subscription.service';
 import { BehaviorSubject, Observable, map, take } from 'rxjs';
 import notify from 'devextreme/ui/notify';
 import { confirm } from 'devextreme/ui/dialog';
 import { DxDataGridComponent, DxFormComponent } from 'devextreme-angular';
 import { Timestamp } from 'firebase/firestore';
 import { dateFromTimestamp } from 'impactdisciplescommon/src/utils/date-from-timestamp';
-import { EMailService } from 'impactdisciplescommon/src/services/admin/email.service';
+import { EMailService } from 'impactdisciplescommon/src/services/data/email.service';
 import { AuthService } from 'impactdisciplescommon/src/services/utils/auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { NewsletterModel } from 'impactdisciplescommon/src/models/domain/newsletter.model';
-import { NewsletterService } from 'impactdisciplescommon/src/services/newletter.service';
 import { EmailList } from 'impactdisciplescommon/src/models/utils/email-list.model';
-import { EmailListService } from 'impactdisciplescommon/src/services/email-list.service';
 import { environment } from 'src/environments/environment';
 import { exportDataGrid } from 'devextreme/pdf_exporter';
 import jsPDF from 'jspdf';
+import { EmailListService } from 'impactdisciplescommon/src/services/data/email-list.service';
+import { NewsletterService } from 'impactdisciplescommon/src/services/data/newletter.service';
+import { NewsletterSubscriptionService } from 'impactdisciplescommon/src/services/data/newsletter-subscription.service';
 
 @Component({
   selector: 'app-newsletter-subscription',

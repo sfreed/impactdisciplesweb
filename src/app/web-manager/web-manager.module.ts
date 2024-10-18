@@ -14,7 +14,7 @@ import { WebManagerComponent } from './web-manager.component';
 import { SharedModule } from '../shared/shared.module';
 import { BlogCategoriesComponent } from './blog-categories/blog-categories.component';
 import { PodCastCategoriesComponent } from './pod-cast-categories/pod-cast-categories.component';
-import { HttpClientModule, provideHttpClient } from '@angular/common/http';
+import { provideHttpClient } from '@angular/common/http';
 
 
 @NgModule({

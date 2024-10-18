@@ -4,22 +4,22 @@ import CustomStore from 'devextreme/data/custom_store';
 import DataSource from 'devextreme/data/data_source';
 import { EventRegistrationModel } from 'impactdisciplescommon/src/models/domain/event-registration.model';
 import { EventModel } from 'impactdisciplescommon/src/models/domain/event.model';
-import { EventRegistrationService } from 'impactdisciplescommon/src/services/event-registration.service';
 import { BehaviorSubject, map, Observable, take } from 'rxjs';
 import { confirm } from 'devextreme/ui/dialog';
 import notify from 'devextreme/ui/notify';
 import { EmailList } from 'impactdisciplescommon/src/models/utils/email-list.model';
 import { CustomerEmailModel } from 'impactdisciplescommon/src/models/domain/customer-email.model';
 import { Timestamp } from 'firebase/firestore';
-import { CustomerEmailService } from 'impactdisciplescommon/src/services/admin/customer-email.service';
-import { EMailService } from 'impactdisciplescommon/src/services/admin/email.service';
-import { EmailListService } from 'impactdisciplescommon/src/services/email-list.service';
+import { CustomerEmailService } from 'impactdisciplescommon/src/services/data/customer-email.service';
+import { EMailService } from 'impactdisciplescommon/src/services/data/email.service';
 import { ToastrService } from 'ngx-toastr';
 import { dateFromTimestamp } from 'impactdisciplescommon/src/utils/date-from-timestamp';
 import { AuthService } from 'impactdisciplescommon/src/services/utils/auth.service';
 import { environment } from 'src/environments/environment';
 import { exportDataGrid } from 'devextreme/pdf_exporter';
 import jsPDF from 'jspdf';
+import { EmailListService } from 'impactdisciplescommon/src/services/data/email-list.service';
+import { EventRegistrationService } from 'impactdisciplescommon/src/services/data/event-registration.service';
 
 @Component({
   selector: 'app-event-attendees',

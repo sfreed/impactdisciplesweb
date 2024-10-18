@@ -7,7 +7,7 @@ import { DxFormComponent } from 'devextreme-angular';
 import CustomStore from 'devextreme/data/custom_store';
 import DataSource from 'devextreme/data/data_source';
 import { TagModel } from 'impactdisciplescommon/src/models/domain/tag.model';
-import { BlogCategoriesService } from 'impactdisciplescommon/src/services/utils/blog-categories.service';
+import { BlogCategoriesService } from 'impactdisciplescommon/src/services/data/blog-categories.service';
 
 @Component({
   selector: 'app-blog-categories',

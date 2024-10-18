@@ -4,7 +4,7 @@ import CustomStore from 'devextreme/data/custom_store';
 import DataSource from 'devextreme/data/data_source';
 import { PHONE_TYPES } from 'impactdisciplescommon/src/lists/phone_types.enum';
 import { OrganizationModel } from 'impactdisciplescommon/src/models/domain/organization.model';
-import { OrganizationService } from 'impactdisciplescommon/src/services/organization.service';
+import { OrganizationService } from 'impactdisciplescommon/src/services/data/organization.service';
 import { EnumHelper } from 'impactdisciplescommon/src/utils/enum_helper';
 import { BehaviorSubject, map, Observable } from 'rxjs';
 import { confirm } from 'devextreme/ui/dialog';

@@ -5,20 +5,20 @@ import ArrayStore from 'devextreme/data/array_store';
 import DataSource from 'devextreme/data/data_source';
 import notify from 'devextreme/ui/notify';
 import { PrayerTeamSubscriptionModel } from 'impactdisciplescommon/src/models/domain/prayer-team-subscription.model';
-import { PrayerTeamSubscriptionService } from 'impactdisciplescommon/src/services/prayer-team-subscription.service';
 import { BehaviorSubject, Observable, map, take } from 'rxjs';
 import { confirm } from 'devextreme/ui/dialog';
 import { DxDataGridComponent, DxFormComponent } from 'devextreme-angular';
 import { PrayerModel } from 'impactdisciplescommon/src/models/domain/prayer.model';
-import { EMailService } from 'impactdisciplescommon/src/services/admin/email.service';
-import { AuthService } from 'impactdisciplescommon/src/services/utils/auth.service';
+import { EMailService } from 'impactdisciplescommon/src/services/data/email.service';
 import { dateFromTimestamp } from 'impactdisciplescommon/src/utils/date-from-timestamp';
-import { PrayerService } from 'impactdisciplescommon/src/services/prayer.service';
 import { EmailList } from 'impactdisciplescommon/src/models/utils/email-list.model';
-import { EmailListService } from 'impactdisciplescommon/src/services/email-list.service';
 import { environment } from 'src/environments/environment';
 import { exportDataGrid } from 'devextreme/pdf_exporter';
 import jsPDF from 'jspdf';
+import { EmailListService } from 'impactdisciplescommon/src/services/data/email-list.service';
+import { PrayerTeamSubscriptionService } from 'impactdisciplescommon/src/services/data/prayer-team-subscription.service';
+import { PrayerService } from 'impactdisciplescommon/src/services/data/prayer.service';
+import { AuthService } from 'impactdisciplescommon/src/services/utils/auth.service';
 
 @Component({
   selector: 'app-prayer-team-subscription',

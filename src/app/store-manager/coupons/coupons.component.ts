@@ -4,13 +4,13 @@ import CustomStore from 'devextreme/data/custom_store';
 import DataSource from 'devextreme/data/data_source';
 import notify from 'devextreme/ui/notify';
 import { CouponModel } from 'impactdisciplescommon/src/models/utils/coupon.model';
-import { CouponService } from 'impactdisciplescommon/src/services/utils/coupon.service';
+import { CouponService } from 'impactdisciplescommon/src/services/data/coupon.service';
 import { BehaviorSubject, Observable, map, merge } from 'rxjs';
 import { confirm } from 'devextreme/ui/dialog';
-import { EventService } from 'impactdisciplescommon/src/services/event.service';
 import { dateFromTimestamp } from 'impactdisciplescommon/src/utils/date-from-timestamp';
 import { TagModel } from 'impactdisciplescommon/src/models/domain/tag.model';
-import { ProductService } from 'impactdisciplescommon/src/services/utils/product.service';
+import { ProductService } from 'impactdisciplescommon/src/services/data/product.service';
+import { EventService } from 'impactdisciplescommon/src/services/data/event.service';
 
 @Component({
   selector: 'app-coupons',

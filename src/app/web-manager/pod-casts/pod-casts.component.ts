@@ -4,14 +4,14 @@ import CustomStore from 'devextreme/data/custom_store';
 import DataSource from 'devextreme/data/data_source';
 import notify from 'devextreme/ui/notify';
 import { PodCastModel } from 'impactdisciplescommon/src/models/domain/pod-cast-model';
-import { PodCastService } from 'impactdisciplescommon/src/services/pod-cast.service';
+import { PodCastService } from 'impactdisciplescommon/src/services/data/pod-cast.service';
 import { BehaviorSubject, map, Observable } from 'rxjs';
 import { confirm } from 'devextreme/ui/dialog';
 import { Timestamp } from 'firebase/firestore';
-import { PodCastTagsService } from 'impactdisciplescommon/src/services/pod-cast-tags.service';
 import { DxTagBoxTypes } from 'devextreme-angular/ui/tag-box';
 import { TagModel } from 'impactdisciplescommon/src/models/domain/tag.model';
-import { PodCastCategoriesService } from 'impactdisciplescommon/src/services/utils/pod-cast-categories.service';
+import { PodCastCategoriesService } from 'impactdisciplescommon/src/services/data/pod-cast-categories.service';
+import { PodCastTagsService } from 'impactdisciplescommon/src/services/data/pod-cast-tags.service';
 
 @Component({
   selector: 'app-pod-casts',
@@ -33,7 +33,9 @@ export class PodCastsComponent implements OnInit{
 
   podCastTags: TagModel[] = [];
 
-  constructor(private service: PodCastService, private podCastTagService: PodCastTagsService, private podCastCategoriesService: PodCastCategoriesService) {}
+  constructor(private service: PodCastService,
+    private podCastTagService: PodCastTagsService,
+    private podCastCategoriesService: PodCastCategoriesService) {}
 
   async ngOnInit(): Promise<void> {
       this.datasource$ = this.service.streamAll().pipe(

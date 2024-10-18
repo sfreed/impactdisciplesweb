@@ -5,7 +5,6 @@ import { CaptureUsernameFormComponent } from 'impactdisciplescommon/src/forms/ca
 import { ChangePasswordFormComponent } from 'impactdisciplescommon/src/forms/change-password-form/change-password-form.component';
 import { CreateAuthFormComponent } from 'impactdisciplescommon/src/forms/create-auth-form/create-auth-form.component';
 import { ResetPasswordFormComponent } from 'impactdisciplescommon/src/forms/reset-password-form/reset-password-form.component';
-import { AuthGuardService } from 'impactdisciplescommon/src/services/utils/auth.service';
 import { MainScreenComponent } from './core/main-screen/main-screen.component';
 import { WebManagerComponent } from './web-manager/web-manager.component';
 import { SubscriptionsManagerComponent } from './subscriptions-manager/subscriptions-manager.component';
@@ -15,6 +14,7 @@ import { EventsManagerComponent } from './events-manager/events-manager.componen
 import { DashboardComponent } from './core/dashboard/dashboard.component';
 import { StoreManagerComponent } from './store-manager/store-manager.component';
 import { PageManagerComponent } from './page-manager/page-manager.component';
+import { AuthGuardService } from 'impactdisciplescommon/src/services/utils/auth.service';
 
 const routes: Routes = [
   {

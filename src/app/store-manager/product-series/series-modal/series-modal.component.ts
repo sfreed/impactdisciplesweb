@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Actions, ofActionDispatched } from '@ngxs/store';
 import { DxFormComponent } from 'devextreme-angular';
 import { SeriesModel } from 'impactdisciplescommon/src/models/utils/series.model';
-import { SeriesService } from 'impactdisciplescommon/src/services/utils/series.service';
+import { SeriesService } from 'impactdisciplescommon/src/services/data/series.service';
 import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
 import { ShowSeriesModal } from './series-modal.actions';
 import notify from 'devextreme/ui/notify';
@@ -14,7 +14,7 @@ import notify from 'devextreme/ui/notify';
 })
 export class SeriesModalComponent implements OnInit, OnDestroy {
   @ViewChild('addEditForm', { static: false }) addEditForm: DxFormComponent;
-  
+
   public series: SeriesModel = {};
 
   public inProgress$ = new BehaviorSubject<boolean>(false);

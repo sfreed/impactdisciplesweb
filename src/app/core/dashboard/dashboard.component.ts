@@ -1,8 +1,7 @@
-import { EventRegistrationService } from 'impactdisciplescommon/src/services/event-registration.service';
 import { Component, OnInit } from '@angular/core';
 import { WhereFilterOperandKeys } from 'impactdisciplescommon/src/dao/firebase.dao';
-import { EventService } from 'impactdisciplescommon/src/services/event.service';
-import { map } from 'rxjs';
+import { EventRegistrationService } from 'impactdisciplescommon/src/services/data/event-registration.service';
+import { EventService } from 'impactdisciplescommon/src/services/data/event.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -22,7 +21,7 @@ export class DashboardComponent implements OnInit{
       events.forEach(event => {
         let eventData: EventData = new EventData();
         eventData.arg = event.eventName;
-        this.eventRegistrationService.queryStreamAllByValue('eventId',  WhereFilterOperandKeys.equal, event.id).subscribe(registrations => {
+        this.eventRegistrationService.queryStreamByValue('eventId',  WhereFilterOperandKeys.equal, event.id).subscribe(registrations => {
             eventData.val = registrations.length;
             this.eventsList.push(eventData);
         })

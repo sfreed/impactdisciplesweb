@@ -4,16 +4,15 @@ import CustomStore from 'devextreme/data/custom_store';
 import DataSource from 'devextreme/data/data_source';
 import notify from 'devextreme/ui/notify';
 import { confirm } from 'devextreme/ui/dialog';
-
 import { PHONE_TYPES } from 'impactdisciplescommon/src/lists/phone_types.enum';
 import { LocationModel } from 'impactdisciplescommon/src/models/domain/location.model';
 import { OrganizationModel } from 'impactdisciplescommon/src/models/domain/organization.model';
-import { LocationService } from 'impactdisciplescommon/src/services/location.service';
-import { OrganizationService } from 'impactdisciplescommon/src/services/organization.service';
+import { OrganizationService } from 'impactdisciplescommon/src/services/data/organization.service';
 import { EnumHelper } from 'impactdisciplescommon/src/utils/enum_helper';
 import { BehaviorSubject, map, Observable } from 'rxjs';
 import { Phone } from 'impactdisciplescommon/src/models/domain/utils/phone.model';
 import { Address } from 'impactdisciplescommon/src/models/domain/utils/address.model';
+import { LocationService } from 'impactdisciplescommon/src/services/data/location.service';
 
 @Component({
   selector: 'app-locations',

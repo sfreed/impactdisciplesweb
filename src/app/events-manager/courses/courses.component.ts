@@ -3,10 +3,10 @@ import { DxFormComponent } from 'devextreme-angular';
 import CustomStore from 'devextreme/data/custom_store';
 import DataSource from 'devextreme/data/data_source';
 import { CourseModel } from 'impactdisciplescommon/src/models/domain/course.model';
-import { CourseService } from 'impactdisciplescommon/src/services/course.service';
 import { BehaviorSubject, map, Observable } from 'rxjs';
 import { confirm } from 'devextreme/ui/dialog';
 import notify from 'devextreme/ui/notify';
+import { CourseService } from 'impactdisciplescommon/src/services/data/course.service';
 
 @Component({
   selector: 'app-courses',

@@ -6,7 +6,7 @@ import DataSource from 'devextreme/data/data_source';
 import notify from 'devextreme/ui/notify';
 import { Functions, getFunctions, HttpsCallable, httpsCallable } from "firebase/functions";
 import { NotificationRegistrationModel } from 'impactdisciplescommon/src/models/admin/notification-registration.model';
-import { NotificationRegistrationService } from 'impactdisciplescommon/src/services/admin/notification-registration.service';
+import { NotificationRegistrationService } from 'impactdisciplescommon/src/services/data/notification-registration.service';
 import { BehaviorSubject, map, Observable } from 'rxjs';
 import { confirm } from 'devextreme/ui/dialog';
 

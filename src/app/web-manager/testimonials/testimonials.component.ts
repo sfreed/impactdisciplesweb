@@ -5,7 +5,7 @@ import DataSource from 'devextreme/data/data_source';
 import notify from 'devextreme/ui/notify';
 import { TESTIMONIAL_TYPES } from 'impactdisciplescommon/src/lists/testimonial_types.enum';
 import { TestimonialModel } from 'impactdisciplescommon/src/models/domain/testimonial.model';
-import { TestimonialService } from 'impactdisciplescommon/src/services/utils/testimonial.service';
+import { TestimonialService } from 'impactdisciplescommon/src/services/data/testimonial.service';
 import { EnumHelper } from 'impactdisciplescommon/src/utils/enum_helper';
 import { BehaviorSubject, map, Observable } from 'rxjs';
 import { confirm } from 'devextreme/ui/dialog';

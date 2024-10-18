@@ -5,7 +5,7 @@ import DataSource from 'devextreme/data/data_source';
 import notify from 'devextreme/ui/notify';
 import { Observable, BehaviorSubject, map } from 'rxjs';
 import { confirm } from 'devextreme/ui/dialog';
-import { EMailTemplatesService } from 'impactdisciplescommon/src/services/admin/email-templates.service';
+import { EMailTemplatesService } from 'impactdisciplescommon/src/services/data/email-templates.service';
 import { MailTemplateModel } from 'impactdisciplescommon/src/models/admin/mail.model';
 
 @Component({

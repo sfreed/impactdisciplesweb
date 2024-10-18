@@ -6,7 +6,7 @@ import notify from 'devextreme/ui/notify';
 import { confirm } from 'devextreme/ui/dialog';
 import { CheckoutForm } from 'impactdisciplescommon/src/models/utils/cart.model';
 import { ProductModel } from 'impactdisciplescommon/src/models/utils/product.model';
-import { SalesService } from 'impactdisciplescommon/src/services/utils/sales.service';
+import { SalesService } from 'impactdisciplescommon/src/services/data/sales.service';
 import { Observable, BehaviorSubject, map } from 'rxjs';
 import { EnumHelper } from 'impactdisciplescommon/src/utils/enum_helper';
 import { Timestamp } from 'firebase/firestore';

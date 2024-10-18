@@ -1,4 +1,4 @@
-import { OrganizationService } from '../../../../impactdisciplescommon/src/services/organization.service';
+import { OrganizationService } from 'impactdisciplescommon/src/services/data/organization.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { DxFormComponent } from 'devextreme-angular';
 import CustomStore from 'devextreme/data/custom_store';
@@ -8,11 +8,11 @@ import { confirm } from 'devextreme/ui/dialog';
 import { PHONE_TYPES } from 'impactdisciplescommon/src/lists/phone_types.enum';
 import { CoachModel } from 'impactdisciplescommon/src/models/domain/coach.model';
 import { OrganizationModel } from 'impactdisciplescommon/src/models/domain/organization.model';
-import { CoachService } from 'impactdisciplescommon/src/services/coach.service';
 import { EnumHelper } from 'impactdisciplescommon/src/utils/enum_helper';
 import { BehaviorSubject, map, Observable } from 'rxjs';
 import { Phone } from 'impactdisciplescommon/src/models/domain/utils/phone.model';
 import { Address } from 'impactdisciplescommon/src/models/domain/utils/address.model';
+import { CoachService } from 'impactdisciplescommon/src/services/data/coach.service';
 
 @Component({
   selector: 'app-coaches',

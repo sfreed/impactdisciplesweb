@@ -6,7 +6,7 @@ import { DxFormComponent } from 'devextreme-angular';
 import CustomStore from 'devextreme/data/custom_store';
 import DataSource from 'devextreme/data/data_source';
 import { TagModel } from 'impactdisciplescommon/src/models/domain/tag.model';
-import { PodCastCategoriesService } from 'impactdisciplescommon/src/services/utils/pod-cast-categories.service';
+import { PodCastCategoriesService } from 'impactdisciplescommon/src/services/data/pod-cast-categories.service';
 
 @Component({
   selector: 'app-pod-cast-categories',
