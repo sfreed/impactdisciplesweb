@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule} from '@angular/common';
-import { DxPopupModule, DxScrollViewModule, DxSelectBoxModule, DxTabsModule, DxTagBoxModule, DxTextBoxModule, DxTreeListModule } from 'devextreme-angular';
-import { FormsModule } from '@angular/forms';
-import { MenuRouting } from './menu-routing.module';
+import { DxButtonModule, DxContextMenuModule, DxPopupModule, DxScrollViewModule, DxSelectBoxModule, DxTabsModule, DxTagBoxModule, DxTextBoxModule, DxToolbarModule, DxTreeListModule } from 'devextreme-angular';
 import { MenuAdministrationComponent } from './menu-administration.component';
 import { IconsModule } from '../common/icons/icons.module';
 
@@ -12,11 +10,12 @@ import { IconsModule } from '../common/icons/icons.module';
     MenuAdministrationComponent
   ],
   imports: [
-    MenuRouting,
     CommonModule,
-    FormsModule,
     DxTreeListModule,
     DxTagBoxModule,
+    DxToolbarModule,
+    DxContextMenuModule,
+    DxButtonModule,
     DxSelectBoxModule,
     DxTextBoxModule,
     DxPopupModule,

@@ -1,4 +1,4 @@
-import { Component, ComponentRef, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, ComponentRef, ViewChild, ViewContainerRef } from '@angular/core';
 import CustomStore from 'devextreme/data/custom_store';
 import { CardViewerComponent } from '../card-administration/card-viewer/card-viewer.component';
 import { SplashScreen } from '../common/models/ui/splash-screen.model';
@@ -10,11 +10,9 @@ import { SplashScreenService } from '../common/services/splash-screen.service';
   templateUrl: './splash-screen-admin.component.html',
   styleUrls: ['./splash-screen-admin.component.scss']
 })
-export class SplashScreenAdminComponent implements OnInit {
+export class SplashScreenAdminComponent {
   @ViewChild('carddiv', { read: ViewContainerRef })
   private vcr: ViewContainerRef;
-
-  breadCrumbItems: Array<{}>;
 
   dataSource: any = {};
 
@@ -90,10 +88,6 @@ export class SplashScreenAdminComponent implements OnInit {
         });
       }
     });
-  }
-
-  ngOnInit() {
-    this.breadCrumbItems = [{ label: 'Admin' }, { label: 'Splash Screen Administration', active: true }];
   }
 
   onRowUpdating(options) {

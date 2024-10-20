@@ -4,13 +4,13 @@
         <div class="dx-field">
           <div class="dx-field-label"><h3>Name</h3></div>
           <div class="dx-field-value">
-            <dx-text-box [(ngModel)]="page.name"></dx-text-box>
+            <dx-text-box [(value)]="page.name"></dx-text-box>
           </div>
         </div>
         <div class="dx-field">
           <div class="dx-field-label"><h3>Extend Session Timeout (hrs)</h3></div>
           <div class="dx-field-value">
-            <dx-text-box [(ngModel)]="page.session_expiration"></dx-text-box>
+            <dx-number-box [(value)]="page.session_expiration"></dx-number-box>
           </div>
         </div>
 

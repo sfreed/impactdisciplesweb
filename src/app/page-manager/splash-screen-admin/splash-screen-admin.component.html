@@ -1,33 +1,50 @@
-<div class="container-fluid">
-    <div id="data-grid-demo">
-        <dx-data-grid id="gridContainer"
-            [dataSource]="dataSource"
-            [showBorders]="true"
-            [renderAsync]="true"
-            (onRowUpdating)="onRowUpdating($event)">
-            <dxo-load-panel [enabled]="true"></dxo-load-panel>
-            <dxo-scrolling mode="virtual"></dxo-scrolling>
-            <dxi-column dataField="title"></dxi-column>
-
-            <dxi-column dataField="field">
-                <dxo-lookup [dataSource]="fieldSource" [allowClearing]="false" [displayExpr]="'name'" [valueExpr]="'value'"></dxo-lookup>
-            </dxi-column>
-            <dxi-column dataField="value" editCellTemplate="valueTemplate"></dxi-column>
-            <dxi-column dataField="card_id" [caption]="'Card'">
-                <dxo-lookup [dataSource]="cardSource" [allowClearing]="false" [valueExpr]="'dbId'" [displayExpr]="'name'"></dxo-lookup>
-            </dxi-column>
-            <dxi-column type="buttons" [width]="145" [fixed]="true" [caption]="'Command'">
-                <dxi-button name="edit"></dxi-button>
-                <dxi-button name="delete"></dxi-button>
-                <dxi-button hint="View Splash Screen" icon="search" [visible]="true" [onClick]="viewSplashScreen.bind(this)"></dxi-button>
-            </dxi-column>
-
-            <div *dxTemplate="let cellInfo of 'valueTemplate'">
-                <dx-select-box [items]="getDataSource(cellInfo)" [(value)]="cellInfo.value" [displayExpr]="'name'" [valueExpr]="'value'" (onValueChanged)="cellInfo.setValue($event.value)"></dx-select-box>
-            </div>
-        </dx-data-grid>
+<dx-toolbar class="content-list__header py-2 px-2 px-2">
+  <dxi-item location="after">
+    <div *dxTemplate>
+      <dx-button class="icon-button manage-button" hint="MANAGE PAGES">
+        <div *dxTemplate="let data of 'content'">
+          <div class="d-flex">
+            <i class="dx-icon-preferences"></i>
+          </div>
+          <dx-context-menu
+            target=".manage-button"
+            showEvent="dxclick"
+            [position]="{ my: { x: 'center', y: 'top' }, at: 'left bottom' }">
+            <dxi-item text="New" icon="add" [onClick]="this.hideSplashScreen"></dxi-item>
+          </dx-context-menu>
+        </div>
+      </dx-button>
     </div>
-</div>
+  </dxi-item>
+</dx-toolbar>
+
+<dx-data-grid id="gridContainer"
+  [dataSource]="dataSource"
+  [showBorders]="true"
+  [renderAsync]="true"
+  (onRowUpdating)="onRowUpdating($event)">
+  <dxo-load-panel [enabled]="true"></dxo-load-panel>
+  <dxo-scrolling mode="virtual"></dxo-scrolling>
+  <dxi-column dataField="title"></dxi-column>
+
+  <dxi-column dataField="field">
+      <dxo-lookup [dataSource]="fieldSource" [allowClearing]="false" [displayExpr]="'name'" [valueExpr]="'value'"></dxo-lookup>
+  </dxi-column>
+  <dxi-column dataField="value" editCellTemplate="valueTemplate"></dxi-column>
+  <dxi-column dataField="card_id" [caption]="'Card'">
+      <dxo-lookup [dataSource]="cardSource" [allowClearing]="false" [valueExpr]="'dbId'" [displayExpr]="'name'"></dxo-lookup>
+  </dxi-column>
+  <dxi-column type="buttons" [width]="145" [fixed]="true" [caption]="'Command'">
+      <dxi-button name="edit"></dxi-button>
+      <dxi-button name="delete"></dxi-button>
+      <dxi-button hint="View Splash Screen" icon="search" [visible]="true" [onClick]="viewSplashScreen.bind(this)"></dxi-button>
+  </dxi-column>
+
+  <div *dxTemplate="let cellInfo of 'valueTemplate'">
+      <dx-select-box [items]="getDataSource(cellInfo)" [(value)]="cellInfo.value" [displayExpr]="'name'" [valueExpr]="'value'" (onValueChanged)="cellInfo.setValue($event.value)"></dx-select-box>
+  </div>
+</dx-data-grid>
+
 
 <dx-popup [visible]="showSplashScreen" [showTitle]="true" [title]="'Announcements'" (onHidden)="hideSplashScreen()">
     <dx-scroll-view width="100%" height="100%"
