@@ -73,13 +73,8 @@ export class NewsletterSubscriptionComponent {
         })
       )
     )
-    this.emailLists = await this.emailListService.getAllByValue('type', 'newsletter').then(list => {
-      if (list){
-        return list;
-      } else {
-        return [];
-      }
-    });
+
+    this.emailLists = await this.emailListService.getAllByValue('type', 'newsletter')
   }
 
   showEditModal = (e) => {
