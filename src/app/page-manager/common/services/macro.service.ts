@@ -24,7 +24,7 @@ export class MacroService {
     return this.dao.getAllByValue(this.table, field, value);
   }
 
-  getById(id: String): Promise<TextEditorMacro>{
+  getById(id: string): Promise<TextEditorMacro>{
     return this.dao.getById(id, this.table);
   }
 

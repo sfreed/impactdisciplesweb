@@ -25,7 +25,7 @@ export class ProductService {
     return this.dao.getAllByValue(this.table, field, value);
   }
 
-  getById(id: String): Promise<Product>{
+  getById(id: string): Promise<Product>{
     return this.dao.getById(id, this.table);
   }
 

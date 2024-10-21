@@ -23,7 +23,7 @@ export class FormService {
     return this.dao.getAllByValue(this.table, field, value);
   }
 
-  getById(id: String): Promise<Form>{
+  getById(id: string): Promise<Form>{
     return this.dao.getById(id, this.table);
   }
 

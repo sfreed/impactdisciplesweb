@@ -23,7 +23,7 @@ export class SplashScreenService  {
     return this.dao.getAllByValue(this.table, field, value);
   }
 
-  getById(id: String): Promise<SplashScreen>{
+  getById(id: string): Promise<SplashScreen>{
     return this.dao.getById(id, this.table);
   }
 
