@@ -1,0 +1,8 @@
+[
+  {
+    "_comment": "this file is used by gstuils to open permissions on image bucket",
+    "origin": ["*"],
+    "method": ["GET"],
+    "maxAgeSeconds": 3600
+  }
+]
