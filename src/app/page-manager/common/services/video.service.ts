@@ -29,7 +29,7 @@ export class VideoService{
     return this.dao.getAllByValue(this.table, field, value);
   }
 
-  getById(id: String): Promise<Video>{
+  getById(id: string): Promise<Video>{
     return this.dao.getById(id, this.table);
   }
 

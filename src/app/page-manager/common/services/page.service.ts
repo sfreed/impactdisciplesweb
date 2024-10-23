@@ -23,7 +23,7 @@ export class PageService {
     return this.dao.getAllByValue(this.table, field, value);
   }
 
-  getById(id: String): Promise<Page>{
+  getById(id: string): Promise<Page>{
     return this.dao.getById(id, this.table);
   }
 

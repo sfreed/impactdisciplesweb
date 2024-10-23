@@ -24,7 +24,7 @@ export class CardService{
     return this.dao.getAllByValue(this.table, field, value);
   }
 
-  getById(id: String): Promise<Card>{
+  getById(id: string): Promise<Card>{
     return this.dao.getById(id, this.table);
   }
 

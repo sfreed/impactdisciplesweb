@@ -70,13 +70,7 @@ export class PrayerTeamSubscriptionComponent {
       )
     )
 
-    this.emailLists = await this.emailListService.getAllByValue('type', 'prayer').then(list => {
-      if (list){
-        return list;
-      } else {
-        return [];
-      }
-    });
+    this.emailLists = await this.emailListService.getAllByValue('type', 'prayer')
   }
 
   showEditModal = (e) => {

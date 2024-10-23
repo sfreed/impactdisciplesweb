@@ -249,7 +249,7 @@ export class SalesComponent implements OnInit {
   }
 
   isRefundedButtonsVisible(e){
-    return e.row.data.processedStatus != 'SHIPPED' && e.row.data.processedStatus != 'REFUNDED';
+    return e.row.data.processedStatus != 'SHIPPED' && e.row.data.processedStatus != 'REFUNDED' && e.row.data.price > 0;
   }
 
   getItemTaxableAmount(cartItem){

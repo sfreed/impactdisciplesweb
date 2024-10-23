@@ -23,7 +23,7 @@ export class MenuService {
     return this.dao.getAllByValue(this.table, field, value);
   }
 
-  getById(id: String): Promise<MenuItem>{
+  getById(id: string): Promise<MenuItem>{
     return this.dao.getById(id, this.table);
   }
 
