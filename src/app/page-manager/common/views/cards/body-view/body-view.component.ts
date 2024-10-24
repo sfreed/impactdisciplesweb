@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { card_type_values } from 'src/app/page-manager/common/lists/card-fields.list';
 import { Card, CardComponent, CardRow } from 'src/app/page-manager/common/models/editor/card.model';
+import { confirm } from 'devextreme/ui/dialog';
 
 @Component({
   selector: 'app-card-body-view',
@@ -26,22 +27,31 @@ export class CardBodyViewComponent implements OnInit {
 
   }
 
-  addrow(){
+  addrow = () => {
     this.card.rows.push({ ... new CardRow() });
   }
 
-  deleterow(row: number){
-    this.card.rows.splice(row, 1);
+  deleterow = (row) => {
+    confirm('<i>Are you sure you want to delete this row?</i>', 'Confirm').then((dialogResult) => {
+      if (dialogResult) {
+        this.card.rows.splice(row.itemData.id, 1);
+      }
+    });
   }
 
-  addcard(row: number){
+  addcard = (row) => {
+    console.log(row)
     let retval: CardComponent = {... new CardComponent()};
     retval.span=12
-    this.card.rows[row].components.push({...retval});
+    this.card.rows[row.itemData.id].components.push({...retval});
   }
 
   deletecard(row: number, card: number){
-    this.card.rows[row].components.splice(card, 1);
+    confirm('<i>Are you sure you want to delete this component?</i>', 'Confirm').then((dialogResult) => {
+      if (dialogResult) {
+        this.card.rows[row].components.splice(card, 1);
+      }
+    });
   }
 
   onListReorder(e){

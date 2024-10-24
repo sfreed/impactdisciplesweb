@@ -1,17 +1,18 @@
-<div class="card">
-  <div class="card-body">
-    <div class="form">
-      <div class="dx-field">
-        <div class="dx-field-label"><h3>Card Name</h3></div>
-        <div class="dx-field-value">
-          <dx-text-box [(value)]="card.name"></dx-text-box>
+<dx-form [formData]="card">
+  <dxi-item itemType="tabbed">
+    <dxi-tab title="Info">
+      <dxi-item dataField="name"></dxi-item>
+      <dxi-item>
+        <div *dxTemplate>
+          <app-card-header-view [card]="card" [view]="mode"></app-card-header-view>
+          <app-card-body-view [card]="card" [view]="mode"></app-card-body-view>
         </div>
-      </div>
-      <hr color="#091D45" width="100%"/>
-      <app-card-header-view [card]="card" [view]="mode"></app-card-header-view>
-      <app-card-body-view [card]="card" [view]="mode"></app-card-body-view>
-    </div>
-  </div>
-</div>
+      </dxi-item>
+    </dxi-tab>
+    <dxi-tab title="Preview">
+      <app-card-previewer [card]="card" [mode]="'preview'"></app-card-previewer>
+    </dxi-tab>
+  </dxi-item>
+</dx-form>
 
 

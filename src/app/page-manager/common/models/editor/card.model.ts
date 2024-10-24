@@ -109,8 +109,8 @@ export class CardComponentFormItem{
 export class CardComponentImage {
   name: string;
   url: string;
-  height: string;
-  width?: string;
+  height: number;
+  width?: number;
   opacity?: number;
   color?: string;
   radius?: number;

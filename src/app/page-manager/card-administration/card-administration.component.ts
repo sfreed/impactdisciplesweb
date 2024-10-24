@@ -23,7 +23,6 @@ export class CardAdministrationComponent {
   card: Card;
 
   public editCardVisible$ = new BehaviorSubject<boolean>(false);
-  public previewCardVisible$ = new BehaviorSubject<boolean>(false);
 
   constructor(public service: CardService,
     public pageService: PageService,
@@ -132,7 +131,7 @@ export class CardAdministrationComponent {
   }
 
   displayCardEdit = (e) => {
-    this.card = e.row.data;
+    this.card = e.data;
 
     this.editCardVisible$.next(true);
   }
@@ -140,23 +139,4 @@ export class CardAdministrationComponent {
   onEditCancel() {
     this.editCardVisible$.next(false);
   }
-
-  displayCardPreview = (e) => {
-    this.card = e.row.data;
-
-    this.previewCardVisible$.next(true);
-  }
-
-  onPreviewCancel() {
-    this.previewCardVisible$.next(false);
-  }
-
-  displayCardEditPreview = (e) => {
-    this.previewCardVisible$.next(true);
-  }
-
-  onEditPreviewCancel() {
-    this.previewCardVisible$.next(false);
-  }
-
 }

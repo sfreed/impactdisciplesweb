@@ -3,7 +3,8 @@ import { Card } from '../../common/models/editor/card.model';
 
 @Component({
   selector: 'app-card-previewer',
-  templateUrl: './card-viewer.component.html'
+  templateUrl: './card-viewer.component.html',
+  styleUrls: ['./card-viewer.component.css']
 })
 
 export class CardViewerComponent implements OnInit {

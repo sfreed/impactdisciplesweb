@@ -31,7 +31,7 @@ import { ImageDividerComponentComponent } from './components/body-view/image-div
 import { TeamMemberComponentComponent } from './components/body-view/team-member-component/team-member-component.component';
 import { TestimonialComponent } from './components/body-view/testimonial-component/testimonial-component.component';
 import { VideoComponentComponent } from './components/body-view/video-component/video-component.component';
-import { DxButtonModule, DxCheckBoxModule, DxDateBoxModule, DxFormModule, DxNumberBoxModule, DxPopupModule, DxRadioGroupModule, DxScrollViewModule, DxSelectBoxModule, DxSortableModule, DxTagBoxModule, DxTextAreaModule, DxTextBoxModule, DxTooltipModule, DxValidationGroupModule, DxValidatorModule, DxSwitchModule, DxColorBoxModule, DxListModule, DxTileViewModule, DxDataGridModule, DxGalleryModule } from 'devextreme-angular';
+import { DxButtonModule, DxCheckBoxModule, DxDateBoxModule, DxFormModule, DxNumberBoxModule, DxPopupModule, DxRadioGroupModule, DxScrollViewModule, DxSelectBoxModule, DxSortableModule, DxTagBoxModule, DxTextAreaModule, DxTextBoxModule, DxTooltipModule, DxValidationGroupModule, DxValidatorModule, DxSwitchModule, DxColorBoxModule, DxListModule, DxTileViewModule, DxDataGridModule, DxGalleryModule, DxToolbarModule, DxContextMenuModule } from 'devextreme-angular';
 import { ContentModule } from '../content/content.module';
 import { SafePipesModule } from '../pipes/safe-pipes.modult';
 
@@ -75,6 +75,7 @@ import { SafePipesModule } from '../pipes/safe-pipes.modult';
     DxButtonModule,
     DxCheckBoxModule,
     DxColorBoxModule,
+    DxContextMenuModule,
     DxDateBoxModule,
     DxDataGridModule,
     DxFormModule,
@@ -91,6 +92,7 @@ import { SafePipesModule } from '../pipes/safe-pipes.modult';
     DxTextAreaModule,
     DxTextBoxModule,
     DxTileViewModule,
+    DxToolbarModule,
     DxTooltipModule,
     DxValidatorModule,
     SafePipesModule,

@@ -13,7 +13,7 @@
     </ng-template>
 
     <ng-template [ngIf]="card.card_section == 'Section'">
-      <div class="card" id="section-display"  [style.background-color]="card.card_color">
+      <div id="section-display"  [style.background-color]="card.card_color">
         <div class="section-body">
           <app-card-header-view [view]="mode" [card]="card"></app-card-header-view>
           <app-card-body-view [view]="mode" [card]="card"></app-card-body-view>

@@ -28,15 +28,14 @@
   [showColumnLines]="true"
   [showRowLines]="true"
   [focusedRowEnabled]="true"
-  [columnAutoWidth]="true">
+  [columnAutoWidth]="true"
+  (onRowDblClick)="displayCardEdit($event)">
     <dxo-load-panel [enabled]="true"></dxo-load-panel>
     <dxo-scrolling mode="virtual"></dxo-scrolling>
 
     <dxi-column dataField="name"></dxi-column>
     <dxi-column dataField="id"></dxi-column>
     <dxi-column type="buttons" [caption]="'Publish'" [width]="175" [fixed]="true">
-        <dxi-button hint="Preview" icon="search" [onClick]="displayCardPreview"></dxi-button>
-        <dxi-button hint="Edit" icon="edit" [onClick]="displayCardEdit"></dxi-button>
         <dxi-button hint="Publish" icon="refresh" [onClick]="publishCard"></dxi-button>
         <dxi-button hint="Copy" icon="copy" [onClick]="copyCard"></dxi-button>
         <dxi-button hint="delete" icon="trash" [onClick]="delete"></dxi-button>
@@ -58,12 +57,6 @@
     </dx-scroll-view>
     <div class="add-item-modal__button-group pd-1">
       <dx-button
-        text="PREVIEW"
-        stylingMode="contained"
-        type="normal"
-        (onClick)="displayCardEditPreview($event)">
-      </dx-button>
-      <dx-button
         text="CANCEL"
         stylingMode="contained"
         type="normal"
@@ -74,30 +67,6 @@
         stylingMode="contained"
         type="normal"
         (onClick)="saveChanges()">
-      </dx-button>
-    </div>
-  </dx-popup>
-</ng-container>
-
-<ng-container *ngIf="previewCardVisible$ | async">
-  <dx-popup
-    [height]="'100%'"
-    [width]="'100%'"
-    [showTitle]="true"
-    title="Card Previewer"
-    [dragEnabled]="false"
-    [hideOnOutsideClick]="true"
-    [visible]="previewCardVisible$ | async"
-    (onHiding)="onPreviewCancel()">
-    <dx-scroll-view [height]="'87%'">
-      <app-card-previewer [card]="card" [mode]="'preview'"></app-card-previewer>
-    </dx-scroll-view>
-    <div class="add-item-modal__button-group pt-1">
-      <dx-button
-        text="CANCEL"
-        stylingMode="contained"
-        type="normal"
-        (onClick)="onPreviewCancel()">
       </dx-button>
     </div>
   </dx-popup>
