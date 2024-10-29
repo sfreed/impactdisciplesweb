@@ -15,6 +15,7 @@ import { EventsManagerComponent } from './events-manager.component';
 import { SharedModule } from '../shared/shared.module';
 import { RoomComponent } from './locations/room/room.component';
 import { FAQComponent } from './events/questions-and-answers/faq.component';
+import { EventAnnouncementsComponent } from './events/event-announcements/event-announcements.component';
 
 @NgModule({
     declarations: [
@@ -27,7 +28,8 @@ import { FAQComponent } from './events/questions-and-answers/faq.component';
       EventAgendaComponent,
       EventAttendeesComponent,
       RoomComponent,
-      FAQComponent
+      FAQComponent,
+      EventAnnouncementsComponent
     ],
     imports: [
       CommonModule,
