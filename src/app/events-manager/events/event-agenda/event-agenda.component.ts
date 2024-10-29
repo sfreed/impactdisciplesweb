@@ -1,4 +1,3 @@
-import { dateFromTimestamp } from './../../../../../impactdisciplescommon/src/utils/date-from-timestamp';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import Query from 'devextreme/data/query';
 import { DxSchedulerTypes } from 'devextreme-angular/ui/scheduler';
@@ -9,6 +8,7 @@ import { TrainingRoomModel } from 'impactdisciplescommon/src/models/domain/train
 import { CoachService } from 'impactdisciplescommon/src/services/data/coach.service';
 import { CourseService } from 'impactdisciplescommon/src/services/data/course.service';
 import { LocationService } from 'impactdisciplescommon/src/services/data/location.service';
+import { dateFromTimestamp } from 'impactdisciplescommon/src/utils/date-from-timestamp';
 
 @Component({
   selector: 'app-event-agenda',
