@@ -234,8 +234,8 @@
                 <dxi-item dataField="imageUrl.name" [label]="{ text: 'Image Name' }" [colSpan]="8" [disabled]="true"></dxi-item>
                 <dxi-item dataField="description" [colSpan]="8" [editorType]="'dxTextArea'" [editorOptions]="{ height: 150 }" [label]="{ text: 'Web Description' }"></dxi-item>
               </dxi-tab>
-              <dxi-tab title="Announcements">
-                <app-event-announcements [event]="selectedItem"></app-event-announcements>
+              <dxi-tab title="Application">
+                <app-event-application [event]="selectedItem"></app-event-application>
               </dxi-tab>
               <dxi-tab title="Agenda">
                 <app-event-agenda [event]="selectedItem"></app-event-agenda>

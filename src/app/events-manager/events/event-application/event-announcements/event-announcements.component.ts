@@ -23,7 +23,7 @@ export class EventAnnouncementsComponent implements OnInit {
   datasource$: Observable<DataSource>;
 
   selectedItem: AnnouncementModel;
-  itemType = 'Event Announcements';
+  itemType = 'Event Announcement';
 
   public isVisible$ = new BehaviorSubject<boolean>(false);
   public inProgress$ = new BehaviorSubject<boolean>(false)
