@@ -33,7 +33,9 @@
               <dxi-item text="New" icon="add" [onClick]="showAddModal"></dxi-item>
               <dxi-item text="Send Email" icon="email" [onClick]="showEmailModal"></dxi-item>
               <dxi-item text="Create Email List" icon="contentlayout" [onClick]="showListModal"></dxi-item>
-              <dxi-item text="Export Attendee List" icon="exportpdf" [onClick]="exportGrids"></dxi-item>
+              <dxi-item text="Select Columns to Display" icon="columnchooser" [onClick]="showColumnChooser"></dxi-item>
+              <dxi-item text="Export To PDF" icon="exportpdf" [onClick]="exportPDFGrid"></dxi-item>
+              <dxi-item text="Export To Excel" icon="exportxlsx" [onClick]="exportXLSGrid"></dxi-item>
               <dxi-item  *ngIf="this.selectedList?.name" text="Save List" icon="save" [onClick]="onListSave"></dxi-item>
             </dx-context-menu>
           </div>
@@ -51,12 +53,19 @@
   [showColumnLines]="true"
   [showColumnLines]="true"
   [showRowLines]="true"
+  [allowColumnReordering]="true"
+  [allowColumnResizing]="true"
+  [columnHidingEnabled]="true"
   [focusedRowEnabled]="true"
   [columnAutoWidth]="true"
   [(selectedRowKeys)]="selectedRows"
   (onSelectionChanged)="selectRow($event)"
   (onRowDblClick)="showEditModal($event)">
-
+  <dxo-state-storing
+    [enabled]="true"
+    type="localStorage"
+    storageKey="storage"
+  ></dxo-state-storing>
   <dxo-selection mode="multiple" ></dxo-selection>
   <dxo-scrolling mode="virtual"></dxo-scrolling>
   <dxo-filter-row [visible]="true"></dxo-filter-row>

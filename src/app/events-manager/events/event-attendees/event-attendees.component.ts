@@ -16,10 +16,14 @@ import { ToastrService } from 'ngx-toastr';
 import { dateFromTimestamp } from 'impactdisciplescommon/src/utils/date-from-timestamp';
 import { AuthService } from 'impactdisciplescommon/src/services/utils/auth.service';
 import { environment } from 'src/environments/environment';
-import { exportDataGrid } from 'devextreme/pdf_exporter';
+import { exportDataGrid as exportPDFDataGrid} from 'devextreme/pdf_exporter';
+import { exportDataGrid as exportXLSDataGrid} from 'devextreme/excel_exporter';
 import jsPDF from 'jspdf';
+import { saveAs } from 'file-saver';
+import { Workbook } from 'exceljs';
 import { EmailListService } from 'impactdisciplescommon/src/services/data/email-list.service';
 import { EventRegistrationService } from 'impactdisciplescommon/src/services/data/event-registration.service';
+import { DxDataGridTypes } from 'devextreme-angular/ui/data-grid';
 
 @Component({
   selector: 'app-event-attendees',
@@ -297,11 +301,11 @@ export class EventAttendeesComponent implements OnInit{
     this.selectedCustomers = e.selectedRowsData;
   }
 
-  exportGrids = () => {
+  exportPDFGrid = () => {
     const context = this;
     const doc = new jsPDF();
 
-    exportDataGrid({
+    exportPDFDataGrid({
       selectedRowsOnly: true,
       jsPDFDocument: doc,
       component: context.attendeeGrid.instance,
@@ -311,5 +315,26 @@ export class EventAttendeesComponent implements OnInit{
     }).then(() => {
         doc.save('attendee_list.pdf');
     });
+  }
+
+  exportXLSGrid = () => {
+    const context = this;
+
+    const workbook = new Workbook();
+    const worksheet = workbook.addWorksheet('Attendees');
+
+    exportXLSDataGrid({
+      component: context.attendeeGrid.instance,
+      worksheet,
+      autoFilterEnabled: true,
+    }).then(() => {
+      workbook.xlsx.writeBuffer().then((buffer) => {
+        saveAs(new Blob([buffer], { type: 'application/octet-stream' }), 'attendee_list.xlsx');
+      });
+    });
+  }
+
+  showColumnChooser = () => {
+    this.attendeeGrid.instance.showColumnChooser()
   }
 }
