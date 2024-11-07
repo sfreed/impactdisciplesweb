@@ -12,18 +12,18 @@ import { AuthService } from 'impactdisciplescommon/src/services/utils/auth.servi
 import { Timestamp } from 'firebase/firestore';
 
 @Component({
-  selector: 'app-event-announcements',
-  templateUrl: './event-announcements.component.html',
-  styleUrls: ['./event-announcements.component.css']
+  selector: 'app-details',
+  templateUrl: './details.component.html',
+  styleUrls: ['./details.component.css']
 })
-export class EventAnnouncementsComponent implements OnInit {
+export class DetailsComponent implements OnInit {
   @Input('event') event: EventModel;
   @ViewChild('form', { static: false }) form: DxFormComponent;
 
   datasource$: Observable<DataSource>;
 
   selectedItem: AnnouncementModel;
-  itemType = 'Event Announcement';
+  itemType = 'Event Detail';
 
   public isVisible$ = new BehaviorSubject<boolean>(false);
   public inProgress$ = new BehaviorSubject<boolean>(false)
@@ -140,4 +140,5 @@ export class EventAnnouncementsComponent implements OnInit {
       }
     }
   }
+
 }

@@ -1,40 +1,42 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { AnnouncementModel } from 'impactdisciplescommon/src/models/domain/announcement.model.ts';
-import { EventModel } from 'impactdisciplescommon/src/models/domain/event.model';
-import { BehaviorSubject, map, Observable } from 'rxjs';
-import { confirm } from 'devextreme/ui/dialog';
-import notify from 'devextreme/ui/notify';
-import { EventAnnouncementService } from 'impactdisciplescommon/src/services/data/event-announcement.service';
-import DataSource from 'devextreme/data/data_source';
-import CustomStore from 'devextreme/data/custom_store';
 import { DxFormComponent } from 'devextreme-angular';
-import { AuthService } from 'impactdisciplescommon/src/services/utils/auth.service';
-import { Timestamp } from 'firebase/firestore';
+import CustomStore from 'devextreme/data/custom_store';
+import DataSource from 'devextreme/data/data_source';
+import notify from 'devextreme/ui/notify';
+import { EventModel } from 'impactdisciplescommon/src/models/domain/event.model';
+import { FAQModel } from 'impactdisciplescommon/src/models/utils/faq.model';
+import { FAQService } from 'impactdisciplescommon/src/services/data/faq.service';
+import { Observable, BehaviorSubject, map } from 'rxjs';
+import { confirm } from 'devextreme/ui/dialog';
+import { WhatToKnowModel } from 'impactdisciplescommon/src/models/utils/what-to-know.model';
+import { WhatToKnowService } from 'impactdisciplescommon/src/services/data/what-to-know.service';
 
 @Component({
-  selector: 'app-event-details',
-  templateUrl: './event-details.component.html',
-  styleUrls: ['./event-details.component.css']
+  selector: 'app-what-to-know',
+  templateUrl: './what-to-know.component.html',
+  styleUrls: ['./what-to-know.component.css']
 })
-export class EventDetailsComponent implements OnInit {
+export class WhatToKnowComponent implements OnInit {
   @Input('event') event: EventModel;
-  @ViewChild('form', { static: false }) form: DxFormComponent;
+
+  @ViewChild('addEditForm', { static: false }) addEditForm: DxFormComponent;
 
   datasource$: Observable<DataSource>;
+  selectedItem: WhatToKnowModel;
 
-  selectedItem: AnnouncementModel;
-  itemType = 'Event Detail';
+  itemType = 'What To Know';
 
-  public isVisible$ = new BehaviorSubject<boolean>(false);
+  selectedRows: string[] = [];
+
   public inProgress$ = new BehaviorSubject<boolean>(false)
+  public isVisible$ = new BehaviorSubject<boolean>(false);
 
-  constructor(private service: EventAnnouncementService,
-    private authService: AuthService
-  ) { }
+  constructor(private service: WhatToKnowService) { }
 
   ngOnInit() {
+    let that = this;
     if(this.event?.id){
-      this.datasource$ = this.service.streamAllByValue('eventId', this.event.id).pipe(
+      this.datasource$ = this.service.streamAll().pipe(
         map(
           (items) =>
             new DataSource({
@@ -45,10 +47,17 @@ export class EventDetailsComponent implements OnInit {
                 loadMode: 'raw',
                 load: function (loadOptions: any) {
                   return items;
+                },
+                onLoaded: function(){
+                  if(!that.event.whatToKnows){
+                    that.event.whatToKnows = [];
+                  }
+
+                  that.selectedRows = that.event.whatToKnows.map(w2k => w2k.id)
                 }
               })
             })
-        )
+        ),
       );
     }
   }
@@ -60,19 +69,13 @@ export class EventDetailsComponent implements OnInit {
   }
 
   showAddModal = () => {
-    this.selectedItem = {... new AnnouncementModel()};
+    this.selectedItem = {... new WhatToKnowModel()};
 
     this.isVisible$.next(true);
   }
 
-  onCancel() {
-    this.selectedItem = null;
-    this.inProgress$.next(false);
-    this.isVisible$.next(false);
-  }
-
   delete = ({ row: { data } }) => {
-    confirm('<i>Are you sure you want to delete this announcement?</i>', 'Confirm').then((dialogResult) => {
+    confirm('<i>Are you sure you want to delete this record?</i>', 'Confirm').then((dialogResult) => {
       if (dialogResult) {
         this.service.delete(data.id).then(() => {
           notify({
@@ -85,16 +88,9 @@ export class EventDetailsComponent implements OnInit {
       }
     });
   }
-  async onSave(item: AnnouncementModel) {
-    item.eventId = this.event.id;
 
-    if(this.form.instance.validate().isValid) {
-      item.date = Timestamp.now();
-
-      let user = await this.authService.getUserAsPromise()
-
-      item.sentBy = user.firstName + ' ' + user.lastName;
-
+  onSave(item) {
+    if(this.addEditForm.instance.validate().isValid) {
       this.inProgress$.next(true);
 
       if(item.id) {
@@ -141,4 +137,13 @@ export class EventDetailsComponent implements OnInit {
     }
   }
 
+  onCancel() {
+    this.selectedItem = null;
+    this.inProgress$.next(false);
+    this.isVisible$.next(false);
+  }
+
+  selectRow(e){
+    this.event.whatToKnows = e.selectedRowsData;
+  }
 }
