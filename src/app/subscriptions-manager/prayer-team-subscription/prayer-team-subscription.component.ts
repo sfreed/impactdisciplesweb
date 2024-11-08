@@ -148,7 +148,7 @@ export class PrayerTeamSubscriptionComponent {
           }
         })
       } else {
-        this.service.add(item).then((item) => {
+        this.service.createPrayerTeamSubscription(item.firstName, item.lastName, item.email).then((item) => {
           if(item) {
             notify({
               message: this.itemType + ' Added',
@@ -157,7 +157,7 @@ export class PrayerTeamSubscriptionComponent {
               type: 'success'
             });
 
-            this.sendConfirmationEmail();
+            this.service.sendConfirmationEmail(this.selectedItem);
 
             this.onCancel();
           } else {
@@ -222,19 +222,6 @@ export class PrayerTeamSubscriptionComponent {
         }
       })
     }
-  }
-
-  sendConfirmationEmail(){
-    let subject = 'Thank you for Joining our Prayer Team! ';
-    let text = 'Dear ' + this.selectedItem.firstName + '.\n\n'
-    text += 'Your email address was successfully added to our Prayer Team List! (' + this.selectedItem.email +')\n\n'
-    text +='God Bless! - Impact Disciples Ministry'
-
-    text += "<br><br><br><div>If you believe you received this confirmation by mistake, please click " +
-      "<b><a href='" + environment.unsubscribeUrl + "?email="+ this.selectedItem.email +
-      "&list=prayer_team_subscriptions'>here</a></b> to remove your address.</div>"
-
-    this.emailService.sendTextEmail(this.selectedItem.email, subject, text);
   }
 
   sendPrayer(){

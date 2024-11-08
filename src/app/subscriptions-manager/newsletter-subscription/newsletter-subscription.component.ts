@@ -154,7 +154,7 @@ export class NewsletterSubscriptionComponent {
           }
         })
       } else {
-        this.service.add(item).then((item) => {
+        this.service.createNewsLetterSubscription(item.firstName, item.lastName, item.email).then((item) => {
           if(item) {
             notify({
               message: this.itemType + ' Added',
@@ -163,7 +163,7 @@ export class NewsletterSubscriptionComponent {
               type: 'success'
             });
 
-            this.sendConfirmationEmail();
+            this.service.sendConfirmationEmail(this.selectedItem);
 
             this.onCancel();
           } else {
@@ -228,21 +228,6 @@ export class NewsletterSubscriptionComponent {
         }
       })
     }
-  }
-
-
-  sendConfirmationEmail(){
-    let subject = 'Thank you for Subscribing to the Impact Disciples Newletter!';
-    let text = '<div>Dear ' + this.selectedItem.firstName + '.</div><br><br>'
-    text += '<div>Your email address was successfully added to our Newletter Subsciption List! (' + this.selectedItem.email +')</div><br><br>'
-    text += '<div>Please accept this free <a href="' + this.freeEbookUrl +'" download>EBook</a> as a small token of our appreciation.</div><br><br>'
-    text +='<div>God Bless! - Impact Disciples Ministry</div>'
-
-    text += "<br><br><br><div>If you believe you received this confirmation by mistake, please click " +
-      "<b><a href='" + environment.unsubscribeUrl + "?email="+ this.selectedItem.email +
-      "&list=newsletter_subscriptions'>here</a></b> to remove your address.</div>"
-
-    this.emailService.sendHtmlEmail(this.selectedItem.email, subject, text);
   }
 
   sendNewsletter(){
