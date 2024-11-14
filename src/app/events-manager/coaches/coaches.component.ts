@@ -9,10 +9,11 @@ import { PHONE_TYPES } from 'impactdisciplescommon/src/lists/phone_types.enum';
 import { CoachModel } from 'impactdisciplescommon/src/models/domain/coach.model';
 import { OrganizationModel } from 'impactdisciplescommon/src/models/domain/organization.model';
 import { EnumHelper } from 'impactdisciplescommon/src/utils/enum_helper';
-import { BehaviorSubject, map, Observable } from 'rxjs';
+import { BehaviorSubject, map, Observable, tap } from 'rxjs';
 import { Phone } from 'impactdisciplescommon/src/models/domain/utils/phone.model';
 import { Address } from 'impactdisciplescommon/src/models/domain/utils/address.model';
 import { CoachService } from 'impactdisciplescommon/src/services/data/coach.service';
+import { DxDataGridTypes } from 'devextreme-angular/ui/data-grid';
 
 @Component({
   selector: 'app-coaches',
@@ -50,7 +51,7 @@ export class CoachesComponent implements OnInit{
               key: 'id',
               loadMode: 'raw',
               load: function (loadOptions: any) {
-                return items;
+                return items.sort((a,b) => a.sortOrder - b.sortOrder)
               }
             })
           })
@@ -162,4 +163,5 @@ export class CoachesComponent implements OnInit{
   closeSingleImageModal = () => {
     this.isSingleImageVisible$.next(false);
   }
+
 }

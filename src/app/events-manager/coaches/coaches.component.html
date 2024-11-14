@@ -42,7 +42,8 @@
 
   <dxi-column dataField="isActive" dataType="boolean" [caption]="'Live'" cellTemplate="isActiveCellTemplate" [width]="120"></dxi-column>
   <dxi-column dataField="photoUrl" [width]="100" [caption]="'Picture'" [allowFiltering]="false" [allowSorting]="false" cellTemplate="imageCellTemplate"></dxi-column>
-  <dxi-column dataField="lastName" [caption]="'Last'" [sortOrder]="'asc'"></dxi-column>
+  <dxi-column dataField="sortOrder" [sortOrder]="'asc'"></dxi-column>
+  <dxi-column dataField="lastName" [caption]="'Last'"></dxi-column>
   <dxi-column dataField="firstName" [caption]="'First'"></dxi-column>
   <dxi-column dataField="title" [caption]="'Title'"></dxi-column>
   <dxi-column dataField="organization" [caption]="'Organization'">
@@ -114,7 +115,12 @@
                       <dx-select-box [(value)]="selectedItem.organization" [dataSource]="organizations" [displayExpr]="'name'" [valueExpr]="'id'"></dx-select-box>
                     </div>
                   </dxi-item>
-                  <dxi-item dataField="url" [colSpan]="4"></dxi-item>
+                  <dxi-item dataField="sortOrder" [colSpan]="1">
+                    <div *dxTemplate>
+                      <dx-number-box [(value)]="selectedItem.sortOrder"></dx-number-box>
+                    </div>
+                  </dxi-item>
+                  <dxi-item dataField="url" [colSpan]="3"></dxi-item>
                 </dxi-item>
                 <dxi-item itemType="group" caption="Shipping Address" [colCount]="6" [colSpan]="1">
                   <dxi-item dataField="shippingAddress.address1" [colSpan]="6" [label]="{ text: 'Address 1' }"></dxi-item>
