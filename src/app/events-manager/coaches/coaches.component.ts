@@ -42,6 +42,7 @@ export class CoachesComponent implements OnInit{
 
   async ngOnInit(): Promise<void> {
     this.datasource$ = this.service.streamAll().pipe(
+      map((coaches) => coaches.sort((a, b) => a.sortOrder - b.sortOrder)),
       map(
         (items) =>
           new DataSource({

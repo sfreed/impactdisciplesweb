@@ -17,7 +17,6 @@ import { Store } from '@ngxs/store';
 import { ShowProductSeriesModal } from '../product-series/product-series-modal.actions';
 import { ShowSeriesModal } from '../product-series/series-modal/series-modal.actions';
 import { ShowCategoryModal } from '../product-categories/category-modal/category-modal.actions';
-import { UNIT_OF_MEASURE } from 'impactdisciplescommon/src/lists/unit_of_measure.enum';
 import { EnumHelper } from 'impactdisciplescommon/src/utils/enum_helper';
 import { ProductTagsService } from 'impactdisciplescommon/src/services/data/product-tags.service';
 

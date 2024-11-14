@@ -70,6 +70,10 @@
 
   <dxo-scrolling mode="virtual"></dxo-scrolling>
   <dxo-filter-row [visible]="true"></dxo-filter-row>
+
+  <dxo-group-panel [visible]="true"></dxo-group-panel>
+  <dxo-grouping [autoExpandAll]="true"></dxo-grouping>
+
   <dxi-column dataField="isActive" dataType="boolean" [caption]="'Live'" cellTemplate="isActiveCellTemplate" [width]="120"></dxi-column>
   <dxi-column dataField="imageUrl" [width]="150" cellTemplate="imageCellTemplate" [caption]="'Image'"></dxi-column>
   <dxi-column dataField="title" [sortOrder]="'asc'"></dxi-column>
@@ -81,9 +85,11 @@
   <dxi-column dataField="series" [visible]="selectedSeries">
     <dxo-lookup [dataSource]="series" [displayExpr]="'name'" [valueExpr]="'id'"></dxo-lookup>
   </dxi-column>
+  <dxi-column dataField="seriesOrder" [visible]="selectedSeries"></dxi-column>
   <dxi-column dataField="category" [visible]="selectedCategory">
     <dxo-lookup [dataSource]="productCategories" [displayExpr]="'tag'" [valueExpr]="'id'"></dxo-lookup>
   </dxi-column>
+  <dxi-column dataField="categoryOrder" [visible]="selectedCategory"></dxi-column>
   <dxi-column dataField="isEBook" dataType="boolean"></dxi-column>
   <dxi-column dataField="tags" [visible]="false">
     <dxo-lookup [dataSource]="productTags" [displayExpr]="'tag'" [valueExpr]="'id'"></dxo-lookup>
@@ -139,7 +145,7 @@
                 min: 0
               }">
             </dxi-item>
-            <dxi-item dataField="category" [colSpan]="3" [label]="{ text: 'Category' }" [isRequired]="true">
+            <dxi-item dataField="category" [colSpan]="2" [label]="{ text: 'Category' }" [isRequired]="true">
               <div *dxTemplate>
                 <dx-drop-down-box
                   #categoryDropbox
@@ -178,7 +184,12 @@
                 </dx-drop-down-box>
               </div>
             </dxi-item>
-            <dxi-item dataField="series" [colSpan]="3" [label]="{ text: 'Series' }">
+            <dxi-item dataField="categoryOrder" [colSpan]="1" [label]="{ text: 'Order' }">
+              <div *dxTemplate>
+                <dx-number-box [(value)]="selectedItem.categoryOrder"></dx-number-box>
+              </div>
+            </dxi-item>
+            <dxi-item dataField="series" [colSpan]="2" [label]="{ text: 'Series' }">
               <div *dxTemplate>
                 <dx-drop-down-box
                   #seriesDropbox
@@ -215,6 +226,11 @@
                     </dx-list>
                   </div>
                 </dx-drop-down-box>
+              </div>
+            </dxi-item>
+            <dxi-item dataField="seriesOrder" [colSpan]="1" [label]="{ text: 'Order' }">
+              <div *dxTemplate>
+                <dx-number-box [(value)]="selectedItem.seriesOrder"></dx-number-box>
               </div>
             </dxi-item>
             <dxi-item dataField="description" [colSpan]="6" [isRequired]="true">
