@@ -21,7 +21,7 @@
             ],
             "allowedCommonJsDependencies": [
               "jszip", "devexpress-diagram", "devexpress-gantt", "devextreme-quill",
-              "raf", "rgbcolor", "dompurify", "html2canvas", "parchment",
+              "raf", "rgbcolor", "dompurify", "html2canvas", "parchment", "exceljs", "file-saver",
               "core-js/modules/es.array.index-of.js", "core-js/modules/es.array.iterator.js",
               "core-js/modules/es.array.reduce.js", "core-js/modules/es.array.reverse.js",
               "core-js/modules/es.promise.js", "core-js/modules/es.regexp.to-string.js",
@@ -54,8 +54,8 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "8mb",
-                  "maximumError": "10mb"
+                  "maximumWarning": "10mb",
+                  "maximumError": "12mb"
                 },
                 {
                   "type": "anyComponentStyle",
