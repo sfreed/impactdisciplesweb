@@ -187,7 +187,7 @@ export class EventAgendaComponent implements OnInit{
       label: {
         text: 'Create Course?',
       },
-      colSpan: 2,
+      colSpan: 1,
       editorType: 'dxSwitch',
       dataField: 'isCourse',
       editorOptions: {
@@ -198,6 +198,17 @@ export class EventAgendaComponent implements OnInit{
             that.setSingleSessionCourseForm(data)
           }
         }
+      }
+    },  {
+      label: {
+        text: 'Snack/Refreshment/Food Break?',
+      },
+      colSpan: 1,
+      editorType: 'dxSwitch',
+      dataField: 'isFoodBreak',
+      editorOptions: {
+        switchedOnText: 'Yes',
+        switchedOffText: 'No' 
       }
     }, {
       label: {
