@@ -67,6 +67,8 @@ export class EventAgendaComponent implements OnInit{
   onAppointmentFormOpening = (data: DxSchedulerTypes.AppointmentFormOpeningEvent) => {
     if(data.appointmentData['isCourse']){
       this.setSingleSessionCourseForm(data);
+    } else if(data.appointmentData['isFoodBreak']){
+      this.setFoodBreakForm(data);
     } else {
       this.setAgendaForm(data);
     }
@@ -161,6 +163,76 @@ export class EventAgendaComponent implements OnInit{
     form.repaint();
   }
 
+  setFoodBreakForm(data: DxSchedulerTypes.AppointmentFormOpeningEvent){
+    const that = this;
+    const form = data.form;
+    form.option().colCount = 2;
+
+    form.option().items = [{
+      dataField: 'startDate',
+      colSpan: 1,
+      editorType: 'dxDateBox',
+      editorOptions: {
+        width: '100%',
+        type: 'datetime'
+      },
+    }, {
+      name: 'endDate',
+      colSpan: 1,
+      dataField: 'endDate',
+      editorType: 'dxDateBox',
+      editorOptions: {
+        width: '100%',
+        type: 'datetime',
+      },
+    }, {
+      label: {
+        text: 'Snack/Refreshment/Food Break?',
+      },
+      colSpan: 1,
+      editorType: 'dxSwitch',
+      dataField: 'isFoodBreak',
+      editorOptions: {
+        switchedOnText: 'Yes',
+        switchedOffText: 'No',
+        onValueChanged({ value }) {
+          if(!value){
+            that.setAgendaForm(data);
+          }
+        }
+      }
+    }, {
+      label: {
+        text: 'Title',
+      },
+      colSpan:2,
+      isRequired: true,
+      editorType: 'dxTextBox',
+      dataField: 'text',
+    }, {
+      label: {
+        text: 'Description',
+      },
+      colSpan:2,
+      isRequired: true,
+      editorType: 'dxTextArea',
+      dataField: 'description'
+    }, {
+      label: {
+        text: 'Room',
+      },
+      colSpan: 2,
+      editorType: 'dxSelectBox',
+      dataField: 'room',
+      editorOptions: {
+        items: that.rooms,
+        displayExpr: 'name',
+        valueExpr: 'id'
+      },
+    }];
+    form.repaint();
+  }
+
   setAgendaForm(data: DxSchedulerTypes.AppointmentFormOpeningEvent){
     const that = this;
     const form = data.form;
@@ -208,7 +280,12 @@ export class EventAgendaComponent implements OnInit{
       dataField: 'isFoodBreak',
       editorOptions: {
         switchedOnText: 'Yes',
-        switchedOffText: 'No' 
+        switchedOffText: 'No',
+        onValueChanged({ value }) {
+          if(value){
+            that.setFoodBreakForm(data)
+          }
+        } 
       }
     }, {
       label: {
@@ -218,6 +295,18 @@ export class EventAgendaComponent implements OnInit{
       isRequired: true,
       editorType: 'dxTextBox',
       dataField: 'text',
+    }, {
+      label: {
+        text: 'Coaches',
+      },
+      colSpan: 2,
+      editorType: 'dxTagBox',
+      dataField: 'coaches',
+      editorOptions: {
+        items: that.coaches,
+        displayExpr: 'fullname',
+        valueExpr: 'id'
+      },
     }, {
       label: {
         text: 'Description',
