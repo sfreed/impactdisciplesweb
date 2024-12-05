@@ -81,9 +81,6 @@
         </div>
       </dxi-item>
     </dxi-tab>
-    <dxi-tab title="Tax Files">
-      <dxi-item [colSpan]="1" [template]="'taxFile_template'"></dxi-item>
-    </dxi-tab>
   </dxi-item>
 
   <div *dxTemplate="let data of 'policy_template'">
@@ -222,72 +219,6 @@
       </dxo-toolbar>
     </dx-html-editor>
   </div>
-  <div *dxTemplate="let data of 'taxFile_template'">
-    <div class="row">
-      <div class="col-6">
-        <dx-file-uploader
-          selectButtonText="Select File"
-          accept="*"
-          [uploadFile]="onFileUploaded.bind(this)"
-          [multiple]="false"
-          name="files[]">
-        </dx-file-uploader>
-      </div>
-      <div class="col-3">
-        <dx-button
-          [visible]="showImportButton"
-          hint='Import'
-          type='default'
-          text='IMPORT TAX RATES'
-          stylingMode='contained'
-          (onClick)="importTaxForm()">
-        </dx-button>
-      </div>
-      <div class="col-3">
-        Last Imported: {{getLastImportedDate()}}
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-12">
-        <dx-data-grid class="dx-card wide-card"
-          #grid
-          [dataSource]="datasource$ | async"
-          [height]="'50vh'"
-          [showBorders]="false"
-          [showColumnLines]="true"
-          [showColumnLines]="true"
-          [showRowLines]="true"
-          [focusedRowEnabled]="true"
-          [columnAutoWidth]="true">
-
-          <dxo-scrolling mode="virtual"></dxo-scrolling>
-          <dxo-filter-row [visible]="true"></dxo-filter-row>
-
-          <dxi-column dataField="state"></dxi-column>
-          <dxi-column dataField="zipCode"></dxi-column>
-          <dxi-column dataField="taxRegionName"></dxi-column>
-          <dxi-column dataField="estimatedCombinedRate" [dataType]="'number'"></dxi-column>
-          <dxi-column dataField="stateRate" [dataType]="'number'"></dxi-column>
-          <dxi-column dataField="estimatedCountyRate" [dataType]="'number'"></dxi-column>
-          <dxi-column dataField="estimatedCityRate" [dataType]="'number'"></dxi-column>
-          <dxi-column dataField="estimatedSpecialRate" [dataType]="'number'"></dxi-column>
-          <dxi-column dataField="riskLevel" [dataType]="'number'"></dxi-column>
-        </dx-data-grid>
-      </div>
-    </div>
-  </div>
 </dx-form>
-
-<dx-load-panel
-    #loadPanel
-    shadingColor="rgba(0,0,0,0.4)"
-    [position]="{ of: '#upload' }"
-    [(visible)]="loadingVisible"
-    [message] = "'Please do not leave or refresh this page until complete!'"
-    [showIndicator]="true"
-    [showPane]="true"
-    [shading]="true"
-    [hideOnOutsideClick]="false">
-</dx-load-panel>
 
 
