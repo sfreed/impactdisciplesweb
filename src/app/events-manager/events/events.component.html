@@ -95,9 +95,9 @@
             <dxi-item itemType="tabbed">
               <dxi-tab title="Info" [colCount]="8">
                 <dxi-item dataField="eventName" [colSpan]="4" [label]="{ text: 'Event Name' }" [isRequired]="true"></dxi-item>
-                <dxi-item [colSpan]="4" [label]="{ text: 'Email Template' }" [isRequired]="true">
+                <dxi-item [colSpan]="4" [label]="{ text: 'Email Template' }" [isRequired]="!selectedItem.isOnline">
                   <div *dxTemplate>
-                    <dx-select-box [(value)]="selectedItem.emailTemplate" [dataSource]="emailTemplates"></dx-select-box>
+                    <dx-select-box [(value)]="selectedItem.emailTemplate" [dataSource]="emailTemplates" [showClearButton]="true"></dx-select-box>
                   </div>
                 </dxi-item>
                 <dxi-item
@@ -155,8 +155,8 @@
                 <dxi-item *ngIf="selectedItem.isSummit" dataField="videoId" [label]="{ text: 'Promo Video Id?' }" [colSpan]="4"></dxi-item>
 
                 <dxi-item dataField="isOnline" [editorType]="'dxSwitch'" [editorOptions]="{ switchedOnText: 'Yes', switchedOffText: 'No' }" [label]="{ text: 'Is Online Event?' }" [colSpan]="8"></dxi-item>
-                <dxi-item *ngIf="selectedItem.isOnline" dataField="kajabiPurchaseURL" [label]="{ text: 'Purchase URL?' }" [colSpan]="4"></dxi-item>
-                <dxi-item *ngIf="selectedItem.isOnline" dataField="kajabiSubscribeURL" [label]="{ text: 'Subscribe URL?' }" [colSpan]="4"></dxi-item>
+                <dxi-item *ngIf="selectedItem.isOnline" [isRequired]="selectedItem.isOnline" dataField="kajabiPurchaseURL" [label]="{ text: 'Purchase URL?' }" [colSpan]="4"></dxi-item>
+                <dxi-item *ngIf="selectedItem.isOnline" [isRequired]="selectedItem.isOnline" dataField="kajabiSubscribeURL" [label]="{ text: 'Subscribe URL?' }" [colSpan]="4"></dxi-item>
 
                 <dxi-item dataField="location" [colSpan]="4" [label]="{ text: 'Location' }" [isRequired]="!selectedItem.isOnline">
                   <div *dxTemplate>
