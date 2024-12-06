@@ -10,6 +10,7 @@ import { ConsultationSurveyService } from 'impactdisciplescommon/src/services/da
 import { EnumHelper } from 'impactdisciplescommon/src/utils/enum_helper';
 import { BehaviorSubject, Observable, map } from 'rxjs';
 import { Phone } from 'impactdisciplescommon/src/models/domain/utils/phone.model';
+import { Address } from 'impactdisciplescommon/src/models/domain/utils/address.model';
 
 @Component({
   selector: 'app-consultations-surveys',
@@ -38,6 +39,8 @@ export class ConsultationsSurveysComponent implements OnInit {
     valueChangeEvent: 'keyup',
   };
 
+  public states: string[];
+
   constructor(private service: ConsultationSurveyService) {}
 
    async ngOnInit(): Promise<void> {
@@ -57,7 +60,9 @@ export class ConsultationsSurveysComponent implements OnInit {
           })
       )
     );
+
     this.phone_types = EnumHelper.getPhoneTypesAsArray();
+    this.states = EnumHelper.getStateRoleTypesAsArray();
   }
 
   showEditModal = (e) => {
@@ -72,6 +77,7 @@ export class ConsultationsSurveysComponent implements OnInit {
 
   showAddModal = () => {
     this.selectedItem = {... new ConsultationSurveyModel()};
+    this.selectedItem.location = {... new Address()};
     this.selectedItem.phone = {... new Phone()};
 
     this.isVisible$.next(true);
