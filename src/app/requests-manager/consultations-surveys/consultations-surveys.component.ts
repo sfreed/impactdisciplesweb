@@ -68,6 +68,10 @@ export class ConsultationsSurveysComponent implements OnInit {
   showEditModal = (e) => {
     this.selectedItem = (Object.assign({}, e.data));
 
+    if(!this.selectedItem.location){
+      this.selectedItem.location = {... new Address()};
+    }
+
     if(!this.selectedItem.phone){
       this.selectedItem.phone = {... new Phone()};
     }
