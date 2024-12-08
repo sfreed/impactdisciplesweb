@@ -46,13 +46,8 @@ export class EventAgendaComponent implements OnInit{
   getCoachById = (id: string) => Query(this.coaches).filter(['id', '=', id]).toArray()[0];
   getCourseById = (id: string) => Query(this.courses).filter(['id', '=', id]).toArray()[0];
 
-  onAppointmentAdd = (e: DxSchedulerTypes.AppointmentDraggingAddEvent) => {
-    const index = this.courses.indexOf(e.fromData);
-
-    if (index >= 0) {
-      this.courses.splice(index, 1);
-      this.event.agendaItems.push(e.itemData);
-    }
+  onAppointmentAdd = (e:any) => {
+    e.appointmentData.id = this.generateEventId();
   };
 
   onAppointmentRemove = (e: DxSchedulerTypes.AppointmentDraggingRemoveEvent) => {
@@ -285,7 +280,7 @@ export class EventAgendaComponent implements OnInit{
           if(value){
             that.setFoodBreakForm(data)
           }
-        } 
+        }
       }
     }, {
       label: {
@@ -329,5 +324,13 @@ export class EventAgendaComponent implements OnInit{
       },
     }];
     form.repaint();
+  }
+
+  private generateEventId() {
+    return 'xxxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+      var r = (Math.random() * 16) | 0,
+        v = c == 'x' ? r : (r & 0x3) | 0x8;
+      return v.toString(16);
+    });
   }
 }

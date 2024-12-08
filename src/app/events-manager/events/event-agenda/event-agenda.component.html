@@ -10,6 +10,7 @@
     [editing]="true"
     appointmentTemplate="appointment-template"
     (onAppointmentFormOpening)="onAppointmentFormOpening($event)"
+    (onAppointmentAdding)="onAppointmentAdd($event)"
     [textExpr]="'name'">
     <dxi-resource
       fieldExpr="course"
