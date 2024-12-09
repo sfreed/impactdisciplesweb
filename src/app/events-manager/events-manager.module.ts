@@ -18,7 +18,6 @@ import { FAQComponent } from './events/event-application/questions-and-answers/f
 import { AnnouncementsComponent } from './events/event-application/announcements/announcements.component';
 import { EventApplicationComponent } from './events/event-application/event-application.component';
 import { DetailsComponent } from './events/event-application/details/details.component';
-import { WhatToKnowComponent } from './events/event-application/what-to-know/what-to-know.component';
 
 @NgModule({
     declarations: [
@@ -34,8 +33,7 @@ import { WhatToKnowComponent } from './events/event-application/what-to-know/wha
       FAQComponent,
       AnnouncementsComponent,
       EventApplicationComponent,
-      DetailsComponent,
-      WhatToKnowComponent
+      DetailsComponent
     ],
     imports: [
       CommonModule,
