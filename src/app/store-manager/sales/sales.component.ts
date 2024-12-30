@@ -282,7 +282,11 @@ export class SalesComponent implements OnInit {
   }
 
   getItemDiscountAmount(cartItem){
-    return cartItem.discountPrice
+    return (cartItem.data.price - cartItem.data.discountPrice) * cartItem.data.orderQuantity
+  }
+
+  getDiscountAmount(){
+    return Number((this.selectedItem.discount));
   }
 
   getChargedAmount(){
@@ -392,12 +396,7 @@ export class SalesComponent implements OnInit {
         total += e.data.shippingRate;
       }
 
-      if (e.data.paymentIntent?.amount && (total  != (Number(Number(e.data.paymentIntent?.amount) * .01).toFixed(2)))) {
-        console.log(e.data)
-
-        console.log(total)
-        console.log(Number(Number(e.data.paymentIntent?.amount).toFixed(2)) * .01)
-
+      if (e.data.paymentIntent?.amount && parseFloat(total.toFixed(2)) != parseFloat((e.data.paymentIntent?.amount / 100).toFixed(2))) {
         e.rowElement.style.backgroundColor =  "yellow";
       }
     }
