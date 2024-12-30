@@ -22,6 +22,7 @@ exports.create_payment_intent = functions
         request.body.items.forEach((item) => {
           total += item.amount;
         });
+
         const paymentIntent = await stripe.paymentIntents.create({
           amount: total,
           currency: "usd",
@@ -29,6 +30,7 @@ exports.create_payment_intent = functions
             enabled: true,
           },
           description: request.body.description,
+          receipt_email: request.body.receipt_email,
         });
 
         response.send({

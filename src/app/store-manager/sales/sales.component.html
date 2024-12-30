@@ -18,14 +18,15 @@
   [showRowLines]="true"
   [focusedRowEnabled]="true"
   [columnAutoWidth]="true"
-  (onRowDblClick)="showEditModal($event)">
+  (onRowDblClick)="showEditModal($event)"
+  (onRowPrepared)="onRowPrepared($event)">
 
   <dxo-scrolling mode="virtual"></dxo-scrolling>
   <dxo-filter-row [visible]="true"></dxo-filter-row>
 
-  <dxi-column dataField="processedStatus"></dxi-column>
+  <dxi-column dataField="processedStatus" [caption]="'Status'"></dxi-column>
   <dxi-column dataField="id" [visible]="false"></dxi-column>
-  <dxi-column dataField="dateProcessed" [dataType]="'datetime'" [sortOrder]="'desc'"></dxi-column>
+  <dxi-column dataField="dateProcessed" [caption]="'Date'" [dataType]="'datetime'" [sortOrder]="'desc'"></dxi-column>
   <dxi-column dataField="firstName"></dxi-column>
   <dxi-column dataField="lastName"></dxi-column>
   <dxi-column dataField="email"></dxi-column>
@@ -94,44 +95,57 @@
           [(formData)]="selectedItem"
           [showColonAfterLabel]="false"
           labelLocation="left"
-          [colCount]="8">
-          <dxi-item dataField="dateProcessed" [colSpan]="4" [disabled]="true"></dxi-item>
-          <dxi-item dataField="processedStatus" [colSpan]="4" [disabled]="true"></dxi-item>
+          [colCount]="12">
+          <dxi-item itemType="group" [colCount]="4" [colSpan]="4">
+            <dxi-item dataField="dateProcessed" [colSpan]="4" [disabled]="true"></dxi-item>
+            <dxi-item dataField="firstName" [colSpan]="4" [disabled]="true"></dxi-item>
+            <dxi-item dataField="email" [colSpan]="4" [disabled]="true"></dxi-item>
+            <dxi-item dataField="paymentIntent.status" [label]="{text: 'Status'}" [colSpan]="4" [disabled]="true"></dxi-item>
+          </dxi-item>
+          <dxi-item itemType="group" [colCount]="4" [colSpan]="4">
+            <dxi-item dataField="processedStatus" [colSpan]="4" [disabled]="true"></dxi-item>
+            <dxi-item dataField="lastName" [colSpan]="4" [disabled]="true"></dxi-item>
+            <dxi-item dataField="couponCode" [colSpan]="4" [disabled]="true"></dxi-item>
+            <dxi-item [colSpan]="4" [label]="{text: 'Item Count'}" [disabled]="true">
+              <div *dxTemplate>
+                <dx-number-box [value]="selectedItem?.cartItems?.length"></dx-number-box>
+              </div>
+            </dxi-item>
+          </dxi-item>
+          <dxi-item itemType="group" caption="Summary" [colCount]="4" [colSpan]="4">
+            <dxi-item [colSpan]="4" [label]="{text: 'Amount'}" [disabled]="true">
+              <div *dxTemplate>
+                {{selectedItem?.totalBeforeDiscount > 0 ? (selectedItem?.totalBeforeDiscount | currency) : (0 | currency)}}
+              </div>
+            </dxi-item>
+            <dxi-item [colSpan]="4" [label]="{text: 'Taxes'}" [disabled]="true">
+              <div *dxTemplate>
+                {{selectedItem?.estimatedTaxes > 0 ? (selectedItem?.estimatedTaxes | currency) : (0 | currency)}}
+              </div>
+            </dxi-item>
+            <dxi-item [colSpan]="4" [label]="{text: 'Shipping'}" [disabled]="true">
+              <div *dxTemplate>
+                {{selectedItem?.shippingRate > 0 ? (selectedItem?.shippingRate | currency) : (0 | currency)}}
+              </div>
+            </dxi-item>
+            <dxi-item [colSpan]="4" [label]="{text: 'Total'}" [disabled]="true">
+              <div *dxTemplate>
+                {{selectedItem?.total > 0 ? (selectedItem?.total | currency) : (0 | currency)}}
+              </div>
+            </dxi-item>
+            <dxi-item [colSpan]="4" [label]="{text: 'Refunded'}" [disabled]="true">
+              <div *dxTemplate>
+                {{getOrderRefundedAmount() | currency}}
+              </div>
+            </dxi-item>
+            <dxi-item [colSpan]="4" [label]="{text: 'Charged'}" [disabled]="true">
+              <div *dxTemplate>
+                {{getChargedAmount() | currency}}
+              </div>
+            </dxi-item>
+          </dxi-item>
 
-          <dxi-item dataField="firstName" [colSpan]="4" [disabled]="true"></dxi-item>
-          <dxi-item dataField="lastName" [colSpan]="4" [disabled]="true"></dxi-item>
-
-          <dxi-item dataField="email" [colSpan]="4" [disabled]="true"></dxi-item>
-          <dxi-item dataField="couponCode" [colSpan]="4" [disabled]="true"></dxi-item>
-
-          <dxi-item dataField="paymentIntent.status" [label]="{text: 'Status'}" [colSpan]="4" [disabled]="true"></dxi-item>
-          <dxi-item [colSpan]="4" [label]="{text: 'Item Count'}" [disabled]="true">
-            <div *dxTemplate>
-              <dx-number-box [value]="selectedItem?.cartItems?.length"></dx-number-box>
-            </div>
-          </dxi-item>
-          <dxi-item [colSpan]="2" [label]="{text: 'Taxes'}" [disabled]="true">
-            <div *dxTemplate>
-              {{selectedItem?.estimatedTaxes > 0 ? (selectedItem?.estimatedTaxes | currency) : (0 | currency)}}
-            </div>
-          </dxi-item>
-          <dxi-item [colSpan]="2" [label]="{text: 'Shipping'}" [disabled]="true">
-            <div *dxTemplate>
-              {{selectedItem?.shippingRate > 0 ? (selectedItem?.shippingRate | currency) : (0 | currency)}}
-            </div>
-          </dxi-item>
-          <dxi-item [colSpan]="2" [label]="{text: 'Total'}" [disabled]="true">
-            <div *dxTemplate>
-              {{selectedItem?.total > 0 ? (selectedItem?.total | currency) : (0 | currency)}}
-            </div>
-          </dxi-item>
-          <dxi-item [colSpan]="2" [label]="{text: 'Refunded'}" [disabled]="true">
-            <div *dxTemplate>
-              {{getOrderRefundedAmount() | currency}}
-            </div>
-          </dxi-item>
-
-          <dxi-item itemType="tabbed" [colSpan]="8">
+          <dxi-item itemType="tabbed" [colSpan]="12">
             <dxi-tab title="Shipping / Billing Information">
               <dxi-item itemType="tabbed" [colSpan]="6">
                 <dxi-tab title="Billing Address">
@@ -204,10 +218,9 @@
 
                     <dxi-column dataField="img" cellTemplate="imageCellTemplate" [caption]="''" [width]="120"></dxi-column>
                     <dxi-column dataField="itemName" cellTemplate="descriptionCellTemplate" [caption]="'Description'"></dxi-column>
-                    <dxi-column dataField="orderQuantity" [dataType]="'number'" [caption]="'Count'" [width]="100"></dxi-column>
-                    <dxi-column dataField="price" [dataType]="'number'" [format]="'currency'" [caption]="'Unit Price'" [width]="120"></dxi-column>
                     <dxi-column caption="Tax" cellTemplate="taxAmountTemplate"></dxi-column>
                     <dxi-column caption="Shipping" cellTemplate="shippingAmountTemplate"></dxi-column>
+                    <dxi-column caption="Discount" cellTemplate="discountAmountTemplate"></dxi-column>
                     <dxi-column caption="Total" cellTemplate="totalAmountTemplate"></dxi-column>
                     <dxi-column dataField="processedStatus" [caption]="'Status'" [width]="150"></dxi-column>
                     <dxi-column type="buttons" [allowReordering]="false" [width]="75">
@@ -223,6 +236,10 @@
                       <span width="100">{{getItemShippingAmount(data) | currency}}</span>
                     </div>
 
+                    <div *dxTemplate="let data of 'discountAmountTemplate'">
+                      <span width="100">{{getItemDiscountAmount(data) | currency}}</span>
+                    </div>
+
                     <div *dxTemplate="let data of 'totalAmountTemplate'">
                       <span width="100">{{getItemTotalAmount(data) | currency}}</span>
                     </div>
@@ -233,6 +250,7 @@
 
                     <div *dxTemplate="let data of 'descriptionCellTemplate'">
                       <div>{{data.value}}</div>
+                      <div>{{data.data.orderQuantity}}  x  {{data.data.price | currency}} = {{(data.data.orderQuantity * data.data.price) | currency}}</div>
                       <div *ngIf="(data.data.attendees?.length) > 0">
                         <ol type="1">
                           <li *ngFor="let attendee of data.data.attendees">

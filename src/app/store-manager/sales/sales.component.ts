@@ -76,6 +76,7 @@ export class SalesComponent implements OnInit {
 
   showEditModal = (e) => {
     this.selectedItem = (Object.assign({}, e.data));
+    console.log(this.selectedItem)
 
     this.isVisible$.next(true);
   }
@@ -253,7 +254,7 @@ export class SalesComponent implements OnInit {
   }
 
   getItemTaxableAmount(cartItem){
-    return !cartItem.data.isEvent? (cartItem.data.price) * this.selectedItem.taxRate : 0;
+    return (!cartItem.data.isEvent? (cartItem.data.price * cartItem.data.orderQuantity) * this.selectedItem.taxRate : 0);
   }
 
   getItemShippingAmount(cartItem){
@@ -271,13 +272,21 @@ export class SalesComponent implements OnInit {
   }
 
   getItemTotalAmount(cartItem){
-    let totalPrice = cartItem.data.price;
+    let totalPrice = this.selectedItem.totalBeforeDiscount;
     let shippingAmount = cartItem.data.isEvent? 0 : this.getItemShippingAmount(cartItem);
-    let taxAmount = this.getItemTaxableAmount(cartItem)
+    let taxAmount = this.getItemTaxableAmount(cartItem);
 
-    let amountToRefund:number  = totalPrice + (shippingAmount? shippingAmount : 0) + (taxAmount ? taxAmount : 0);
+    let amountToRefund: number  = totalPrice + (shippingAmount? shippingAmount : 0) + (taxAmount ? taxAmount : 0);
 
     return amountToRefund;
+  }
+
+  getItemDiscountAmount(cartItem){
+    return cartItem.discountPrice
+  }
+
+  getChargedAmount(){
+    return Number((this.selectedItem.paymentIntent as PaymentIntent).amount) * .01;
   }
 
   getOrderRefundedAmount(){
@@ -369,5 +378,28 @@ export class SalesComponent implements OnInit {
         })
       }
     });
+  }
+
+  onRowPrepared(e) {
+    if (e.rowType === "data") {
+      let total = e.data.totalBeforeDiscount;
+
+      if(e.data.estimatedTaxes){
+        total += e.data.estimatedTaxes;
+      }
+
+      if(e.data.shippingRate){
+        total += e.data.shippingRate;
+      }
+
+      if (e.data.paymentIntent?.amount && (total  != (Number(Number(e.data.paymentIntent?.amount) * .01).toFixed(2)))) {
+        console.log(e.data)
+
+        console.log(total)
+        console.log(Number(Number(e.data.paymentIntent?.amount).toFixed(2)) * .01)
+
+        e.rowElement.style.backgroundColor =  "yellow";
+      }
+    }
   }
 }

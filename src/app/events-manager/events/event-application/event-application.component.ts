@@ -19,7 +19,7 @@ export class EventApplicationComponent implements OnInit {
     { id: 1, text: 'Dining Options', template: 'Dining Options' },
     { id: 2, text: 'Checkin Instructions', template: 'Checkin Instructions' },
     { id: 3, text: 'Questions and Answers', template: 'Questions and Answers' },
-    { id: 4, text: 'What to Know', template: 'What to Know' },
+    { id: 4, text: 'Whats Next', template: 'Whats Next' },
   ];
 
   constructor() { }
