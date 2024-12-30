@@ -290,7 +290,11 @@ export class SalesComponent implements OnInit {
   }
 
   getChargedAmount(){
-    return Number((this.selectedItem.paymentIntent as PaymentIntent).amount) * .01;
+    if(this.selectedItem?.paymentIntent && this.selectedItem.paymentIntent['amount']){
+      return Number((this.selectedItem.paymentIntent as PaymentIntent).amount) * .01;
+    } else {
+      return 0;
+    }
   }
 
   getOrderRefundedAmount(){
