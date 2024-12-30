@@ -33,7 +33,7 @@ import { DetailsComponent } from './events/event-application/details/details.com
       FAQComponent,
       AnnouncementsComponent,
       EventApplicationComponent,
-      DetailsComponent,
+      DetailsComponent
     ],
     imports: [
       CommonModule,
