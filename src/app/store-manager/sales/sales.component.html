@@ -112,39 +112,67 @@
             </dxi-item>
           </dxi-item>
           <dxi-item itemType="group" caption="Summary" [colCount]="4" [colSpan]="4">
-            <dxi-item [colSpan]="4" [label]="{text: 'Amount'}" [disabled]="true">
+            <dxi-item [colSpan]="4">
               <div *dxTemplate>
-                {{selectedItem?.totalBeforeDiscount > 0 ? (selectedItem?.totalBeforeDiscount | currency) : (0 | currency)}}
+                <div class="row">
+                  <div class="col-6">Amount: </div>
+                  <div class="col-4 text-end">{{selectedItem?.totalBeforeDiscount > 0 ? (selectedItem?.totalBeforeDiscount | currency) : (0 | currency)}}</div>
+                  <div class="col-2"></div>
+                </div>
               </div>
             </dxi-item>
-            <dxi-item [colSpan]="4" [label]="{text: 'Taxes'}" [disabled]="true">
+            <dxi-item [colSpan]="4">
               <div *dxTemplate>
-                {{selectedItem?.estimatedTaxes > 0 ? (selectedItem?.estimatedTaxes | currency) : (0 | currency)}}
+                <div class="row">
+                  <div class="col-6">Taxes: </div>
+                  <div class="col-4 text-end">{{selectedItem?.estimatedTaxes > 0 ? (selectedItem?.estimatedTaxes | currency) : (0 | currency)}}</div>
+                  <div class="col-2"></div>
+                </div>
               </div>
             </dxi-item>
-            <dxi-item [colSpan]="4" [label]="{text: 'Shipping'}" [disabled]="true">
+            <dxi-item [colSpan]="4">
               <div *dxTemplate>
-                {{selectedItem?.shippingRate > 0 ? (selectedItem?.shippingRate | currency) : (0 | currency)}}
+                <div class="row">
+                  <div class="col-6">Shipping: </div>
+                  <div class="col-4 text-end">{{selectedItem?.shippingRate > 0 ? (selectedItem?.shippingRate | currency) : (0 | currency)}}</div>
+                  <div class="col-2"></div>
+                </div>
               </div>
             </dxi-item>
-            <dxi-item [colSpan]="4" [label]="{text: 'Discount'}" [disabled]="true">
+            <dxi-item [colSpan]="4">
               <div *dxTemplate>
-                -{{getDiscountAmount() | currency}}
+                <div class="row">
+                  <div class="col-6">Discount: </div>
+                  <div class="col-4 text-end">-{{getDiscountAmount() | currency}}</div>
+                  <div class="col-2"></div>
+                </div>
               </div>
             </dxi-item>
-            <dxi-item [colSpan]="4" [label]="{text: 'Total'}" [disabled]="true">
+            <dxi-item [colSpan]="4">
               <div *dxTemplate>
-                {{selectedItem?.total > 0 ? (selectedItem?.total | currency) : (0 | currency)}}
+                <div class="row">
+                  <div class="col-6">Total: </div>
+                  <div class="col-4 text-end">{{selectedItem?.total > 0 ? (selectedItem?.total | currency) : (0 | currency)}}</div>
+                  <div class="col-2"></div>
+                </div>
               </div>
             </dxi-item>
-            <dxi-item [colSpan]="4" [label]="{text: 'Refunded'}" [disabled]="true">
+            <dxi-item [colSpan]="4">
               <div *dxTemplate>
-                {{getOrderRefundedAmount() | currency}}
+                <div class="row">
+                  <div class="col-6">Refunded: </div>
+                  <div class="col-4 text-end">{{getOrderRefundedAmount() | currency}}</div>
+                  <div class="col-2"></div>
+                </div>
               </div>
             </dxi-item>
-            <dxi-item [colSpan]="4" [label]="{text: 'Charged'}" [disabled]="true">
+            <dxi-item [colSpan]="4">
               <div *dxTemplate>
-                {{getChargedAmount() | currency}}
+                <div class="row">
+                  <div class="col-6">Charged: </div>
+                  <div class="col-4 text-end">{{getChargedAmount() | currency}}</div>
+                  <div class="col-2"></div>
+                </div>
               </div>
             </dxi-item>
           </dxi-item>
