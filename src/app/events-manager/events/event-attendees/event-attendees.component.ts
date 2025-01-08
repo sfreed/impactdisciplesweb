@@ -23,7 +23,6 @@ import { saveAs } from 'file-saver';
 import { Workbook } from 'exceljs';
 import { EmailListService } from 'impactdisciplescommon/src/services/data/email-list.service';
 import { EventRegistrationService } from 'impactdisciplescommon/src/services/data/event-registration.service';
-import { DxDataGridTypes } from 'devextreme-angular/ui/data-grid';
 
 @Component({
   selector: 'app-event-attendees',
@@ -256,7 +255,6 @@ export class EventAttendeesComponent implements OnInit{
       }
 
       list.then(subscribers => {
-        console.log(subscribers)
         subscribers.forEach(subscriber => {
           html = this.email.html
           html = html.replace('{{Recipient First Name}}', subscriber.firstName);
@@ -264,12 +262,13 @@ export class EventAttendeesComponent implements OnInit{
           html = html.replace('{{Sender First Name}}', user.firstName);
           html = html.replace('{{Sender Last Name}}', user.lastName);
           html = html.replace('{{Date}}', (dateFromTimestamp(this.email.date) as Date).toLocaleString());
-          html += "<br><br><br><div>If you believe you received this email by mistake, please click " +
-            "<b><a href='" + environment.unsubscribeUrl + "?email="+ subscriber.email +
-            "&list=newsletter_subscriptions'>here</a></b> to remove your address.</div>"
           this.email.html = html;
 
-          this.emailService.sendHtmlEmail(subscriber.email, this.email.subject, this.email.html);
+          let unsubscribe = "<br><br><br><div>If you believe you received this email by mistake, please click " +
+            "<b><a href='" + environment.unsubscribeUrl + "?email="+ subscriber.email +
+            "&list=newsletter_subscriptions'>here</a></b> to remove your address.</div>"
+
+          this.emailService.sendHtmlEmail(subscriber.email, this.email.subject, this.email.html + unsubscribe);
         })
       }).then(() => {
         this.customerEmailService.add(this.email).then(email => {
