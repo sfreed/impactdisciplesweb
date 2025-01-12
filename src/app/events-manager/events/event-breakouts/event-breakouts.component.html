@@ -1,0 +1,31 @@
+<dx-data-grid class="dx-card wide-card"
+  #attendeeGrid
+  [dataSource]="datasource$ | async"
+  [height]="'50vh'"
+  [showBorders]="false"
+  [showColumnLines]="true"
+  [showColumnLines]="true"
+  [showRowLines]="true"
+  [allowColumnReordering]="true"
+  [allowColumnResizing]="true"
+  [columnHidingEnabled]="true"
+  [focusedRowEnabled]="true"
+  [columnAutoWidth]="true">
+  <dxo-state-storing
+    [enabled]="true"
+    type="localStorage"
+    storageKey="storage"
+  ></dxo-state-storing>
+  <dxo-scrolling mode="virtual"></dxo-scrolling>
+  <dxo-filter-row [visible]="true"></dxo-filter-row>
+
+  <dxi-column dataField="lastName" [sortOrder]="'asc'"></dxi-column>
+  <dxi-column dataField="firstName"></dxi-column>
+  <dxi-column dataField="email"></dxi-column>
+  <dxi-column dataField="breakoutName" [groupIndex]="0"></dxi-column>
+  <dxo-summary>
+    <dxi-total-item column="email" summaryType="count"> </dxi-total-item>
+    <dxi-group-item column="email" summaryType="count" displayFormat="{0} registered"></dxi-group-item>
+  </dxo-summary>
+
+</dx-data-grid>

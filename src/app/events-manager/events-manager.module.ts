@@ -18,6 +18,7 @@ import { FAQComponent } from './events/event-application/questions-and-answers/f
 import { AnnouncementsComponent } from './events/event-application/announcements/announcements.component';
 import { EventApplicationComponent } from './events/event-application/event-application.component';
 import { DetailsComponent } from './events/event-application/details/details.component';
+import { EventBreakoutsComponent } from './events/event-breakouts/event-breakouts.component';
 
 @NgModule({
     declarations: [
@@ -29,6 +30,7 @@ import { DetailsComponent } from './events/event-application/details/details.com
       OrganizationsComponent,
       EventAgendaComponent,
       EventAttendeesComponent,
+      EventBreakoutsComponent,
       RoomComponent,
       FAQComponent,
       AnnouncementsComponent,
