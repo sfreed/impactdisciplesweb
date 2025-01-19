@@ -41,12 +41,9 @@
   <dxo-filter-row [visible]="true"></dxo-filter-row>
 
   <dxi-column dataField="isActive" dataType="boolean" [caption]="'Live'" cellTemplate="isActiveCellTemplate" [width]="120"></dxi-column>
-  <dxi-column dataField="code" [sortOrder]="'asc'"></dxi-column>
-  <dxi-column dataField="percentOff" dataType="number"></dxi-column>
-  <dxi-column dataField="dollarsOff" dataType="number" format="currency"></dxi-column>
-  <dxi-column dataField="tags">
-    <dxo-lookup [dataSource]="couponTags" [allowClearing]="true" [displayExpr]="'tag'" [valueExpr]="'id'"></dxo-lookup>
-  </dxi-column>
+  <dxi-column dataField="code" [sortOrder]="'asc'" [width]="400"></dxi-column>
+  <dxi-column dataField="percentOff" dataType="number" [width]="120"></dxi-column>
+  <dxi-column dataField="affilliateName"></dxi-column>
   <dxi-column type="buttons" caption="Actions" [allowReordering]="false">
     <dxi-button icon="trash" hint="DELETE" [onClick]="delete"></dxi-button>
   </dxi-column>
@@ -86,24 +83,18 @@
           [(formData)]="selectedItem"
           [showColonAfterLabel]="false"
           labelLocation="left"
-          [colCount]="4">
+          [colCount]="6">
           <dxi-item dataField="code" [colSpan]="2" [isRequired]="true"></dxi-item>
-          <dxi-item dataField="isAffilliate" [colSpan]="2" [editorType]="'dxSwitch'" [editorOptions]="{ switchedOnText: 'Yes', switchedOffText: 'No' }"></dxi-item>
-          <dxi-item dataField="affilliateName" [visible]="selectedItem.isAffilliate" [colSpan]="2"></dxi-item>
-          <dxi-item dataField="affiliatePaypalAccount" [visible]="selectedItem.isAffilliate" [colSpan]="2"></dxi-item>
-          <dxi-item dataField="percentOff" [colSpan]="2" [isRequired]="!selectedItem.dollarsOff">
+          <dxi-item dataField="percentOff" [colSpan]="2" [isRequired]="true">
             <div *dxTemplate>
               <dx-number-box [(value)]="selectedItem.percentOff">
               </dx-number-box>
             </div>
           </dxi-item>
-          <dxi-item dataField="dollarsOff" [colSpan]="2" [isRequired]="!selectedItem.percentOff">
-            <div *dxTemplate>
-              <dx-number-box [(value)]="selectedItem.dollarsOff" [format]="'currency'">
-              </dx-number-box>
-            </div>
-          </dxi-item>
-          <dxi-item [label]="{ text: 'Item Tags' }" [colSpan]="4">
+          <dxi-item dataField="isAffilliate" [colSpan]="2" [editorType]="'dxSwitch'" [editorOptions]="{ switchedOnText: 'Yes', switchedOffText: 'No' }"></dxi-item>
+          <dxi-item dataField="affilliateName" [visible]="selectedItem.isAffilliate" [colSpan]="3"></dxi-item>
+          <dxi-item dataField="affiliatePaypalAccount" [visible]="selectedItem.isAffilliate" [colSpan]="3"></dxi-item>
+          <dxi-item [label]="{ text: 'Item Tags' }" [colSpan]="6">
             <div *dxTemplate>
               <dx-tag-box
                 [dataSource]="couponTags"
@@ -115,7 +106,7 @@
               </dx-tag-box>
             </div>
           </dxi-item>
-          <dxi-item [colSpan]="4">
+          <dxi-item [colSpan]="6">
             <div *dxTemplate>
               <div class="row">
                 <div class="col-7">

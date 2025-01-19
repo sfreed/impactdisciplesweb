@@ -76,7 +76,6 @@ export class SalesComponent implements OnInit {
 
   showEditModal = (e) => {
     this.selectedItem = (Object.assign({}, e.data));
-    console.log(this.selectedItem)
 
     this.isVisible$.next(true);
   }
@@ -261,22 +260,24 @@ export class SalesComponent implements OnInit {
     if(!cartItem.data.isEvent){
       let totalWeight: number;
       try{
-      totalWeight = this.selectedItem.cartItems.filter(item => item.isEvent == false).map(item => item.weight).reduce((a,b) => a + b);
+        totalWeight = this.selectedItem.cartItems.filter(item => item.isEvent == false).map(item => item.weight).reduce((a,b) => a + b);
       } catch (err){
         totalWeight = 0;
       }
-      return this.selectedItem.shippingRate * (cartItem.data.weight / totalWeight);
+      return this.selectedItem.shippingRate * parseFloat((cartItem.data.weight / totalWeight).toFixed(2));
     } else {
       return 0;
     }
   }
 
   getItemTotalAmount(cartItem){
-    let totalPrice = this.selectedItem.totalBeforeDiscount;
+    let totalPrice = cartItem.data.price ? cartItem.data.price : 0;
+    let quantity = cartItem.data.orderQuantity;
+    let discount = cartItem.data.discount ? cartItem.data.discount : 0;
     let shippingAmount = cartItem.data.isEvent? 0 : this.getItemShippingAmount(cartItem);
     let taxAmount = this.getItemTaxableAmount(cartItem);
 
-    let amountToRefund: number  = totalPrice + (shippingAmount? shippingAmount : 0) + (taxAmount ? taxAmount : 0);
+    let amountToRefund: number  = ((totalPrice - discount) * quantity) + (shippingAmount? shippingAmount : 0) + (taxAmount ? taxAmount : 0);
 
     return amountToRefund;
   }
@@ -392,6 +393,10 @@ export class SalesComponent implements OnInit {
     if (e.rowType === "data") {
       let total = e.data.totalBeforeDiscount;
 
+      if(e.data.discount){
+        total -= e.data.discount;
+      }
+
       if(e.data.estimatedTaxes){
         total += e.data.estimatedTaxes;
       }
@@ -400,7 +405,11 @@ export class SalesComponent implements OnInit {
         total += e.data.shippingRate;
       }
 
+
       if (e.data.paymentIntent?.amount && parseFloat(total.toFixed(2)) != parseFloat((e.data.paymentIntent?.amount / 100).toFixed(2))) {
+
+        console.log(parseFloat((e.data.paymentIntent?.amount / 100).toFixed(2)))
+        console.log(parseFloat(total.toFixed(2)))
         e.rowElement.style.backgroundColor =  "yellow";
       }
     }
