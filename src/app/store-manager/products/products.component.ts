@@ -43,6 +43,8 @@ export class ProductsComponent implements OnInit {
   public isSingleImageVisible$ = new BehaviorSubject<boolean>(false);
   public isEBookVisible$ = new BehaviorSubject<boolean>(false);
 
+  sizes: string[] = [];
+  colors: string[] = [];
   productTags: TagModel[] = [];
   productCategories: TagModel[] = [];
   series: SeriesModel[] = [];
@@ -114,6 +116,18 @@ export class ProductsComponent implements OnInit {
   showEditModal = (e) => {
     this.selectedItem = (Object.assign({}, e.data));
 
+    if(this.selectedItem.sizes && this.selectedItem.sizes.length > 0){
+      this.sizes = this.selectedItem?.sizes;
+    } else {
+      this.sizes = [];
+    }
+
+    if(this.selectedItem.colors && this.selectedItem.colors.length > 0){
+      this.colors = this.selectedItem?.colors;
+    } else {
+      this.colors = [];
+    }
+
     this.isVisible$.next(true);
   }
 
@@ -173,6 +187,9 @@ export class ProductsComponent implements OnInit {
       this.inProgress$.next(true);
 
       if(item.id) {
+        item.sizes = this.selectedItem.sizes || [];
+        item.colors = this.selectedItem.colors || [];
+
         this.service.update(item.id, item).then((item) => {
           if(item) {
             notify({
@@ -235,6 +252,31 @@ export class ProductsComponent implements OnInit {
       }
 
       args.customItem = productTag;
+    }
+  }
+
+  onSizesCreating(args: DxTagBoxTypes.CustomItemCreatingEvent) {
+    if(args.text){
+      const isItemInDataSource = this.sizes.some((item) => item === args.text);
+
+      if (!isItemInDataSource) {
+        this.sizes.push(args.text);
+      }
+
+      args.customItem = args.text;
+    }
+  }
+
+  onColorsCreating(args: DxTagBoxTypes.CustomItemCreatingEvent) {
+    if(args.text){
+
+      const isItemInDataSource = this.colors.some((item) => item === args.text);
+
+      if (!isItemInDataSource) {
+        this.sizes.push(args.text);
+      }
+
+      args.customItem = args.text;
     }
   }
 

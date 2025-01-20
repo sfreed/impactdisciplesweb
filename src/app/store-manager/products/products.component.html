@@ -353,6 +353,28 @@
                 (onCustomItemCreating)="onCustomItemCreating($event)">
               </dx-tag-box>
             </dxi-item>
+            <dxi-item [colSpan]="6" [label]="{ text: 'Sizes' }">
+              <dx-tag-box
+                [dataSource]="sizes"
+                [(value)]="selectedItem.sizes"
+                [acceptCustomValue]="true"
+                [searchEnabled]="true"
+                [hideSelectedItems]="true"
+                placeholder="Enter Sizes..."
+                (onCustomItemCreating)="onSizesCreating($event)">
+              </dx-tag-box>
+            </dxi-item>
+            <dxi-item [colSpan]="6" [label]="{ text: 'Colors' }">
+              <dx-tag-box
+                [dataSource]="colors"
+                [(value)]="selectedItem.colors"
+                [acceptCustomValue]="true"
+                [searchEnabled]="true"
+                [hideSelectedItems]="true"
+                placeholder="Enter Colors..."
+                (onCustomItemCreating)="onColorsCreating($event)">
+              </dx-tag-box>
+            </dxi-item>
           </dx-form>
         </div>
         <div class="col-xl-4">
@@ -380,6 +402,7 @@
           <div *ngIf="!selectedItem?.isActive" class="product-unavailable">
             <h1>Product Currently Unavailable In Store</h1>
           </div>
+
         </div>
       </div>
 
