@@ -273,7 +273,7 @@ export class ProductsComponent implements OnInit {
       const isItemInDataSource = this.colors.some((item) => item === args.text);
 
       if (!isItemInDataSource) {
-        this.sizes.push(args.text);
+        this.colors.push(args.text);
       }
 
       args.customItem = args.text;
