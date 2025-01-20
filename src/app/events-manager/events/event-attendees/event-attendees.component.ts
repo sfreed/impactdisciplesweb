@@ -9,7 +9,7 @@ import { confirm } from 'devextreme/ui/dialog';
 import notify from 'devextreme/ui/notify';
 import { EmailList } from 'impactdisciplescommon/src/models/utils/email-list.model';
 import { CustomerEmailModel } from 'impactdisciplescommon/src/models/domain/customer-email.model';
-import { Timestamp } from 'firebase/firestore';
+import { Timestamp, Unsubscribe } from 'firebase/firestore';
 import { CustomerEmailService } from 'impactdisciplescommon/src/services/data/customer-email.service';
 import { EMailService } from 'impactdisciplescommon/src/services/data/email.service';
 import { ToastrService } from 'ngx-toastr';
@@ -52,6 +52,8 @@ export class EventAttendeesComponent implements OnInit{
   public isEmailVisible$ = new BehaviorSubject<boolean>(false);
   public isListVisible$ = new BehaviorSubject<boolean>(false);
 
+  public unsub: Unsubscribe;
+
   constructor(public service: EventRegistrationService,
     private emailListService: EmailListService,
     private authService: AuthService,
@@ -91,6 +93,22 @@ export class EventAttendeesComponent implements OnInit{
 
   showEditModal = (e) => {
     this.selectedItem = (Object.assign({}, e.data));
+
+    if(this.selectedItem.receiptEmailId){
+      let callBack = (mail) => {
+
+        if(mail['delivery']){
+          this.selectedItem.receiptEmailStatus = mail['delivery']['state'];
+          this.selectedItem.receiptEmailDate = dateFromTimestamp(mail['delivery']['endTime'] as Timestamp);
+        }
+
+      }
+
+      this.unsub = this.emailService.streamById(this.selectedItem.receiptEmailId, callBack)
+
+    } else {
+      this.selectedItem.receiptEmailStatus = 'N/A';
+    }
 
     this.isVisible$.next(true);
   }
@@ -335,5 +353,15 @@ export class EventAttendeesComponent implements OnInit{
 
   showColumnChooser = () => {
     this.attendeeGrid.instance.showColumnChooser()
+  }
+
+  resendEmail(){
+    this.emailService.getById(this.selectedItem.receiptEmailId).then(mail =>{
+      delete mail['delivery'];
+
+      return mail;
+    }).then(mail => {
+      this.emailService.update(mail.id, mail);
+    })
   }
 }

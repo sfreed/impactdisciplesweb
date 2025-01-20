@@ -31,6 +31,7 @@ exports.create_payment_intent = functions
           },
           description: request.body.description,
           receipt_email: request.body.receipt_email,
+          expand: ["latest_charge"],
         });
 
         response.send({

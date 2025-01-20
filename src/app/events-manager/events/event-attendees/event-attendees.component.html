@@ -108,9 +108,15 @@
             <dxi-item dataField="firstName" [colSpan]="2" [isRequired]="true"></dxi-item>
             <dxi-item dataField="lastName" [colSpan]="2" [isRequired]="true"></dxi-item>
             <dxi-item dataField="email" [colSpan]="2" [isRequired]="true"></dxi-item>
-            <dxi-item dataField="registrationDate" [colSpan]="2" [isRequired]="true">
+            <dxi-item dataField="registrationDate" [colSpan]="2">
               <div *dxTemplate>
                 <dx-date-box [(value)]="selectedItem.registrationDate"></dx-date-box>
+              </div>
+            </dxi-item>
+            <dxi-item dataField="receiptEmailStatus" [colSpan]="2"></dxi-item>
+            <dxi-item dataField="receiptEmailDate" [colSpan]="2">
+              <div *dxTemplate>
+                <dx-date-box [type]="'datetime'" [(value)]="selectedItem.receiptEmailDate"></dx-date-box>
               </div>
             </dxi-item>
             <dxi-item dataField="receipt" [colSpan]="4" [isRequired]="true"></dxi-item>
@@ -118,6 +124,14 @@
         </dx-form>
       </div>
       <div class="add-item-modal__button-group">
+        <dx-button
+          *ngIf="selectedItem && selectedItem.receiptEmailId"
+          text="Resend Email"
+          stylingMode="contained"
+          type="normal"
+          [disabled]="inProgress$ | async"
+          (onClick)="resendEmail()">
+        </dx-button>
         <dx-button
           text="CANCEL"
           stylingMode="contained"
