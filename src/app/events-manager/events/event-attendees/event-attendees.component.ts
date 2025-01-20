@@ -104,7 +104,7 @@ export class EventAttendeesComponent implements OnInit{
 
       }
 
-      this.unsub = this.emailService.streamById(this.selectedItem.receiptEmailId, callBack)
+      this.unsub = this.emailService.streamRecord(this.selectedItem.receiptEmailId, callBack)
 
     } else {
       this.selectedItem.receiptEmailStatus = 'N/A';
