@@ -23,9 +23,14 @@
   <dxi-column dataField="firstName"></dxi-column>
   <dxi-column dataField="email"></dxi-column>
   <dxi-column dataField="breakoutName" [groupIndex]="0"></dxi-column>
+  <dxi-column dataField="startDate" [caption]="" [groupIndex]="1" groupCellTemplate="cellTemplate" [sortOrder]="0"></dxi-column>
+
+  <div *dxTemplate="let data of 'cellTemplate'">
+    {{getSessionTime(data.value)}}
+  </div>
+
   <dxo-summary>
     <dxi-total-item column="email" summaryType="count"> </dxi-total-item>
     <dxi-group-item column="email" summaryType="count" displayFormat="{0} registered"></dxi-group-item>
   </dxo-summary>
-
 </dx-data-grid>

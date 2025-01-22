@@ -41,12 +41,14 @@ export class EventBreakoutsComponent implements OnInit {
 
                   selectedCustomers.forEach(customer => {
                     customer.trainingSessions?.forEach(session => {
-                      let coursID = that.event.agendaItems.find(item => item.id == session).course;
+                      let agendaItem = that.event.agendaItems.find(agendaItem => agendaItem.id == session);
+                      let course = that.courses.find(course => course.id == agendaItem.course);
 
                       let breakout: BreakOutStudent = new BreakOutStudent();
                       breakout.id = customer.email + session;
                       breakout.breakoutId = session;
-                      breakout.breakoutName = that.courses.find(item => item.id == coursID).title;
+                      breakout.startDate = agendaItem.startDate;
+                      breakout.breakoutName = course.title;
                       breakout.firstName = customer.firstName;
                       breakout.lastName = customer.lastName;
                       breakout.email = customer.email;
@@ -54,6 +56,7 @@ export class EventBreakoutsComponent implements OnInit {
                       breakoutStudents.push(breakout);
                     })
                   })
+
                   return breakoutStudents;
                 }
               })
@@ -62,12 +65,17 @@ export class EventBreakoutsComponent implements OnInit {
       );
     }
   }
+
+  getSessionTime(date: Date){
+    return date.toLocaleTimeString();
+  }
 }
 
 export class BreakOutStudent{
   id: string;
   breakoutId: string;
   breakoutName: string;
+  startDate: Date;
   firstName: string;
   lastName: string;
   email: string;
