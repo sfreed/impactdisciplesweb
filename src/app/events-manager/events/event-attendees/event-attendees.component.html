@@ -70,6 +70,9 @@
   <dxo-scrolling mode="virtual"></dxo-scrolling>
   <dxo-filter-row [visible]="true"></dxo-filter-row>
 
+  <dxo-group-panel [visible]="true"></dxo-group-panel>
+  <dxo-grouping #expand [autoExpandAll]="false"></dxo-grouping>
+
   <dxi-column dataField="lastName" [sortOrder]="'asc'"></dxi-column>
   <dxi-column dataField="firstName"></dxi-column>
   <dxi-column dataField="email"></dxi-column>
@@ -79,6 +82,10 @@
   <dxi-column type="buttons" [width]="150" caption="Actions">
     <dxi-button icon="trash" hint="DELETE" [onClick]="delete"></dxi-button>
   </dxi-column>
+
+  <dxo-summary>
+    <dxi-group-item column="email" summaryType="count" displayFormat="{0}"></dxi-group-item>
+  </dxo-summary>
 </dx-data-grid>
 
 <dx-popup
