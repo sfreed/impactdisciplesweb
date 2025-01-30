@@ -33,7 +33,7 @@
   <dxi-column dataField="receipt" cellTemplate="receiptTemplate"></dxi-column>
   <dxi-column dataField="couponCode"></dxi-column>
   <dxi-column dataField="totalBeforeDiscount" [caption]="'Total'" cellTemplate="totalBeforeDiscountTemplate"></dxi-column>
-  <dxi-column dataField="discount" [caption]="'discount'" cellTemplate="discountTemplate"></dxi-column>
+  <dxi-column dataField="discount" [caption]="'Discount'" cellTemplate="discountTemplate"></dxi-column>
   <dxi-column dataField="estimatedTaxes" [caption]="'Taxes'" cellTemplate="amountOtherTemplate"></dxi-column>
   <dxi-column dataField="shippingRate" [caption]="'Shipping'" cellTemplate="amountOtherTemplate"></dxi-column>
   <dxi-column dataField="paymentIntent.amount" cellTemplate="amountDollarTemplate" [caption]="'Charged'"></dxi-column>
@@ -42,6 +42,16 @@
     <dxi-button icon="arrowdown" hint="DOWNLOAD SHIPPING LABEL" [onClick]="getShippingLabel" [visible]="isShippingButtonVisible"></dxi-button>
     <dxi-button icon="trash" hint="DELETE" [onClick]="delete"></dxi-button>
   </dxi-column>
+
+  <dxo-summary>
+    <dxi-total-item column="id" summaryType="count"> </dxi-total-item>
+    <dxi-total-item column="totalBeforeDiscount" summaryType="sum" valueFormat="currency"></dxi-total-item>
+    <dxi-total-item column="discount" summaryType="sum" valueFormat="currency"></dxi-total-item>
+    <dxi-total-item column="estimatedTaxes" summaryType="sum" valueFormat="currency"></dxi-total-item>
+    <dxi-total-item column="shippingRate" summaryType="sum" valueFormat="currency"></dxi-total-item>
+    <dxi-total-item column="paymentIntent.amount" summaryType="sum" valueFormat="currency" [customizeText]="customizeAmount"></dxi-total-item>
+    <dxi-total-item column="refundAmount" summaryType="sum" valueFormat="currency"></dxi-total-item>
+  </dxo-summary>
 
   <div *dxTemplate="let data of 'totalBeforeDiscountTemplate'">
     {{data.value > 0 ? (data.value | currency) : (0 | currency)}}
@@ -62,6 +72,8 @@
   <div *dxTemplate="let data of 'amountOtherTemplate'">
     {{data.value > 0 ? (data.value | currency) : (0 | currency)}}
   </div>
+
+
 </dx-data-grid>
 
 <dx-popup
@@ -255,10 +267,10 @@
 
                     <dxi-column dataField="img" cellTemplate="imageCellTemplate" [caption]="''" [width]="120"></dxi-column>
                     <dxi-column dataField="itemName" cellTemplate="descriptionCellTemplate" [caption]="'Description'"></dxi-column>
-                    <dxi-column caption="Tax" cellTemplate="taxAmountTemplate"></dxi-column>
-                    <dxi-column caption="Shipping" cellTemplate="shippingAmountTemplate"></dxi-column>
-                    <dxi-column caption="Discount" cellTemplate="discountAmountTemplate"></dxi-column>
-                    <dxi-column caption="Total" cellTemplate="totalAmountTemplate"></dxi-column>
+                    <dxi-column [caption]="'Tax'" cellTemplate="taxAmountTemplate"></dxi-column>
+                    <dxi-column [caption]="'Shipping'" cellTemplate="shippingAmountTemplate"></dxi-column>
+                    <dxi-column [caption]="'Discount'" cellTemplate="discountAmountTemplate"></dxi-column>
+                    <dxi-column [caption]="'Total'" cellTemplate="totalAmountTemplate"></dxi-column>
                     <dxi-column dataField="processedStatus" [caption]="'Status'" [width]="150"></dxi-column>
                     <dxi-column type="buttons" [allowReordering]="false" [width]="75">
                       <dxi-button icon="taskcomplete" hint="Mark As Shipped" [onClick]="markAsShipped" [visible]="isShippedButtonsVisible"></dxi-button>

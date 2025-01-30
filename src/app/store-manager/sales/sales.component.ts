@@ -414,4 +414,11 @@ export class SalesComponent implements OnInit {
       }
     }
   }
+
+  customizeAmount(itemInfo){
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+    }).format(parseFloat((itemInfo.value / 100).toFixed(2)));
+  }
 }
